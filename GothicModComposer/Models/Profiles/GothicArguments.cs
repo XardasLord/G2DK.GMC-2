@@ -99,6 +99,13 @@ namespace GothicModComposer.Models.Profiles
             else
                 RemoveArg("ZREPARSE");
 
+            if (profileGothicArgumentsForceConfig.Resolution is null)
+                AddArgument_ZRes();
+            else
+                AddArgument_ZRes(
+                    profileGothicArgumentsForceConfig.Resolution.Width.ToString(),
+                    profileGothicArgumentsForceConfig.Resolution.Height.ToString());
+
             return this;
         }
 
