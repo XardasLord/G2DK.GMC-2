@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GothicModComposer": {
+      "commandName": "Project",
+      "commandLineArgs": "--path=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --profile=Reset"
+    }
+  }
+}
