@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-
-namespace GothicModComposer.Commands
+﻿namespace GothicModComposer.Commands
 {
 	public class UnknownCommand : ICommand
 	{
-		public string CommandName => "Unknown command";
+		public string CommandName => "Unknown";
 
-		public Task Execute() => Task.CompletedTask;
+		public void Execute() { }
+
+		public void Revert() { }
 	}
 }

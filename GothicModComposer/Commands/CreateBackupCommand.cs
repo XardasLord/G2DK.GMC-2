@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using GothicModComposer.Models;
+﻿using GothicModComposer.Models;
 
 namespace GothicModComposer.Commands
 {
@@ -16,9 +15,12 @@ namespace GothicModComposer.Commands
 			_gmcFolder = gmcFolder;
 		}
 
-		public Task Execute()
+		public void Execute()
 		{
-			return Task.CompletedTask;
+		}
+
+		public void Revert()
+		{
 		}
 	}
 }

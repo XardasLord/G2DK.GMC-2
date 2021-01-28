@@ -5,7 +5,7 @@ using GothicModComposer.Presets;
 
 namespace GothicModComposer.Builders
 {
-	public static class GmcExecutorBuilder
+	public static class GmcManagerBuilder
 	{
 		public static GmcManager PrepareGmcExecutor(ProfilePresetType profileType, string absolutePathToProject)
 		{

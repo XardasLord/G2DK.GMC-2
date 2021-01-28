@@ -12,6 +12,7 @@ namespace GothicModComposer.Utils
 		{
 			var value = $"[INFO] {message}";
 			Logs.Add(value);
+			Console.ForegroundColor = ConsoleColor.White;
 			Console.WriteLine(value);
 		}
 
@@ -19,20 +20,23 @@ namespace GothicModComposer.Utils
 		{
 			var value = $"[WARN] {message}";
 			Logs.Add(value);
-			Console.WriteLine(value, ConsoleColor.Yellow);
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine(value);
 		}
 
 		public static void Error(string message)
 		{
 			var value = $"[ERROR] {message}";
 			Logs.Add(value);
-			Console.WriteLine(value, ConsoleColor.Red);
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine(value);
 		}
 
 		public static void StartCommand(string message)
 		{
 			var value = $"{CommandSeparator}[COMMAND] {message.ToUpper()}";
 			Logs.Add(value);
+			Console.ForegroundColor = ConsoleColor.Green;
 			Console.WriteLine(value);
 		}
 
@@ -40,6 +44,23 @@ namespace GothicModComposer.Utils
 		{
 			var value = $"[COMMAND] {message}{CommandSeparator}";
 			Logs.Add(value);
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.WriteLine(value);
+		}
+
+		public static void StartCommandRevert(string message)
+		{
+			var value = $"{CommandSeparator}[COMMAND REVERT] {message.ToUpper()}";
+			Logs.Add(value);
+			Console.ForegroundColor = ConsoleColor.Magenta;
+			Console.WriteLine(value);
+		}
+
+		public static void FinishCommandRevert(string message)
+		{
+			var value = $"[COMMAND REVERT] {message}{CommandSeparator}";
+			Logs.Add(value);
+			Console.ForegroundColor = ConsoleColor.Magenta;
 			Console.WriteLine(value);
 		}
 	}

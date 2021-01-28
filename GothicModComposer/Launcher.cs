@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using CommandLine;
 using GothicModComposer.Builders;
 using GothicModComposer.Models;
@@ -13,23 +12,40 @@ namespace GothicModComposer
 		private static void Main(string[] args)
 		{
 			Parser.Default.ParseArguments<InitialParameter>(args)
-				.WithParsedAsync(RunGmc);
+				.WithParsed(RunGmc);
 
 			Console.ReadKey();
 		}
 
-		private static async Task RunGmc(InitialParameter parameters)
+		private static void RunGmc(InitialParameter parameters)
 		{
 			var stopWatch = new Stopwatch();
-			stopWatch.Start();
-			Logger.Info($"GMC build with profile {parameters.Profile} started...");
 
-			await GmcExecutorBuilder
-				.PrepareGmcExecutor(parameters.Profile, parameters.AbsolutePathToProject)
-				.Run();
+			var gmcManager = GmcManagerBuilder.PrepareGmcExecutor(parameters.Profile, parameters.AbsolutePathToProject);
 
-			stopWatch.Stop();
-			Logger.Info($"GMC build execution time: {stopWatch.Elapsed}");
+			try
+			{
+				stopWatch.Start();
+				Logger.Info($"GMC build with profile {parameters.Profile} started...");
+
+				gmcManager.Run();
+
+				stopWatch.Stop();
+				Logger.Info($"GMC build finished. Execution time: {stopWatch.Elapsed}");
+			}
+			catch (Exception e)
+			{
+				Logger.Error(e.Message);
+				
+				stopWatch.Restart();
+				Logger.Info("GMC revert changes started...");
+
+				gmcManager.Revert();
+
+				stopWatch.Stop();
+				Logger.Info($"GMC revert changes finished. Execution time: {stopWatch.Elapsed}");
+			}
+
 		}
 	}
 }

@@ -1,11 +1,10 @@
-﻿using System.Threading.Tasks;
-
-namespace GothicModComposer.Commands
+﻿namespace GothicModComposer.Commands
 {
 	public interface ICommand
 	{
 		string CommandName { get; }
 
-		Task Execute();
+		void Execute();
+		void Revert();
 	}
 }

@@ -13,6 +13,8 @@ namespace GothicModComposer.Builders
 		public GmcFolder GmcFolder { get; }
 		public ProfileDefinition Profile { get; }
 
+		private readonly Stack<ICommand> _executedCommands = new Stack<ICommand>();
+
 		private GmcManager(GothicFolder gothicFolder, GmcFolder gmcFolder, ProfileDefinition profile)
 		{
 			GothicFolder = gothicFolder;
@@ -25,23 +27,43 @@ namespace GothicModComposer.Builders
 			return new GmcManager(gothicFolder, gmcFolder, profile);
 		}
 
-		public Task Run()
-		{
-			Profile.ExecutionCommands.ForEach(async command => await RunSingleCommand(command));
+		public void Run() 
+			=> Profile.ExecutionCommands.ForEach(RunSingleCommand);
 
-			return Task.CompletedTask;
+		public void Revert()
+		{
+			while (_executedCommands.Count > 0)
+			{
+				var command = _executedCommands.Pop();
+
+				RevertSingleCommand(command);
+			}
 		}
 
-		private static async Task RunSingleCommand(ICommand command)
+		private void RunSingleCommand(ICommand command)
 		{
+			_executedCommands.Push(command);
+
 			var stopWatch = new Stopwatch();
 			stopWatch.Start();
 			Logger.StartCommand(command.CommandName);
-
-			await command.Execute();
+			
+			command.Execute();
 
 			stopWatch.Stop();
 			Logger.FinishCommand($"Execution time: {stopWatch.Elapsed}");
+		}
+
+		private static void RevertSingleCommand(ICommand command)
+		{
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
+			Logger.StartCommandRevert(command.CommandName);
+
+			command.Revert();
+
+			stopWatch.Stop();
+			Logger.FinishCommandRevert($"Execution time: {stopWatch.Elapsed}");
 		}
 	}
 }
