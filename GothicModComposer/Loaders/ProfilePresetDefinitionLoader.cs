@@ -13,7 +13,7 @@ namespace GothicModComposer.Loaders
 			return profileType switch
 			{
 				ProfilePresetType.Reset => GetResetProfile(gothicFolder, gmcFolder, modFolder),
-				ProfilePresetType.RestoreGothic => GetRestoreGothicProfile(),
+				ProfilePresetType.RestoreGothic => GetRestoreGothicProfile(gothicFolder, gmcFolder),
 				_ => throw new ArgumentOutOfRangeException(nameof(profileType), profileType, null)
 			};
 		}
@@ -28,11 +28,14 @@ namespace GothicModComposer.Loaders
 				}
 			};
 
-		private static ProfileDefinition GetRestoreGothicProfile()
+		private static ProfileDefinition GetRestoreGothicProfile(GothicFolder gothicFolder, GmcFolder gmcFolder)
 			=> new ProfileDefinition
 			{
 				ProfileType = ProfilePresetType.RestoreGothic,
-				ExecutionCommands = new List<ICommand> { }
+				ExecutionCommands = new List<ICommand>
+				{
+					new RestoreGothicBackupCommand(gothicFolder, gmcFolder)
+				}
 			};
 	}
 }

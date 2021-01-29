@@ -25,6 +25,11 @@ namespace GothicModComposer.Utils
 			}
 		}
 
+		public static void MoveDirectory(string source, string dest)
+		{
+			Directory.Move(source, dest);
+		}
+
 		public static void CopyFileWithOverwrite(string source, string dest)
 		{
 			if (File.Exists(dest))
@@ -38,18 +43,26 @@ namespace GothicModComposer.Utils
 			}
 		}
 
-		public static void CopyFileWithOverwriteAndKeepOriginalFileWithSuffixAdded(string source, string dest, string suffixToAddToOriginalFile = "_overwrite")
+		public static void MoveFileWithOverwrite(string source, string dest)
 		{
 			if (File.Exists(dest))
 			{
-				File.Move(dest, $"{dest}{suffixToAddToOriginalFile}");
-				File.Copy(source, dest);
+				File.Move(source, dest, true);
 			}
 			else
 			{
 				new FileInfo(dest).Directory?.Create();
-				File.Copy(source, dest, true);
+				File.Move(source, dest, true);
 			}
+		}
+
+		public static bool DeleteDirectoryIfExists(string path)
+		{
+			if (!Directory.Exists(path)) 
+				return false;
+			
+			Directory.Delete(path, true);
+			return true;
 		}
 	}
 }
