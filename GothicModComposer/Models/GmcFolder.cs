@@ -1,8 +1,16 @@
-﻿namespace GothicModComposer.Models
+﻿using System.IO;
+
+namespace GothicModComposer.Models
 {
 	public class GmcFolder
 	{
 		public string BasePath { get; }
+		public string BackupFolderPath => Path.Combine(BasePath, "backup");
+		public string LogsFolderPath => Path.Combine(BasePath, "Logs");
+		public string BuildFolderPath => Path.Combine(BasePath, "Build");
+		public string VdsfConfigFilePath => Path.Combine(BasePath, "vdfsConfig");
+		public string ModFilesTrackerFilePath => Path.Combine(BasePath, "modFiles.json");
+		public string BackupWorkDataFolderPath => Path.Combine(BackupFolderPath, "_work", "Data");
 
 		private GmcFolder(string gmcFolderPath)
 			=> BasePath = gmcFolderPath;
