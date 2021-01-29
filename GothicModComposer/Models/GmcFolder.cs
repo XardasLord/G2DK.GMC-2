@@ -12,6 +12,8 @@ namespace GothicModComposer.Models
 		public string ModFilesTrackerFilePath => Path.Combine(BasePath, "modFiles.json");
 		public string BackupWorkDataFolderPath => Path.Combine(BackupFolderPath, "_work", "Data");
 
+		public bool DoesBackupFolderExist => Directory.Exists(BackupFolderPath);
+
 		private GmcFolder(string gmcFolderPath)
 			=> BasePath = gmcFolderPath;
 
@@ -23,6 +25,8 @@ namespace GothicModComposer.Models
 
 			return instance;
 		}
+
+		public void CreateBackupWorkDataFolder() => Directory.CreateDirectory(BackupWorkDataFolderPath);
 
 		private void Verify()
 		{

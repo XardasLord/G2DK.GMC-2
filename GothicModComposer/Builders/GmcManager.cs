@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using GothicModComposer.Commands;
 using GothicModComposer.Models;
 using GothicModComposer.Utils;
@@ -11,20 +10,22 @@ namespace GothicModComposer.Builders
 	{
 		public GothicFolder GothicFolder { get; }
 		public GmcFolder GmcFolder { get; }
+		public ModFolder ModFolder { get; }
 		public ProfileDefinition Profile { get; }
 
 		private readonly Stack<ICommand> _executedCommands = new Stack<ICommand>();
 
-		private GmcManager(GothicFolder gothicFolder, GmcFolder gmcFolder, ProfileDefinition profile)
+		private GmcManager(GothicFolder gothicFolder, GmcFolder gmcFolder, ModFolder modFolder, ProfileDefinition profile)
 		{
 			GothicFolder = gothicFolder;
 			GmcFolder = gmcFolder;
+			ModFolder = modFolder;
 			Profile = profile;
 		}
 
-		public static GmcManager Create(GothicFolder gothicFolder, GmcFolder gmcFolder, ProfileDefinition profile)
+		public static GmcManager Create(GothicFolder gothicFolder, GmcFolder gmcFolder, ModFolder modFolder, ProfileDefinition profile)
 		{
-			return new GmcManager(gothicFolder, gmcFolder, profile);
+			return new GmcManager(gothicFolder, gmcFolder, modFolder, profile);
 		}
 
 		public void Run() 

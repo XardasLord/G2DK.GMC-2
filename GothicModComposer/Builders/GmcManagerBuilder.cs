@@ -14,9 +14,10 @@ namespace GothicModComposer.Builders
 
 			var gothicFolder = GothicFolder.CreateFromPath(gmcConfig.GothicRoot);
 			var gmcFolder = GmcFolder.CreateFromPath(gmcFolderPath);
-			var profileDefinition = ProfilePresetDefinitionLoader.Load(profileType, gothicFolder, gmcFolder);
+			var modFolder = ModFolder.CreateFromPath(absolutePathToProject);
+			var profileDefinition = ProfilePresetDefinitionLoader.Load(profileType, gothicFolder, gmcFolder, modFolder);
 
-			return GmcManager.Create(gothicFolder, gmcFolder, profileDefinition);
+			return GmcManager.Create(gothicFolder, gmcFolder, modFolder, profileDefinition);
 		}
 	}
 }
