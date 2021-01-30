@@ -5,6 +5,6 @@
 		string CommandName { get; }
 
 		void Execute();
-		void Revert();
+		void Undo();
 	}
 }

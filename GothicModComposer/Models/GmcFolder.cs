@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Models
 {
@@ -26,7 +27,7 @@ namespace GothicModComposer.Models
 			return instance;
 		}
 
-		public void CreateBackupWorkDataFolder() => Directory.CreateDirectory(BackupWorkDataFolderPath);
+		public void CreateBackupWorkDataFolder() => DirectoryHelper.CreateIfDoesNotExist(BackupWorkDataFolderPath);
 
 		private void Verify()
 		{

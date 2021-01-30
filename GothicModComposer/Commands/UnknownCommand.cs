@@ -6,6 +6,6 @@
 
 		public void Execute() { }
 
-		public void Revert() { }
+		public void Undo() { }
 	}
 }

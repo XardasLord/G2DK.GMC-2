@@ -13,7 +13,7 @@ namespace GothicModComposer.Builders
 		public ModFolder ModFolder { get; }
 		public ProfileDefinition Profile { get; }
 
-		private readonly Stack<ICommand> _executedCommands = new Stack<ICommand>();
+		private readonly Stack<ICommand> _executedCommands = new();
 
 		private GmcManager(GothicFolder gothicFolder, GmcFolder gmcFolder, ModFolder modFolder, ProfileDefinition profile)
 		{
@@ -31,13 +31,13 @@ namespace GothicModComposer.Builders
 		public void Run() 
 			=> Profile.ExecutionCommands.ForEach(RunSingleCommand);
 
-		public void Revert()
+		public void Undo()
 		{
 			while (_executedCommands.Count > 0)
 			{
 				var command = _executedCommands.Pop();
 
-				RevertSingleCommand(command);
+				UndoSingleCommand(command);
 			}
 		}
 
@@ -55,16 +55,16 @@ namespace GothicModComposer.Builders
 			Logger.FinishCommand($"Execution time: {stopWatch.Elapsed}");
 		}
 
-		private static void RevertSingleCommand(ICommand command)
+		private static void UndoSingleCommand(ICommand command)
 		{
 			var stopWatch = new Stopwatch();
 			stopWatch.Start();
-			Logger.StartCommandRevert(command.CommandName);
+			Logger.StartCommandUndo(command.CommandName);
 
-			command.Revert();
+			command.Undo();
 
 			stopWatch.Stop();
-			Logger.FinishCommandRevert($"Execution time: {stopWatch.Elapsed}");
+			Logger.FinishCommandUndo($"Execution time: {stopWatch.Elapsed}");
 		}
 	}
 }

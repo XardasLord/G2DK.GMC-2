@@ -48,17 +48,17 @@ namespace GothicModComposer.Utils
 			Console.WriteLine(value);
 		}
 
-		public static void StartCommandRevert(string message)
+		public static void StartCommandUndo(string message)
 		{
-			var value = $"{CommandSeparator}[COMMAND REVERT] {message.ToUpper()}";
+			var value = $"{CommandSeparator}[UNDO COMMAND] {message.ToUpper()}";
 			Logs.Add(value);
 			Console.ForegroundColor = ConsoleColor.Magenta;
 			Console.WriteLine(value);
 		}
 
-		public static void FinishCommandRevert(string message)
+		public static void FinishCommandUndo(string message)
 		{
-			var value = $"[COMMAND REVERT] {message}{CommandSeparator}";
+			var value = $"[UNDO COMMAND] {message}{CommandSeparator}";
 			Logs.Add(value);
 			Console.ForegroundColor = ConsoleColor.Magenta;
 			Console.WriteLine(value);

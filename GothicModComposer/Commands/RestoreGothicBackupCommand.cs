@@ -1,6 +1,6 @@
-﻿using System.IO;
-using GothicModComposer.Models;
+﻿using GothicModComposer.Models;
 using GothicModComposer.Utils;
+using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Commands
 {
@@ -31,29 +31,19 @@ namespace GothicModComposer.Commands
 
 		private void RestoreBackup()
 		{
-			DirectoryHelper.DeleteDirectoryIfExists(_gothicFolder.WorkDataFolderPath);
+			DirectoryHelper.DeleteIfExists(_gothicFolder.WorkDataFolderPath);
 
 			DirectoryHelper.GetAllFilesInDirectory(_gmcFolder.BackupFolderPath).ForEach(backupFilePath =>
 			{
 				var relativePath = DirectoryHelper.ToRelativePath(backupFilePath, _gmcFolder.BackupFolderPath);
 				var gothicFilePath = DirectoryHelper.MergeRelativePath(_gothicFolder.BasePath, relativePath);
 
-				DirectoryHelper.MoveFileWithOverwrite(backupFilePath, gothicFilePath);
-
-				Logger.Info($"Restored file from backup \"{backupFilePath}\" ---> \"{gothicFilePath}\".");
+				FileHelper.MoveWithOverwrite(backupFilePath, gothicFilePath);
 			});
 		}
 
-		private void RemoveGmcFolder()
-		{
-			Directory.Delete(_gmcFolder.BasePath, true);
+		private void RemoveGmcFolder() => DirectoryHelper.DeleteIfExists(_gmcFolder.BasePath);
 
-			Logger.Info("Removed .gmc directory.");
-		}
-
-		public void Revert()
-		{
-			throw new System.NotImplementedException();
-		}
+		public void Undo() => Logger.Info("Revering this command is not implemented.");
 	}
 }

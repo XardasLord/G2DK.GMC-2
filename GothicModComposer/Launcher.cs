@@ -38,12 +38,12 @@ namespace GothicModComposer
 				Logger.Error(e.Message);
 				
 				stopWatch.Restart();
-				Logger.Info("GMC revert changes started...");
+				Logger.Info("GMC undo changes started...");
 
-				gmcManager.Revert();
+				gmcManager.Undo();
 
 				stopWatch.Stop();
-				Logger.Info($"GMC revert changes finished. Execution time: {stopWatch.Elapsed}");
+				Logger.Info($"GMC undo changes finished. Execution time: {stopWatch.Elapsed}");
 			}
 
 		}
