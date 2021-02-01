@@ -22,6 +22,7 @@ namespace GothicModComposer.Loaders
 			=> new ProfileDefinition
 			{
 				ProfileType = ProfilePresetType.Reset,
+				IniOverrides = new List<string>(),
 				ExecutionCommands = new List<ICommand>
 				{
 					new CreateBackupCommand(gothicFolder, gmcFolder, modFolder)

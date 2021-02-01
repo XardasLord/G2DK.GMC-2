@@ -8,12 +8,13 @@ namespace GothicModComposer.Models
 	{
 		public ProfilePresetType ProfileType { get; set; }
 
-		//public string DefaultWorld;
-		//public List<string> IniOverrides;
-		//public List<string> ModDirectories;
-		//public GothicVdfsConfig GothicVdfsConfig;
+		public string DefaultWorld { get; set; }
+		public List<string> IniOverrides { get; set; }
 
-		//public List<string> GothicArguments;
+		//public List<string> ModDirectories { get; set; }
+
+		//public List<string> GothicArguments { get; set; }
+
 		public List<ICommand> ExecutionCommands { get; set; }
 	}
 }

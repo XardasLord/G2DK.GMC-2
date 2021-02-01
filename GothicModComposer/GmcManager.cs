@@ -4,7 +4,7 @@ using GothicModComposer.Commands;
 using GothicModComposer.Models;
 using GothicModComposer.Utils;
 
-namespace GothicModComposer.Builders
+namespace GothicModComposer
 {
 	public class GmcManager
 	{

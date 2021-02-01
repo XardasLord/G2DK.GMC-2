@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
-using GothicModComposer.Utils.Configurations;
+using GothicModComposer.Models;
 using GothicModComposer.Utils.Exceptions;
 
 namespace GothicModComposer.Loaders
