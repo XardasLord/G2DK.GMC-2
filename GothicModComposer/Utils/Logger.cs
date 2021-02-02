@@ -6,7 +6,7 @@ namespace GothicModComposer.Utils
 	public static class Logger
 	{
 		private static readonly List<string> Logs = new List<string>();
-		private static readonly string CommandSeparator = $"{Environment.NewLine}{new string('-', 80)}{Environment.NewLine}";
+		private static readonly string CommandSeparator = $"{Environment.NewLine}{new string('-', 90)}{Environment.NewLine}";
 
 		public static void Info(string message)
 		{

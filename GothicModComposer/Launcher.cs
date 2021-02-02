@@ -36,7 +36,7 @@ namespace GothicModComposer
 			catch (Exception e)
 			{
 				Logger.Error(e.Message);
-				
+
 				stopWatch.Restart();
 				Logger.Info("GMC undo changes started...");
 
@@ -45,7 +45,6 @@ namespace GothicModComposer
 				stopWatch.Stop();
 				Logger.Info($"GMC undo changes finished. Execution time: {stopWatch.Elapsed}");
 			}
-
 		}
 	}
 }

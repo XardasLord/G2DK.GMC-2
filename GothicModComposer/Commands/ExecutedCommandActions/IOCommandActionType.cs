@@ -1,4 +1,4 @@
-﻿namespace GothicModComposer.Commands.ExecutedActions
+﻿namespace GothicModComposer.Commands.ExecutedCommandActions
 {
 	public enum IOCommandActionType
 	{

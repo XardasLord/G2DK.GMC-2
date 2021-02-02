@@ -44,6 +44,6 @@ namespace GothicModComposer.Commands
 
 		private void RemoveGmcFolder() => DirectoryHelper.DeleteIfExists(_gmcFolder.BasePath);
 
-		public void Undo() => Logger.Info("Revering this command is not implemented.");
+		public void Undo() => Logger.Warn("Undo of this command is not implemented.");
 	}
 }

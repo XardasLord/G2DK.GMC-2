@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using GothicModComposer.Commands.ExecutedActions;
+using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Models;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
@@ -11,12 +11,13 @@ namespace GothicModComposer.Commands
 {
 	public class OverrideIniCommand : ICommand
 	{
+		public string CommandName => "Override .ini file";
+
 		private readonly GothicFolder _gothicFolder;
 		private readonly GmcFolder _gmcFolder;
 		private readonly List<string> _iniOverrides;
-		public string CommandName => "Override .ini file";
 
-		private static Stack<IOCommandAction> ExecutedActions = new();
+		private static readonly Stack<IOCommandAction> ExecutedActions = new();
 
 		public OverrideIniCommand(GothicFolder gothicFolder, GmcFolder gmcFolder, List<string> iniOverrides)
 		{
@@ -43,37 +44,14 @@ namespace GothicModComposer.Commands
 		{
 			if (!ExecutedActions.Any())
 			{
-				Logger.Info("There is nothing to undo, because no actions were executed.");
+				Logger.Info("There is nothing to undo, because no actions were executed."); // TODO: Introduce something like `NoExecutedAction.Undo();`
 				return;
 			}
 
 			while (ExecutedActions.Count > 0)
 			{
 				var executedAction = ExecutedActions.Pop();
-
-				switch (executedAction.ActionType)
-				{
-					case IOCommandActionType.FileCopy:
-						FileHelper.CopyWithOverwrite(executedAction.DestinationPath, executedAction.SourcePath);
-						break;
-					case IOCommandActionType.FileMove:
-						FileHelper.MoveWithOverwrite(executedAction.DestinationPath, executedAction.SourcePath);
-						break;
-					case IOCommandActionType.DirectoryCopy:
-						DirectoryHelper.Copy(executedAction.DestinationPath, executedAction.SourcePath);
-						break;
-					case IOCommandActionType.DirectoryMove:
-						DirectoryHelper.Move(executedAction.DestinationPath, executedAction.SourcePath);
-						break;
-					case IOCommandActionType.DirectoryCreate:
-						DirectoryHelper.DeleteIfExists(executedAction.DestinationPath);
-						break;
-					case IOCommandActionType.FileCreate:
-						FileHelper.DeleteIfExists(executedAction.DestinationPath);
-						break;
-					default:
-						throw new ArgumentOutOfRangeException();
-				}
+				executedAction?.Undo();
 			}
 		}
 
