@@ -1,4 +1,9 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using GothicModComposer.Utils;
+using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Models
 {
@@ -16,6 +21,7 @@ namespace GothicModComposer.Models
 		public string CutsceneFolderPath => Path.Combine(WorkDataFolderPath, "Scripts", "Content", "Cutscene");
 		public string GothicVdfsToolFilePath => Path.Combine(WorkFolderPath, "Tools", "VDFS", "GothicVDFS.exe");
 
+
 		private GothicFolder(string gothicFolderPath) 
 			=> BasePath = gothicFolderPath;
 
@@ -26,6 +32,25 @@ namespace GothicModComposer.Models
 			instance.Verify();
 
 			return instance;
+		}
+
+		public string GetGothicIniContent(bool removeComments = true)
+		{
+			var gothicIni = File.ReadAllText(GothicIniFilePath);
+
+			if (removeComments)
+			{
+				var commentRegex = new Regex(IniFileHelper.CommentRegex, RegexOptions.Multiline);
+				gothicIni = commentRegex.Replace(gothicIni, "");
+			}
+
+			return gothicIni.Replace("\r", "");
+		}
+
+		public void SaveGmcIni(List<IniBlock> iniBlocks)
+		{
+			var iniContent = GothicIniWriter.GenerateContent(iniBlocks);
+			FileHelper.SaveContent(GmcIniFilePath, iniContent, Encoding.Default);
 		}
 
 		private void Verify()

@@ -8,24 +8,34 @@ namespace GothicModComposer.Loaders
 {
 	public static class ProfilePresetDefinitionLoader
 	{
-		public static ProfileDefinition Load(ProfilePresetType profileType, GothicFolder gothicFolder, GmcFolder gmcFolder, ModFolder modFolder)
+		public static ProfileDefinition Load(ProfilePresetType profileType, GothicFolder gothicFolder, GmcFolder gmcFolder, ModFolder modFolder, UserGmcConfiguration userGmcConfiguration)
 		{
-			return profileType switch
+			var profile = profileType switch
 			{
-				ProfilePresetType.Reset => GetResetProfile(gothicFolder, gmcFolder, modFolder),
+				ProfilePresetType.Reset => GetResetProfile(gothicFolder, gmcFolder, modFolder, userGmcConfiguration),
 				ProfilePresetType.RestoreGothic => GetRestoreGothicProfile(gothicFolder, gmcFolder),
 				_ => throw new ArgumentOutOfRangeException(nameof(profileType), profileType, null)
 			};
+
+			ReplaceProfileValuesWithUserConfig(profile, userGmcConfiguration);
+
+			return profile;
 		}
 
-		private static ProfileDefinition GetResetProfile(GothicFolder gothicFolder, GmcFolder gmcFolder, ModFolder modFolder)
+		private static void ReplaceProfileValuesWithUserConfig(ProfileDefinition profileDefinition, UserGmcConfiguration userGmcConfig)
+		{
+			profileDefinition.DefaultWorld = userGmcConfig.DefaultWorld ?? profileDefinition.DefaultWorld;
+			profileDefinition.IniOverrides = userGmcConfig.IniOverrides ?? profileDefinition.IniOverrides ?? new List<string>();
+		}
+
+		private static ProfileDefinition GetResetProfile(GothicFolder gothicFolder, GmcFolder gmcFolder, ModFolder modFolder, UserGmcConfiguration userGmcConfiguration)
 			=> new ProfileDefinition
 			{
 				ProfileType = ProfilePresetType.Reset,
-				IniOverrides = new List<string>(),
 				ExecutionCommands = new List<ICommand>
 				{
-					new CreateBackupCommand(gothicFolder, gmcFolder, modFolder)
+					new CreateBackupCommand(gothicFolder, gmcFolder, modFolder),
+					new OverrideIniCommand(gothicFolder, gmcFolder, userGmcConfiguration.IniOverrides ?? new List<string>())
 				}
 			};
 

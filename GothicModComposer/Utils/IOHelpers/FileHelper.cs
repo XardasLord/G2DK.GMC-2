@@ -1,9 +1,13 @@
 ﻿using System.IO;
+using System.Text;
 
 namespace GothicModComposer.Utils.IOHelpers
 {
 	public static class FileHelper
 	{
+		public static bool Exists(string path)
+			=> File.Exists(path);
+
 		public static void CopyWithOverwrite(string source, string dest)
 		{
 			if (File.Exists(dest))
@@ -33,6 +37,9 @@ namespace GothicModComposer.Utils.IOHelpers
 
 			Logger.Info($"Moved file \"{source}\" ---> \"{dest}\".");
 		}
+
+		public static void SaveContent(string path, string content, Encoding encoding) 
+			=> File.WriteAllText(path, content, encoding);
 
 		private static void CreateFileAlongWithMissingDirectories(string dest) 
 			=> new FileInfo(dest).Directory?.Create();

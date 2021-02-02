@@ -19,14 +19,15 @@ namespace GothicModComposer.Utils.IOHelpers
 				? Directory.EnumerateFiles(directoryPath, "*", searchOption).ToList()
 				: new List<string>();
 
-		public static void CreateIfDoesNotExist(string path)
+		public static bool CreateIfDoesNotExist(string path)
 		{
-			if (!Directory.Exists(path))
-			{
-				Directory.CreateDirectory(path);
+			if (Directory.Exists(path))
+				return false;
+			
+			Directory.CreateDirectory(path);
 
-				Logger.Info($"Created directory \"{path}\".");
-			}
+			Logger.Info($"Created directory \"{path}\".");
+			return true;
 		}
 
 		public static bool DeleteIfExists(string path)
