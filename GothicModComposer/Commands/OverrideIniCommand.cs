@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using GothicModComposer.Commands.ExecutedCommandActions;
+using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
@@ -17,7 +18,7 @@ namespace GothicModComposer.Commands
 		private readonly GmcFolder _gmcFolder;
 		private readonly List<string> _iniOverrides;
 
-		private static readonly Stack<IOCommandAction> ExecutedActions = new();
+		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
 		public OverrideIniCommand(GothicFolder gothicFolder, GmcFolder gmcFolder, List<string> iniOverrides)
 		{
@@ -35,7 +36,7 @@ namespace GothicModComposer.Commands
 			}
 
 			if (DirectoryHelper.CreateIfDoesNotExist(_gmcFolder.BasePath))
-				ExecutedActions.Push(new IOCommandAction(IOCommandActionType.DirectoryCreate, null, _gmcFolder.BasePath));
+				ExecutedActions.Push(new CommandActionIO(CommandActionIOType.DirectoryCreate, null, _gmcFolder.BasePath));
 
 			OverrideIni();
 		}
@@ -93,7 +94,7 @@ namespace GothicModComposer.Commands
 
 			Logger.Info($"Created file {_gothicFolder.GmcIniFilePath}.");
 
-			ExecutedActions.Push(new IOCommandAction(IOCommandActionType.FileCreate, null, _gothicFolder.GmcIniFilePath));
+			ExecutedActions.Push(new CommandActionIO(CommandActionIOType.FileCreate, null, _gothicFolder.GmcIniFilePath));
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿namespace GothicModComposer.Commands.ExecutedCommandActions
 {
-	public enum IOCommandActionType
+	public enum CommandActionIOType
 	{
 		FileCopy,
 		FileMove,

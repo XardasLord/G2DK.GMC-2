@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using GothicModComposer.Commands.ExecutedCommandActions;
+using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models;
 using GothicModComposer.Presets;
 using GothicModComposer.Utils;
@@ -17,7 +18,7 @@ namespace GothicModComposer.Commands
 		private readonly GmcFolder _gmcFolder;
 		private readonly ModFolder _modFolder;
 
-		private static readonly Stack<IOCommandAction> ExecutedActions = new();
+		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 		
 		public CreateBackupCommand(GothicFolder gothicFolder, GmcFolder gmcFolder, ModFolder modFolder)
 		{
@@ -56,7 +57,7 @@ namespace GothicModComposer.Commands
 		private void BackupGothicWorkDataFolder()
 		{
 			_gmcFolder.CreateBackupWorkDataFolder();
-			ExecutedActions.Push(new IOCommandAction(IOCommandActionType.DirectoryCreate, null, _gmcFolder.BasePath));
+			ExecutedActions.Push(new CommandActionIO(CommandActionIOType.DirectoryCreate, null, _gmcFolder.BasePath));
 
 			AssetPresetFolders.FoldersWithAssets.ForEach(assetFolder =>
 			{
@@ -68,7 +69,7 @@ namespace GothicModComposer.Commands
 
 				DirectoryHelper.Move(sourcePath, destinationPath);
 
-				ExecutedActions.Push(new IOCommandAction(IOCommandActionType.DirectoryMove, sourcePath, destinationPath));
+				ExecutedActions.Push(new CommandActionIO(CommandActionIOType.DirectoryMove, sourcePath, destinationPath));
 			});
 		}
 
@@ -90,7 +91,7 @@ namespace GothicModComposer.Commands
 			DirectoryHelper.CreateIfDoesNotExist(folderFromExtensionDirectory);
 			FileHelper.CopyWithOverwrite(extensionFileGothicPath, extensionFileGmcBackupPath);
 
-			ExecutedActions.Push(new IOCommandAction(IOCommandActionType.FileCopy, extensionFileGothicPath, extensionFileGmcBackupPath));
+			ExecutedActions.Push(new CommandActionIO(CommandActionIOType.FileCopy, extensionFileGothicPath, extensionFileGmcBackupPath));
 		}
 	}
 }

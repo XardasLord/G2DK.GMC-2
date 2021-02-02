@@ -1,41 +1,44 @@
 ﻿using System;
+using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Commands.ExecutedCommandActions
 {
-	public class IOCommandAction
+	public class CommandActionIO : ICommandActionIO
 	{
-		public IOCommandActionType ActionType { get; }
+		public CommandActionIOType ActionType { get; }
 		public string SourcePath { get; }
 		public string DestinationPath { get; }
 
-		public IOCommandAction(IOCommandActionType actionType, string sourcePath, string destinationPath)
+		public CommandActionIO(CommandActionIOType actionType, string sourcePath, string destinationPath)
 		{
 			ActionType = actionType;
 			SourcePath = sourcePath;
 			DestinationPath = destinationPath;
 		}
+		
+		// TODO: Implement static factory for better handling inputs from the caller
 
 		public void Undo()
 		{
 			switch (ActionType)
 			{
-				case IOCommandActionType.FileCopy:
+				case CommandActionIOType.FileCopy:
 					FileHelper.CopyWithOverwrite(DestinationPath, SourcePath);
 					break;
-				case IOCommandActionType.FileMove:
+				case CommandActionIOType.FileMove:
 					FileHelper.MoveWithOverwrite(DestinationPath, SourcePath);
 					break;
-				case IOCommandActionType.DirectoryCopy:
+				case CommandActionIOType.DirectoryCopy:
 					DirectoryHelper.Copy(DestinationPath, SourcePath);
 					break;
-				case IOCommandActionType.DirectoryMove:
+				case CommandActionIOType.DirectoryMove:
 					DirectoryHelper.Move(DestinationPath, SourcePath);
 					break;
-				case IOCommandActionType.DirectoryCreate:
+				case CommandActionIOType.DirectoryCreate:
 					DirectoryHelper.DeleteIfExists(DestinationPath);
 					break;
-				case IOCommandActionType.FileCreate:
+				case CommandActionIOType.FileCreate:
 					FileHelper.DeleteIfExists(DestinationPath);
 					break;
 				default:
