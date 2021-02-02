@@ -38,6 +38,17 @@ namespace GothicModComposer.Utils.IOHelpers
 			Logger.Info($"Moved file \"{source}\" ---> \"{dest}\".");
 		}
 
+		public static bool DeleteIfExists(string path)
+		{
+			if (!File.Exists(path))
+				return false;
+
+			File.Delete(path);
+
+			Logger.Info($"Deleted file \"{path}\".");
+			return true;
+		}
+
 		public static void SaveContent(string path, string content, Encoding encoding) 
 			=> File.WriteAllText(path, content, encoding);
 

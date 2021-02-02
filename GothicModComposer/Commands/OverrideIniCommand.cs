@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using GothicModComposer.Commands.ExecutedActions;
 using GothicModComposer.Models;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
@@ -14,6 +15,8 @@ namespace GothicModComposer.Commands
 		private readonly GmcFolder _gmcFolder;
 		private readonly List<string> _iniOverrides;
 		public string CommandName => "Override .ini file";
+
+		private static Stack<IOCommandAction> ExecutedActions = new();
 
 		public OverrideIniCommand(GothicFolder gothicFolder, GmcFolder gmcFolder, List<string> iniOverrides)
 		{
@@ -31,16 +34,47 @@ namespace GothicModComposer.Commands
 			}
 
 			if (DirectoryHelper.CreateIfDoesNotExist(_gmcFolder.BasePath))
-			{
-				// TODO: Add to executed command list for undo purposes.
-			}
+				ExecutedActions.Push(new IOCommandAction(IOCommandActionType.DirectoryCreate, null, _gmcFolder.BasePath));
 
 			OverrideIni();
 		}
 
 		public void Undo()
 		{
-			Logger.Warn("Undo is not implemented");
+			if (!ExecutedActions.Any())
+			{
+				Logger.Info("There is nothing to undo, because no actions were executed.");
+				return;
+			}
+
+			while (ExecutedActions.Count > 0)
+			{
+				var executedAction = ExecutedActions.Pop();
+
+				switch (executedAction.ActionType)
+				{
+					case IOCommandActionType.FileCopy:
+						FileHelper.CopyWithOverwrite(executedAction.DestinationPath, executedAction.SourcePath);
+						break;
+					case IOCommandActionType.FileMove:
+						FileHelper.MoveWithOverwrite(executedAction.DestinationPath, executedAction.SourcePath);
+						break;
+					case IOCommandActionType.DirectoryCopy:
+						DirectoryHelper.Copy(executedAction.DestinationPath, executedAction.SourcePath);
+						break;
+					case IOCommandActionType.DirectoryMove:
+						DirectoryHelper.Move(executedAction.DestinationPath, executedAction.SourcePath);
+						break;
+					case IOCommandActionType.DirectoryCreate:
+						DirectoryHelper.DeleteIfExists(executedAction.DestinationPath);
+						break;
+					case IOCommandActionType.FileCreate:
+						FileHelper.DeleteIfExists(executedAction.DestinationPath);
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
+			}
 		}
 
 		private void OverrideIni()
@@ -52,8 +86,6 @@ namespace GothicModComposer.Commands
 			var iniBlocks = IniFileHelper.CreateSections(gothicIni); // TODO: Replace IniBlock class to something like IniFile class
 			OverrideAttributes(iniBlocks);
 			SaveIniFile(iniBlocks);
-
-			throw new NotImplementedException();
 		}
 
 		private void OverrideAttributes(List<IniBlock> iniBlocks)
@@ -80,7 +112,10 @@ namespace GothicModComposer.Commands
 		private void SaveIniFile(List<IniBlock> iniBlocks)
 		{
 			_gothicFolder.SaveGmcIni(iniBlocks);
+
 			Logger.Info($"Created file {_gothicFolder.GmcIniFilePath}.");
+
+			ExecutedActions.Push(new IOCommandAction(IOCommandActionType.FileCreate, null, _gothicFolder.GmcIniFilePath));
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GothicModComposer.Commands.ExecutedActions;
 using GothicModComposer.Models;
 using GothicModComposer.Presets;
 using GothicModComposer.Utils;
@@ -17,7 +18,7 @@ namespace GothicModComposer.Commands
 		private readonly GmcFolder _gmcFolder;
 		private readonly ModFolder _modFolder;
 
-		private static Stack<CreateBackupCommandAction> ExecutedActions = new();
+		private static Stack<IOCommandAction> ExecutedActions = new();
 		
 		public CreateBackupCommand(GothicFolder gothicFolder, GmcFolder gmcFolder, ModFolder modFolder)
 		{
@@ -52,20 +53,23 @@ namespace GothicModComposer.Commands
 
 				switch (executedAction.ActionType)
 				{
-					case CommandActionType.FileCopy:
+					case IOCommandActionType.FileCopy:
 						FileHelper.CopyWithOverwrite(executedAction.DestinationPath, executedAction.SourcePath);
 						break;
-					case CommandActionType.FileMove:
+					case IOCommandActionType.FileMove:
 						FileHelper.MoveWithOverwrite(executedAction.DestinationPath, executedAction.SourcePath);
 						break;
-					case CommandActionType.DirectoryCopy:
+					case IOCommandActionType.DirectoryCopy:
 						DirectoryHelper.Copy(executedAction.DestinationPath, executedAction.SourcePath);
 						break;
-					case CommandActionType.DirectoryMove:
+					case IOCommandActionType.DirectoryMove:
 						DirectoryHelper.Move(executedAction.DestinationPath, executedAction.SourcePath);
 						break;
-					case CommandActionType.DirectoryCreate:
+					case IOCommandActionType.DirectoryCreate:
 						DirectoryHelper.DeleteIfExists(executedAction.DestinationPath);
+						break;
+					case IOCommandActionType.FileCreate:
+						FileHelper.DeleteIfExists(executedAction.DestinationPath);
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();
@@ -76,7 +80,7 @@ namespace GothicModComposer.Commands
 		private void BackupGothicWorkDataFolder()
 		{
 			_gmcFolder.CreateBackupWorkDataFolder();
-			ExecutedActions.Push(new CreateBackupCommandAction(CommandActionType.DirectoryCreate, null, _gmcFolder.BasePath));
+			ExecutedActions.Push(new IOCommandAction(IOCommandActionType.DirectoryCreate, null, _gmcFolder.BasePath));
 
 			AssetPresetFolders.FoldersWithAssets.ForEach(assetFolder =>
 			{
@@ -88,7 +92,7 @@ namespace GothicModComposer.Commands
 
 				DirectoryHelper.Move(sourcePath, destinationPath);
 
-				ExecutedActions.Push(new CreateBackupCommandAction(CommandActionType.DirectoryMove, sourcePath, destinationPath));
+				ExecutedActions.Push(new IOCommandAction(IOCommandActionType.DirectoryMove, sourcePath, destinationPath));
 			});
 		}
 
@@ -110,7 +114,7 @@ namespace GothicModComposer.Commands
 			DirectoryHelper.CreateIfDoesNotExist(folderFromExtensionDirectory);
 			FileHelper.CopyWithOverwrite(extensionFileGothicPath, extensionFileGmcBackupPath);
 
-			ExecutedActions.Push(new CreateBackupCommandAction(CommandActionType.FileCopy, extensionFileGothicPath, extensionFileGmcBackupPath));
+			ExecutedActions.Push(new IOCommandAction(IOCommandActionType.FileCopy, extensionFileGothicPath, extensionFileGmcBackupPath));
 		}
 	}
 }
