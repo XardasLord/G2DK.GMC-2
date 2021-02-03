@@ -9,4 +9,14 @@
 		string SourcePath { get; }
 		string DestinationPath { get; }
 	}
+
+	public enum CommandActionIOType
+	{
+		FileCopy,
+		FileMove,
+		FileCreate,
+		DirectoryCopy,
+		DirectoryMove,
+		DirectoryCreate
+	}
 }

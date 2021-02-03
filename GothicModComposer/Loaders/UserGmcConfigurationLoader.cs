@@ -1,8 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text.Json;
-using GothicModComposer.Models;
+using GothicModComposer.Models.Configurations;
 using GothicModComposer.Utils.Exceptions;
+using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Loaders
 {
@@ -21,15 +21,11 @@ namespace GothicModComposer.Loaders
 
 		private static UserGmcConfiguration DeserializeConfigurationFromFile(string filepath)
 		{
-			try
-			{
-				var jsonConfigurationFile = File.ReadAllText(filepath);
-				return JsonSerializer.Deserialize<UserGmcConfiguration>(jsonConfigurationFile, new JsonSerializerOptions { AllowTrailingCommas = true });
-			}
-			catch (Exception e)
-			{
-				throw new ConfigurationFileNotFoundException(filepath, e);
-			}
+			if (!FileHelper.Exists(filepath))
+				throw new ConfigurationFileNotFoundException(filepath);
+
+			var jsonConfigurationFile = FileHelper.ReadFile(filepath);
+			return JsonSerializer.Deserialize<UserGmcConfiguration>(jsonConfigurationFile, new JsonSerializerOptions { AllowTrailingCommas = true });
 		}
 	}
 }

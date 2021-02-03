@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace GothicModComposer.Models
+namespace GothicModComposer.Models.Folders
 {
 	public class ModFolder
 	{

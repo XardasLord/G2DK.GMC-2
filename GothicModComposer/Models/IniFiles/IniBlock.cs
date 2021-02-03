@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace GothicModComposer.Models
+namespace GothicModComposer.Models.IniFiles
 {
 	public class IniBlock
 	{

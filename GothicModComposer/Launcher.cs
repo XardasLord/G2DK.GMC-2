@@ -11,13 +11,13 @@ namespace GothicModComposer
 	{
 		private static void Main(string[] args)
 		{
-			Parser.Default.ParseArguments<InitialParameter>(args)
+			Parser.Default.ParseArguments<GmcInitialParameter>(args)
 				.WithParsed(RunGmc);
 
 			Console.ReadKey();
 		}
 
-		private static void RunGmc(InitialParameter parameters)
+		private static void RunGmc(GmcInitialParameter parameters)
 		{
 			var stopWatch = new Stopwatch();
 

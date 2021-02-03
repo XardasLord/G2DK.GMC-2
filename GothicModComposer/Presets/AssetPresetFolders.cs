@@ -4,7 +4,7 @@ namespace GothicModComposer.Presets
 {
 	public static class AssetPresetFolders
 	{
-		public static List<AssetPresetType> FoldersWithAssets => new List<AssetPresetType>
+		public static List<AssetPresetType> FoldersWithAssets => new()
 		{
 			AssetPresetType.Anims,
 			AssetPresetType.Meshes,

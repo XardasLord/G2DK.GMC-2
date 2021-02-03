@@ -1,35 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using GothicModComposer.Commands;
-using GothicModComposer.Models;
+using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 
 namespace GothicModComposer
 {
 	public class GmcManager
 	{
-		public GothicFolder GothicFolder { get; }
-		public GmcFolder GmcFolder { get; }
-		public ModFolder ModFolder { get; }
-		public ProfileDefinition Profile { get; }
-
+		private readonly ProfileLoaderResponse _profileLoaderResponse;
 		private readonly Stack<ICommand> _executedCommands = new();
 
-		private GmcManager(GothicFolder gothicFolder, GmcFolder gmcFolder, ModFolder modFolder, ProfileDefinition profile)
+		private GmcManager(ProfileLoaderResponse profileLoaderResponse)
 		{
-			GothicFolder = gothicFolder;
-			GmcFolder = gmcFolder;
-			ModFolder = modFolder;
-			Profile = profile;
+			_profileLoaderResponse = profileLoaderResponse;
 		}
 
-		public static GmcManager Create(GothicFolder gothicFolder, GmcFolder gmcFolder, ModFolder modFolder, ProfileDefinition profile)
+		public static GmcManager Create(ProfileLoaderResponse profileLoaderResponse)
 		{
-			return new GmcManager(gothicFolder, gmcFolder, modFolder, profile);
+			return new GmcManager(profileLoaderResponse);
 		}
 
 		public void Run() 
-			=> Profile.ExecutionCommands.ForEach(RunSingleCommand);
+			=> _profileLoaderResponse.Commands.ForEach(RunSingleCommand);
 
 		public void Undo()
 		{

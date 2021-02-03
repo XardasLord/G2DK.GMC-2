@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using GothicModComposer.Loaders;
-using GothicModComposer.Models;
+using GothicModComposer.Models.Folders;
 using GothicModComposer.Presets;
 
 namespace GothicModComposer.Builders
@@ -15,9 +15,9 @@ namespace GothicModComposer.Builders
 			var gothicFolder = GothicFolder.CreateFromPath(userGmcConfig.GothicRoot);
 			var gmcFolder = GmcFolder.CreateFromPath(gmcFolderPath);
 			var modFolder = ModFolder.CreateFromPath(absolutePathToProject);
-			var profileDefinition = ProfilePresetDefinitionLoader.Load(profileType, gothicFolder, gmcFolder, modFolder, userGmcConfig);
+			var profileResponse = ProfileDefinitionLoader.Load(profileType, gothicFolder, gmcFolder, modFolder, userGmcConfig);
 
-			return GmcManager.Create(gothicFolder, gmcFolder, modFolder, profileDefinition);
+			return GmcManager.Create(profileResponse);
 		}
 	}
 }

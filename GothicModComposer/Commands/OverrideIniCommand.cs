@@ -5,6 +5,8 @@ using System.Text.RegularExpressions;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models;
+using GothicModComposer.Models.IniFiles;
+using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
 
@@ -14,29 +16,22 @@ namespace GothicModComposer.Commands
 	{
 		public string CommandName => "Override .ini file";
 
-		private readonly GothicFolder _gothicFolder;
-		private readonly GmcFolder _gmcFolder;
-		private readonly List<string> _iniOverrides;
-
+		private readonly IProfile _profile;
 		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
-		public OverrideIniCommand(GothicFolder gothicFolder, GmcFolder gmcFolder, List<string> iniOverrides)
-		{
-			_gothicFolder = gothicFolder;
-			_gmcFolder = gmcFolder;
-			_iniOverrides = iniOverrides;
-		}
+		public OverrideIniCommand(IProfile profile) 
+			=> _profile = profile;
 
 		public void Execute()
 		{
-			if (!_iniOverrides.Any())
+			if (!_profile.IniOverrides.Any())
 			{
 				Logger.Info("There is no .ini attributes to override.");
 				return;
 			}
 
-			if (DirectoryHelper.CreateIfDoesNotExist(_gmcFolder.BasePath))
-				ExecutedActions.Push(CommandActionIO.DirectoryCreated(_gmcFolder.BasePath));
+			if (DirectoryHelper.CreateIfDoesNotExist(_profile.GmcFolder.BasePath))
+				ExecutedActions.Push(CommandActionIO.DirectoryCreated(_profile.GmcFolder.BasePath));
 
 			OverrideIni();
 		}
@@ -58,10 +53,10 @@ namespace GothicModComposer.Commands
 
 		private void OverrideIni()
 		{
-			if (!FileHelper.Exists(_gothicFolder.GothicIniFilePath))
+			if (!FileHelper.Exists(_profile.GothicFolder.GothicIniFilePath))
 				throw new Exception("Gothic.ini file was not found.");
 			
-			var gothicIni = _gothicFolder.GetGothicIniContent();
+			var gothicIni = _profile.GothicFolder.GetGothicIniContent();
 			var iniBlocks = IniFileHelper.CreateSections(gothicIni); // TODO: Replace IniBlock class to something like IniFile class
 			OverrideAttributes(iniBlocks);
 			SaveIniFile(iniBlocks);
@@ -71,7 +66,7 @@ namespace GothicModComposer.Commands
 		{
 			var regex = new Regex(IniFileHelper.AttributeRegex);
 
-			_iniOverrides.ForEach(item => {
+			_profile.IniOverrides.ForEach(item => {
 				var attribute = regex.Match(item);
 
 				iniBlocks.ForEach(block => {
@@ -82,7 +77,7 @@ namespace GothicModComposer.Commands
 						return;
 
 					block.Set(key, value);
-					Logger.Info($"Overriden {key}={value} in section: [{block.Header}]");
+					Logger.Info($"Overriden {key}={value} in section: [{block.Header}].");
 				});
 			});
 
@@ -90,11 +85,11 @@ namespace GothicModComposer.Commands
 
 		private void SaveIniFile(List<IniBlock> iniBlocks)
 		{
-			_gothicFolder.SaveGmcIni(iniBlocks);
+			_profile.GothicFolder.SaveGmcIni(iniBlocks);
 
-			Logger.Info($"Created file {_gothicFolder.GmcIniFilePath}.");
+			Logger.Info($"Created file {_profile.GothicFolder.GmcIniFilePath}.");
 
-			ExecutedActions.Push(CommandActionIO.FileCreated(_gothicFolder.GmcIniFilePath));
+			ExecutedActions.Push(CommandActionIO.FileCreated(_profile.GothicFolder.GmcIniFilePath));
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using GothicModComposer.Models;
+using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
 
@@ -8,18 +9,14 @@ namespace GothicModComposer.Commands
 	{
 		public string CommandName => "Restore original Gothic backup files";
 
-		private readonly GothicFolder _gothicFolder;
-		private readonly GmcFolder _gmcFolder;
+		private readonly IProfile _profile;
 
-		public RestoreGothicBackupCommand(GothicFolder gothicFolder, GmcFolder gmcFolder)
-		{
-			_gothicFolder = gothicFolder;
-			_gmcFolder = gmcFolder;
-		}
+		public RestoreGothicBackupCommand(IProfile profile) 
+			=> _profile = profile;
 
 		public void Execute()
 		{
-			if (!_gmcFolder.DoesBackupFolderExist)
+			if (!_profile.GmcFolder.DoesBackupFolderExist)
 			{
 				Logger.Info("There is no backup folder to restore.");
 				return;
@@ -31,18 +28,18 @@ namespace GothicModComposer.Commands
 
 		private void RestoreBackup()
 		{
-			DirectoryHelper.DeleteIfExists(_gothicFolder.WorkDataFolderPath);
+			DirectoryHelper.DeleteIfExists(_profile.GothicFolder.WorkDataFolderPath);
 
-			DirectoryHelper.GetAllFilesInDirectory(_gmcFolder.BackupFolderPath).ForEach(backupFilePath =>
+			DirectoryHelper.GetAllFilesInDirectory(_profile.GmcFolder.BackupFolderPath).ForEach(backupFilePath =>
 			{
-				var relativePath = DirectoryHelper.ToRelativePath(backupFilePath, _gmcFolder.BackupFolderPath);
-				var gothicFilePath = DirectoryHelper.MergeRelativePath(_gothicFolder.BasePath, relativePath);
+				var relativePath = DirectoryHelper.ToRelativePath(backupFilePath, _profile.GmcFolder.BackupFolderPath);
+				var gothicFilePath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.BasePath, relativePath);
 
 				FileHelper.MoveWithOverwrite(backupFilePath, gothicFilePath);
 			});
 		}
 
-		private void RemoveGmcFolder() => DirectoryHelper.DeleteIfExists(_gmcFolder.BasePath);
+		private void RemoveGmcFolder() => DirectoryHelper.DeleteIfExists(_profile.GmcFolder.BasePath);
 
 		public void Undo() => Logger.Warn("Undo of this command is not implemented.");
 	}

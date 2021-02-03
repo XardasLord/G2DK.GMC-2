@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GothicModComposer.Models
+namespace GothicModComposer.Models.Configurations
 {
 	public class UserGmcConfiguration
 	{

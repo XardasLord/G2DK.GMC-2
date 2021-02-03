@@ -8,6 +8,9 @@ namespace GothicModComposer.Utils.IOHelpers
 		public static bool Exists(string path)
 			=> File.Exists(path);
 
+		public static string ReadFile(string path)
+			=> File.ReadAllText(path);
+
 		public static void CopyWithOverwrite(string source, string dest)
 		{
 			if (File.Exists(dest))

@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
-using GothicModComposer.Models;
+using GothicModComposer.Models.Profiles;
 using GothicModComposer.Presets;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
@@ -14,22 +14,15 @@ namespace GothicModComposer.Commands
 	{
 		public string CommandName => "Create original Gothic backup";
 
-		private readonly GothicFolder _gothicFolder;
-		private readonly GmcFolder _gmcFolder;
-		private readonly ModFolder _modFolder;
-
+		private readonly IProfile _profile;
 		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 		
-		public CreateBackupCommand(GothicFolder gothicFolder, GmcFolder gmcFolder, ModFolder modFolder)
-		{
-			_gothicFolder = gothicFolder;
-			_gmcFolder = gmcFolder;
-			_modFolder = modFolder;
-		}
+		public CreateBackupCommand(IProfile profile)
+			=> _profile = profile;
 
 		public void Execute()
 		{
-			if (_gmcFolder.DoesBackupFolderExist)
+			if (_profile.GmcFolder.DoesBackupFolderExist)
 			{
 				Logger.Info("Backup folder already exists.");
 				return;
@@ -56,13 +49,13 @@ namespace GothicModComposer.Commands
 
 		private void BackupGothicWorkDataFolder()
 		{
-			_gmcFolder.CreateBackupWorkDataFolder();
-			ExecutedActions.Push(CommandActionIO.DirectoryCreated(_gmcFolder.BasePath));
+			_profile.GmcFolder.CreateBackupWorkDataFolder();
+			ExecutedActions.Push(CommandActionIO.DirectoryCreated(_profile.GmcFolder.BasePath));
 
 			AssetPresetFolders.FoldersWithAssets.ForEach(assetFolder =>
 			{
-				var sourcePath = Path.Combine(_gothicFolder.WorkDataFolderPath, assetFolder.ToString());
-				var destinationPath = Path.Combine(_gmcFolder.BackupWorkDataFolderPath, assetFolder.ToString());
+				var sourcePath = Path.Combine(_profile.GothicFolder.WorkDataFolderPath, assetFolder.ToString());
+				var destinationPath = Path.Combine(_profile.GmcFolder.BackupWorkDataFolderPath, assetFolder.ToString());
 
 				if (!Directory.Exists(sourcePath))
 					return;
@@ -75,14 +68,14 @@ namespace GothicModComposer.Commands
 
 		private void BackupFilesOverridenByExtensions()
 			=> DirectoryHelper
-				.GetAllFilesInDirectory(_modFolder.ExtensionsFolderPath)
+				.GetAllFilesInDirectory(_profile.ModFolder.ExtensionsFolderPath)
 				.ForEach(BackupFileFromExtensionFolder);
 
 		private void BackupFileFromExtensionFolder(string filePath)
 		{
-			var extensionFileRelativePath = DirectoryHelper.ToRelativePath(filePath, _modFolder.ExtensionsFolderPath);
-			var extensionFileGothicPath = DirectoryHelper.MergeRelativePath(_gothicFolder.BasePath, extensionFileRelativePath);
-			var extensionFileGmcBackupPath = DirectoryHelper.MergeRelativePath(_gmcFolder.BackupFolderPath, extensionFileRelativePath);
+			var extensionFileRelativePath = DirectoryHelper.ToRelativePath(filePath, _profile.ModFolder.ExtensionsFolderPath);
+			var extensionFileGothicPath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.BasePath, extensionFileRelativePath);
+			var extensionFileGmcBackupPath = DirectoryHelper.MergeRelativePath(_profile.GmcFolder.BackupFolderPath, extensionFileRelativePath);
 
 			if (!File.Exists(extensionFileGothicPath))
 				return;

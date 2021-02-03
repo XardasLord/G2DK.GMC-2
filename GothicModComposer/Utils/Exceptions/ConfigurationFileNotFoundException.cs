@@ -1,17 +1,14 @@
-﻿using System;
-
-namespace GothicModComposer.Utils.Exceptions
+﻿namespace GothicModComposer.Utils.Exceptions
 {
-	public class ConfigurationFileNotFoundException : Exception
+	public class ConfigurationFileNotFoundException : ConfigurationExceptionBase
 	{
+		public override string Code => "gmc_configuration_file_not_found";
 		public string FilePath { get; }
-		public Exception Exception { get; }
 
-		public ConfigurationFileNotFoundException(string filePath, Exception ex) 
-			: base($"Cannot find configuration file under the path: {filePath}", ex)
+		public ConfigurationFileNotFoundException(string filePath) 
+			: base($"Cannot find configuration file under the path: {filePath}")
 		{
 			FilePath = filePath;
-			Exception = ex;
 		}
 	}
 }

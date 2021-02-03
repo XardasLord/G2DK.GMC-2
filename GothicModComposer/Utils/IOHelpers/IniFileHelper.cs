@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using GothicModComposer.Models;
+using GothicModComposer.Models.IniFiles;
 
-namespace GothicModComposer.Utils
+namespace GothicModComposer.Utils.IOHelpers
 {
 	public static class IniFileHelper
 	{

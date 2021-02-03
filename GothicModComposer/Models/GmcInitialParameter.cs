@@ -3,7 +3,7 @@ using GothicModComposer.Presets;
 
 namespace GothicModComposer.Models
 {
-	public class InitialParameter
+	public class GmcInitialParameter
 	{
 		[Option(
 			'p',

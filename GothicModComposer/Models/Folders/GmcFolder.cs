@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using GothicModComposer.Utils.IOHelpers;
 
-namespace GothicModComposer.Models
+namespace GothicModComposer.Models.Folders
 {
 	public class GmcFolder
 	{
