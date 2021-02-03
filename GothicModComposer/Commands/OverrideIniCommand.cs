@@ -36,7 +36,7 @@ namespace GothicModComposer.Commands
 			}
 
 			if (DirectoryHelper.CreateIfDoesNotExist(_gmcFolder.BasePath))
-				ExecutedActions.Push(new CommandActionIO(CommandActionIOType.DirectoryCreate, null, _gmcFolder.BasePath));
+				ExecutedActions.Push(CommandActionIO.DirectoryCreated(_gmcFolder.BasePath));
 
 			OverrideIni();
 		}
@@ -94,7 +94,7 @@ namespace GothicModComposer.Commands
 
 			Logger.Info($"Created file {_gothicFolder.GmcIniFilePath}.");
 
-			ExecutedActions.Push(new CommandActionIO(CommandActionIOType.FileCreate, null, _gothicFolder.GmcIniFilePath));
+			ExecutedActions.Push(CommandActionIO.FileCreated(_gothicFolder.GmcIniFilePath));
 		}
 	}
 }
