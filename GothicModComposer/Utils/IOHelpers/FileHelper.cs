@@ -26,6 +26,13 @@ namespace GothicModComposer.Utils.IOHelpers
 			Logger.Info($"Copied file \"{source}\" ---> \"{dest}\".");
 		}
 
+		public static void Move(string source, string dest)
+		{
+			File.Move(source, dest);
+
+			Logger.Info($"Moved file \"{source}\" ---> \"{dest}\".");
+		}
+
 		public static void MoveWithOverwrite(string source, string dest)
 		{
 			if (File.Exists(dest))

@@ -11,7 +11,7 @@ namespace GothicModComposer.Models.Folders
 		public string BuildFolderPath => Path.Combine(BasePath, "Build");
 		public string VdsfConfigFilePath => Path.Combine(BasePath, "vdfsConfig");
 		public string ModFilesTrackerFilePath => Path.Combine(BasePath, "modFiles.json");
-		public string BackupWorkDataFolderPath => Path.Combine(BackupFolderPath, "_work", "Data");
+		public string BackupWorkDataFolderPath => Path.Combine(BackupFolderPath, "_Work", "Data");
 
 		public bool DoesBackupFolderExist => Directory.Exists(BackupFolderPath);
 

@@ -12,13 +12,15 @@ namespace GothicModComposer.Builders
 		public const string CreateBackupCommand = nameof(CreateBackupCommand);
 		public const string OverrideIniCommand = nameof(OverrideIniCommand);
 		public const string AddDefaultWorldCommand = nameof(AddDefaultWorldCommand);
+		public const string EnableVdfFilesCommand = nameof(EnableVdfFilesCommand);
 
 		private static readonly Dictionary<string, Func<IProfile, ICommand>> Commands = new()
 		{
 			{ RestoreGothicBackupCommand, profile => new RestoreGothicBackupCommand(profile) },
 			{ CreateBackupCommand, profile => new CreateBackupCommand(profile) },
 			{ OverrideIniCommand, profile => new OverrideIniCommand(profile) },
-			{ AddDefaultWorldCommand, profile => new AddDefaultWorldCommand(profile) }
+			{ AddDefaultWorldCommand, profile => new AddDefaultWorldCommand(profile) },
+			{ EnableVdfFilesCommand, profile => new EnableVdfFilesCommand(profile) },
 		};
 
 		public static ICommand FromString(IProfile profile, string commandName)

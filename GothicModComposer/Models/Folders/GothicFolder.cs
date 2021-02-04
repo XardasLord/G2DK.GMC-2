@@ -3,7 +3,6 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using GothicModComposer.Models.IniFiles;
-using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Models.Folders

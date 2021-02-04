@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using GothicModComposer.Models.IniFiles;
 
-namespace GothicModComposer.Utils.IOHelpers
+namespace GothicModComposer.Models.IniFiles
 {
 	public static class IniFileHelper
 	{
@@ -15,6 +14,7 @@ namespace GothicModComposer.Utils.IOHelpers
 			var sectionRegex = new Regex(SectionRegex);
 			var matches = sectionRegex.Matches(iniFileContent);
 			var blocks = new List<IniBlock>();
+
 			foreach (Match match in matches)
 			{
 				blocks.Add(CreateSingleSection(match));
