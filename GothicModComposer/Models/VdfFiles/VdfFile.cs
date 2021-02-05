@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
+using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Models.VdfFiles
@@ -32,12 +33,16 @@ namespace GothicModComposer.Models.VdfFiles
 		{
 			var paths = new VdfHelperPath(_folderPath, FileNameWithoutExtension);
 			FileHelper.Move(paths.DisabledPath, paths.EnabledPath);
+
+			Logger.Info($"Enabled VDF file \"{FileNameWithoutExtension}\".");
 		}
 
 		public void Disable()
 		{
 			var paths = new VdfHelperPath(_folderPath, FileNameWithoutExtension);
 			FileHelper.Move(paths.EnabledPath, paths.DisabledPath);
+
+			Logger.Info($"Disabled VDF file \"{FileNameWithoutExtension}\".");
 		}
 
 		private readonly struct VdfHelperPath

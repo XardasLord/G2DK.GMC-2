@@ -1,4 +1,8 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using GothicModComposer.Commands.ExecutedCommandActions;
+using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Models.VdfFiles;
 using GothicModComposer.Utils;
@@ -11,6 +15,7 @@ namespace GothicModComposer.Commands
 		public string CommandName => "Enable VDF files";
 
 		private readonly IProfile _profile;
+		private static readonly Stack<ICommandActionVDF> ExecutedActions = new();
 
 		public EnableVdfFilesCommand(IProfile profile) 
 			=> _profile = profile;
@@ -23,13 +28,24 @@ namespace GothicModComposer.Commands
 				.ForEach(vdf =>
 				{
 					vdf.Enable();
-					Logger.Info($"Enabled VDF file \"{vdf.FileNameWithoutExtension}\".");
+					
+					ExecutedActions.Push(CommandActionVDF.FileEnabled(vdf));
 				});
 		}
 
 		public void Undo()
 		{
-			Logger.Warn("Undo not implemented yet.");
+			if (!ExecutedActions.Any())
+			{
+				Logger.Info("There is nothing to undo, because no actions were executed.");
+				return;
+			}
+
+			while (ExecutedActions.Count > 0)
+			{
+				var executedAction = ExecutedActions.Pop();
+				executedAction?.Undo();
+			}
 		}
 	}
 }
