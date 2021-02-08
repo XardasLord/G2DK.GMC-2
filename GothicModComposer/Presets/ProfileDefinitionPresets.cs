@@ -17,7 +17,8 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.CreateBackupCommand,
 					CommandBuilderHelper.OverrideIniCommand,
 					CommandBuilderHelper.AddDefaultWorldCommand,
-					CommandBuilderHelper.EnableVdfFilesCommand
+					CommandBuilderHelper.EnableVdfFilesCommand,
+					CommandBuilderHelper.ClearWorkDataCommand,
 				},
 			};
 

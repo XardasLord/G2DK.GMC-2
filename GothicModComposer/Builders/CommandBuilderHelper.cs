@@ -13,6 +13,7 @@ namespace GothicModComposer.Builders
 		public const string OverrideIniCommand = nameof(OverrideIniCommand);
 		public const string AddDefaultWorldCommand = nameof(AddDefaultWorldCommand);
 		public const string EnableVdfFilesCommand = nameof(EnableVdfFilesCommand);
+		public const string ClearWorkDataCommand = nameof(ClearWorkDataCommand);
 
 		private static readonly Dictionary<string, Func<IProfile, ICommand>> Commands = new()
 		{
@@ -21,6 +22,7 @@ namespace GothicModComposer.Builders
 			{ OverrideIniCommand, profile => new OverrideIniCommand(profile) },
 			{ AddDefaultWorldCommand, profile => new AddDefaultWorldCommand(profile) },
 			{ EnableVdfFilesCommand, profile => new EnableVdfFilesCommand(profile) },
+			{ ClearWorkDataCommand, profile => new ClearWorkDataCommand(profile) },
 		};
 
 		public static ICommand FromString(IProfile profile, string commandName)

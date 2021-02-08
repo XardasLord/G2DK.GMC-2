@@ -1,20 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GothicModComposer.Presets
 {
 	public static class AssetPresetFolders
 	{
-		public static List<AssetPresetType> FoldersWithAssets => new()
-		{
-			AssetPresetType.Anims,
-			AssetPresetType.Meshes,
-			AssetPresetType.Music,
-			AssetPresetType.Presets,
-			AssetPresetType.Scripts,
-			AssetPresetType.Sound,
-			AssetPresetType.Textures,
-			AssetPresetType.Video,
-			AssetPresetType.Worlds
-		};
+		public static List<AssetPresetType> FoldersWithAssets => Enum.GetValues<AssetPresetType>().ToList();
 	}
 }

@@ -12,9 +12,4 @@
 		Video,
 		Worlds
 	}
-
-	public static class AssetPresetTypeExtensions
-	{
-
-	}
 }

@@ -8,6 +8,8 @@ namespace GothicModComposer.Utils.IOHelpers
 {
 	public static class DirectoryHelper
 	{
+		public static bool Exists(string path)
+			=> Directory.Exists(path);
 		public static string ToRelativePath(string fullPath, string basePath) 
 			=> fullPath.Replace(basePath, "");
 
