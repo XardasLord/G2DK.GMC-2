@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using GothicModComposer.Commands.ExecutedCommandActions;
+using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Folders;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Presets;
@@ -11,6 +14,7 @@ namespace GothicModComposer.Commands
 		public string CommandName => "Clear Gothic '_Work/Data' folder";
 		
 		private readonly IProfile _profile;
+		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
 		public ClearWorkDataCommand(IProfile profile) 
 			=> _profile = profile;
@@ -24,15 +28,17 @@ namespace GothicModComposer.Commands
 				var assetFolder = new AssetFolder(assetFolderPath, assetType);
 				if (assetFolder.Exists())
 				{
-					assetFolder.Delete();
 					// TODO: ExecutedActions.Push(assetFolder); // We need all data that was deleted inside the assetFolder class
+					ExecutedActions.Push(CommandActionIO.DirectoryDeleted(assetFolder.BasePath));
+
+					assetFolder.Delete();
 				}
 
 				// TODO: Should it be the scope of this command? I guess not.
 				if (assetFolder.IsCompilable())
 				{
 					assetFolder.CreateCompiledFolder();
-					// TODO: Add info to ExecutedAction
+					ExecutedActions.Push(CommandActionIO.DirectoryCreated(assetFolder.CompiledFolderPath));
 				}
 			});
 		}

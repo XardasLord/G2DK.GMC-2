@@ -17,6 +17,7 @@
 		FileCreate,
 		DirectoryCopy,
 		DirectoryMove,
-		DirectoryCreate
+		DirectoryCreate,
+		DirectoryDelete
 	}
 }

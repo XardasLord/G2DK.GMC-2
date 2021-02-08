@@ -29,6 +29,8 @@ namespace GothicModComposer.Commands.ExecutedCommandActions
 			=> new CommandActionIO(CommandActionIOType.DirectoryCopy, sourcePath, destinationPath);
 		public static CommandActionIO DirectoryMoved(string sourcePath, string destinationPath)
 			=> new CommandActionIO(CommandActionIOType.DirectoryMove, sourcePath, destinationPath);
+		public static CommandActionIO DirectoryDeleted(string path) // TODO: For this action we need to copy deleting directory content into some tmp folder due to undo request
+			=> new CommandActionIO(CommandActionIOType.DirectoryDelete, null, path);
 
 		public void Undo()
 		{
@@ -51,6 +53,9 @@ namespace GothicModComposer.Commands.ExecutedCommandActions
 					break;
 				case CommandActionIOType.DirectoryMove:
 					DirectoryHelper.Move(DestinationPath, SourcePath);
+					break;
+				case CommandActionIOType.DirectoryDelete:
+					Logger.Warn("Deleting directory undo action is not implemented yet.");
 					break;
 				default:
 					Logger.Warn("Unknown type of a single command action.");
