@@ -15,6 +15,8 @@ namespace GothicModComposer.Models.Folders
 
 		public bool DoesBackupFolderExist => Directory.Exists(BackupFolderPath);
 
+		public string EssentialFilesRegexPattern => @"((Presets|Music|Video))|[\/\\](Fonts|_intern)";
+
 		private GmcFolder(string gmcFolderPath)
 			=> BasePath = gmcFolderPath;
 
