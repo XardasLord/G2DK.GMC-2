@@ -29,8 +29,15 @@ namespace GothicModComposer.Commands.ExecutedCommandActions
 			=> new CommandActionIO(CommandActionIOType.DirectoryCopy, sourcePath, destinationPath);
 		public static CommandActionIO DirectoryMoved(string sourcePath, string destinationPath)
 			=> new CommandActionIO(CommandActionIOType.DirectoryMove, sourcePath, destinationPath);
-		public static CommandActionIO DirectoryDeleted(string path) // TODO: For this action we need to copy deleting directory content into some tmp folder due to undo request
-			=> new CommandActionIO(CommandActionIOType.DirectoryDelete, null, path);
+
+		public static CommandActionIO DirectoryDeleted(string path)
+		{
+			var action = new CommandActionIO(CommandActionIOType.DirectoryDelete, null, path);
+
+			// TODO: For this action we need to copy deleting directory content into some tmp folder due to undo request or dispose at the end of profile processing
+
+			return action;
+		}
 
 		public void Undo()
 		{

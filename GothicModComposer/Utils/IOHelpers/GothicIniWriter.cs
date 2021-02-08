@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using GothicModComposer.Models;
 using GothicModComposer.Models.IniFiles;
 
 namespace GothicModComposer.Utils.IOHelpers

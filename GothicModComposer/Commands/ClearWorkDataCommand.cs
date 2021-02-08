@@ -5,7 +5,6 @@ using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Folders;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Presets;
-using GothicModComposer.Utils;
 
 namespace GothicModComposer.Commands
 {
@@ -43,9 +42,6 @@ namespace GothicModComposer.Commands
 			});
 		}
 
-		public void Undo()
-		{
-			Logger.Warn("Undo action is not implemented for this command yet.");
-		}
+		public void Undo() => ExecutedActions.Undo();
 	}
 }

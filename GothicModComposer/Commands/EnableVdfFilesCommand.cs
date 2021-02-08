@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Models.VdfFiles;
-using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Commands
@@ -33,19 +31,6 @@ namespace GothicModComposer.Commands
 				});
 		}
 
-		public void Undo()
-		{
-			if (!ExecutedActions.Any())
-			{
-				Logger.Info("There is nothing to undo, because no actions were executed.");
-				return;
-			}
-
-			while (ExecutedActions.Count > 0)
-			{
-				var executedAction = ExecutedActions.Pop();
-				executedAction?.Undo();
-			}
-		}
+		public void Undo() => ExecutedActions.Undo();
 	}
 }

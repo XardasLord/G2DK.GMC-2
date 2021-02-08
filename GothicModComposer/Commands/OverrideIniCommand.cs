@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
-using GothicModComposer.Models;
 using GothicModComposer.Models.IniFiles;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
@@ -36,20 +35,7 @@ namespace GothicModComposer.Commands
 			OverrideIni();
 		}
 
-		public void Undo()
-		{
-			if (!ExecutedActions.Any())
-			{
-				Logger.Info("There is nothing to undo, because no actions were executed."); // TODO: Introduce something like `NoExecutedAction.Undo();`
-				return;
-			}
-
-			while (ExecutedActions.Count > 0)
-			{
-				var executedAction = ExecutedActions.Pop();
-				executedAction?.Undo();
-			}
-		}
+		public void Undo() => ExecutedActions.Undo();
 
 		private void OverrideIni()
 		{
