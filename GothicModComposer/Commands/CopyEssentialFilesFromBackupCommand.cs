@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
+using GothicModComposer.Commands.ExecutedCommandActions;
+using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils.IOHelpers;
 
@@ -11,6 +14,7 @@ namespace GothicModComposer.Commands
 
 		private readonly IProfile _profile;
 		private readonly Regex _essentialFileRegex;
+		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
 		public CopyEssentialFilesFromBackupCommand(IProfile profile)
 		{
@@ -23,21 +27,18 @@ namespace GothicModComposer.Commands
 			var workDataBackupFiles = DirectoryHelper.GetAllFilesInDirectory(_profile.GmcFolder.BackupWorkDataFolderPath);
 			var essentialFiles = workDataBackupFiles.FindAll(IsEssential).ToList();
 
-			essentialFiles.ForEach(file =>
+			essentialFiles.ForEach(essentialFilePath =>
 			{
-				var relativePath = DirectoryHelper.ToRelativePath(file, _profile.GmcFolder.BackupWorkDataFolderPath);
-				var path = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, relativePath);
+				var relativePath = DirectoryHelper.ToRelativePath(essentialFilePath, _profile.GmcFolder.BackupWorkDataFolderPath);
+				var destinationPath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, relativePath);
 				
-				FileHelper.CopyWithOverwrite(file, path);
+				FileHelper.CopyWithOverwrite(essentialFilePath, destinationPath);
 
-				// TODO: ICommandActionIO.Push();
+				ExecutedActions.Push(CommandActionIO.FileCopied(essentialFilePath, destinationPath));
 			});
 		}
 
-		public void Undo()
-		{
-			throw new System.NotImplementedException();
-		}
+		public void Undo() => ExecutedActions.Undo();
 
 		private bool IsEssential(string filePath)
 		{
