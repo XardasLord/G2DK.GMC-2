@@ -10,11 +10,12 @@ namespace GothicModComposer.Utils.IOHelpers
 	{
 		public static bool Exists(string path)
 			=> Directory.Exists(path);
-		public static string ToRelativePath(string fullPath, string basePath) 
-			=> fullPath.Replace(basePath, "");
 
-		public static string MergeRelativePath(string relativePath, string toAdd) 
-			=> Path.GetFullPath($"{relativePath}{toAdd}");
+		public static string ToRelativePath(string fullPath, string relativeTo)
+			=> Path.GetRelativePath(relativeTo, fullPath);
+
+		public static string MergeRelativePath(string relativePath, string toAdd)
+			=> Path.Combine(relativePath, toAdd);
 
 		public static List<string> GetAllFilesInDirectory(string directoryPath, SearchOption searchOption = SearchOption.AllDirectories) 
 			=> Directory.Exists(directoryPath) 

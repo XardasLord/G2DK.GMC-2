@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 
 namespace GothicModComposer.Utils.IOHelpers
@@ -10,6 +11,15 @@ namespace GothicModComposer.Utils.IOHelpers
 
 		public static string ReadFile(string path)
 			=> File.ReadAllText(path);
+
+		public static long GetFileTimestamp(string filePath)
+		{
+			if (!Exists(filePath))
+				return 0;
+
+			var file = new FileInfo(filePath);
+			return new DateTimeOffset(file.LastWriteTimeUtc).ToUnixTimeSeconds();
+		}
 
 		public static void CopyWithOverwrite(string source, string dest)
 		{

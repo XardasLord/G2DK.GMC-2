@@ -19,8 +19,9 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.AddDefaultWorldCommand,
 					CommandBuilderHelper.EnableVdfFilesCommand,
 					CommandBuilderHelper.ClearWorkDataCommand,
-					CommandBuilderHelper.CopyEssentialFilesFromBackupCommand
-				},
+					//CommandBuilderHelper.CopyEssentialFilesFromBackupCommand,
+					CommandBuilderHelper.UpdateModDataCommand
+				}
 			};
 
 		public static ProfileDefinition GetRestoreGothicProfile()

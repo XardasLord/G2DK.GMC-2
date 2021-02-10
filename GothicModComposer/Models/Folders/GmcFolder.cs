@@ -1,4 +1,9 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using GothicModComposer.Models.ModFiles;
 using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Models.Folders
@@ -15,10 +20,15 @@ namespace GothicModComposer.Models.Folders
 
 		public bool DoesBackupFolderExist => Directory.Exists(BackupFolderPath);
 
+		public List<ModFileEntry> ModFilesFromTrackerFile { get; } // TODO: Expose it as IReadOnlyCollection and create backend List<> field for modification purposes
+
 		public string EssentialFilesRegexPattern => @"((Presets|Music|Video))|[\/\\](Fonts|_intern)";
 
 		private GmcFolder(string gmcFolderPath)
-			=> BasePath = gmcFolderPath;
+		{
+			BasePath = gmcFolderPath;
+			ModFilesFromTrackerFile = GetModFilesFromTrackerFile();
+		}
 
 		public static GmcFolder CreateFromPath(string gmcFolderPath)
 		{
@@ -29,11 +39,35 @@ namespace GothicModComposer.Models.Folders
 			return instance;
 		}
 
-		public void CreateBackupWorkDataFolder() => DirectoryHelper.CreateIfDoesNotExist(BackupWorkDataFolderPath);
+		public void CreateBackupWorkDataFolder() 
+			=> DirectoryHelper.CreateIfDoesNotExist(BackupWorkDataFolderPath);
+
+		public void AddNewModFileEntryToTrackerFile(ModFileEntry modFileEntry)
+		{
+			modFileEntry.Timestamp = FileHelper.GetFileTimestamp(modFileEntry.FilePath);
+			ModFilesFromTrackerFile.Add(modFileEntry);
+		}
+
+		public void SaveTrackerFile()
+			=> FileHelper.SaveContent(ModFilesTrackerFilePath, JsonSerializer.Serialize(ModFilesFromTrackerFile), Encoding.Default);
 
 		private void Verify()
 		{
 			// TODO: Verify if the folder exists and is correct
+		}
+
+		private List<ModFileEntry> GetModFilesFromTrackerFile()
+		{
+			if (!FileHelper.Exists(ModFilesTrackerFilePath))
+				return new List<ModFileEntry>();
+
+			var options = new JsonSerializerOptions
+			{
+				PropertyNameCaseInsensitive = true
+			};
+			options.Converters.Add(new JsonStringEnumConverter());
+
+			return JsonSerializer.Deserialize<List<ModFileEntry>>(FileHelper.ReadFile(ModFilesTrackerFilePath), options);
 		}
 	}
 }
