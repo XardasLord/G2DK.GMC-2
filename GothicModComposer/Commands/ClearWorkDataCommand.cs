@@ -5,6 +5,7 @@ using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Folders;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Presets;
+using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Commands
 {
@@ -40,6 +41,13 @@ namespace GothicModComposer.Commands
 					ExecutedActions.Push(CommandActionIO.DirectoryCreated(assetFolder.CompiledFolderPath));
 				}
 			});
+
+			if (FileHelper.Exists(_profile.GmcFolder.ModFilesTrackerFilePath))
+			{
+				ExecutedActions.Push(CommandActionIO.FileDeleted(_profile.GmcFolder.ModFilesTrackerFilePath));
+
+				_profile.GmcFolder.DeleteTrackerFileIfExist();
+			}
 		}
 
 		public void Undo() => ExecutedActions.Undo();

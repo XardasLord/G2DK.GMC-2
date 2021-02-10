@@ -24,9 +24,11 @@ namespace GothicModComposer.Commands
 		{
 			Logger.Info($"Start copying all mod files to {_profile.GothicFolder.WorkDataFolderPath} ...", true);
 
+			var filesFromTrackerFileHelper = _profile.GmcFolder.GetModFilesFromTrackerFile();
+
 			_profile.ModFolder.GetAllModFiles().ForEach(modFile =>
 			{
-				var modAsset = _profile.GmcFolder.ModFilesFromTrackerFile.Find(x => x.RelativePath.Equals(modFile.RelativePath));
+				var modAsset = filesFromTrackerFileHelper.Find(x => x.RelativePath.Equals(modFile.RelativePath));
 
 				var operation = modAsset?.GetEntryOperation(modFile.FilePath) ?? ModFileEntryOperation.Create;
 				switch (operation)
@@ -90,14 +92,6 @@ namespace GothicModComposer.Commands
 				case AssetPresetType.Textures:
 					_profile.GothicArguments.ZTexConvert();
 					break;
-				case AssetPresetType.Music:
-				case AssetPresetType.Presets:
-				case AssetPresetType.Sound:
-				case AssetPresetType.Video:
-				case AssetPresetType.Worlds:
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(modFileEntry.AssetType), "Unknown mod file entry asset type.");
 			}
 		}
 	}

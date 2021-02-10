@@ -17,17 +17,15 @@ namespace GothicModComposer.Models.Folders
 		public string VdsfConfigFilePath => Path.Combine(BasePath, "vdfsConfig");
 		public string ModFilesTrackerFilePath => Path.Combine(BasePath, "modFiles.json");
 		public string BackupWorkDataFolderPath => Path.Combine(BackupFolderPath, "_Work", "Data");
-
 		public bool DoesBackupFolderExist => Directory.Exists(BackupFolderPath);
-
-		public List<ModFileEntry> ModFilesFromTrackerFile { get; } // TODO: Expose it as IReadOnlyCollection and create backend List<> field for modification purposes
-
 		public string EssentialFilesRegexPattern => @"((Presets|Music|Video))|[\/\\](Fonts|_intern)";
+
+		private List<ModFileEntry> _modFilesFromTrackerFile { get; } // TODO: Expose it as IReadOnlyCollection and create backend List<> field for modification purposes
 
 		private GmcFolder(string gmcFolderPath)
 		{
 			BasePath = gmcFolderPath;
-			ModFilesFromTrackerFile = GetModFilesFromTrackerFile();
+			_modFilesFromTrackerFile = GetModFilesFromTrackerFile();
 		}
 
 		public static GmcFolder CreateFromPath(string gmcFolderPath)
@@ -45,18 +43,16 @@ namespace GothicModComposer.Models.Folders
 		public void AddNewModFileEntryToTrackerFile(ModFileEntry modFileEntry)
 		{
 			modFileEntry.Timestamp = FileHelper.GetFileTimestamp(modFileEntry.FilePath);
-			ModFilesFromTrackerFile.Add(modFileEntry);
+			_modFilesFromTrackerFile.Add(modFileEntry);
 		}
 
 		public void SaveTrackerFile()
-			=> FileHelper.SaveContent(ModFilesTrackerFilePath, JsonSerializer.Serialize(ModFilesFromTrackerFile), Encoding.Default);
+			=> FileHelper.SaveContent(ModFilesTrackerFilePath, JsonSerializer.Serialize(_modFilesFromTrackerFile), Encoding.Default);
 
-		private void Verify()
-		{
-			// TODO: Verify if the folder exists and is correct
-		}
+		public bool DeleteTrackerFileIfExist()
+			=> FileHelper.DeleteIfExists(ModFilesTrackerFilePath);
 
-		private List<ModFileEntry> GetModFilesFromTrackerFile()
+		public List<ModFileEntry> GetModFilesFromTrackerFile()
 		{
 			if (!FileHelper.Exists(ModFilesTrackerFilePath))
 				return new List<ModFileEntry>();
@@ -68,6 +64,11 @@ namespace GothicModComposer.Models.Folders
 			options.Converters.Add(new JsonStringEnumConverter());
 
 			return JsonSerializer.Deserialize<List<ModFileEntry>>(FileHelper.ReadFile(ModFilesTrackerFilePath), options);
+		}
+
+		private void Verify()
+		{
+			// TODO: Verify if the folder exists and is correct
 		}
 	}
 }
