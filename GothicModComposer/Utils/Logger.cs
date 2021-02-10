@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Utils
 {
 	public static class Logger
 	{
-		private static readonly List<string> Logs = new List<string>();
+		private static readonly List<string> Logs = new();
 		private static readonly string CommandSeparator = $"{Environment.NewLine}{new string('-', 90)}{Environment.NewLine}";
-
-		public static void Info(string message)
+		
+		public static void Info(string message, bool display = false)
 		{
 			var value = $"[INFO] {message}";
 			Logs.Add(value);
-			Console.ForegroundColor = ConsoleColor.White;
-			Console.WriteLine(value);
+
+			if (display)
+			{
+				Console.ForegroundColor = ConsoleColor.White;
+				Console.WriteLine(value);
+			}
 		}
 
 		public static void Warn(string message)
@@ -62,6 +68,14 @@ namespace GothicModComposer.Utils
 			Logs.Add(value);
 			Console.ForegroundColor = ConsoleColor.Magenta;
 			Console.WriteLine(value);
+		}
+
+		public static void SaveLogs(string gmcFolderPath)
+		{
+			var logsPath = Path.Combine(gmcFolderPath, "Logs");
+
+			DirectoryHelper.CreateIfDoesNotExist(logsPath);
+			File.WriteAllLines(Path.Combine(logsPath, $"Log-{DateTime.Now:yyyy-M-ddTHH.mm.ss}.log"), Logs);
 		}
 	}
 }

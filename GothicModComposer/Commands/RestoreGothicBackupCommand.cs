@@ -1,5 +1,4 @@
-﻿using GothicModComposer.Models;
-using GothicModComposer.Models.Profiles;
+﻿using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
 
@@ -18,7 +17,7 @@ namespace GothicModComposer.Commands
 		{
 			if (!_profile.GmcFolder.DoesBackupFolderExist)
 			{
-				Logger.Info("There is no backup folder to restore.");
+				Logger.Info("There is no backup folder to restore.", true);
 				return;
 			}
 

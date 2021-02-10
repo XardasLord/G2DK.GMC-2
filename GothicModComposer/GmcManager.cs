@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using GothicModComposer.Commands;
+using GothicModComposer.Models.Folders;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 
@@ -8,12 +9,15 @@ namespace GothicModComposer
 {
 	public class GmcManager
 	{
+		public GmcFolder GmcFolder { get; }
+
 		private readonly ProfileLoaderResponse _profileLoaderResponse;
 		private readonly Stack<ICommand> _executedCommands = new();
 
 		private GmcManager(ProfileLoaderResponse profileLoaderResponse)
 		{
 			_profileLoaderResponse = profileLoaderResponse;
+			GmcFolder = profileLoaderResponse.Profile.GmcFolder;
 		}
 
 		public static GmcManager Create(ProfileLoaderResponse profileLoaderResponse)

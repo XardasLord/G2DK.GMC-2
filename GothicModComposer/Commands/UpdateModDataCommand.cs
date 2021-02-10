@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using GothicModComposer.Commands.ExecutedCommandActions;
+using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.ModFiles;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Presets;
@@ -9,16 +12,17 @@ namespace GothicModComposer.Commands
 {
 	public class UpdateModDataCommand : ICommand
 	{
-		public string CommandName => "Update Mod Data";
+		public string CommandName => "Update mod data files";
 
 		private readonly IProfile _profile;
+		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
 		public UpdateModDataCommand(IProfile profile) 
 			=> _profile = profile;
 
 		public void Execute()
 		{
-			Logger.Info($"Start copying all mod files to {_profile.GothicFolder.WorkDataFolderPath}");
+			Logger.Info($"Start copying all mod files to {_profile.GothicFolder.WorkDataFolderPath} ...", true);
 
 			_profile.ModFolder.GetAllModFiles().ForEach(modFile =>
 			{
@@ -40,17 +44,15 @@ namespace GothicModComposer.Commands
 				}
 			});
 
-			Logger.Info($"Copied all mod files to {_profile.GothicFolder.WorkDataFolderPath}");
+			Logger.Info($"Copied all mod files to {_profile.GothicFolder.WorkDataFolderPath}", true);
 
 			_profile.GmcFolder.SaveTrackerFile();
 
-			Logger.Info($"Created mod tracker file in {_profile.GmcFolder.ModFilesTrackerFilePath}");
+			Logger.Info($"Created mod tracker file in {_profile.GmcFolder.ModFilesTrackerFilePath}",true);
+			ExecutedActions.Push(CommandActionIO.FileCreated(_profile.GmcFolder.ModFilesTrackerFilePath));
 		}
 
-		public void Undo()
-		{
-			Logger.Warn();
-		}
+		public void Undo() => ExecutedActions.Undo();
 
 		private void AddNewModFileEntry(ModFileEntry modFileEntry)
 		{
@@ -68,8 +70,10 @@ namespace GothicModComposer.Commands
 
 		private void CopyAssetToCompilationFolder(ModFileEntry modFileEntry)
 		{
-			var workDataFile = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, modFileEntry.RelativePath);
-			FileHelper.CopyWithOverwrite(modFileEntry.FilePath, workDataFile);
+			var gothicWorkDataFile = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, modFileEntry.RelativePath);
+			FileHelper.CopyWithOverwrite(modFileEntry.FilePath, gothicWorkDataFile);
+
+			ExecutedActions.Push(CommandActionIO.FileCopied(modFileEntry.FilePath, gothicWorkDataFile));
 		}
 
 		private void ApplyBuildConfigParameters(ModFileEntry modFileEntry)

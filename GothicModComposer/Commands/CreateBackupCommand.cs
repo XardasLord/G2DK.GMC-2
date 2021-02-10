@@ -23,7 +23,7 @@ namespace GothicModComposer.Commands
 		{
 			if (_profile.GmcFolder.DoesBackupFolderExist)
 			{
-				Logger.Info("Backup folder already exists.");
+				Logger.Info("Backup folder already exists.", true);
 				return;
 			}
 

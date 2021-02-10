@@ -24,12 +24,12 @@ namespace GothicModComposer.Commands
 		}
 
 		public void Undo() 
-			=> Logger.Info("No need to undo this action since it didn't execute anything related to the Gothic system.");
+			=> Logger.Info("No need to undo this action since it didn't execute anything related to the Gothic system.", true);
 
 		private void AddDefaultWorld()
 		{
 			_profile.GothicArguments._3D(_profile.DefaultWorld);
-			Logger.Info($"Added --3D:{_profile.DefaultWorld} to Gothic arguments.");
+			Logger.Info($"Added --3D:{_profile.DefaultWorld} to Gothic arguments.", true);
 		}
 	}
 }

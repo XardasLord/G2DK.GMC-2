@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Profiles;
+using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Commands
@@ -27,6 +28,8 @@ namespace GothicModComposer.Commands
 			var workDataBackupFiles = DirectoryHelper.GetAllFilesInDirectory(_profile.GmcFolder.BackupWorkDataFolderPath);
 			var essentialFiles = workDataBackupFiles.FindAll(IsEssential).ToList();
 
+			Logger.Info($"Start copying all asset files from backup to {_profile.GothicFolder.WorkDataFolderPath} ...", true);
+
 			essentialFiles.ForEach(essentialFilePath =>
 			{
 				var relativePath = DirectoryHelper.ToRelativePath(essentialFilePath, _profile.GmcFolder.BackupWorkDataFolderPath);
@@ -36,6 +39,8 @@ namespace GothicModComposer.Commands
 
 				ExecutedActions.Push(CommandActionIO.FileCopied(essentialFilePath, destinationPath));
 			});
+
+			Logger.Info($"Copied all asset files from backup to {_profile.GothicFolder.WorkDataFolderPath}", true);
 		}
 
 		public void Undo() => ExecutedActions.Undo();

@@ -11,7 +11,7 @@ namespace GothicModComposer.Commands.ExecutedCommandActions
 		{
 			if (!executedActions.Any())
 			{
-				Logger.Info("There is nothing to undo, because no actions were executed."); // TODO: Introduce something like NoAction()
+				Logger.Info("There is nothing to undo, because no actions were executed.", true); // TODO: Introduce something like NoAction()
 				return;
 			}
 
@@ -25,7 +25,7 @@ namespace GothicModComposer.Commands.ExecutedCommandActions
 		{
 			if (!executedActions.Any())
 			{
-				Logger.Info("There is nothing to undo, because no actions were executed.");
+				Logger.Info("There is nothing to undo, because no actions were executed.", true);
 				return;
 			}
 

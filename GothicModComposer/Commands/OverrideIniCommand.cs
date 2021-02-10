@@ -25,7 +25,7 @@ namespace GothicModComposer.Commands
 		{
 			if (!_profile.IniOverrides.Any())
 			{
-				Logger.Info("There is no .ini attributes to override.");
+				Logger.Info("There is no .ini attributes to override.", true);
 				return;
 			}
 
@@ -63,7 +63,7 @@ namespace GothicModComposer.Commands
 						return;
 
 					block.Set(key, value);
-					Logger.Info($"Overriden {key}={value} in section: [{block.Header}].");
+					Logger.Info($"Overriden {key}={value} in section: [{block.Header}].", true);
 				});
 			});
 
@@ -73,7 +73,7 @@ namespace GothicModComposer.Commands
 		{
 			_profile.GothicFolder.SaveGmcIni(iniBlocks);
 
-			Logger.Info($"Created file {_profile.GothicFolder.GmcIniFilePath}.");
+			Logger.Info($"Created file {_profile.GothicFolder.GmcIniFilePath}.", true);
 
 			ExecutedActions.Push(CommandActionIO.FileCreated(_profile.GothicFolder.GmcIniFilePath));
 		}
