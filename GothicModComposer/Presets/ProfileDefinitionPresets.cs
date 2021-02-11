@@ -19,9 +19,10 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.AddDefaultWorldCommand,
 					CommandBuilderHelper.EnableVdfFilesCommand,
 					CommandBuilderHelper.ClearWorkDataCommand,
-					CommandBuilderHelper.CopyEssentialFilesFromBackupCommand,
+					CommandBuilderHelper.CopyEssentialAssetFilesFromBackupCommand,
 					CommandBuilderHelper.UpdateModDataFilesCommand,
-					CommandBuilderHelper.UpdateModExtensionFilesCommand
+					CommandBuilderHelper.UpdateModExtensionFilesCommand,
+					CommandBuilderHelper.ClearGmcTemporaryFiles
 				}
 			};
 

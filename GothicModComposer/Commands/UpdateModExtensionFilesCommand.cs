@@ -3,7 +3,10 @@ using System.IO;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Profiles;
+using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
+using GothicModComposer.Utils.ProgressBar;
+using ShellProgressBar;
 
 namespace GothicModComposer.Commands
 {
@@ -19,32 +22,41 @@ namespace GothicModComposer.Commands
 
 		public void Execute()
 		{
-			DirectoryHelper
-				.GetAllFilesInDirectory(_profile.ModFolder.ExtensionsFolderPath)
-				.ForEach(UpdateExtensionFile);
-		}
+			Logger.Info("Start copying all mod extension files.", true);
 
-		private void UpdateExtensionFile(string extensionFilePath)
-		{
-			var extensionRelativePath = DirectoryHelper.ToRelativePath(extensionFilePath, _profile.ModFolder.ExtensionsFolderPath);
-			var extensionRootPath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.BasePath, extensionRelativePath);
-
-			if (FileHelper.Exists(extensionRootPath))
+			var extensionFiles = DirectoryHelper.GetAllFilesInDirectory(_profile.ModFolder.ExtensionsFolderPath);
+			
+			using (var progress = new ProgressBar(extensionFiles.Count, "Updating mod extension files", ProgressBarOptionsHelper.Get()))
 			{
-				var tmpCommandActionBackupPath = 
-					Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(extensionRootPath));
+				var counter = 1;
 
-				FileHelper.Copy(extensionRootPath, tmpCommandActionBackupPath);
-				FileHelper.CopyWithOverwrite(extensionFilePath, extensionRootPath);
+				extensionFiles.ForEach(extensionFilePath =>
+				{
+					var extensionRelativePath = DirectoryHelper.ToRelativePath(extensionFilePath, _profile.ModFolder.ExtensionsFolderPath);
+					var extensionRootPath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.BasePath, extensionRelativePath);
 
-				ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(extensionRootPath, tmpCommandActionBackupPath));
+					if (FileHelper.Exists(extensionRootPath))
+					{
+						var tmpCommandActionBackupPath =
+							Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(extensionRootPath));
+
+						FileHelper.Copy(extensionRootPath, tmpCommandActionBackupPath);
+						FileHelper.CopyWithOverwrite(extensionFilePath, extensionRootPath);
+
+						ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(extensionRootPath, tmpCommandActionBackupPath));
+					}
+					else
+					{
+						FileHelper.Copy(extensionFilePath, extensionRootPath);
+
+						ExecutedActions.Push(CommandActionIO.FileCopied(extensionFilePath, extensionRootPath));
+					}
+
+					progress.Tick($"Copied {counter++} of {extensionFiles.Count} files");
+				});
 			}
-			else
-			{
-				FileHelper.Copy(extensionFilePath, extensionRootPath);
-				
-				ExecutedActions.Push(CommandActionIO.FileCopied(extensionFilePath, extensionRootPath));
-			}
+
+			Logger.Info("Copied all mod extension files.", true);
 		}
 
 		public void Undo() => ExecutedActions.Undo();

@@ -24,7 +24,7 @@ namespace GothicModComposer.Commands
 
 		public void Execute()
 		{
-			Logger.Info($"Start copying all mod files to {_profile.GothicFolder.WorkDataFolderPath} ...", true);
+			Logger.Info($"Start copying all mod files to {_profile.GothicFolder.WorkDataFolderPath}", true);
 
 			var filesFromTrackerFileHelper = _profile.GmcFolder.GetModFilesFromTrackerFile();
 			var modFiles = _profile.ModFolder.GetAllModFiles();

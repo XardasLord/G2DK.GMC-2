@@ -47,11 +47,14 @@ namespace GothicModComposer.Models.Folders
 		public string GetTemporaryCommandActionBackupPath(string commandName)
 			=> Path.Combine(_tmpCommandActionsBackupFolderPath, commandName);
 
+		public void DeleteTemporaryFiles() => DirectoryHelper.DeleteIfExists(_tmpCommandActionsBackupFolderPath);
+
 		public void AddNewModFileEntryToTrackerFile(ModFileEntry modFileEntry)
 		{
 			modFileEntry.Timestamp = FileHelper.GetFileTimestamp(modFileEntry.FilePath);
 			_modFilesFromTrackerFile.Add(modFileEntry);
 		}
+
 		public void UpdateModFileEntryInTrackerFile(ModFileEntry modFileEntry)
 		{
 			modFileEntry.Timestamp = FileHelper.GetFileTimestamp(modFileEntry.FilePath);

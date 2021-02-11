@@ -12,15 +12,15 @@ using ShellProgressBar;
 
 namespace GothicModComposer.Commands
 {
-	public class CopyEssentialFilesFromBackupCommand : ICommand
+	public class CopyEssentialAssetFilesFromBackupCommand : ICommand
 	{
-		public string CommandName => "Copy essential files from backup";
+		public string CommandName => "Copy essential asset files from backup";
 
 		private readonly IProfile _profile;
 		private readonly Regex _essentialFileRegex;
 		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
-		public CopyEssentialFilesFromBackupCommand(IProfile profile)
+		public CopyEssentialAssetFilesFromBackupCommand(IProfile profile)
 		{
 			_profile = profile;
 			_essentialFileRegex = new Regex(_profile.GmcFolder.EssentialFilesRegexPattern);
