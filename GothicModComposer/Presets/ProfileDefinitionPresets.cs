@@ -20,7 +20,8 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.EnableVdfFilesCommand,
 					CommandBuilderHelper.ClearWorkDataCommand,
 					CommandBuilderHelper.CopyEssentialFilesFromBackupCommand,
-					CommandBuilderHelper.UpdateModDataCommand
+					CommandBuilderHelper.UpdateModDataFilesCommand,
+					CommandBuilderHelper.UpdateModExtensionFilesCommand
 				}
 			};
 

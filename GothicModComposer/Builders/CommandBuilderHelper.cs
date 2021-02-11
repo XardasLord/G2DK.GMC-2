@@ -15,7 +15,8 @@ namespace GothicModComposer.Builders
 		public const string EnableVdfFilesCommand = nameof(EnableVdfFilesCommand);
 		public const string ClearWorkDataCommand = nameof(ClearWorkDataCommand);
 		public const string CopyEssentialFilesFromBackupCommand = nameof(CopyEssentialFilesFromBackupCommand);
-		public const string UpdateModDataCommand = nameof(UpdateModDataCommand);
+		public const string UpdateModDataFilesCommand = nameof(UpdateModDataFilesCommand);
+		public const string UpdateModExtensionFilesCommand = nameof(UpdateModExtensionFilesCommand);
 
 		private static readonly Dictionary<string, Func<IProfile, ICommand>> Commands = new()
 		{
@@ -26,7 +27,8 @@ namespace GothicModComposer.Builders
 			{ EnableVdfFilesCommand, profile => new EnableVdfFilesCommand(profile) },
 			{ ClearWorkDataCommand, profile => new ClearWorkDataCommand(profile) },
 			{ CopyEssentialFilesFromBackupCommand, profile => new CopyEssentialFilesFromBackupCommand(profile) },
-			{ UpdateModDataCommand, profile => new UpdateModDataCommand(profile) },
+			{ UpdateModDataFilesCommand, profile => new UpdateModDataFilesCommand(profile) },
+			{ UpdateModExtensionFilesCommand, profile => new UpdateModExtensionFilesCommand(profile) },
 		};
 
 		public static ICommand FromString(IProfile profile, string commandName)

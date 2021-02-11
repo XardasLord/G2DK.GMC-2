@@ -9,14 +9,14 @@ using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Commands
 {
-	public class UpdateModDataCommand : ICommand
+	public class UpdateModDataFilesCommand : ICommand
 	{
 		public string CommandName => "Update mod data files";
 
 		private readonly IProfile _profile;
 		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
-		public UpdateModDataCommand(IProfile profile) 
+		public UpdateModDataFilesCommand(IProfile profile) 
 			=> _profile = profile;
 
 		public void Execute()
