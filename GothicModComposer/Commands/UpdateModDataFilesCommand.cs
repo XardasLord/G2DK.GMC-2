@@ -6,6 +6,8 @@ using GothicModComposer.Models.Profiles;
 using GothicModComposer.Presets;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
+using GothicModComposer.Utils.ProgressBar;
+using ShellProgressBar;
 
 namespace GothicModComposer.Commands
 {
@@ -24,28 +26,36 @@ namespace GothicModComposer.Commands
 			Logger.Info($"Start copying all mod files to {_profile.GothicFolder.WorkDataFolderPath} ...", true);
 
 			var filesFromTrackerFileHelper = _profile.GmcFolder.GetModFilesFromTrackerFile();
+			var modFiles = _profile.ModFolder.GetAllModFiles();
 
-			_profile.ModFolder.GetAllModFiles().ForEach(modFile =>
+			using (var progress = new ProgressBar(modFiles.Count, "Updating mod files", ProgressBarOptionsHelper.Get()))
 			{
-				var modAsset = filesFromTrackerFileHelper.Find(x => x.RelativePath.Equals(modFile.RelativePath));
+				var counter = 1;
 
-				var operation = modAsset?.GetEntryOperationForFile(modFile.FilePath) ?? ModFileEntryOperation.Create;
-				switch (operation)
+				modFiles.ForEach(modFile =>
 				{
-					case ModFileEntryOperation.Create:
-						_profile.GmcFolder.AddNewModFileEntryToTrackerFile(modFile);
-						CopyAssetToCompilationFolder(modFile);
-						ApplyBuildConfigParameters(modFile);
-						return;
-					case ModFileEntryOperation.Update:
-						_profile.GmcFolder.UpdateModFileEntryInTrackerFile(modFile);
-						CopyAssetToCompilationFolder(modFile);
-						ApplyBuildConfigParameters(modFile);
-						return;
-					case ModFileEntryOperation.None:
-						return;
-				}
-			});
+					progress.Tick($"Copied {counter++} of {modFiles.Count} files");
+
+					var modAsset = filesFromTrackerFileHelper.Find(x => x.RelativePath.Equals(modFile.RelativePath));
+
+					var operation = modAsset?.GetEntryOperationForFile(modFile.FilePath) ?? ModFileEntryOperation.Create;
+					switch (operation)
+					{
+						case ModFileEntryOperation.Create:
+							_profile.GmcFolder.AddNewModFileEntryToTrackerFile(modFile);
+							CopyAssetToCompilationFolder(modFile);
+							ApplyBuildConfigParameters(modFile);
+							return;
+						case ModFileEntryOperation.Update:
+							_profile.GmcFolder.UpdateModFileEntryInTrackerFile(modFile);
+							CopyAssetToCompilationFolder(modFile);
+							ApplyBuildConfigParameters(modFile);
+							return;
+						case ModFileEntryOperation.None:
+							return;
+					}
+				});
+			}
 
 			Logger.Info($"Copied all mod files to {_profile.GothicFolder.WorkDataFolderPath}", true);
 

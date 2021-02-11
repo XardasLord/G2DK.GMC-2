@@ -6,6 +6,8 @@ using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
+using GothicModComposer.Utils.ProgressBar;
+using ShellProgressBar;
 
 namespace GothicModComposer.Commands
 {
@@ -30,15 +32,22 @@ namespace GothicModComposer.Commands
 
 			Logger.Info($"Start copying all asset files from backup to {_profile.GothicFolder.WorkDataFolderPath} ...", true);
 
-			essentialFiles.ForEach(essentialFilePath =>
+			using (var progress = new ProgressBar(essentialFiles.Count, "Copying asset files from backup", ProgressBarOptionsHelper.Get()))
 			{
-				var relativePath = DirectoryHelper.ToRelativePath(essentialFilePath, _profile.GmcFolder.BackupWorkDataFolderPath);
-				var destinationPath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, relativePath);
-				
-				FileHelper.CopyWithOverwrite(essentialFilePath, destinationPath);
+				var counter = 1;
 
-				ExecutedActions.Push(CommandActionIO.FileCopied(essentialFilePath, destinationPath));
-			});
+				essentialFiles.ForEach(essentialFilePath =>
+				{
+					var relativePath = DirectoryHelper.ToRelativePath(essentialFilePath, _profile.GmcFolder.BackupWorkDataFolderPath);
+					var destinationPath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, relativePath);
+
+					FileHelper.CopyWithOverwrite(essentialFilePath, destinationPath);
+
+					ExecutedActions.Push(CommandActionIO.FileCopied(essentialFilePath, destinationPath));
+
+					progress.Tick($"Copied {counter++} of {essentialFiles.Count} files");
+				});
+			}
 
 			Logger.Info($"Copied all asset files from backup to {_profile.GothicFolder.WorkDataFolderPath}", true);
 		}

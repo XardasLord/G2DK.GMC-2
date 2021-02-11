@@ -1,6 +1,8 @@
 ﻿using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
+using GothicModComposer.Utils.ProgressBar;
+using ShellProgressBar;
 
 namespace GothicModComposer.Commands
 {
@@ -29,13 +31,23 @@ namespace GothicModComposer.Commands
 		{
 			DirectoryHelper.DeleteIfExists(_profile.GothicFolder.WorkDataFolderPath);
 
-			DirectoryHelper.GetAllFilesInDirectory(_profile.GmcFolder.BackupFolderPath).ForEach(backupFilePath =>
-			{
-				var relativePath = DirectoryHelper.ToRelativePath(backupFilePath, _profile.GmcFolder.BackupFolderPath);
-				var gothicFilePath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.BasePath, relativePath);
+			var backupFiles = DirectoryHelper.GetAllFilesInDirectory(_profile.GmcFolder.BackupFolderPath);
 
-				FileHelper.MoveWithOverwrite(backupFilePath, gothicFilePath);
-			});
+			using (var progress = new ProgressBar(backupFiles.Count, "Restoring files from backup", ProgressBarOptionsHelper.Get()))
+			{
+				var counter = 1;
+
+				backupFiles.ForEach(backupFilePath =>
+				{
+					var relativePath = DirectoryHelper.ToRelativePath(backupFilePath, _profile.GmcFolder.BackupFolderPath);
+					var gothicFilePath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.BasePath, relativePath);
+
+					FileHelper.MoveWithOverwrite(backupFilePath, gothicFilePath);
+
+					progress.Tick($"Restored {counter} of {backupFiles.Count} files");
+				});
+			}
+			
 		}
 
 		private void RemoveGmcFolder() => DirectoryHelper.DeleteIfExists(_profile.GmcFolder.BasePath);

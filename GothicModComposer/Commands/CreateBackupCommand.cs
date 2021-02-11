@@ -6,6 +6,8 @@ using GothicModComposer.Models.Profiles;
 using GothicModComposer.Presets;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
+using GothicModComposer.Utils.ProgressBar;
+using ShellProgressBar;
 
 namespace GothicModComposer.Commands
 {
@@ -38,18 +40,25 @@ namespace GothicModComposer.Commands
 			_profile.GmcFolder.CreateBackupWorkDataFolder();
 			ExecutedActions.Push(CommandActionIO.DirectoryCreated(_profile.GmcFolder.BasePath));
 
-			AssetPresetFolders.FoldersWithAssets.ForEach(assetFolder =>
+			using (var progress = new ProgressBar(AssetPresetFolders.FoldersWithAssets.Count, "Creating Gothic backup", ProgressBarOptionsHelper.Get()))
 			{
-				var sourcePath = Path.Combine(_profile.GothicFolder.WorkDataFolderPath, assetFolder.ToString());
-				var destinationPath = Path.Combine(_profile.GmcFolder.BackupWorkDataFolderPath, assetFolder.ToString());
+				var counter = 1;
 
-				if (!Directory.Exists(sourcePath))
-					return;
+				AssetPresetFolders.FoldersWithAssets.ForEach(assetFolder =>
+				{
+					progress.Tick($"Copied {counter++} of {AssetPresetFolders.FoldersWithAssets.Count} folders");
 
-				DirectoryHelper.Move(sourcePath, destinationPath);
+					var sourcePath = Path.Combine(_profile.GothicFolder.WorkDataFolderPath, assetFolder.ToString());
+					var destinationPath = Path.Combine(_profile.GmcFolder.BackupWorkDataFolderPath, assetFolder.ToString());
 
-				ExecutedActions.Push(CommandActionIO.DirectoryMoved(sourcePath, destinationPath));
-			});
+					if (!Directory.Exists(sourcePath))
+						return;
+
+					DirectoryHelper.Move(sourcePath, destinationPath);
+
+					ExecutedActions.Push(CommandActionIO.DirectoryMoved(sourcePath, destinationPath));
+				});
+			};
 		}
 
 		private void BackupFilesOverridenByExtensions()

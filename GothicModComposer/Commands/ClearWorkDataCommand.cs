@@ -6,6 +6,8 @@ using GothicModComposer.Models.Folders;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Presets;
 using GothicModComposer.Utils.IOHelpers;
+using GothicModComposer.Utils.ProgressBar;
+using ShellProgressBar;
 
 namespace GothicModComposer.Commands
 {
@@ -21,26 +23,32 @@ namespace GothicModComposer.Commands
 
 		public void Execute()
 		{
-			AssetPresetFolders.FoldersWithAssets.ForEach(assetType =>
+			using (var progress = new ProgressBar(AssetPresetFolders.FoldersWithAssets.Count, "Clearing _Work/Data folder", ProgressBarOptionsHelper.Get()))
 			{
-				var assetFolderPath = Path.Combine(_profile.GothicFolder.WorkDataFolderPath, assetType.ToString());
-
-				var assetFolder = new AssetFolder(assetFolderPath, assetType);
-				if (assetFolder.Exists())
+				AssetPresetFolders.FoldersWithAssets.ForEach(assetType =>
 				{
-					// TODO: ExecutedActions.Push(assetFolder); // We need all data that was deleted inside the assetFolder class
-					ExecutedActions.Push(CommandActionIO.DirectoryDeleted(assetFolder.BasePath));
+					var assetFolderPath = Path.Combine(_profile.GothicFolder.WorkDataFolderPath, assetType.ToString());
 
-					assetFolder.Delete();
-				}
+					var assetFolder = new AssetFolder(assetFolderPath, assetType);
+					if (assetFolder.Exists())
+					{
+						// TODO: ExecutedActions.Push(assetFolder); // We need all data that was deleted inside the assetFolder class
+						ExecutedActions.Push(CommandActionIO.DirectoryDeleted(assetFolder.BasePath));
 
-				// TODO: Should it be the scope of this command? I guess not.
-				if (assetFolder.IsCompilable())
-				{
-					assetFolder.CreateCompiledFolder();
-					ExecutedActions.Push(CommandActionIO.DirectoryCreated(assetFolder.CompiledFolderPath));
-				}
-			});
+						assetFolder.Delete();
+					}
+
+					// TODO: Should it be the scope of this command? I guess not.
+					if (assetFolder.IsCompilable())
+					{
+						assetFolder.CreateCompiledFolder();
+						ExecutedActions.Push(CommandActionIO.DirectoryCreated(assetFolder.CompiledFolderPath));
+					}
+
+					progress.Tick();
+				});
+			}
+			
 
 			if (FileHelper.Exists(_profile.GmcFolder.ModFilesTrackerFilePath))
 			{
