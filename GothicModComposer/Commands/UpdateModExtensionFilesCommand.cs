@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Profiles;
@@ -28,11 +29,22 @@ namespace GothicModComposer.Commands
 			var extensionRelativePath = DirectoryHelper.ToRelativePath(extensionFilePath, _profile.ModFolder.ExtensionsFolderPath);
 			var extensionRootPath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.BasePath, extensionRelativePath);
 
-			FileHelper.CopyWithOverwrite(extensionFilePath, extensionRootPath);
+			if (FileHelper.Exists(extensionRootPath))
+			{
+				var tmpCommandActionBackupPath = 
+					Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(extensionRootPath));
 
-			// TODO: Make a mechanism to somehow undo copy with overwrite, because this undo won't restore the original file that was overwritten
-			// TODO: Maybe if we CopyWithOverwrite we should make a copy with suffix '_backup' or copy it into a .gmc folder in order to keep original file content if undo will be required?
-			ExecutedActions.Push(CommandActionIO.FileCopied(extensionFilePath, extensionRootPath));
+				FileHelper.Copy(extensionRootPath, tmpCommandActionBackupPath);
+				FileHelper.CopyWithOverwrite(extensionFilePath, extensionRootPath);
+
+				ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(extensionRootPath, tmpCommandActionBackupPath));
+			}
+			else
+			{
+				FileHelper.Copy(extensionFilePath, extensionRootPath);
+				
+				ExecutedActions.Push(CommandActionIO.FileCopied(extensionFilePath, extensionRootPath));
+			}
 		}
 
 		public void Undo() => ExecutedActions.Undo();

@@ -9,18 +9,22 @@ namespace GothicModComposer.Commands.ExecutedCommandActions
 		public CommandActionIOType ActionType { get; }
 		public string SourcePath { get; }
 		public string DestinationPath { get; }
+		public string OriginalFilePathBackup { get; }
 
-		private CommandActionIO(CommandActionIOType actionType, string sourcePath, string destinationPath)
+		private CommandActionIO(CommandActionIOType actionType, string sourcePath, string destinationPath, string originalFilePathBackup = null)
 		{
 			ActionType = actionType;
 			SourcePath = sourcePath;
 			DestinationPath = destinationPath;
+			OriginalFilePathBackup = originalFilePathBackup;
 		}
 		
 		public static CommandActionIO FileCreated(string path) 
 			=> new CommandActionIO(CommandActionIOType.FileCreate, null, path);
 		public static CommandActionIO FileCopied(string sourcePath, string destinationPath) 
 			=> new CommandActionIO(CommandActionIOType.FileCopy, sourcePath, destinationPath);
+		public static CommandActionIO FileCopiedWithOverwrite(string destinationPath, string originalFilePathBackup)
+			=> new CommandActionIO(CommandActionIOType.FileCopyWithOverwrite, null, destinationPath, originalFilePathBackup);
 		public static CommandActionIO FileMoved(string sourcePath, string destinationPath)
 			=> new CommandActionIO(CommandActionIOType.FileMove, sourcePath, destinationPath);
 		public static CommandActionIO DirectoryCreated(string path)
@@ -57,7 +61,10 @@ namespace GothicModComposer.Commands.ExecutedCommandActions
 					FileHelper.DeleteIfExists(DestinationPath);
 					break;
 				case CommandActionIOType.FileCopy:
-					FileHelper.CopyWithOverwrite(DestinationPath, SourcePath);
+					FileHelper.DeleteIfExists(DestinationPath);
+					break;
+				case CommandActionIOType.FileCopyWithOverwrite:
+					FileHelper.CopyWithOverwrite(OriginalFilePathBackup, DestinationPath);
 					break;
 				case CommandActionIOType.FileMove:
 					FileHelper.MoveWithOverwrite(DestinationPath, SourcePath);
@@ -69,9 +76,11 @@ namespace GothicModComposer.Commands.ExecutedCommandActions
 					DirectoryHelper.DeleteIfExists(DestinationPath);
 					break;
 				case CommandActionIOType.DirectoryCopy:
+					// TODO: Directory should be deleted from DestinationPath instead of copying back. We also should split th copying into two parts (copy and copy with overwrite) like with files
 					DirectoryHelper.Copy(DestinationPath, SourcePath);
 					break;
 				case CommandActionIOType.DirectoryMove:
+					DirectoryHelper.DeleteIfExists(SourcePath);
 					DirectoryHelper.Move(DestinationPath, SourcePath);
 					break;
 				case CommandActionIOType.DirectoryDelete:

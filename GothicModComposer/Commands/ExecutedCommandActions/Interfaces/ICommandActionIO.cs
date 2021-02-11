@@ -13,6 +13,7 @@
 	public enum CommandActionIOType
 	{
 		FileCopy,
+		FileCopyWithOverwrite,
 		FileMove,
 		FileCreate,
 		FileDelete,

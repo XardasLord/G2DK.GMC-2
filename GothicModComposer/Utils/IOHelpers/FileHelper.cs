@@ -21,6 +21,12 @@ namespace GothicModComposer.Utils.IOHelpers
 			return new DateTimeOffset(file.LastWriteTimeUtc).ToUnixTimeSeconds();
 		}
 
+		public static void Copy(string source, string dest)
+		{
+			CreateMissingDirectoriesIfNotExist(dest);
+			File.Copy(source, dest);
+		}
+
 		public static void CopyWithOverwrite(string source, string dest)
 		{
 			if (File.Exists(dest))
@@ -29,7 +35,7 @@ namespace GothicModComposer.Utils.IOHelpers
 			}
 			else
 			{
-				CreateFileAlongWithMissingDirectories(dest);
+				CreateMissingDirectoriesIfNotExist(dest);
 				File.Copy(source, dest, true);
 			}
 
@@ -51,7 +57,7 @@ namespace GothicModComposer.Utils.IOHelpers
 			}
 			else
 			{
-				CreateFileAlongWithMissingDirectories(dest);
+				CreateMissingDirectoriesIfNotExist(dest);
 				File.Move(source, dest, true);
 			}
 
@@ -72,7 +78,13 @@ namespace GothicModComposer.Utils.IOHelpers
 		public static void SaveContent(string path, string content, Encoding encoding) 
 			=> File.WriteAllText(path, content, encoding);
 
-		private static void CreateFileAlongWithMissingDirectories(string dest) 
-			=> new FileInfo(dest).Directory?.Create();
+		private static void CreateMissingDirectoriesIfNotExist(string dest)
+		{
+			var directoryInfo = new FileInfo(dest).Directory;
+			if (directoryInfo != null && directoryInfo.Exists == false)
+			{
+				directoryInfo.Create();
+			}
+		}
 	}
 }

@@ -77,7 +77,7 @@ namespace GothicModComposer.Commands
 
 			var folderFromExtensionDirectory = Path.GetDirectoryName(extensionFileGmcBackupPath);
 			DirectoryHelper.CreateIfDoesNotExist(folderFromExtensionDirectory);
-			FileHelper.CopyWithOverwrite(extensionFileGothicPath, extensionFileGmcBackupPath);
+			FileHelper.Copy(extensionFileGothicPath, extensionFileGmcBackupPath);
 
 			ExecutedActions.Push(CommandActionIO.FileCopied(extensionFileGothicPath, extensionFileGmcBackupPath));
 		}

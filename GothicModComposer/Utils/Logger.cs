@@ -70,12 +70,10 @@ namespace GothicModComposer.Utils
 			Console.WriteLine(value);
 		}
 
-		public static void SaveLogs(string gmcFolderPath)
+		public static void SaveLogs(string logsFolderPath)
 		{
-			var logsPath = Path.Combine(gmcFolderPath, "Logs");
-
-			DirectoryHelper.CreateIfDoesNotExist(logsPath);
-			File.WriteAllLines(Path.Combine(logsPath, $"Log-{DateTime.Now:yyyy-M-ddTHH.mm.ss}.log"), Logs);
+			DirectoryHelper.CreateIfDoesNotExist(logsFolderPath);
+			File.WriteAllLines(Path.Combine(logsFolderPath, $"Log-{DateTime.Now:yyyy-M-ddTHH.mm.ss}.log"), Logs);
 		}
 	}
 }

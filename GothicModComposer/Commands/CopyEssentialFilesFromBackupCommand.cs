@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using GothicModComposer.Commands.ExecutedCommandActions;
@@ -41,9 +42,22 @@ namespace GothicModComposer.Commands
 					var relativePath = DirectoryHelper.ToRelativePath(essentialFilePath, _profile.GmcFolder.BackupWorkDataFolderPath);
 					var destinationPath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, relativePath);
 
-					FileHelper.CopyWithOverwrite(essentialFilePath, destinationPath);
+					if (FileHelper.Exists(destinationPath))
+					{
+						var tmpCommandActionBackupPath =
+							Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(destinationPath));
 
-					ExecutedActions.Push(CommandActionIO.FileCopied(essentialFilePath, destinationPath));
+						FileHelper.Copy(destinationPath, tmpCommandActionBackupPath);
+						FileHelper.CopyWithOverwrite(essentialFilePath, destinationPath);
+
+						ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(destinationPath, tmpCommandActionBackupPath));
+					}
+					else
+					{
+						FileHelper.Copy(essentialFilePath, destinationPath);
+
+						ExecutedActions.Push(CommandActionIO.FileCopied(essentialFilePath, destinationPath));
+					}
 
 					progress.Tick($"Copied {counter++} of {essentialFiles.Count} files");
 				});

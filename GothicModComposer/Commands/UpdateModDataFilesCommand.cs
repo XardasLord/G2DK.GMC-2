@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.ModFiles;
@@ -70,9 +71,23 @@ namespace GothicModComposer.Commands
 		private void CopyAssetToCompilationFolder(ModFileEntry modFileEntry)
 		{
 			var gothicWorkDataFile = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, modFileEntry.RelativePath);
-			FileHelper.CopyWithOverwrite(modFileEntry.FilePath, gothicWorkDataFile);
 
-			ExecutedActions.Push(CommandActionIO.FileCopied(modFileEntry.FilePath, gothicWorkDataFile));
+			if (FileHelper.Exists(gothicWorkDataFile))
+			{
+				var tmpCommandActionBackupPath =
+					Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(gothicWorkDataFile));
+
+				FileHelper.Copy(gothicWorkDataFile, tmpCommandActionBackupPath);
+				FileHelper.CopyWithOverwrite(modFileEntry.FilePath, gothicWorkDataFile);
+
+				ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(gothicWorkDataFile, tmpCommandActionBackupPath));
+			}
+			else
+			{
+				FileHelper.Copy(modFileEntry.FilePath, gothicWorkDataFile);
+
+				ExecutedActions.Push(CommandActionIO.FileCopied(modFileEntry.FilePath, gothicWorkDataFile));
+			}
 		}
 
 		private void ApplyBuildConfigParameters(ModFileEntry modFileEntry)

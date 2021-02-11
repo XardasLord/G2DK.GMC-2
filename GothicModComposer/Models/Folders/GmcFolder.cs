@@ -22,11 +22,13 @@ namespace GothicModComposer.Models.Folders
 		public string EssentialFilesRegexPattern => @"((Presets|Music|Video))|[\/\\](Fonts|_intern)";
 
 		private readonly List<ModFileEntry> _modFilesFromTrackerFile;
+		private readonly string _tmpCommandActionsBackupFolderPath;
 
 		private GmcFolder(string gmcFolderPath)
 		{
 			BasePath = gmcFolderPath;
 			_modFilesFromTrackerFile = GetModFilesFromTrackerFile();
+			_tmpCommandActionsBackupFolderPath = Path.Combine(BasePath, "tmpCommandActionsBackup");
 		}
 
 		public static GmcFolder CreateFromPath(string gmcFolderPath)
@@ -41,6 +43,9 @@ namespace GothicModComposer.Models.Folders
 		public bool CreateGmcFolder() => DirectoryHelper.CreateIfDoesNotExist(BasePath);
 
 		public void CreateBackupWorkDataFolder() => DirectoryHelper.CreateIfDoesNotExist(BackupWorkDataFolderPath);
+
+		public string GetTemporaryCommandActionBackupPath(string commandName)
+			=> Path.Combine(_tmpCommandActionsBackupFolderPath, commandName);
 
 		public void AddNewModFileEntryToTrackerFile(ModFileEntry modFileEntry)
 		{
