@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -20,7 +21,7 @@ namespace GothicModComposer.Models.Folders
 		public bool DoesBackupFolderExist => Directory.Exists(BackupFolderPath);
 		public string EssentialFilesRegexPattern => @"((Presets|Music|Video))|[\/\\](Fonts|_intern)";
 
-		private List<ModFileEntry> _modFilesFromTrackerFile { get; } // TODO: Expose it as IReadOnlyCollection and create backend List<> field for modification purposes
+		private readonly List<ModFileEntry> _modFilesFromTrackerFile;
 
 		private GmcFolder(string gmcFolderPath)
 		{
@@ -37,20 +38,27 @@ namespace GothicModComposer.Models.Folders
 			return instance;
 		}
 
-		public void CreateBackupWorkDataFolder() 
-			=> DirectoryHelper.CreateIfDoesNotExist(BackupWorkDataFolderPath);
+		public bool CreateGmcFolder() => DirectoryHelper.CreateIfDoesNotExist(BasePath);
+
+		public void CreateBackupWorkDataFolder() => DirectoryHelper.CreateIfDoesNotExist(BackupWorkDataFolderPath);
 
 		public void AddNewModFileEntryToTrackerFile(ModFileEntry modFileEntry)
 		{
 			modFileEntry.Timestamp = FileHelper.GetFileTimestamp(modFileEntry.FilePath);
 			_modFilesFromTrackerFile.Add(modFileEntry);
 		}
+		public void UpdateModFileEntryInTrackerFile(ModFileEntry modFileEntry)
+		{
+			modFileEntry.Timestamp = FileHelper.GetFileTimestamp(modFileEntry.FilePath);
+
+			var timestamp = FileHelper.GetFileTimestamp(modFileEntry.FilePath);
+			_modFilesFromTrackerFile.Single(x => x.FilePath == modFileEntry.FilePath).Timestamp = timestamp;
+		}
 
 		public void SaveTrackerFile()
 			=> FileHelper.SaveContent(ModFilesTrackerFilePath, JsonSerializer.Serialize(_modFilesFromTrackerFile), Encoding.Default);
 
-		public bool DeleteTrackerFileIfExist()
-			=> FileHelper.DeleteIfExists(ModFilesTrackerFilePath);
+		public bool DeleteTrackerFileIfExist() => FileHelper.DeleteIfExists(ModFilesTrackerFilePath);
 
 		public List<ModFileEntry> GetModFilesFromTrackerFile()
 		{

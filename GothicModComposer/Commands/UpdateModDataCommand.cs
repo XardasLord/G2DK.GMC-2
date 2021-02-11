@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.ModFiles;
@@ -30,19 +29,21 @@ namespace GothicModComposer.Commands
 			{
 				var modAsset = filesFromTrackerFileHelper.Find(x => x.RelativePath.Equals(modFile.RelativePath));
 
-				var operation = modAsset?.GetEntryOperation(modFile.FilePath) ?? ModFileEntryOperation.Create;
+				var operation = modAsset?.GetEntryOperationForFile(modFile.FilePath) ?? ModFileEntryOperation.Create;
 				switch (operation)
 				{
-					case ModFileEntryOperation.None:
-						return;
 					case ModFileEntryOperation.Create:
-						AddNewModFileEntry(modFile);
+						_profile.GmcFolder.AddNewModFileEntryToTrackerFile(modFile);
+						CopyAssetToCompilationFolder(modFile);
+						ApplyBuildConfigParameters(modFile);
 						return;
 					case ModFileEntryOperation.Update:
-						UpdateNewModFileEntry(modFile);
+						_profile.GmcFolder.UpdateModFileEntryInTrackerFile(modFile);
+						CopyAssetToCompilationFolder(modFile);
+						ApplyBuildConfigParameters(modFile);
 						return;
-					default:
-						throw new ArgumentOutOfRangeException(nameof(operation), "Unknown mod file entry operation type.");
+					case ModFileEntryOperation.None:
+						return;
 				}
 			});
 
@@ -55,20 +56,6 @@ namespace GothicModComposer.Commands
 		}
 
 		public void Undo() => ExecutedActions.Undo();
-
-		private void AddNewModFileEntry(ModFileEntry modFileEntry)
-		{
-			_profile.GmcFolder.AddNewModFileEntryToTrackerFile(modFileEntry);
-			CopyAssetToCompilationFolder(modFileEntry);
-			ApplyBuildConfigParameters(modFileEntry);
-		}
-
-		private void UpdateNewModFileEntry(ModFileEntry modFileEntry)
-		{
-			modFileEntry.Timestamp = FileHelper.GetFileTimestamp(modFileEntry.FilePath); // TODO: Move to ModFileEntry class
-			CopyAssetToCompilationFolder(modFileEntry);
-			ApplyBuildConfigParameters(modFileEntry);
-		}
 
 		private void CopyAssetToCompilationFolder(ModFileEntry modFileEntry)
 		{

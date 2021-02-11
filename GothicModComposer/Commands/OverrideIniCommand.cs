@@ -29,7 +29,7 @@ namespace GothicModComposer.Commands
 				return;
 			}
 
-			if (DirectoryHelper.CreateIfDoesNotExist(_profile.GmcFolder.BasePath))
+			if (_profile.GmcFolder.CreateGmcFolder())
 				ExecutedActions.Push(CommandActionIO.DirectoryCreated(_profile.GmcFolder.BasePath));
 
 			OverrideIni();

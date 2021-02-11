@@ -21,7 +21,7 @@ namespace GothicModComposer.Models.ModFiles
 		private long GetFileTimestamp()
 			=> FileHelper.GetFileTimestamp(FilePath);
 
-		public ModFileEntryOperation GetEntryOperation(string filePath) 
+		public ModFileEntryOperation GetEntryOperationForFile(string filePath) 
 			=> Timestamp < FileHelper.GetFileTimestamp(filePath)
 				? ModFileEntryOperation.Update
 				: ModFileEntryOperation.None;
