@@ -8,6 +8,8 @@ using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.Daedalus;
 using GothicModComposer.Utils.IOHelpers;
+using GothicModComposer.Utils.ProgressBar;
+using ShellProgressBar;
 
 namespace GothicModComposer.Commands
 {
@@ -66,12 +68,19 @@ namespace GothicModComposer.Commands
 		{
 			var dialogues = new List<Tuple<string, string>>();
 
-			scriptPaths.ForEach(script => {
-				dialogues.AddRange(GetMatchingDialoguesFromFile(script,
-					$"{GothicRegexHelper.MultiLineComment}|{GothicRegexHelper.SvmPattern}"));
-				dialogues.AddRange(GetMatchingDialoguesFromFile(script,
-					$"{GothicRegexHelper.MultiLineComment}|{GothicRegexHelper.AiOutputPattern}"));
-			});
+			using (var progress = new ProgressBar(scriptPaths.Count, "Updating dialogues", ProgressBarOptionsHelper.Get()))
+			{
+				var counter = 1;
+
+				scriptPaths.ForEach(script => {
+					dialogues.AddRange(GetMatchingDialoguesFromFile(script,
+						$"{GothicRegexHelper.MultiLineComment}|{GothicRegexHelper.SvmPattern}"));
+					dialogues.AddRange(GetMatchingDialoguesFromFile(script,
+						$"{GothicRegexHelper.MultiLineComment}|{GothicRegexHelper.AiOutputPattern}"));
+
+					progress.Tick($"Updated {counter++} of {scriptPaths.Count} dialogues");
+				});
+			}
 
 			Logger.Info("Svm and AI_Output count: " + dialogues.Count);
 
