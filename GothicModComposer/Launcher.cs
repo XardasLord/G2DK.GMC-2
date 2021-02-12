@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using CommandLine;
 using GothicModComposer.Builders;
 using GothicModComposer.Models;
@@ -9,8 +10,14 @@ namespace GothicModComposer
 {
 	internal class Launcher
 	{
+		[DllImport("user32.dll")]
+		public static extern bool ShowWindow(IntPtr hWnd, int cmdShow);
+
+		[STAThread]
 		private static void Main(string[] args)
 		{
+			MaximizeWindow();
+
 			Parser.Default.ParseArguments<GmcInitialParameter>(args)
 				.WithParsed(RunGmc);
 
@@ -32,6 +39,7 @@ namespace GothicModComposer
 
 				stopWatch.Stop();
 				Logger.Info($"GMC build finished. Execution time: {stopWatch.Elapsed}", true);
+				Logger.Info("You can close the application.", true);
 			}
 			catch (Exception e)
 			{
@@ -47,11 +55,17 @@ namespace GothicModComposer
 
 				stopWatch.Stop();
 				Logger.Info($"GMC undo changes finished. Execution time: {stopWatch.Elapsed}", true);
+				Logger.Info("You can close the application.", true);
 			}
 			finally
 			{
-				Logger.SaveLogs(gmcManager.GmcFolder.BasePath);
+				Logger.SaveLogs(gmcManager.GmcFolder.LogsFolderPath);
 			}
+		}
+		private static void MaximizeWindow()
+		{
+			var p = Process.GetCurrentProcess();
+			ShowWindow(p.MainWindowHandle, 3); //SW_MAXIMIZE = 3
 		}
 	}
 }
