@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using GothicModComposer.Commands.ExecutedCommandActions;
+using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.Daedalus;
@@ -15,6 +17,7 @@ namespace GothicModComposer.Commands
 		public string CommandName => "Update dialogues";
 
 		private readonly IProfile _profile;
+		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
 		public UpdateDialoguesCommand(IProfile profile) 
 			=> _profile = profile;
@@ -23,19 +26,39 @@ namespace GothicModComposer.Commands
 		{
 			var scriptFilesPaths = ScriptTreeReader.Parse(_profile.GothicFolder.GothicSrcFilePath);
 			var dialoguePopupsRecords = ReadDialoguesFromScripts(scriptFilesPaths);
+			
+			var ouBinFilePath = Path.Combine(_profile.GothicFolder.CutsceneFolderPath, "OU.BIN");
+			if (FileHelper.Exists(ouBinFilePath))
+			{
+				var tmpCommandActionBackupPath =
+					Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(ouBinFilePath));
 
-			// TODO: Make it undoable
-			FileHelper.DeleteIfExists(Path.Combine(_profile.GothicFolder.CutsceneFolderPath, "OU.BIN"));
+				FileHelper.Copy(ouBinFilePath, tmpCommandActionBackupPath);
+				FileHelper.DeleteIfExists(ouBinFilePath);
+
+				ExecutedActions.Push(CommandActionIO.FileDeleted(ouBinFilePath, tmpCommandActionBackupPath));
+			}
 
 			var ouCslPath = Path.Combine(_profile.GothicFolder.CutsceneFolderPath, "OU.CSL");
-
-			// TODO: Make it undoable
-			File.WriteAllText(ouCslPath, CslWriter.GenerateContent(dialoguePopupsRecords), EncodingHelper.GothicEncoding);
 			
+			if (FileHelper.Exists(ouCslPath))
+			{
+				var tmpCommandActionBackupPath =
+					Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(ouCslPath));
+
+				File.WriteAllText(ouCslPath, CslWriter.GenerateContent(dialoguePopupsRecords), EncodingHelper.GothicEncoding);
+				ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(ouCslPath, tmpCommandActionBackupPath));
+			}
+			else
+			{
+				File.WriteAllText(ouCslPath, CslWriter.GenerateContent(dialoguePopupsRecords), EncodingHelper.GothicEncoding);
+				ExecutedActions.Push(CommandActionIO.FileCreated(ouCslPath));
+			}
+
 			Logger.Info("Updated dialogues in OU.CSL file");
 		}
 
-		public void Undo() => Logger.Warn("Undo for this command is not implemented yet.");
+		public void Undo() => ExecutedActions.Undo();
 
 		private static List<Tuple<string, string>> ReadDialoguesFromScripts(List<string> scriptPaths)
 		{
