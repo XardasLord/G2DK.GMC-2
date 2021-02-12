@@ -25,6 +25,8 @@ namespace GothicModComposer.Utils.IOHelpers
 		{
 			CreateMissingDirectoriesIfNotExist(dest);
 			File.Copy(source, dest);
+
+			Logger.Info($"Copied file \"{source}\" ---> \"{dest}\".");
 		}
 
 		public static void CopyWithOverwrite(string source, string dest)
