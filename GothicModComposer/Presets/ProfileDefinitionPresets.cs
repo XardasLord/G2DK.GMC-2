@@ -22,6 +22,7 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.CopyEssentialAssetFilesFromBackupCommand,
 					CommandBuilderHelper.UpdateModDataFilesCommand,
 					CommandBuilderHelper.UpdateModExtensionFilesCommand,
+					CommandBuilderHelper.UpdateDialoguesCommand,
 					CommandBuilderHelper.ClearGmcTemporaryFiles
 				}
 			};
