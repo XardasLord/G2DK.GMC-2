@@ -27,6 +27,8 @@ namespace GothicModComposer.Commands.ExecutedCommandActions
 			=> new CommandActionIO(CommandActionIOType.FileCopyWithOverwrite, null, destinationPath, originalFilePathBackup);
 		public static CommandActionIO FileMoved(string sourcePath, string destinationPath)
 			=> new CommandActionIO(CommandActionIOType.FileMove, sourcePath, destinationPath);
+		public static CommandActionIO FileDeleted(string path, string originalFilePathBackup)
+			=> new CommandActionIO(CommandActionIOType.FileDelete, null, path, originalFilePathBackup);
 		public static CommandActionIO DirectoryCreated(string path)
 			=> new CommandActionIO(CommandActionIOType.DirectoryCreate, null, path);
 		public static CommandActionIO DirectoryCopied(string sourcePath, string destinationPath)
@@ -34,21 +36,11 @@ namespace GothicModComposer.Commands.ExecutedCommandActions
 		public static CommandActionIO DirectoryMoved(string sourcePath, string destinationPath)
 			=> new CommandActionIO(CommandActionIOType.DirectoryMove, sourcePath, destinationPath);
 
-
 		public static CommandActionIO DirectoryDeleted(string path)
 		{
 			var action = new CommandActionIO(CommandActionIOType.DirectoryDelete, null, path);
 
 			// TODO: For this action we need to copy deleting directory content into some tmp folder due to undo request or dispose at the end of profile processing
-
-			return action;
-		}
-		
-		public static CommandActionIO FileDeleted(string path)
-		{
-			var action = new CommandActionIO(CommandActionIOType.FileDelete, null, path);
-
-			// TODO: For this action we need to copy deleting file content into some tmp folder due to undo request or dispose at the end of profile processing
 
 			return action;
 		}
@@ -70,7 +62,7 @@ namespace GothicModComposer.Commands.ExecutedCommandActions
 					FileHelper.MoveWithOverwrite(DestinationPath, SourcePath);
 					break;
 				case CommandActionIOType.FileDelete:
-					Logger.Warn("Deleting file undo action is not implemented yet.");
+					FileHelper.CopyWithOverwrite(OriginalFilePathBackup, DestinationPath);
 					break;
 				case CommandActionIOType.DirectoryCreate:
 					DirectoryHelper.DeleteIfExists(DestinationPath);

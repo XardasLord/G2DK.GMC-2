@@ -46,6 +46,8 @@ namespace GothicModComposer.Commands
 				var tmpCommandActionBackupPath =
 					Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(ouCslPath));
 
+				FileHelper.Copy(ouCslPath, tmpCommandActionBackupPath);
+
 				File.WriteAllText(ouCslPath, CslWriter.GenerateContent(dialoguePopupsRecords), EncodingHelper.GothicEncoding);
 				ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(ouCslPath, tmpCommandActionBackupPath));
 			}

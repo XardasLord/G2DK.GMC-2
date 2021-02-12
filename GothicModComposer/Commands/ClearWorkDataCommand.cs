@@ -48,13 +48,18 @@ namespace GothicModComposer.Commands
 					progress.Tick();
 				});
 			}
-			
 
-			if (FileHelper.Exists(_profile.GmcFolder.ModFilesTrackerFilePath))
+			var modFileTrackerPath = _profile.GmcFolder.ModFilesTrackerFilePath;
+			if (FileHelper.Exists(modFileTrackerPath))
 			{
-				ExecutedActions.Push(CommandActionIO.FileDeleted(_profile.GmcFolder.ModFilesTrackerFilePath));
+				var tmpCommandActionBackupPath =
+					Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(modFileTrackerPath));
+
+				FileHelper.Copy(modFileTrackerPath, tmpCommandActionBackupPath);
 
 				_profile.GmcFolder.DeleteTrackerFileIfExist();
+
+				ExecutedActions.Push(CommandActionIO.FileDeleted(_profile.GmcFolder.ModFilesTrackerFilePath, tmpCommandActionBackupPath));
 			}
 		}
 
