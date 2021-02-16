@@ -38,6 +38,14 @@ namespace GothicModComposer.Utils
 			Console.WriteLine(value);
 		}
 
+		public static void zLog(string message)
+		{
+			var value = $"[zLog] {message}";
+			Logs.Add(value);
+			Console.ForegroundColor = ConsoleColor.White;
+			Console.WriteLine(value);
+		}
+
 		public static void StartCommand(string message)
 		{
 			var value = $"{CommandSeparator}[COMMAND] {message.ToUpper()}";

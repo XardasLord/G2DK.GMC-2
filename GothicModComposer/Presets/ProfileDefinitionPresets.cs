@@ -23,6 +23,7 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.UpdateModDataFilesCommand,
 					CommandBuilderHelper.UpdateModExtensionFilesCommand,
 					CommandBuilderHelper.UpdateDialoguesCommand,
+					CommandBuilderHelper.ExecuteGothicKillOnLoad,
 					CommandBuilderHelper.ClearGmcTemporaryFiles
 				}
 			};
