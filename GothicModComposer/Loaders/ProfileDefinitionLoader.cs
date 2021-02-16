@@ -14,7 +14,7 @@ namespace GothicModComposer.Loaders
 	{
 		private static readonly List<ProfileDefinition> ProfileDefinitions = new()
 		{
-			ProfileDefinitionPresets.GetResetProfile(),
+			ProfileDefinitionPresets.GetComposeProfile(),
 			ProfileDefinitionPresets.GetRestoreGothicProfile()
 		};
 

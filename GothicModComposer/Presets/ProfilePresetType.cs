@@ -2,7 +2,7 @@
 {
     public enum ProfilePresetType
     {
-        Reset,
+        Compose,
         RestoreGothic
     }
 }

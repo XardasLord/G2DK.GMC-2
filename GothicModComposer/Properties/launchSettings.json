@@ -2,7 +2,7 @@
   "profiles": {
     "GothicModComposer": {
       "commandName": "Project",
-      "commandLineArgs": "--path=\"F:\\Gry\\Gothic II Dzieje Khorinis - test gmc-2\\TheHistoryOfKhorinis\" --profile=Reset"
+      "commandLineArgs": "--path=\"F:\\Gry\\Gothic II Dzieje Khorinis - test gmc-2\\TheHistoryOfKhorinis\" --profile=Compose"
       //"commandLineArgs": "--path=\"F:\\Gry\\Gothic II Dzieje Khorinis - test gmc-2\\TheHistoryOfKhorinis\" --profile=RestoreGothic"
     }
   }

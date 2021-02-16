@@ -6,10 +6,10 @@ namespace GothicModComposer.Presets
 {
 	public static class ProfileDefinitionPresets
 	{
-		public static ProfileDefinition GetResetProfile()
+		public static ProfileDefinition GetComposeProfile()
 			=> new()
 			{
-				ProfileType = ProfilePresetType.Reset,
+				ProfileType = ProfilePresetType.Compose,
 				IniOverrides = new List<string>(),
 				GothicArguments = GothicArgumentsPresets.Build().ToList(),
 				ExecutionCommands = new List<string>
