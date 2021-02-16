@@ -1,14 +1,15 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.GothicSpyProcess;
+using GothicModComposer.Utils.ProgressBar;
+using ShellProgressBar;
 
 namespace GothicModComposer.Commands
 {
 	public class ExecuteGothicCommand : ICommand
 	{
-		public string CommandName => "Execute Gothic";
+		public string CommandName => "Execute Gothic2.exe";
 
 		public const string WorldLoadedMessage =
 			"Info:  1 B:     GMAN: Completed loading the world ... .... <oGameManager.cpp,#1476>";
@@ -23,6 +24,7 @@ namespace GothicModComposer.Commands
 		private readonly string _killProcessMessage;
 		private Process _gothicProcess;
 		private readonly GothicSpyProcessRunner _gothicSpyProcessRunner;
+		private IndeterminateProgressBar _progressBar;
 
 		public ExecuteGothicCommand(IProfile profile, string killProcessMessage = null)
 		{
@@ -45,22 +47,27 @@ namespace GothicModComposer.Commands
 
 			Logger.Info($"{_gothicProcess.StartInfo.FileName} {_gothicProcess.StartInfo.Arguments}", true);
 
-			_gothicProcess.Start();
-			_gothicProcess.WaitForExit();
+			using (_progressBar = new IndeterminateProgressBar($"Gothic2.exe process executed with arguments '{_gothicProcess.StartInfo.Arguments}'", ProgressBarOptionsHelper.Get()))
+			{
+				_gothicProcess.Start();
+				_gothicProcess.WaitForExit();
+
+				_progressBar.Finished();
+			}
 
 			_gothicSpyProcessRunner.Abort();
 		}
 
-		public void Undo()
-		{
-			throw new NotImplementedException();
-		}
+		public void Undo() => Logger.Warn("Undo for this command is not implemented yet.");
 
 		private void Notify(string message)
 		{
 			Logger.zLog(message);
 
-			if (_killProcessMessage == null || !message.Contains(_killProcessMessage))
+			if (_progressBar != null)
+				_progressBar.Message = message;
+
+			if (_killProcessMessage is null || !message.Contains(_killProcessMessage))
 				return;
 
 			_gothicProcess.Kill();

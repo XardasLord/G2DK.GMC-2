@@ -8,7 +8,7 @@ namespace GothicModComposer.Utils
 	public static class Logger
 	{
 		private static readonly List<string> Logs = new();
-		private static readonly string CommandSeparator = $"{Environment.NewLine}{new string('-', 90)}{Environment.NewLine}";
+		private static readonly string CommandSeparator = $"{Environment.NewLine}{new string('-', 100)}{Environment.NewLine}";
 		
 		public static void Info(string message, bool display = false)
 		{
@@ -42,8 +42,6 @@ namespace GothicModComposer.Utils
 		{
 			var value = $"[zLog] {message}";
 			Logs.Add(value);
-			Console.ForegroundColor = ConsoleColor.White;
-			Console.WriteLine(value);
 		}
 
 		public static void StartCommand(string message)
