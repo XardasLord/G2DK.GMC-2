@@ -12,6 +12,7 @@ namespace GothicModComposer.Builders
 		public const string CreateBackupCommand = nameof(CreateBackupCommand);
 		public const string OverrideIniCommand = nameof(OverrideIniCommand);
 		public const string AddDefaultWorldCommand = nameof(AddDefaultWorldCommand);
+		public const string DisableVdfFilesCommand = nameof(DisableVdfFilesCommand);
 		public const string EnableVdfFilesCommand = nameof(EnableVdfFilesCommand);
 		public const string ClearWorkDataCommand = nameof(ClearWorkDataCommand);
 		public const string CopyEssentialAssetFilesFromBackupCommand = nameof(CopyEssentialAssetFilesFromBackupCommand);
@@ -27,6 +28,7 @@ namespace GothicModComposer.Builders
 			{ CreateBackupCommand, profile => new CreateBackupCommand(profile) },
 			{ OverrideIniCommand, profile => new OverrideIniCommand(profile) },
 			{ AddDefaultWorldCommand, profile => new AddDefaultWorldCommand(profile) },
+			{ DisableVdfFilesCommand, profile => new DisableVdfFilesCommand(profile) },
 			{ EnableVdfFilesCommand, profile => new EnableVdfFilesCommand(profile) },
 			{ ClearWorkDataCommand, profile => new ClearWorkDataCommand(profile) },
 			{ CopyEssentialAssetFilesFromBackupCommand, profile => new CopyEssentialAssetFilesFromBackupCommand(profile) },

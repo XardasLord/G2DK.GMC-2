@@ -11,6 +11,7 @@ namespace GothicModComposer.Models.VdfFiles
 		public string FileNameWithoutExtension { get; }
 		public bool IsValidVdfFile { get; }
 		public bool IsDisabled { get; }
+		public bool IsEnabled { get; }
 		public bool IsBaseVdf { get; }
 
 		private readonly Regex _regex = new(VdfFileHelper.VdfFileNameRegex, RegexOptions.IgnoreCase);
@@ -26,6 +27,7 @@ namespace GothicModComposer.Models.VdfFiles
 			FileNameWithoutExtension = regexResult.Groups["FileName"].Value;
 			IsValidVdfFile = regexResult.Success;
 			IsDisabled = regexResult.Groups["Disabled"].Success;
+			IsEnabled = !IsDisabled;
 			IsBaseVdf = VdfFileHelper.IsBaseVdf(FileNameWithoutExtension);
 		}
 
