@@ -77,7 +77,7 @@ namespace GothicModComposer.Commands
 				var tmpCommandActionBackupPath =
 					Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(gothicWorkDataFile));
 
-				FileHelper.Copy(gothicWorkDataFile, tmpCommandActionBackupPath);
+				FileHelper.CopyWithOverwrite(gothicWorkDataFile, tmpCommandActionBackupPath);
 				FileHelper.CopyWithOverwrite(modFileEntry.FilePath, gothicWorkDataFile);
 
 				ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(gothicWorkDataFile, tmpCommandActionBackupPath));

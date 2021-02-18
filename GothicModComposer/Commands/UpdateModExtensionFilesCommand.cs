@@ -40,7 +40,7 @@ namespace GothicModComposer.Commands
 						var tmpCommandActionBackupPath =
 							Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(extensionRootPath));
 
-						FileHelper.Copy(extensionRootPath, tmpCommandActionBackupPath);
+						FileHelper.CopyWithOverwrite(extensionRootPath, tmpCommandActionBackupPath);
 						FileHelper.CopyWithOverwrite(extensionFilePath, extensionRootPath);
 
 						ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(extensionRootPath, tmpCommandActionBackupPath));

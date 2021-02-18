@@ -35,7 +35,7 @@ namespace GothicModComposer.Commands
 				var tmpCommandActionBackupPath =
 					Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(ouBinFilePath));
 
-				FileHelper.Copy(ouBinFilePath, tmpCommandActionBackupPath);
+				FileHelper.CopyWithOverwrite(ouBinFilePath, tmpCommandActionBackupPath);
 				FileHelper.DeleteIfExists(ouBinFilePath);
 
 				ExecutedActions.Push(CommandActionIO.FileDeleted(ouBinFilePath, tmpCommandActionBackupPath));
@@ -48,9 +48,10 @@ namespace GothicModComposer.Commands
 				var tmpCommandActionBackupPath =
 					Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(ouCslPath));
 
-				FileHelper.Copy(ouCslPath, tmpCommandActionBackupPath);
+				FileHelper.CopyWithOverwrite(ouCslPath, tmpCommandActionBackupPath);
 
 				File.WriteAllText(ouCslPath, CslWriter.GenerateContent(dialoguePopupsRecords), EncodingHelper.GothicEncoding);
+
 				ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(ouCslPath, tmpCommandActionBackupPath));
 			}
 			else
