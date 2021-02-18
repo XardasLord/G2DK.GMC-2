@@ -23,7 +23,7 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.UpdateModDataFilesCommand,
 					CommandBuilderHelper.UpdateModExtensionFilesCommand,
 					CommandBuilderHelper.UpdateDialoguesCommand,
-					CommandBuilderHelper.ExecuteGothicKillOnLoad,
+					CommandBuilderHelper.ExecuteGothicKillOnLoadCommand,
 					CommandBuilderHelper.DisableVdfFilesCommand,
 					CommandBuilderHelper.ClearGmcTemporaryFiles
 				}
@@ -37,6 +37,22 @@ namespace GothicModComposer.Presets
 				ExecutionCommands = new List<string>
 				{
 					CommandBuilderHelper.RestoreGothicBackupCommand
+				}
+			};
+
+		public static ProfileDefinition GetRunProfile()
+			=> new()
+			{
+				ProfileType = ProfilePresetType.Run,
+				GothicArguments = GothicArgumentsPresets.Debug().ToList(),
+				ExecutionCommands = new List<string>
+				{
+					CommandBuilderHelper.OverrideIniCommand,
+					CommandBuilderHelper.AddDefaultWorldCommand,
+					CommandBuilderHelper.EnableVdfFilesCommand,
+					CommandBuilderHelper.ExecuteGothicCommand,
+					CommandBuilderHelper.DisableVdfFilesCommand,
+					CommandBuilderHelper.ClearGmcTemporaryFiles
 				}
 			};
 	}

@@ -15,7 +15,8 @@ namespace GothicModComposer.Loaders
 		private static readonly List<ProfileDefinition> ProfileDefinitions = new()
 		{
 			ProfileDefinitionPresets.GetComposeProfile(),
-			ProfileDefinitionPresets.GetRestoreGothicProfile()
+			ProfileDefinitionPresets.GetRestoreGothicProfile(),
+			ProfileDefinitionPresets.GetRunProfile()
 		};
 
 		public static ProfileLoaderResponse Load(ProfilePresetType profileType, GothicFolder gothicFolder, GmcFolder gmcFolder, ModFolder modFolder, UserGmcConfiguration userGmcConfiguration)

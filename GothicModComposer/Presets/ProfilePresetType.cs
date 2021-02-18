@@ -3,6 +3,7 @@
     public enum ProfilePresetType
     {
         Compose,
-        RestoreGothic
+        RestoreGothic,
+        Run
     }
 }

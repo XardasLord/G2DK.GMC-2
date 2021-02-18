@@ -20,7 +20,8 @@ namespace GothicModComposer.Builders
 		public const string UpdateModExtensionFilesCommand = nameof(UpdateModExtensionFilesCommand);
 		public const string UpdateDialoguesCommand = nameof(UpdateDialoguesCommand);
 		public const string ClearGmcTemporaryFiles = nameof(ClearGmcTemporaryFiles);
-		public const string ExecuteGothicKillOnLoad = nameof(ExecuteGothicKillOnLoad);
+		public const string ExecuteGothicKillOnLoadCommand = nameof(ExecuteGothicKillOnLoadCommand);
+		public const string ExecuteGothicCommand = nameof(ExecuteGothicCommand);
 
 		private static readonly Dictionary<string, Func<IProfile, ICommand>> Commands = new()
 		{
@@ -36,7 +37,8 @@ namespace GothicModComposer.Builders
 			{ UpdateModExtensionFilesCommand, profile => new UpdateModExtensionFilesCommand(profile) },
 			{ UpdateDialoguesCommand, profile => new UpdateDialoguesCommand(profile) },
 			{ ClearGmcTemporaryFiles, profile => new ClearGmcTemporaryFilesCommand(profile) },
-			{ ExecuteGothicKillOnLoad, profile => new ExecuteGothicCommand(profile, ExecuteGothicCommand.WorldLoadedMessage) },
+			{ ExecuteGothicKillOnLoadCommand, profile => new ExecuteGothicCommand(profile, GothicModComposer.Commands.ExecuteGothicCommand.WorldLoadedMessage) },
+			{ ExecuteGothicCommand, profile => new ExecuteGothicCommand(profile) }
 		};
 
 
