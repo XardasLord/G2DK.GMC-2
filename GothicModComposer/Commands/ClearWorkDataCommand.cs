@@ -55,7 +55,7 @@ namespace GothicModComposer.Commands
 				var tmpCommandActionBackupPath =
 					Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(modFileTrackerPath));
 
-				FileHelper.Copy(modFileTrackerPath, tmpCommandActionBackupPath);
+				FileHelper.CopyWithOverwrite(modFileTrackerPath, tmpCommandActionBackupPath);
 
 				_profile.GmcFolder.DeleteTrackerFileIfExist();
 
