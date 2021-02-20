@@ -8,7 +8,7 @@ namespace GothicModComposer.Loaders
 {
 	public static class UserGmcConfigurationLoader
 	{
-		private const string GmcConfigurationFileName = "gmc.json";
+		private const string GmcConfigurationFileName = "gmc-2.json";
 
 		public static UserGmcConfiguration Load(string projectRootDirectory)
 		{
