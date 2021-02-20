@@ -55,5 +55,25 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.ClearGmcTemporaryFiles
 				}
 			};
+
+		public static ProfileDefinition GetUpdateProfile()
+			=> new()
+			{
+				ProfileType = ProfilePresetType.Update,
+				GothicArguments = GothicArgumentsPresets.Build().ToList(),
+				ExecutionCommands = new List<string>
+				{
+					CommandBuilderHelper.CreateBackupCommand,
+					CommandBuilderHelper.OverrideIniCommand,
+					CommandBuilderHelper.AddDefaultWorldCommand,
+					CommandBuilderHelper.EnableVdfFilesCommand,
+					CommandBuilderHelper.RemoveNotCompiledSourcesCommand,
+					//CommandBuilderHelper.UpdateModDataFilesCommand,
+					//CommandBuilderHelper.UpdateModExtensionFilesCommand,
+					//CommandBuilderHelper.UpdateDialoguesCommand,
+					//CommandBuilderHelper.ExecuteGothicKillOnLoadCommand,
+					//CommandBuilderHelper.DisableVdfFilesCommand
+				}
+			};
 	}
 }

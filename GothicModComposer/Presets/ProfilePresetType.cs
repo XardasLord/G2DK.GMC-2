@@ -4,6 +4,7 @@
     {
         Compose,
         RestoreGothic,
-        Run
+        Run,
+        Update
     }
 }

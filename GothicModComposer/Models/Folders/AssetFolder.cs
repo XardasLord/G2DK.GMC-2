@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using GothicModComposer.Presets;
 using GothicModComposer.Utils.IOHelpers;
@@ -11,6 +12,8 @@ namespace GothicModComposer.Models.Folders
 		public string AssetFolderName { get; }
 		public string CompiledFolderPath => Path.Combine(BasePath, "_compiled");
 		public AssetPresetType AssetType { get; }
+
+		public List<string> SubDirectories => DirectoryHelper.GetDirectories(BasePath);
 
 		public AssetFolder(string assetFolderPath)
 		{
