@@ -50,6 +50,7 @@ namespace GothicModComposer.Commands
 						case ModFileEntryOperation.Update:
 							_profile.GmcFolder.UpdateModFileEntryInTrackerFile(modFile);
 							CopyAssetToCompilationFolder(modFile);
+							DeleteCompiledAssetIfExists(modFile);
 							ApplyBuildConfigParameters(modFile);
 							return;
 						case ModFileEntryOperation.None:
@@ -88,6 +89,28 @@ namespace GothicModComposer.Commands
 
 				ExecutedActions.Push(CommandActionIO.FileCopied(modFileEntry.FilePath, gothicWorkDataFile));
 			}
+		}
+
+		private void DeleteCompiledAssetIfExists(ModFileEntry modFile)
+		{
+			var assetFolderPath = Path.Combine(_profile.GothicFolder.WorkDataFolderPath, modFile.AssetType.ToString());
+
+			var compiledFileName = modFile.GetCompiledFileName();
+
+			if (compiledFileName is null)
+				return;
+
+			var pathToCompiledFile = Path.Combine(assetFolderPath, "_compiled", compiledFileName);
+
+			if (!FileHelper.Exists(pathToCompiledFile))
+				return;
+
+			var tmpCommandActionBackupPath = Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), "_compiled", compiledFileName);
+
+			FileHelper.CopyWithOverwrite(pathToCompiledFile, tmpCommandActionBackupPath);
+			FileHelper.DeleteIfExists(pathToCompiledFile);
+
+			ExecutedActions.Push(CommandActionIO.FileDeleted(pathToCompiledFile, tmpCommandActionBackupPath));
 		}
 
 		private void ApplyBuildConfigParameters(ModFileEntry modFileEntry)
