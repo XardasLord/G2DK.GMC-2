@@ -52,30 +52,10 @@ namespace GothicModComposer.Commands
 
 		public void Undo() => ExecutedActions.Undo();
 
-		private string GetTmpBackupPathForDirectory(string subDirectoryPath)
-		{
-			var directoryInfo = new DirectoryInfo(subDirectoryPath);
-			var twoLastDirectories = Path.Combine(Path.GetFileName(directoryInfo.Parent.FullName), directoryInfo.Name);
-
-			var tmpCommandActionBackupPath =
-				Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), twoLastDirectories);
-
-			return tmpCommandActionBackupPath;
-		}
-
-		private string GetTmpBackupPathForFile(string filePath)
-		{
-			var fileInfo = new FileInfo(filePath);
-			var parentDirectory = Path.GetFileName(fileInfo.DirectoryName);
-
-			var tmpCommandActionBackupPath =
-				Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), parentDirectory, Path.GetFileName(filePath));
-
-			return tmpCommandActionBackupPath;
-		}
-
 		private void DeleteFiles(AssetFolder assetFolder)
 		{
+			// TODO: Refactor - introduce something like AssetSubFolder and AssetFile objects and move some of the logic there.
+
 			var filesInAssetFolder = DirectoryHelper.GetAllFilesInDirectory(assetFolder.BasePath, SearchOption.TopDirectoryOnly);
 
 			using var childProgressBar = _parentProgressBar.Spawn(filesInAssetFolder.Count, "Creating backup and delete not compiled files", ProgressBarOptionsHelper.Get());
@@ -96,7 +76,10 @@ namespace GothicModComposer.Commands
 
 		private void DeleteSubFolders(AssetFolder assetFolder)
 		{
-			var subDirectories = assetFolder.SubDirectories.Where(subDirectoryPath => !Path.GetFileName(subDirectoryPath).Equals("_compiled"));
+			var subDirectories = assetFolder
+				.SubDirectories
+				.Where(subDirectoryPath => !Path.GetFileName(subDirectoryPath).Equals("_compiled"))
+				.Where(subDirectoryPath => !Path.GetFileName(subDirectoryPath).Equals("Level"));
 
 			using var childProgressBar = _parentProgressBar.Spawn(subDirectories.Count(), "Creating backup and delete subfolders", ProgressBarOptionsHelper.Get());
 
@@ -115,6 +98,28 @@ namespace GothicModComposer.Commands
 
 				childProgressBar.Tick($"Created backup and deleted {counter++} of {subDirectories.Count()} subfolders inside '{assetFolder.AssetFolderName}' asset folder");
 			}
+		}
+
+		private string GetTmpBackupPathForDirectory(string subDirectoryPath)
+		{
+			var directoryInfo = new DirectoryInfo(subDirectoryPath);
+			var twoLastDirectories = Path.Combine(Path.GetFileName(directoryInfo.Parent.FullName), directoryInfo.Name);
+
+			var tmpCommandActionBackupPath =
+				Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), twoLastDirectories);
+
+			return tmpCommandActionBackupPath;
+		}
+
+		private string GetTmpBackupPathForFile(string filePath)
+		{
+			var fileInfo = new FileInfo(filePath);
+			var parentDirectory = Path.GetFileName(fileInfo.DirectoryName);
+
+			var tmpCommandActionBackupPath =
+				Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), parentDirectory, Path.GetFileName(filePath));
+
+			return tmpCommandActionBackupPath;
 		}
 	}
 }
