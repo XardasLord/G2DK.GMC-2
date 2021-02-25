@@ -68,11 +68,12 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.AddDefaultWorldCommand,
 					CommandBuilderHelper.EnableVdfFilesCommand,
 					CommandBuilderHelper.RemoveNotCompiledSourcesCommand,
-					//CommandBuilderHelper.UpdateModDataFilesCommand,
-					//CommandBuilderHelper.UpdateModExtensionFilesCommand,
-					//CommandBuilderHelper.UpdateDialoguesCommand,
-					//CommandBuilderHelper.ExecuteGothicKillOnLoadCommand,
-					//CommandBuilderHelper.DisableVdfFilesCommand
+					CommandBuilderHelper.UpdateModDataFilesCommand,
+					CommandBuilderHelper.UpdateModExtensionFilesCommand,
+					CommandBuilderHelper.UpdateDialoguesCommand,
+					CommandBuilderHelper.ExecuteGothicKillOnLoadCommand,
+					CommandBuilderHelper.DisableVdfFilesCommand,
+					CommandBuilderHelper.ClearGmcTemporaryFiles
 				}
 			};
 	}
