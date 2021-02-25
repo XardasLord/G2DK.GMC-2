@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.ModFiles;
@@ -18,6 +19,7 @@ namespace GothicModComposer.Commands
 
 		private readonly IProfile _profile;
 		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
+		private readonly Dictionary<ModFileEntry, ModFileEntryOperation> _modFileActions = new();
 
 		public UpdateModDataFilesCommand(IProfile profile) 
 			=> _profile = profile;
@@ -29,34 +31,61 @@ namespace GothicModComposer.Commands
 			var filesFromTrackerFileHelper = _profile.GmcFolder.GetModFilesFromTrackerFile();
 			var modFiles = _profile.ModFolder.GetAllModFiles();
 
-			using (var progress = new ProgressBar(modFiles.Count, "Updating mod files", ProgressBarOptionsHelper.Get()))
+			// TODO: Refactor
+			using (var parentProgressBar = new ProgressBar(3, "Updating mod files", ProgressBarOptionsHelper.Get()))
 			{
-				var counter = 1;
-
 				modFiles.ForEach(modFile =>
 				{
-					progress.Tick($"Copied {counter++} of {modFiles.Count} files");
-
 					var modAsset = filesFromTrackerFileHelper.Find(x => x.RelativePath.Equals(modFile.RelativePath));
 
 					var operation = modAsset?.GetEntryOperationForFile(modFile.FilePath) ?? ModFileEntryOperation.Create;
-					switch (operation)
-					{
-						case ModFileEntryOperation.Create:
-							_profile.GmcFolder.AddNewModFileEntryToTrackerFile(modFile);
-							CopyAssetToCompilationFolder(modFile);
-							ApplyBuildConfigParameters(modFile);
-							return;
-						case ModFileEntryOperation.Update:
-							_profile.GmcFolder.UpdateModFileEntryInTrackerFile(modFile);
-							CopyAssetToCompilationFolder(modFile);
-							DeleteCompiledAssetIfExists(modFile);
-							ApplyBuildConfigParameters(modFile);
-							return;
-						case ModFileEntryOperation.None:
-							return;
-					}
+
+					if (operation == ModFileEntryOperation.None)
+						return;
+
+					_modFileActions.Add(modFile, operation);
 				});
+
+				parentProgressBar.Tick();
+
+				// --------------------------
+
+				var counter = 1;
+				var modFilesToCreate = _modFileActions.Where(x => x.Value == ModFileEntryOperation.Create).ToList();
+
+				using var childProgressBarForCreate = parentProgressBar.Spawn(modFilesToCreate.Count, "Creating new mod files", ProgressBarOptionsHelper.Get());
+
+				foreach (var modFileAction in modFilesToCreate)
+				{
+					_profile.GmcFolder.AddNewModFileEntryToTrackerFile(modFileAction.Key);
+					CopyAssetToCompilationFolder(modFileAction.Key);
+					ApplyBuildConfigParameters(modFileAction.Key);
+
+					childProgressBarForCreate.Tick($"Created {counter++} of {modFilesToCreate.Count} new files");
+				}
+
+				parentProgressBar.Tick();
+
+				// --------------------------
+
+				counter = 1;
+				var modFilesToUpdate = _modFileActions.Where(x => x.Value == ModFileEntryOperation.Update).ToList();
+
+				using var childProgressBarForUpdate = parentProgressBar.Spawn(modFilesToUpdate.Count, "Updating existing mod files", ProgressBarOptionsHelper.Get());
+
+				foreach (var modFileAction in modFilesToUpdate)
+				{
+					_profile.GmcFolder.UpdateModFileEntryInTrackerFile(modFileAction.Key);
+					CopyAssetToCompilationFolder(modFileAction.Key);
+					DeleteCompiledAssetIfExists(modFileAction.Key);
+					ApplyBuildConfigParameters(modFileAction.Key);
+
+					childProgressBarForUpdate.Tick($"Updated {counter++} of {modFilesToUpdate.Count} existing files");
+				}
+
+				parentProgressBar.Tick();
+
+				// TODO: In the future we should add next step to delete also files that has been deleted from the DK repository and still exists in the game mod files
 			}
 
 			Logger.Info($"Copied all mod files to {_profile.GothicFolder.WorkDataFolderPath}", true);
