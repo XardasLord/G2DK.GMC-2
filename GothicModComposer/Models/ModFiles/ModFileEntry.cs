@@ -1,4 +1,6 @@
-﻿using GothicModComposer.Presets;
+﻿using System;
+using System.IO;
+using GothicModComposer.Presets;
 using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Models.ModFiles
@@ -25,6 +27,21 @@ namespace GothicModComposer.Models.ModFiles
 			=> Timestamp < FileHelper.GetFileTimestamp(filePath)
 				? ModFileEntryOperation.Update
 				: ModFileEntryOperation.None;
+
+		public string GetCompiledFileName()
+			=> AssetType switch
+			{
+				AssetPresetType.Textures => $"{Path.GetFileNameWithoutExtension(FilePath)}-C{Path.GetExtension(FilePath)}",
+				AssetPresetType.Meshes => $"{Path.GetFileNameWithoutExtension(FilePath)}.MRM",
+				AssetPresetType.Scripts => null, // TODO
+				AssetPresetType.Anims => null, // TODO: Parser needed from mark56
+				AssetPresetType.Music => null,
+				AssetPresetType.Presets => null,
+				AssetPresetType.Sound => null,
+				AssetPresetType.Video => null,
+				AssetPresetType.Worlds => null,
+				_ => throw new Exception("Unrecognized asset preset type.")
+			};
 	}
 
 	public enum ModFileEntryOperation

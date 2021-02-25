@@ -32,8 +32,11 @@ namespace GothicModComposer.Commands
 					var assetFolder = new AssetFolder(assetFolderPath, assetType);
 					if (assetFolder.Exists())
 					{
-						// TODO: ExecutedActions.Push(assetFolder); // We need all data that was deleted inside the assetFolder class
-						ExecutedActions.Push(CommandActionIO.DirectoryDeleted(assetFolder.BasePath));
+						var tmpCommandActionBackupPath = Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), 
+							Path.GetFileName(assetFolder.BasePath));
+
+						DirectoryHelper.Copy(assetFolder.BasePath, tmpCommandActionBackupPath);
+						ExecutedActions.Push(CommandActionIO.DirectoryDeleted(assetFolder.BasePath, tmpCommandActionBackupPath));
 
 						assetFolder.Delete();
 					}

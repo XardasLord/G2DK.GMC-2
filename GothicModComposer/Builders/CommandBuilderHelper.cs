@@ -19,6 +19,7 @@ namespace GothicModComposer.Builders
 		public const string UpdateModDataFilesCommand = nameof(UpdateModDataFilesCommand);
 		public const string UpdateModExtensionFilesCommand = nameof(UpdateModExtensionFilesCommand);
 		public const string UpdateDialoguesCommand = nameof(UpdateDialoguesCommand);
+		public const string RemoveNotCompiledSourcesCommand = nameof(RemoveNotCompiledSourcesCommand);
 		public const string ClearGmcTemporaryFiles = nameof(ClearGmcTemporaryFiles);
 		public const string ExecuteGothicKillOnLoadCommand = nameof(ExecuteGothicKillOnLoadCommand);
 		public const string ExecuteGothicCommand = nameof(ExecuteGothicCommand);
@@ -36,6 +37,7 @@ namespace GothicModComposer.Builders
 			{ UpdateModDataFilesCommand, profile => new UpdateModDataFilesCommand(profile) },
 			{ UpdateModExtensionFilesCommand, profile => new UpdateModExtensionFilesCommand(profile) },
 			{ UpdateDialoguesCommand, profile => new UpdateDialoguesCommand(profile) },
+			{ RemoveNotCompiledSourcesCommand, profile => new RemoveNotCompiledSourcesCommand(profile) },
 			{ ClearGmcTemporaryFiles, profile => new ClearGmcTemporaryFilesCommand(profile) },
 			{ ExecuteGothicKillOnLoadCommand, profile => new ExecuteGothicCommand(profile, GothicModComposer.Commands.ExecuteGothicCommand.WorldLoadedMessage) },
 			{ ExecuteGothicCommand, profile => new ExecuteGothicCommand(profile) }

@@ -22,6 +22,9 @@ namespace GothicModComposer.Utils.IOHelpers
 				? Directory.EnumerateFiles(directoryPath, "*", searchOption).ToList()
 				: new List<string>();
 
+		public static List<string> GetDirectories(string directoryPath)
+			=> Directory.GetDirectories(directoryPath).ToList();
+
 		public static bool CreateIfDoesNotExist(string path)
 		{
 			if (Directory.Exists(path))
