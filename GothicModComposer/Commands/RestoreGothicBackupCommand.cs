@@ -44,7 +44,7 @@ namespace GothicModComposer.Commands
 
 					FileHelper.MoveWithOverwrite(backupFilePath, gothicFilePath);
 
-					progress.Tick($"Restored {counter} of {backupFiles.Count} files");
+					progress.Tick($"Restored {counter++} of {backupFiles.Count} files");
 				});
 			}
 			

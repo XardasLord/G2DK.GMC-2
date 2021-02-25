@@ -44,7 +44,7 @@ namespace GothicModComposer.Presets
 			=> new()
 			{
 				ProfileType = ProfilePresetType.Run,
-				GothicArguments = GothicArgumentsPresets.Debug().ToList(),
+				GothicArguments = GothicArgumentsPresets.Run().ToList(),
 				ExecutionCommands = new List<string>
 				{
 					CommandBuilderHelper.OverrideIniCommand,
