@@ -63,6 +63,12 @@ namespace GothicModComposer.Models.Folders
 			_modFilesFromTrackerFile.Single(x => x.FilePath == modFileEntry.FilePath).Timestamp = timestamp;
 		}
 
+        public void RemoveModFileEntryFromTrackerFile(ModFileEntry modFileEntry)
+        {
+            var index = _modFilesFromTrackerFile.FindIndex(x => x.FilePath == modFileEntry.FilePath);
+            _modFilesFromTrackerFile.RemoveAt(index);
+        }
+
 		public void SaveTrackerFile()
 			=> FileHelper.SaveContent(ModFilesTrackerFilePath, JsonSerializer.Serialize(_modFilesFromTrackerFile), Encoding.Default);
 

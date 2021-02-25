@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using CommandLine;
 using GothicModComposer.Builders;
@@ -15,7 +16,8 @@ namespace GothicModComposer
 
 		[STAThread]
 		private static void Main(string[] args)
-		{
+        {
+            SetTitle();
 			MaximizeWindow();
 
 			Parser.Default.ParseArguments<GmcInitialParameter>(args)
@@ -24,7 +26,7 @@ namespace GothicModComposer
 			Console.ReadKey();
 		}
 
-		private static void RunGmc(GmcInitialParameter parameters)
+        private static void RunGmc(GmcInitialParameter parameters)
 		{
 			var stopWatch = new Stopwatch();
 
@@ -62,6 +64,14 @@ namespace GothicModComposer
 				Logger.SaveLogs(gmcManager.GmcFolder.LogsFolderPath);
 			}
 		}
+
+        private static void SetTitle()
+        {
+            var fullVersion = Assembly.GetExecutingAssembly().GetName().Version;
+
+			Console.Title = $"GMC v{fullVersion?.Major}.{fullVersion?.Minor}.{fullVersion?.Build}";
+        }
+
 		private static void MaximizeWindow()
 		{
 			var p = Process.GetCurrentProcess();
