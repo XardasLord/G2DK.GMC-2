@@ -64,13 +64,13 @@ namespace GothicModComposer.Presets
         /// <summary>Returns gothic arguments configuration with attributes:
         /// <para>--zwindowed --devmode --zlog:5,s --zres:800,600,32</para>
         /// </summary>
-        public static GothicArguments Debug()
+        public static GothicArguments Run()
         {
             return GothicArguments.Empty()
                 .ZWindow()
                 .DevMode()
-                .ZLog()
-                .ZRes();
+                .ZRes()
+                .Vdfs();
         }
 
         /// <summary>Returns gothic arguments configuration with attributes:
