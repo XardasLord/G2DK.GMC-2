@@ -172,6 +172,9 @@ namespace GothicModComposer.Commands
                 FileHelper.DeleteIfExists(gothicWorkDataFile);
 
                 ExecutedActions.Push(CommandActionIO.FileDeleted(gothicWorkDataFile, tmpCommandActionBackupPath));
+
+                DeleteCompiledAssetIfExists(modFileEntry);
+
                 return true;
             }
             else
