@@ -42,7 +42,9 @@ namespace GothicModComposer.Models.ModFiles
 				AssetPresetType.Worlds => null,
 				_ => throw new Exception("Unrecognized asset preset type.")
 			};
-	}
+
+        public bool ExistsInModFiles() => FileHelper.Exists(FilePath);
+    }
 
 	public enum ModFileEntryOperation
 	{
