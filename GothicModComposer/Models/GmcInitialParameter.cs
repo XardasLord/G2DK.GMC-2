@@ -6,14 +6,21 @@ namespace GothicModComposer.Models
 	public class GmcInitialParameter
 	{
 		[Option(
-			'p',
-			"path",
+			'm',
+			"modPath",
 			Required = true,
 			HelpText = "Absolute path to the History of Khorinis modification directory project.")]
-		public string AbsolutePathToProject { get; set; }
+        public string AbsolutePathToProject { get; set; }
+
+        [Option(
+            'g',
+            "gothic2Path",
+            Required = true,
+            HelpText = "Absolute path to the Gothic II root directory game.")]
+        public string AbsolutePathToGothic2Game { get; set; }
 
 		[Option(
-			'P',
+			'p',
 			"profile",
 			Required = true,
 			HelpText = "Profile to determine how build should be executed.")]
