@@ -30,7 +30,7 @@ namespace GothicModComposer
 		{
 			var stopWatch = new Stopwatch();
 
-			var gmcManager = GmcManagerBuilder.PrepareGmcExecutor(parameters.Profile, parameters.AbsolutePathToProject);
+			var gmcManager = GmcManagerBuilder.PrepareGmcExecutor(parameters.Profile, parameters.AbsolutePathToProject, parameters.AbsolutePathToGothic2Game);
 
 			try
 			{

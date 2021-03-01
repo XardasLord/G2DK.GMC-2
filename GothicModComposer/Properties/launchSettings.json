@@ -2,10 +2,10 @@
   "profiles": {
     "GothicModComposer": {
       "commandName": "Project",
-      //"commandLineArgs": "--path=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --profile=Compose"
-      //"commandLineArgs": "--path=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --profile=RestoreGothic",
-      //"commandLineArgs": "--path=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --profile=Run",
-      "commandLineArgs": "--path=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --profile=Update"
+      //"commandLineArgs": "--modPath=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --gothic2Path=\"F:\\Gry\\Gothic II Dzieje Khorinis\" --profile=Compose"
+      //"commandLineArgs": "--modPath=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --gothic2Path=\"F:\\Gry\\Gothic II Dzieje Khorinis\" --profile=RestoreGothic",
+      //"commandLineArgs": "--modPath=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --gothic2Path=\"F:\\Gry\\Gothic II Dzieje Khorinis\" --profile=Run",
+      "commandLineArgs": "--modPath=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --gothic2Path=\"F:\\Gry\\Gothic II Dzieje Khorinis\" --profile=Update"
     }
   }
 }
