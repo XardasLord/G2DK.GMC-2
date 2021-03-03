@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GothicModComposer.Models.Vdfs;
 
 namespace GothicModComposer.Models.Configurations
 {
@@ -6,5 +7,6 @@ namespace GothicModComposer.Models.Configurations
 	{
 		public string DefaultWorld { get; set; }
 		public List<string> IniOverrides { get; set; }
+        public GothicVdfsConfig GothicVdfsConfig { get; set; }
 	}
 }

@@ -23,8 +23,9 @@ namespace GothicModComposer.Builders
 		public const string ClearGmcTemporaryFiles = nameof(ClearGmcTemporaryFiles);
 		public const string ExecuteGothicKillOnLoadCommand = nameof(ExecuteGothicKillOnLoadCommand);
 		public const string ExecuteGothicCommand = nameof(ExecuteGothicCommand);
+		public const string BuildModFileCommand = nameof(BuildModFileCommand);
 
-		private static readonly Dictionary<string, Func<IProfile, ICommand>> Commands = new()
+        private static readonly Dictionary<string, Func<IProfile, ICommand>> Commands = new()
 		{
 			{ RestoreGothicBackupCommand, profile => new RestoreGothicBackupCommand(profile) },
 			{ CreateBackupCommand, profile => new CreateBackupCommand(profile) },
@@ -40,7 +41,8 @@ namespace GothicModComposer.Builders
 			{ RemoveNotCompiledSourcesCommand, profile => new RemoveNotCompiledSourcesCommand(profile) },
 			{ ClearGmcTemporaryFiles, profile => new ClearGmcTemporaryFilesCommand(profile) },
 			{ ExecuteGothicKillOnLoadCommand, profile => new ExecuteGothicCommand(profile, GothicModComposer.Commands.ExecuteGothicCommand.WorldLoadedMessage) },
-			{ ExecuteGothicCommand, profile => new ExecuteGothicCommand(profile) }
+			{ ExecuteGothicCommand, profile => new ExecuteGothicCommand(profile) },
+            { BuildModFileCommand, profile => new BuildModFileCommand(profile) }
 		};
 
 

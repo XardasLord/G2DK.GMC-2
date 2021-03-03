@@ -15,4 +15,8 @@
     <PackageReference Include="ShellProgressBar" Version="5.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Vdfs\" />
+  </ItemGroup>
+
 </Project>

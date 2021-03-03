@@ -17,7 +17,8 @@ namespace GothicModComposer.Loaders
 			ProfileDefinitionPresets.GetComposeProfile(),
 			ProfileDefinitionPresets.GetRestoreGothicProfile(),
 			ProfileDefinitionPresets.GetRunProfile(),
-			ProfileDefinitionPresets.GetUpdateProfile()
+			ProfileDefinitionPresets.GetUpdateProfile(),
+			ProfileDefinitionPresets.GetBuildModFileProfile()
 		};
 
 		public static ProfileLoaderResponse Load(ProfilePresetType profileType, GothicFolder gothicFolder, GmcFolder gmcFolder, ModFolder modFolder, UserGmcConfiguration userGmcConfiguration)
@@ -30,11 +31,13 @@ namespace GothicModComposer.Loaders
 				GmcFolder = gmcFolder,
 				ModFolder = modFolder,
 				DefaultWorld = userGmcConfiguration.DefaultWorld
-							   ?? profileDefinition.DefaultWorld ??
-							   throw new DefaultWorldNotFoundException(),
-				IniOverrides = userGmcConfiguration.IniOverrides
-							   ?? profileDefinition.IniOverrides
+							   ?? profileDefinition.DefaultWorld 
+                               ?? throw new DefaultWorldNotFoundException(),
+				IniOverrides = userGmcConfiguration.IniOverrides 
+                               ?? profileDefinition.IniOverrides
 							   ?? new List<string>(),
+				GothicVdfsConfig = userGmcConfiguration.GothicVdfsConfig 
+								   ?? throw new VdfsGothicConfigurationNotFoundException(),
 				GothicArguments = GothicArgumentsHelper.ParseGothicArguments(profileDefinition.GothicArguments)
 			};
 
