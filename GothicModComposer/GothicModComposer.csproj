@@ -6,8 +6,8 @@
     <UseWindowsForms>true</UseWindowsForms>
     <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
     <AssemblyName>GMC-2</AssemblyName>
-    <AssemblyVersion>0.0.3.0</AssemblyVersion>
-    <Version>0.0.3</Version>
+    <AssemblyVersion>0.0.4.0</AssemblyVersion>
+    <Version>0.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
