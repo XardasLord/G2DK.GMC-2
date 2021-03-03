@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GothicModComposer.Models.Folders;
+using GothicModComposer.Models.Vdfs;
 
 namespace GothicModComposer.Models.Profiles
 {
@@ -11,6 +12,7 @@ namespace GothicModComposer.Models.Profiles
 		public string DefaultWorld { get; set; }
 		public List<string> IniOverrides { get; set; }
 		public GothicArguments GothicArguments { get; set; }
+        public GothicVdfsConfig GothicVdfsConfig { get; set; }
 	}
 
 	public interface IProfile
@@ -21,5 +23,6 @@ namespace GothicModComposer.Models.Profiles
 		string DefaultWorld { get; set; }
 		List<string> IniOverrides { get; set; }
 		GothicArguments GothicArguments { get; set; }
+		GothicVdfsConfig GothicVdfsConfig { get; set; }
 	}
 }

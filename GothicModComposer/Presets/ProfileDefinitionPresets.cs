@@ -4,7 +4,7 @@ using GothicModComposer.Models.Profiles;
 
 namespace GothicModComposer.Presets
 {
-	public static class ProfileDefinitionPresets
+    public static class ProfileDefinitionPresets
 	{
 		public static ProfileDefinition GetComposeProfile()
 			=> new()
@@ -76,5 +76,16 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.ClearGmcTemporaryFiles
 				}
 			};
-	}
+
+        public static ProfileDefinition GetBuildModFileProfile()
+            => new()
+            {
+                ProfileType = ProfilePresetType.BuildModFile,
+                GothicArguments = GothicArgumentsPresets.Default().ToList(),
+                ExecutionCommands = new List<string>
+                {
+                    CommandBuilderHelper.BuildModFileCommand
+				}
+            };
+    }
 }

@@ -5,6 +5,7 @@
         Compose,
         RestoreGothic,
         Run,
-        Update
+        Update,
+        BuildModFile
     }
 }
