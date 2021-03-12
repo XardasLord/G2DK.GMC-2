@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Profiles;
@@ -73,7 +74,8 @@ namespace GothicModComposer.Commands
 			{
 				var counter = 1;
 
-				scriptPaths.ForEach(script => {
+				Parallel.ForEach(scriptPaths, script =>
+                {
 					dialogues.AddRange(GetMatchingDialoguesFromFile(script,
 						$"{GothicRegexHelper.MultiLineComment}|{GothicRegexHelper.SvmPattern}"));
 					dialogues.AddRange(GetMatchingDialoguesFromFile(script,
