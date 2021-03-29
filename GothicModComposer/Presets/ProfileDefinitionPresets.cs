@@ -78,7 +78,18 @@ namespace GothicModComposer.Presets
 				}
 			};
 
-        public static ProfileDefinition GetBuildModFileProfile()
+        public static ProfileDefinition GetEnableVDFProfile()
+            => new()
+            {
+                ProfileType = ProfilePresetType.EnableVDF,
+                GothicArguments = GothicArgumentsPresets.Default().ToList(),
+                ExecutionCommands = new List<string>
+                {
+                    CommandBuilderHelper.EnableVdfFilesCommand
+                }
+            };
+
+		public static ProfileDefinition GetBuildModFileProfile()
             => new()
             {
                 ProfileType = ProfilePresetType.BuildModFile,

@@ -6,7 +6,8 @@
       //"commandLineArgs": "--modPath=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --gothic2Path=\"F:\\Gry\\Gothic II Dzieje Khorinis\" --profile=RestoreGothic",
       //"commandLineArgs": "--modPath=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --gothic2Path=\"F:\\Gry\\Gothic II Dzieje Khorinis\" --profile=Run",
       //"commandLineArgs": "--modPath=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --gothic2Path=\"F:\\Gry\\Gothic II Dzieje Khorinis\" --profile=Update",
-      "commandLineArgs": "--modPath=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --gothic2Path=\"F:\\Gry\\Gothic II Dzieje Khorinis\" --profile=BuildModFile"
+      //"commandLineArgs": "--modPath=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --gothic2Path=\"F:\\Gry\\Gothic II Dzieje Khorinis\" --profile=BuildModFile",
+      "commandLineArgs": "--modPath=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --gothic2Path=\"F:\\Gry\\Gothic II Dzieje Khorinis\" --profile=EnableVDF"
     }
   }
 }
