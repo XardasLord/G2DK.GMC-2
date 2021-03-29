@@ -208,6 +208,17 @@ namespace GothicModComposer.Commands
 
 		private void ApplyBuildConfigParameters(ModFileEntry modFileEntry)
 		{
+            if (_profile.GothicArguments.Contains(GothicArguments.ZConvertAllParameter))
+            {
+                if (_profile.GothicArguments.Contains(GothicArguments.ZReparseParameter))
+                    _profile.GothicArguments.RemoveArg(GothicArguments.ZReparseParameter);
+
+                if (_profile.GothicArguments.Contains(GothicArguments.ZTexConvertParameter))
+                    _profile.GothicArguments.RemoveArg(GothicArguments.ZTexConvertParameter);
+
+				return;
+            }
+
 			switch (modFileEntry.AssetType)
 			{
 				case AssetPresetType.Anims:

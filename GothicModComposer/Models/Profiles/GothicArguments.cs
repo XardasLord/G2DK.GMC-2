@@ -6,7 +6,11 @@ namespace GothicModComposer.Models.Profiles
 {
     public class GothicArguments
     {
-	    private readonly Dictionary<string, string> _gothicArguments;
+        public const string ZConvertAllParameter = "ZCONVERTALL";
+        public const string ZReparseParameter = "ZREPARSE";
+        public const string ZTexConvertParameter = "ZTEXCONVERT";
+
+        private readonly Dictionary<string, string> _gothicArguments;
 
         private GothicArguments()
         {
@@ -18,15 +22,16 @@ namespace GothicModComposer.Models.Profiles
             _gothicArguments = new Dictionary<string, string>((IDictionary<string, string>)args);
         }
 
+        public bool Contains(string parameter)
+            => _gothicArguments.ContainsKey(parameter);
+
         public void SetArg(string argument, string value = null)
         {
             _gothicArguments[argument.ToUpper()] = value;
         }
 
         public bool RemoveArg(string argument)
-        {
-            return _gothicArguments.Remove(argument.ToUpper());
-        }
+            => _gothicArguments.Remove(argument.ToUpper());
 
         public static GothicArguments operator +(GothicArguments o1, GothicArguments o2)
         {
