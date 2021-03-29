@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 
 namespace GothicModComposer.Utils.IOHelpers
 {
@@ -9,6 +10,13 @@ namespace GothicModComposer.Utils.IOHelpers
         public static string GenerateContent(List<Tuple<string, string>> dialogues)
         {
             var builder = new StringBuilder();
+
+            if (dialogues is null)
+            {
+                Logger.Warn("Dialogues list in CslWriter is null.");
+                return string.Empty;
+            }
+
             AppendHeader(builder, dialogues.Count);
             AppendDialoguePopups(builder, dialogues);
             AppendEnd(builder);
@@ -41,6 +49,18 @@ namespace GothicModComposer.Utils.IOHelpers
 
         private static void AppendOneDialogueBlock(StringBuilder builder, Tuple<string, string> tuple, int number)
         {
+            if (tuple.Item1 is null)
+            {
+                Logger.Warn($"Key (Item1) in dialogues list is null: {JsonSerializer.Serialize(tuple)}");
+                return;
+            }
+
+            if (tuple.Item2 is null)
+            {
+                Logger.Warn($"Translation (Item2) in dialogues list is null: {JsonSerializer.Serialize(tuple)}");
+                return;
+            }
+
             builder
                 .AppendLine($"\t[% zCCSBlock 0 {number}]")
                 .AppendLine($"\t\tblockName=string:{tuple.Item1}")
