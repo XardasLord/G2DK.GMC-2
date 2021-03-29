@@ -6,6 +6,7 @@
         RestoreGothic,
         Run,
         Update,
-        BuildModFile
+        BuildModFile,
+        EnableVDF
     }
 }
