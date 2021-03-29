@@ -37,7 +37,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [0.0.1] (2021-02-25)
 ### Added
 - First official release of new GMC-2 tool.
-<<<<<<< HEAD
 
 [1.0.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.1
 [1.0.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.0
@@ -46,5 +45,3 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [0.0.3]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/0.0.3
 [0.0.2]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/0.0.2
 [0.0.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/0.0.1
-=======
->>>>>>> master
