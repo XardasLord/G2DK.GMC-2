@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## 1.0.1 (2021-03-29)
+### Added
+- Added `EnableVDF` profile.
+- Handled null reference exception in CslWriter.
+- Additional logging in case of unexpected exception in updating dialogues command.
+
 ## 1.0.0 (2021-03-26)
 ### Added
 - Removing uncompiled assets (from Textures and Meshes folders) on `RunMod.bat` profile.
