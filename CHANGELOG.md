@@ -1,8 +1,13 @@
-
 # Changelog
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+
+## [1.0.1] (2021-03-29)
+### Added
+- Added `EnableVDF` profile.
+- Handled null reference exception in CslWriter.
+- Additional logging in case of unexpected exception in updating dialogues command.
 
 ## [1.0.0] (2021-03-26)
 ### Added
@@ -32,10 +37,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [0.0.1] (2021-02-25)
 ### Added
 - First official release of new GMC-2 tool.
+<<<<<<< HEAD
 
+[1.0.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.1
 [1.0.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.0
 [0.0.5]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/0.0.5
 [0.0.4]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/0.0.4
 [0.0.3]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/0.0.3
 [0.0.2]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/0.0.2
 [0.0.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/0.0.1
+=======
+>>>>>>> master
