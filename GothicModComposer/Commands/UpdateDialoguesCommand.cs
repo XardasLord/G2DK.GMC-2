@@ -22,21 +22,31 @@ namespace GothicModComposer.Commands
 		private readonly IProfile _profile;
 		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
-		public UpdateDialoguesCommand(IProfile profile) 
+        private const string OuCslFileName = "OU.CSL";
+        private const string OuBinFileName = "OU.BIN";
+
+        public UpdateDialoguesCommand(IProfile profile) 
 			=> _profile = profile;
 
 		public void Execute()
 		{
             if (!_profile.UpdateDialoguesStepRequired)
             {
-				Logger.Info("Update dialogues is not required.", true);
-				return;
+                if (!FileHelper.Exists(Path.Combine(_profile.GothicFolder.CutsceneFolderPath, OuCslFileName)))
+                {
+                    Logger.Warn("Update dialogues is not required, but OU.CSL file does not exist so this step is needed.");
+				}
+                else
+				{
+					Logger.Info("Update dialogues is not required, so this step can be skipped.", true);
+                    return;
+				}
             }
 
-			var scriptFilesPaths = ScriptTreeReader.Parse(_profile.GothicFolder.GothicSrcFilePath);
+            var scriptFilesPaths = ScriptTreeReader.Parse(_profile.GothicFolder.GothicSrcFilePath);
 			var dialoguePopupsRecords = ReadDialoguesFromScripts(scriptFilesPaths);
 			
-			var ouBinFilePath = Path.Combine(_profile.GothicFolder.CutsceneFolderPath, "OU.BIN");
+			var ouBinFilePath = Path.Combine(_profile.GothicFolder.CutsceneFolderPath, OuBinFileName);
 			if (FileHelper.Exists(ouBinFilePath))
 			{
 				var tmpCommandActionBackupPath =
@@ -48,7 +58,7 @@ namespace GothicModComposer.Commands
 				ExecutedActions.Push(CommandActionIO.FileDeleted(ouBinFilePath, tmpCommandActionBackupPath));
 			}
 
-			var ouCslPath = Path.Combine(_profile.GothicFolder.CutsceneFolderPath, "OU.CSL");
+			var ouCslPath = Path.Combine(_profile.GothicFolder.CutsceneFolderPath, OuCslFileName);
 			
 			if (FileHelper.Exists(ouCslPath))
 			{
