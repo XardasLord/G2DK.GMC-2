@@ -28,6 +28,7 @@ namespace GothicModComposer
 
         private static void RunGmc(GmcInitialParameter parameters)
 		{
+            var fullVersion = Assembly.GetExecutingAssembly().GetName().Version;
 			var stopWatch = new Stopwatch();
 
 			var gmcManager = GmcManagerBuilder.PrepareGmcExecutor(parameters.Profile, parameters.AbsolutePathToProject, parameters.AbsolutePathToGothic2Game);
@@ -35,6 +36,7 @@ namespace GothicModComposer
 			try
 			{
 				stopWatch.Start();
+                Logger.Info($"GMC v{fullVersion?.Major}.{fullVersion?.Minor}.{fullVersion?.Build}", true);
 				Logger.Info($"GMC build with profile {parameters.Profile} started...", true);
 
 				gmcManager.Run();
