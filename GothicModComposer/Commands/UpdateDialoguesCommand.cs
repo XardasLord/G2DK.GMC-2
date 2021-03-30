@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GothicModComposer.Commands.ExecutedCommandActions;
@@ -35,12 +36,12 @@ namespace GothicModComposer.Commands
                 if (!FileHelper.Exists(Path.Combine(_profile.GothicFolder.CutsceneFolderPath, OuCslFileName)))
                 {
                     Logger.Warn("Update dialogues is not required, but OU.CSL file does not exist so this step is needed.");
-				}
+                }
                 else
-				{
-					Logger.Info("Update dialogues is not required, so this step can be skipped.", true);
+                {
+                    Logger.Info("Update dialogues is not required, so this step can be skipped.", true);
                     return;
-				}
+                }
             }
 
             var scriptFilesPaths = ScriptTreeReader.Parse(_profile.GothicFolder.GothicSrcFilePath);
@@ -67,7 +68,9 @@ namespace GothicModComposer.Commands
 
 				FileHelper.CopyWithOverwrite(ouCslPath, tmpCommandActionBackupPath);
 
+                Logger.Info("Generating OU.CSL file started.");
 				File.WriteAllText(ouCslPath, CslWriter.GenerateContent(dialoguePopupsRecords), EncodingHelper.GothicEncoding);
+                Logger.Info("Generating OU.CSL file completed.");
 
 				ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(ouCslPath, tmpCommandActionBackupPath));
 			}
@@ -77,7 +80,7 @@ namespace GothicModComposer.Commands
 				ExecutedActions.Push(CommandActionIO.FileCreated(ouCslPath));
 			}
 
-			Logger.Info("Updated dialogues in OU.CSL file");
+			Logger.Info("Updated dialogues in OU.CSL file.");
 		}
 
 		public void Undo() => ExecutedActions.Undo();
