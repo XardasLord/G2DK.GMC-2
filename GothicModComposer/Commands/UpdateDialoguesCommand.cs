@@ -27,6 +27,12 @@ namespace GothicModComposer.Commands
 
 		public void Execute()
 		{
+            if (!_profile.UpdateDialoguesStepRequired)
+            {
+				Logger.Info("Update dialogues is not required.", true);
+				return;
+            }
+
 			var scriptFilesPaths = ScriptTreeReader.Parse(_profile.GothicFolder.GothicSrcFilePath);
 			var dialoguePopupsRecords = ReadDialoguesFromScripts(scriptFilesPaths);
 			

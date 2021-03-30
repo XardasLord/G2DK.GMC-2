@@ -13,7 +13,8 @@ namespace GothicModComposer.Models.Profiles
 		public List<string> IniOverrides { get; set; }
 		public GothicArguments GothicArguments { get; set; }
         public GothicVdfsConfig GothicVdfsConfig { get; set; }
-	}
+        public bool UpdateDialoguesStepRequired { get; set; }
+    }
 
 	public interface IProfile
 	{
@@ -24,5 +25,6 @@ namespace GothicModComposer.Models.Profiles
 		List<string> IniOverrides { get; set; }
 		GothicArguments GothicArguments { get; set; }
 		GothicVdfsConfig GothicVdfsConfig { get; set; }
+        public bool UpdateDialoguesStepRequired { get; set; }
 	}
 }
