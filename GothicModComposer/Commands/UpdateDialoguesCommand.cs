@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GothicModComposer.Commands.ExecutedCommandActions;
@@ -22,15 +23,31 @@ namespace GothicModComposer.Commands
 		private readonly IProfile _profile;
 		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
-		public UpdateDialoguesCommand(IProfile profile) 
+        private const string OuCslFileName = "OU.CSL";
+        private const string OuBinFileName = "OU.BIN";
+
+        public UpdateDialoguesCommand(IProfile profile) 
 			=> _profile = profile;
 
 		public void Execute()
 		{
-			var scriptFilesPaths = ScriptTreeReader.Parse(_profile.GothicFolder.GothicSrcFilePath);
+            if (!_profile.UpdateDialoguesStepRequired)
+            {
+                if (!FileHelper.Exists(Path.Combine(_profile.GothicFolder.CutsceneFolderPath, OuCslFileName)))
+                {
+                    Logger.Warn("Update dialogues is not required, but OU.CSL file does not exist so this step is needed.");
+                }
+                else
+                {
+                    Logger.Info("Update dialogues is not required, so this step can be skipped.", true);
+                    return;
+                }
+            }
+
+            var scriptFilesPaths = ScriptTreeReader.Parse(_profile.GothicFolder.GothicSrcFilePath);
 			var dialoguePopupsRecords = ReadDialoguesFromScripts(scriptFilesPaths);
 			
-			var ouBinFilePath = Path.Combine(_profile.GothicFolder.CutsceneFolderPath, "OU.BIN");
+			var ouBinFilePath = Path.Combine(_profile.GothicFolder.CutsceneFolderPath, OuBinFileName);
 			if (FileHelper.Exists(ouBinFilePath))
 			{
 				var tmpCommandActionBackupPath =
@@ -42,7 +59,7 @@ namespace GothicModComposer.Commands
 				ExecutedActions.Push(CommandActionIO.FileDeleted(ouBinFilePath, tmpCommandActionBackupPath));
 			}
 
-			var ouCslPath = Path.Combine(_profile.GothicFolder.CutsceneFolderPath, "OU.CSL");
+			var ouCslPath = Path.Combine(_profile.GothicFolder.CutsceneFolderPath, OuCslFileName);
 			
 			if (FileHelper.Exists(ouCslPath))
 			{
@@ -51,7 +68,9 @@ namespace GothicModComposer.Commands
 
 				FileHelper.CopyWithOverwrite(ouCslPath, tmpCommandActionBackupPath);
 
+                Logger.Info("Generating OU.CSL file started.");
 				File.WriteAllText(ouCslPath, CslWriter.GenerateContent(dialoguePopupsRecords), EncodingHelper.GothicEncoding);
+                Logger.Info("Generating OU.CSL file completed.");
 
 				ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(ouCslPath, tmpCommandActionBackupPath));
 			}
@@ -61,7 +80,7 @@ namespace GothicModComposer.Commands
 				ExecutedActions.Push(CommandActionIO.FileCreated(ouCslPath));
 			}
 
-			Logger.Info("Updated dialogues in OU.CSL file");
+			Logger.Info("Updated dialogues in OU.CSL file.");
 		}
 
 		public void Undo() => ExecutedActions.Undo();

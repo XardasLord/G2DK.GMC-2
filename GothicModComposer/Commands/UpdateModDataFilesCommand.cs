@@ -227,6 +227,10 @@ namespace GothicModComposer.Commands
 					break;
 				case AssetPresetType.Scripts:
 					_profile.GothicArguments.ZReparse();
+                    if (modFileEntry.FilePath.Contains(@"Content\Story\Dialoge"))
+                    {
+                        _profile.UpdateDialoguesStepRequired = true;
+                    }
 					break;
 				case AssetPresetType.Textures:
 					_profile.GothicArguments.ZTexConvert();

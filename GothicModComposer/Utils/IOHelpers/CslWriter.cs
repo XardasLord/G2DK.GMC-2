@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace GothicModComposer.Utils.IOHelpers
 {
-	public static class CslWriter
+    public static class CslWriter
     {
         public static string GenerateContent(List<Tuple<string, string>> dialogues)
         {
@@ -20,6 +20,7 @@ namespace GothicModComposer.Utils.IOHelpers
             AppendHeader(builder, dialogues.Count);
             AppendDialoguePopups(builder, dialogues);
             AppendEnd(builder);
+
             return builder.ToString();
         }
 
@@ -49,6 +50,12 @@ namespace GothicModComposer.Utils.IOHelpers
 
         private static void AppendOneDialogueBlock(StringBuilder builder, Tuple<string, string> tuple, int number)
         {
+            if (tuple is null)
+            {
+                Logger.Warn($"Element in list is null for [% zCCSBlock 0 {number}]");
+                return;
+            }
+
             if (tuple.Item1 is null)
             {
                 Logger.Warn($"Key (Item1) in dialogues list is null: {JsonSerializer.Serialize(tuple)}");
