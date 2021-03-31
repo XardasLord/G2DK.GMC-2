@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.0.3] (2021-03-31)
+### Added
+- GMC version is now visible in log files.
+
+### Fixed
+- UpdateDialogues condition is now properly set.
+- GMC Compose compilation crash due to missing `MUSIC.DAT` file under `Scripts/_compiled` directory.
+
 ## [1.0.2] (2021-03-30)
 ### Added
 - Update dialogues step is executed only if needed.
@@ -45,6 +53,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.0.3]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.3
 [1.0.2]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.2
 [1.0.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.1
 [1.0.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.0
