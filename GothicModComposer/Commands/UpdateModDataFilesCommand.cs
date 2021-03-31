@@ -208,23 +208,26 @@ namespace GothicModComposer.Commands
 
 		private void ApplyBuildConfigParameters(ModFileEntry modFileEntry)
 		{
-            if (modFileEntry.AssetType == AssetPresetType.Scripts && modFileEntry.FilePath.Contains(@"Content\Story\Dialoge"))
+            if (_profile.UpdateDialoguesStepRequired == false 
+                && modFileEntry.AssetType == AssetPresetType.Scripts 
+                && modFileEntry.FilePath.Contains(@"Content\Story\Dialoge"))
             {
                 _profile.UpdateDialoguesStepRequired = true;
             }
 
-			if (_profile.GothicArguments.Contains(GothicArguments.ZConvertAllParameter))
-            {
-                if (_profile.GothicArguments.Contains(GothicArguments.ZReparseParameter))
-                    _profile.GothicArguments.RemoveArg(GothicArguments.ZReparseParameter);
+            // TODO: This one 'optimization' causes GMC compilation crash, due to missing MUSIC.DAT under 'Scripts/_compiled' directory
+            //if (_profile.GothicArguments.Contains(GothicArguments.ZConvertAllParameter))
+            //{
+            //    if (_profile.GothicArguments.Contains(GothicArguments.ZReparseParameter))
+            //        _profile.GothicArguments.RemoveArg(GothicArguments.ZReparseParameter);
 
-                if (_profile.GothicArguments.Contains(GothicArguments.ZTexConvertParameter))
-                    _profile.GothicArguments.RemoveArg(GothicArguments.ZTexConvertParameter);
+            //    if (_profile.GothicArguments.Contains(GothicArguments.ZTexConvertParameter))
+            //        _profile.GothicArguments.RemoveArg(GothicArguments.ZTexConvertParameter);
 
-				return;
-            }
+            //    return;
+            //}
 
-			switch (modFileEntry.AssetType)
+            switch (modFileEntry.AssetType)
 			{
 				case AssetPresetType.Anims:
 				case AssetPresetType.Meshes:
