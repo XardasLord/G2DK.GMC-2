@@ -68,22 +68,21 @@ namespace GothicModComposer.Commands
 
 				FileHelper.CopyWithOverwrite(ouCslPath, tmpCommandActionBackupPath);
 
-                Logger.Info("Generating OU.CSL file started.");
-				File.WriteAllText(ouCslPath, CslWriter.GenerateContent(dialoguePopupsRecords), EncodingHelper.GothicEncoding);
-                Logger.Info("Generating OU.CSL file completed.");
+                GenerateOuCslFile(ouCslPath, dialoguePopupsRecords);
 
-				ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(ouCslPath, tmpCommandActionBackupPath));
+                ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(ouCslPath, tmpCommandActionBackupPath));
 			}
 			else
 			{
-				File.WriteAllText(ouCslPath, CslWriter.GenerateContent(dialoguePopupsRecords), EncodingHelper.GothicEncoding);
+                GenerateOuCslFile(ouCslPath, dialoguePopupsRecords);
+
 				ExecutedActions.Push(CommandActionIO.FileCreated(ouCslPath));
 			}
 
 			Logger.Info("Updated dialogues in OU.CSL file.");
 		}
 
-		public void Undo() => ExecutedActions.Undo();
+        public void Undo() => ExecutedActions.Undo();
 
 		private static List<Tuple<string, string>> ReadDialoguesFromScripts(List<string> scriptPaths)
 		{
@@ -125,5 +124,14 @@ namespace GothicModComposer.Commands
 
 			return list;
 		}
+
+        private static void GenerateOuCslFile(string ouCslPath, List<Tuple<string, string>> dialoguePopupsRecords)
+        {
+            Logger.Info("Generating OU.CSL file started.");
+
+            File.WriteAllText(ouCslPath, CslWriter.GenerateContent(dialoguePopupsRecords), EncodingHelper.GothicEncoding);
+
+            Logger.Info("Generating OU.CSL file completed.");
+        }
 	}
 }

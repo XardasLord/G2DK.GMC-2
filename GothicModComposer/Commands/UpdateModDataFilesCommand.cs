@@ -208,18 +208,26 @@ namespace GothicModComposer.Commands
 
 		private void ApplyBuildConfigParameters(ModFileEntry modFileEntry)
 		{
-            if (_profile.GothicArguments.Contains(GothicArguments.ZConvertAllParameter))
+            if (_profile.UpdateDialoguesStepRequired == false 
+                && modFileEntry.AssetType == AssetPresetType.Scripts 
+                && modFileEntry.FilePath.Contains(@"Content\Story\Dialoge"))
             {
-                if (_profile.GothicArguments.Contains(GothicArguments.ZReparseParameter))
-                    _profile.GothicArguments.RemoveArg(GothicArguments.ZReparseParameter);
-
-                if (_profile.GothicArguments.Contains(GothicArguments.ZTexConvertParameter))
-                    _profile.GothicArguments.RemoveArg(GothicArguments.ZTexConvertParameter);
-
-				return;
+                _profile.UpdateDialoguesStepRequired = true;
             }
 
-			switch (modFileEntry.AssetType)
+            // TODO: This one 'optimization' causes GMC compilation crash, due to missing MUSIC.DAT under 'Scripts/_compiled' directory
+            //if (_profile.GothicArguments.Contains(GothicArguments.ZConvertAllParameter))
+            //{
+            //    if (_profile.GothicArguments.Contains(GothicArguments.ZReparseParameter))
+            //        _profile.GothicArguments.RemoveArg(GothicArguments.ZReparseParameter);
+
+            //    if (_profile.GothicArguments.Contains(GothicArguments.ZTexConvertParameter))
+            //        _profile.GothicArguments.RemoveArg(GothicArguments.ZTexConvertParameter);
+
+            //    return;
+            //}
+
+            switch (modFileEntry.AssetType)
 			{
 				case AssetPresetType.Anims:
 				case AssetPresetType.Meshes:
@@ -227,10 +235,6 @@ namespace GothicModComposer.Commands
 					break;
 				case AssetPresetType.Scripts:
 					_profile.GothicArguments.ZReparse();
-                    if (modFileEntry.FilePath.Contains(@"Content\Story\Dialoge"))
-                    {
-                        _profile.UpdateDialoguesStepRequired = true;
-                    }
 					break;
 				case AssetPresetType.Textures:
 					_profile.GothicArguments.ZTexConvert();
