@@ -11,7 +11,11 @@ namespace GothicModComposer.Commands
 		public ClearGmcTemporaryFilesCommand(IProfile profile) 
 			=> _profile = profile;
 
-		public void Execute() => _profile.GmcFolder.DeleteTemporaryFiles();
+        public void Execute()
+        {
+            _profile.GmcFolder.DeleteTemporaryFiles();
+			_profile.GothicFolder.DeleteGmcIni();
+		}
 
 		public void Undo() => Logger.Info("Undo of this command is not available.", true);
 	}
