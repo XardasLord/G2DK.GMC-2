@@ -235,6 +235,10 @@ namespace GothicModComposer.Commands
 					break;
 				case AssetPresetType.Scripts:
 					_profile.GothicArguments.ZReparse();
+
+                    if (modFileEntry.FilePath.Contains(@"System\VisualFX"))
+                        _profile.GothicArguments.ReparseVis();
+
 					break;
 				case AssetPresetType.Textures:
 					_profile.GothicArguments.ZTexConvert();
