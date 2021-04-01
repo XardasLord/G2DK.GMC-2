@@ -44,6 +44,14 @@ namespace GothicModComposer.Models.ModFiles
 			};
 
         public bool ExistsInModFiles() => FileHelper.Exists(FilePath);
+
+        public bool DoesNeedGothicCompilation() => AssetType != AssetPresetType.Sound
+                                             && AssetType != AssetPresetType.Music
+                                             && AssetType != AssetPresetType.Video
+                                             && !FilePath.Contains(@"Meshes\Level");
+
+        public bool DoesNeedDialoguesUpdate() => AssetType == AssetPresetType.Scripts
+                                                 && FilePath.Contains(@"Content\Story\Dialoge");
     }
 
 	public enum ModFileEntryOperation

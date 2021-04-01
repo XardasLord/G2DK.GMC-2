@@ -39,7 +39,8 @@ namespace GothicModComposer.Loaders
 							   ?? new List<string>(),
 				GothicVdfsConfig = userGmcConfiguration.GothicVdfsConfig 
 								   ?? throw new VdfsGothicConfigurationNotFoundException(),
-				GothicArguments = GothicArgumentsHelper.ParseGothicArguments(profileDefinition.GothicArguments)
+				GothicArguments = GothicArgumentsHelper.ParseGothicArguments(profileDefinition.GothicArguments),
+				CommandsConditions = new CommandsConditions()
 			};
 
 			return new ProfileLoaderResponse

@@ -53,6 +53,11 @@ namespace GothicModComposer.Models.Folders
 			FileHelper.SaveContent(GmcIniFilePath, iniContent, Encoding.Default);
 		}
 
+		public void DeleteGmcIni()
+        {
+            FileHelper.DeleteIfExists(GmcIniFilePath);
+        }
+
 		private void Verify()
 		{
 			// TODO: Verify if the folder exists and is correct

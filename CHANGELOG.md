@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.0.4] (2021-04-01)
+### Added
+- Usage of `REPARSEVIS` parameter to `Gothic2.exe` when something is changed under `Scripts\System\VisualFX` directory.
+- Removing `GMC.ini` helper file after each profile.
+- Execute Gothic compilation step is now run conditionally only.
+
 ## [1.0.3] (2021-03-31)
 ### Added
 - GMC version is now visible in log files.
@@ -53,6 +59,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.0.4]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.4
 [1.0.3]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.3
 [1.0.2]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.2
 [1.0.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.1

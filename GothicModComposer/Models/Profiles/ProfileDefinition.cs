@@ -10,5 +10,6 @@ namespace GothicModComposer.Models.Profiles
 		public List<string> IniOverrides { get; set; }
 		public List<string> GothicArguments { get; set; }
 		public List<string> ExecutionCommands { get; set; }
+		public CommandsConditions CommandsConditions { get; set; }
 	}
 }
