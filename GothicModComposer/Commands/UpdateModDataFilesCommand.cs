@@ -208,42 +208,38 @@ namespace GothicModComposer.Commands
 
 		private void ApplyBuildConfigParameters(ModFileEntry modFileEntry)
 		{
-            if (_profile.UpdateDialoguesStepRequired == false 
-                && modFileEntry.AssetType == AssetPresetType.Scripts 
-                && modFileEntry.FilePath.Contains(@"Content\Story\Dialoge"))
+            if (_profile.CommandsConditions.UpdateDialoguesStepRequired == false && modFileEntry.DoesNeedDialoguesUpdate())
             {
-                _profile.UpdateDialoguesStepRequired = true;
+                _profile.CommandsConditions.UpdateDialoguesStepRequired = true;
+			}
+
+			if (_profile.CommandsConditions.ExecuteGothicStepRequired == false && modFileEntry.DoesNeedGothicCompilation())
+            {
+                _profile.CommandsConditions.ExecuteGothicStepRequired = true;
             }
 
-            // TODO: This one 'optimization' causes GMC compilation crash, due to missing MUSIC.DAT under 'Scripts/_compiled' directory
-            //if (_profile.GothicArguments.Contains(GothicArguments.ZConvertAllParameter))
-            //{
-            //    if (_profile.GothicArguments.Contains(GothicArguments.ZReparseParameter))
-            //        _profile.GothicArguments.RemoveArg(GothicArguments.ZReparseParameter);
+			AddGothicArgument(modFileEntry);
+        }
 
-            //    if (_profile.GothicArguments.Contains(GothicArguments.ZTexConvertParameter))
-            //        _profile.GothicArguments.RemoveArg(GothicArguments.ZTexConvertParameter);
-
-            //    return;
-            //}
-
+        private void AddGothicArgument(ModFileEntry modFileEntry)
+        {
             switch (modFileEntry.AssetType)
-			{
-				case AssetPresetType.Anims:
-				case AssetPresetType.Meshes:
-					_profile.GothicArguments.ZConvertAll();
-					break;
-				case AssetPresetType.Scripts:
-					_profile.GothicArguments.ZReparse();
+            {
+                case AssetPresetType.Anims:
+                case AssetPresetType.Meshes:
+                    _profile.GothicArguments.ZConvertAll();
+                    break;
+                case AssetPresetType.Scripts:
+                    _profile.GothicArguments.ZReparse();
 
                     if (modFileEntry.FilePath.Contains(@"System\VisualFX"))
                         _profile.GothicArguments.ReparseVis();
 
-					break;
-				case AssetPresetType.Textures:
-					_profile.GothicArguments.ZTexConvert();
-					break;
-			}
-		}
-	}
+                    break;
+                case AssetPresetType.Textures:
+                    _profile.GothicArguments.ZTexConvert();
+                    break;
+            }
+        }
+    }
 }

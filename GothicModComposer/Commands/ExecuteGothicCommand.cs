@@ -35,6 +35,12 @@ namespace GothicModComposer.Commands
 
 		public void Execute()
 		{
+            if (!_profile.CommandsConditions.ExecuteGothicStepRequired)
+            {
+                Logger.Info("Gothic compilation is not required, so this step can be skipped.", true);
+                return;
+			}
+
 			Logger.Info($"Executing with kill process message: '{_killProcessMessage}'", true);
 
 			_gothicProcess = new Process

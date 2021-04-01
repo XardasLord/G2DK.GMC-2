@@ -12,6 +12,11 @@ namespace GothicModComposer.Presets
 				ProfileType = ProfilePresetType.Compose,
 				IniOverrides = new List<string>(),
 				GothicArguments = GothicArgumentsPresets.Build().ToList(),
+				CommandsConditions = new CommandsConditions
+                {
+					ExecuteGothicStepRequired =  true,
+					UpdateDialoguesStepRequired = true
+                },
 				ExecutionCommands = new List<string>
 				{
 					CommandBuilderHelper.CreateBackupCommand,
@@ -45,6 +50,10 @@ namespace GothicModComposer.Presets
 			{
 				ProfileType = ProfilePresetType.Run,
 				GothicArguments = GothicArgumentsPresets.Run().ToList(),
+                CommandsConditions = new CommandsConditions
+                {
+                    ExecuteGothicStepRequired = true
+                },
 				ExecutionCommands = new List<string>
 				{
 					CommandBuilderHelper.OverrideIniCommand,

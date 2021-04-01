@@ -31,7 +31,7 @@ namespace GothicModComposer.Commands
 
 		public void Execute()
 		{
-            if (!_profile.UpdateDialoguesStepRequired)
+            if (!_profile.CommandsConditions.UpdateDialoguesStepRequired)
             {
                 if (!FileHelper.Exists(Path.Combine(_profile.GothicFolder.CutsceneFolderPath, OuCslFileName)))
                 {
