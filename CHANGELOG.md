@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.1.0] (2021-04-02)
+### Added
+- GUI for GMC
+
 ## [1.0.4] (2021-04-01)
 ### Added
 - Usage of `REPARSEVIS` parameter to `Gothic2.exe` when something is changed under `Scripts\System\VisualFX` directory.
@@ -59,6 +63,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.1.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.1.0
 [1.0.4]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.4
 [1.0.3]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.3
 [1.0.2]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.2
