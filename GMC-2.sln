@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GothicModComposer.UI", "Got
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GothicModComposer.UI.ViewModels", "GothicModComposer.UI.ViewModels\GothicModComposer.UI.ViewModels.csproj", "{99CF89A3-3691-4E07-9BC9-6F6C30A2B629}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GothicModComposer.UI.Infrastructure", "GothicModComposer.UI.Infrastructure\GothicModComposer.UI.Infrastructure.csproj", "{31938444-0CD7-4D64-8A9B-E421E739187A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GothicModComposer.UI.Application", "GothicModComposer.UI.Application\GothicModComposer.UI.Application.csproj", "{140A3A44-9A6E-4A77-99DF-3190BCFDFD32}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{99CF89A3-3691-4E07-9BC9-6F6C30A2B629}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99CF89A3-3691-4E07-9BC9-6F6C30A2B629}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99CF89A3-3691-4E07-9BC9-6F6C30A2B629}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31938444-0CD7-4D64-8A9B-E421E739187A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31938444-0CD7-4D64-8A9B-E421E739187A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31938444-0CD7-4D64-8A9B-E421E739187A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31938444-0CD7-4D64-8A9B-E421E739187A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{140A3A44-9A6E-4A77-99DF-3190BCFDFD32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{140A3A44-9A6E-4A77-99DF-3190BCFDFD32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{140A3A44-9A6E-4A77-99DF-3190BCFDFD32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{140A3A44-9A6E-4A77-99DF-3190BCFDFD32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
