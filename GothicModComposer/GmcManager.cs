@@ -9,7 +9,7 @@ namespace GothicModComposer
 {
 	public class GmcManager
 	{
-		public GmcFolder GmcFolder { get; }
+		public IGmcFolder GmcFolder { get; }
 
 		private readonly ProfileLoaderResponse _profileLoaderResponse;
 		private readonly Stack<ICommand> _executedCommands = new();
