@@ -227,17 +227,17 @@ namespace GothicModComposer.Commands
             {
                 case AssetPresetType.Anims:
                 case AssetPresetType.Meshes:
-                    _profile.GothicArguments.ZConvertAll();
+                    _profile.GothicArguments.AddArgument_ZConvertAll();
                     break;
                 case AssetPresetType.Scripts:
-                    _profile.GothicArguments.ZReparse();
+                    _profile.GothicArguments.AddArgument_ZReparse();
 
                     if (modFileEntry.FilePath.Contains(@"System\VisualFX"))
-                        _profile.GothicArguments.ReparseVis();
+                        _profile.GothicArguments.AddArgument_ReparseVis();
 
                     break;
                 case AssetPresetType.Textures:
-                    _profile.GothicArguments.ZTexConvert();
+                    _profile.GothicArguments.AddArgument_ZTexConvert();
                     break;
             }
         }

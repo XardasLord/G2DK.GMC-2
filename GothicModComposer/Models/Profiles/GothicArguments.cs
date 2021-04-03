@@ -66,7 +66,7 @@ namespace GothicModComposer.Models.Profiles
 
         public override string ToString()
         {
-            StringBuilder args = new StringBuilder();
+            var args = new StringBuilder();
 
             foreach (var key in _gothicArguments.Keys)
             {
@@ -83,322 +83,322 @@ namespace GothicModComposer.Models.Profiles
         }
 
         /// <summary>MISSING SUMMARY</summary>
-        public GothicArguments ZConvertAll()
+        public GothicArguments AddArgument_ZConvertAll()
         {
             SetArg("ZCONVERTALL");
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments Player(string value = null)
+        public GothicArguments AddArgument_Player(string value = null)
         {
             SetArg("PLAYER", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZNoFastExit(string value = null)
+        public GothicArguments AddArgument_ZNoFastExit(string value = null)
         {
             SetArg("ZNOFASTEXIT", value);
             return this;
         }
 
         /// <summary>Game skips all the menus and starts the New Game on startup. In game `ESC` button closes the game.</summary>
-        public GothicArguments NoMenu()
+        public GothicArguments AddArgument_NoMenu()
         {
             SetArg("NOMENU");
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments Parse(string value = null)
+        public GothicArguments AddArgument_Parse(string value = null)
         {
             SetArg("PARSE", value);
             return this;
         }
 
         /// <summary>What world should be loaded after selecting new game. Value eg. "NewWorld.zen"</summary>
-        public GothicArguments _3D(string value = "none")
+        public GothicArguments AddArgument_3D(string value = "none")
         {
             SetArg("3D", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments Ini(string value = null)
+        public GothicArguments AddArgument_Ini(string value = null)
         {
             SetArg("ini", value);
             return this;
         }
 
         /// <summary>Starts the game in "MARVIN" mode.</summary>
-        public GothicArguments DevMode()
+        public GothicArguments AddArgument_DevMode()
         {
             SetArg("DEVMODE");
             return this;
         }
 
         /// <summary>Sets the active modification. Value eg. "MyMod.ini"</summary>
-        public GothicArguments Game(string value = "gothic.ini")
+        public GothicArguments AddArgument_Game(string value = "gothic.ini")
         {
             SetArg("GAME", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments Vdfs(string value = "physicalfirst")
+        public GothicArguments AddArgument_Vdfs(string value = "physicalfirst")
         {
             SetArg("VDFS", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments PhysicalFirst(string value = null)
+        public GothicArguments AddArgument_PhysicalFirst(string value = null)
         {
             SetArg("PHYSICALFIRST", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments CheckRoutines(string value = null)
+        public GothicArguments AddArgument_CheckRoutines(string value = null)
         {
             SetArg("CHECKROUTINES", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ReparseVis(string value = null)
+        public GothicArguments AddArgument_ReparseVis(string value = null)
         {
             SetArg("REPARSEVIS", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ConvertDialogCams(string value = null)
+        public GothicArguments AddArgument_ConvertDialogCams(string value = null)
         {
             SetArg("CONVERTDIALOGCAMS", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZSector(string value = null)
+        public GothicArguments AddArgument_ZSector(string value = null)
         {
             SetArg("ZSECTOR", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZSkipSector(string value = null)
+        public GothicArguments AddArgument_ZSkipSector(string value = null)
         {
             SetArg("ZSKIPSECTORS", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZMemProfiler(string value = null)
+        public GothicArguments AddArgument_ZMemProfiler(string value = null)
         {
             SetArg("ZMEMPROFILER", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZNoResThread(string value = null)
+        public GothicArguments AddArgument_ZNoResThread(string value = null)
         {
             SetArg("ZNORESTHREAD", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZTexConvert(string value = null)
+        public GothicArguments AddArgument_ZTexConvert(string value = null)
         {
             SetArg("ZTEXCONVERT", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZLoad3DSoldMethod(string value = null)
+        public GothicArguments AddArgument_ZLoad3DSoldMethod(string value = null)
         {
             SetArg("ZLOAD3DSOLDMETHOD", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZenSaveOldMethod(string value = null)
+        public GothicArguments AddArgument_ZenSaveOldMethod(string value = null)
         {
             SetArg("ZENSAVEOLDMETHOD", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZNoSharedFeatures(string value = null)
+        public GothicArguments AddArgument_ZNoSharedFeatures(string value = null)
         {
             SetArg("ZNOSHAREDFEATURES", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZNoPFX(string value = null)
+        public GothicArguments AddArgument_ZNoPFX(string value = null)
         {
             SetArg("ZNOPFX", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZTexMaxSize(string value = null)
+        public GothicArguments AddArgument_ZTexMaxSize(string value = null)
         {
             SetArg("ZTEXMAXSIZE", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments MergeVobsWithLevel(string value = null)
+        public GothicArguments AddArgument_MergeVobsWithLevel(string value = null)
         {
             SetArg("MERGEVOBSWITHLEVEL", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZMaxFrameRate(string value = null)
+        public GothicArguments AddArgument_ZMaxFrameRate(string value = null)
         {
             SetArg("ZMAXFRAMERATE", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZNoMemPool(string value = null)
+        public GothicArguments AddArgument_ZNoMemPool(string value = null)
         {
             SetArg("ZNOMEMPOOL", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZRnd(string value = null)
+        public GothicArguments AddArgument_ZRnd(string value = null)
         {
             SetArg("ZRND", value);
             return this;
         }
 
         /// <summary>Starts the game with predefined resolution.</summary>
-        public GothicArguments ZRes(string width = "800", string height = "600", string bpp = "32")
+        public GothicArguments AddArgument_ZRes(string width = "800", string height = "600", string bpp = "32")
         {
             SetArg("ZRES", $"{width},{height},{bpp}");
             return this;
         }
 
         /// <summary>Starts the game in windowed mode.</summary>
-        public GothicArguments ZWindow()
+        public GothicArguments AddArgument_ZWindow()
         {
             SetArg("ZWINDOW");
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZNoTex(string value = null)
+        public GothicArguments AddArgument_ZNoTex(string value = null)
         {
             SetArg("ZNOTEX", value);
             return this;
         }
 
         /// <summary>Starts the game with no music enabled.</summary>
-        public GothicArguments ZNoMusic()
+        public GothicArguments AddArgument_ZNoMusic()
         {
             SetArg("ZNOMUSIC");
             return this;
         }
 
         /// <summary>Starts the game without sound effects.</summary>
-        public GothicArguments ZNoSound()
+        public GothicArguments AddArgument_ZNoSound()
         {
             SetArg("ZNOSOUND");
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZAutoConvertData(string value = null)
+        public GothicArguments AddArgument_ZAutoConvertData(string value = null)
         {
             SetArg("ZAUTOCONVERTDATA", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZAccount(string value = null)
+        public GothicArguments AddArgument_ZAccount(string value = null)
         {
             SetArg("ZACCOUNT", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ZAccountFull(string value = null)
+        public GothicArguments AddArgument_ZAccountFull(string value = null)
         {
             SetArg("ZACCOUNTFULL", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments DebugFightAI(string value = null)
+        public GothicArguments AddArgument_DebugFightAI(string value = null)
         {
             SetArg("DEBUGFIGHTAI", value);
             return this;
         }
 
         /// <summary>Sets the startup in game time to this value.</summary>
-        public GothicArguments Time(string hour = "00", string minute = "00")
+        public GothicArguments AddArgument_Time(string hour = "00", string minute = "00")
         {
             SetArg("TIME", $"{hour}:{minute}");
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments ClipRange(string value = null)
+        public GothicArguments AddArgument_ClipRange(string value = null)
         {
             SetArg("CLIPRANGE", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments FogRange(string value = null)
+        public GothicArguments AddArgument_FogRange(string value = null)
         {
             SetArg("FOGRANGE", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments CamLightRange(string value = null)
+        public GothicArguments AddArgument_CamLightRange(string value = null)
         {
             SetArg("CAMLIGHTRANGE", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments LightRange(string value = null)
+        public GothicArguments AddArgument_LightRange(string value = null)
         {
             SetArg("LIGHTRANGE", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments OutDoor(string value = null)
+        public GothicArguments AddArgument_OutDoor(string value = null)
         {
             SetArg("OUTDOOR", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
-        public GothicArguments NoLazyLoad(string value = null)
+        public GothicArguments AddArgument_NoLazyLoad(string value = null)
         {
             SetArg("NOLAZYLOAD", value);
             return this;
         }
 
         /// <summary>MISSING SUMMARY</summary>
-        public GothicArguments ZReparse()
+        public GothicArguments AddArgument_ZReparse()
         {
             SetArg("ZREPARSE");
             return this;
         }
 
         /// <summary>MISSING SUMMARY</summary>
-        public GothicArguments ZLog(int value = 5)
+        public GothicArguments AddArgument_ZLog(int value = 5)
         {
             SetArg("ZLOG", $"{value},s");
             return this;
