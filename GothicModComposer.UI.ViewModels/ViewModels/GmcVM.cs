@@ -8,7 +8,7 @@ namespace GothicModComposer.UI.ViewModels.ViewModels
     {
         public RelayCommand RunUpdateProfile { get; }
         public RelayCommand RunComposeProfile { get; }
-        public RelayCommand RunDKProfile { get; }
+        public RelayCommand RunModProfile { get; }
         public RelayCommand RunRestoreGothicProfile { get; }
         public RelayCommand RunBuildModFileProfile { get; }
         public RelayCommand RunEnableVDFProfile { get; }
@@ -22,7 +22,7 @@ namespace GothicModComposer.UI.ViewModels.ViewModels
 
             RunUpdateProfile = new RelayCommand(RunUpdateProfileExecute, x => true);
             RunComposeProfile = new RelayCommand(RunComposeProfileExecute, x => true);
-            RunDKProfile = new RelayCommand(RunDKProfileExecute, x => true);
+            RunModProfile = new RelayCommand(RunModProfileExecute, x => true);
             RunRestoreGothicProfile = new RelayCommand(RunRestoreGothicProfileExecute, x => true);
             RunBuildModFileProfile = new RelayCommand(RunBuildModFileProfileProfileExecute, x => true);
             RunEnableVDFProfile = new RelayCommand(RunEnableVDFProfileProfileExecute, x => true);
@@ -35,8 +35,8 @@ namespace GothicModComposer.UI.ViewModels.ViewModels
         private void RunComposeProfileExecute(object obj)
             => _gmcExecutor.Execute(GmcExecutionProfile.Compose);
 
-        private void RunDKProfileExecute(object obj)
-            => _gmcExecutor.Execute(GmcExecutionProfile.RunDK);
+        private void RunModProfileExecute(object obj)
+            => _gmcExecutor.Execute(GmcExecutionProfile.RunMod);
 
         private void RunRestoreGothicProfileExecute(object obj)
             => _gmcExecutor.Execute(GmcExecutionProfile.RestoreGothic);
