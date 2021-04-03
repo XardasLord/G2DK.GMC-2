@@ -55,11 +55,11 @@ namespace GothicModComposer.Commands
 			_profile.IniOverrides.ForEach(item => {
 				var attribute = regex.Match(item);
 
-				iniBlocks.ForEach(block => {
-					var key = attribute.Groups["Key"].Value;
-					var value = attribute.Groups["Value"].Value;
+                var key = attribute.Groups["Key"].Value;
+                var value = attribute.Groups["Value"].Value;
 
-					if (!block.Contains(key)) 
+				iniBlocks.ForEach(block => {
+                    if (!block.Contains(key)) 
 						return;
 
 					block.Set(key, value);
