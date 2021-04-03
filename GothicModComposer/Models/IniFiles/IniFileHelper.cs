@@ -8,6 +8,7 @@ namespace GothicModComposer.Models.IniFiles
 		public const string CommentRegex = @"(?<Comment>^;.*)";
 		public const string SectionRegex = @"\[(?<Header>\w+)\]\n(?<Attributes>[\s\S]+?(?![^[]))";
 		public const string AttributeRegex = @"(?<Key>\w+)\s*=\s*?(?<Value>.*)";
+        public const string OverridesSectionHeader = "OVERRIDES";
 
 		public static List<IniBlock> CreateSections(string iniFileContent)
 		{
@@ -28,6 +29,7 @@ namespace GothicModComposer.Models.IniFiles
 			var block = new IniBlock(match.Groups["Header"].Value);
 			var regex = new Regex(AttributeRegex);
 			var attributes = regex.Matches(match.Groups["Attributes"].Value);
+
 			foreach (Match attribute in attributes)
 			{
 				block.Set(attribute.Groups["Key"].Value, attribute.Groups["Value"].Value);

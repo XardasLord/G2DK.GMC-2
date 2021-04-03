@@ -58,13 +58,18 @@ namespace GothicModComposer.Commands
                 var key = attribute.Groups["Key"].Value;
                 var value = attribute.Groups["Value"].Value;
 
-				iniBlocks.ForEach(block => {
-                    if (!block.Contains(key)) 
-						return;
+                var blockToOverride = iniBlocks.FirstOrDefault(block => block.Contains(key));
+				if (blockToOverride is null)
+					return;
+				
+                var overridesSectionBlock = iniBlocks.FirstOrDefault(block => block.Header.Equals(IniFileHelper.OverridesSectionHeader));
+				if (overridesSectionBlock is null)
+					iniBlocks.Add(new IniBlock(IniFileHelper.OverridesSectionHeader));
 
-					block.Set(key, value);
-					Logger.Info($"Overriden {key}={value} in section: [{block.Header}].", true);
-				});
+                overridesSectionBlock = iniBlocks.Single(block => block.Header.Equals(IniFileHelper.OverridesSectionHeader));
+				overridesSectionBlock.Set($"{blockToOverride.Header}.{key}", value);
+				
+                Logger.Info($"Overriden {blockToOverride.Header}.{key}={value}.", true);
 			});
 
 		}

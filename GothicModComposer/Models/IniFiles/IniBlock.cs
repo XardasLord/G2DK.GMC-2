@@ -5,10 +5,10 @@ namespace GothicModComposer.Models.IniFiles
 {
 	public class IniBlock
 	{
-		private readonly Dictionary<string, string> _settings = new Dictionary<string, string>();
-
-		public string Header { get; }
+        public string Header { get; }
 		public List<KeyValuePair<string, string>> Properties => _settings.ToList();
+
+        private readonly Dictionary<string, string> _settings = new();
 
 		public IniBlock(string header)
 		{
