@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using GothicModComposer.Commands;
-using GothicModComposer.Models.Folders;
+using GothicModComposer.Models.Interfaces;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 
 namespace GothicModComposer
 {
-	public class GmcManager
+    public class GmcManager
 	{
 		public IGmcFolder GmcFolder { get; }
 

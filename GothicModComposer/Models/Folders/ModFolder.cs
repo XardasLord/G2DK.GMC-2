@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GothicModComposer.Models.Interfaces;
 using GothicModComposer.Models.ModFiles;
 using GothicModComposer.Presets;
 using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Models.Folders
 {
-	public class ModFolder
-	{
+    public class ModFolder : IModFolder
+    {
 		public string BasePath { get; }
 		public string ExtensionsFolderPath => Path.Combine(BasePath, "Extensions");
 

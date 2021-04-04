@@ -5,34 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using GothicModComposer.Models.Interfaces;
 using GothicModComposer.Models.ModFiles;
 using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Models.Folders
 {
-    public interface IGmcFolder
-    {
-        string BasePath { get; }
-        string BackupFolderPath { get; }
-        string LogsFolderPath { get; }
-        string BuildFolderPath { get; }
-        string VdsfConfigFilePath { get; }
-        string ModFilesTrackerFilePath { get; }
-        string BackupWorkDataFolderPath { get; }
-        bool DoesBackupFolderExist { get; }
-        string EssentialFilesRegexPattern { get; }
-        bool CreateGmcFolder();
-        void CreateBackupWorkDataFolder();
-        string GetTemporaryCommandActionBackupPath(string commandName);
-        void DeleteTemporaryFiles();
-        void AddNewModFileEntryToTrackerFile(ModFileEntry modFileEntry);
-        void UpdateModFileEntryInTrackerFile(ModFileEntry modFileEntry);
-        void RemoveModFileEntryFromTrackerFile(ModFileEntry modFileEntry);
-        void SaveTrackerFile();
-        bool DeleteTrackerFileIfExist();
-        List<ModFileEntry> GetModFilesFromTrackerFile();
-    }
-
     public class GmcFolder : IGmcFolder
     {
 		public string BasePath { get; }

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GothicModComposer.Models.Interfaces;
 
 namespace GothicModComposer.Models.Profiles
 {
-    public class GothicArguments
+    public class GothicArguments : IGothicArguments
     {
         public const string ZConvertAllParameter = "ZCONVERTALL";
         public const string ZReparseParameter = "ZREPARSE";

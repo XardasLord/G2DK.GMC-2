@@ -3,12 +3,13 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using GothicModComposer.Models.IniFiles;
+using GothicModComposer.Models.Interfaces;
 using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Models.Folders
 {
-	public class GothicFolder
-	{
+    public class GothicFolder : IGothicFolder
+    {
 		public string BasePath { get; }
 		public string SystemFolderPath => Path.Combine(BasePath, "System");
 		public string WorkFolderPath => Path.Combine(BasePath, "_Work");
