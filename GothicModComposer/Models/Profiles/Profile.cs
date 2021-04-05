@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using GothicModComposer.Models.Interfaces;
-using GothicModComposer.Models.Vdfs;
 
 namespace GothicModComposer.Models.Profiles
 {
@@ -13,7 +12,7 @@ namespace GothicModComposer.Models.Profiles
 		public List<string> IniOverrides { get; set; }
 		public IGothicArguments GothicArguments { get; set; }
         public IGothicVdfsConfig GothicVdfsConfig { get; set; }
-        public CommandsConditions CommandsConditions { get; set; }
+        public ICommandsConditions CommandsConditions { get; set; }
     }
 
 	public interface IProfile
@@ -25,12 +24,6 @@ namespace GothicModComposer.Models.Profiles
 		List<string> IniOverrides { get; set; }
 		IGothicArguments GothicArguments { get; set; }
 		IGothicVdfsConfig GothicVdfsConfig { get; set; }
-        public CommandsConditions CommandsConditions { get; set; }
+        public ICommandsConditions CommandsConditions { get; set; }
 	}
-
-    public class CommandsConditions
-	{
-        public bool UpdateDialoguesStepRequired { get; set; }
-        public bool ExecuteGothicStepRequired { get; set; }
-    }
 }
