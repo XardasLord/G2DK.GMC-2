@@ -6,6 +6,7 @@ using CommandLine;
 using GothicModComposer.Builders;
 using GothicModComposer.Models;
 using GothicModComposer.Utils;
+using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer
 {

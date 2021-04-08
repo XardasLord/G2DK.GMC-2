@@ -2,6 +2,7 @@
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.GothicSpyProcess;
+using GothicModComposer.Utils.IOHelpers;
 using GothicModComposer.Utils.ProgressBar;
 using ShellProgressBar;
 

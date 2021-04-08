@@ -2,6 +2,7 @@
 using System.Linq;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Utils;
+using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Commands.ExecutedCommandActions
 {

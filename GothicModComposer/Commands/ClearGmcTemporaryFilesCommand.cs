@@ -1,5 +1,6 @@
 ﻿using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
+using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Commands
 {

@@ -5,6 +5,7 @@ using GothicModComposer.Models.Configurations;
 using GothicModComposer.Models.Folders;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Presets;
+using GothicModComposer.Utils;
 using GothicModComposer.Utils.Exceptions;
 using GothicModComposer.Utils.IOHelpers;
 
@@ -40,7 +41,8 @@ namespace GothicModComposer.Loaders
 				GothicVdfsConfig = userGmcConfiguration.GothicVdfsConfig 
 								   ?? throw new VdfsGothicConfigurationNotFoundException(),
 				GothicArguments = GothicArgumentsHelper.ParseGothicArguments(profileDefinition.GothicArguments),
-				CommandsConditions = profileDefinition.CommandsConditions ?? new CommandsConditions()
+				CommandsConditions = profileDefinition.CommandsConditions ?? new CommandsConditions(),
+				LoggerService = new LoggerService()
 			};
 
 			return new ProfileLoaderResponse
