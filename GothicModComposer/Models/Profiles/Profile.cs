@@ -24,6 +24,6 @@ namespace GothicModComposer.Models.Profiles
 		List<string> IniOverrides { get; set; }
 		IGothicArguments GothicArguments { get; set; }
 		IGothicVdfsConfig GothicVdfsConfig { get; set; }
-        public ICommandsConditions CommandsConditions { get; set; }
+        ICommandsConditions CommandsConditions { get; set; }
 	}
 }
