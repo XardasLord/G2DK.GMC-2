@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using GothicModComposer.Utils.IOHelpers;
 
-namespace GothicModComposer.Utils.IOHelpers
+namespace GothicModComposer.Utils
 {
 	public static class Logger
 	{

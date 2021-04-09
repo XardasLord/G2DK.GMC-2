@@ -1,7 +1,6 @@
 ﻿using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.VdfFiles;
 using GothicModComposer.Utils;
-using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Commands.ExecutedCommandActions
 {

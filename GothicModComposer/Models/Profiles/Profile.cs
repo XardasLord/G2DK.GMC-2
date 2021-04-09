@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using GothicModComposer.Models.Interfaces;
-using GothicModComposer.Utils;
 
 namespace GothicModComposer.Models.Profiles
 {
@@ -14,8 +13,7 @@ namespace GothicModComposer.Models.Profiles
 		public IGothicArguments GothicArguments { get; set; }
         public IGothicVdfsConfig GothicVdfsConfig { get; set; }
         public ICommandsConditions CommandsConditions { get; set; }
-        public ILoggerService LoggerService { get; set; }
-	}
+    }
 
 	public interface IProfile
 	{
@@ -26,7 +24,6 @@ namespace GothicModComposer.Models.Profiles
 		List<string> IniOverrides { get; set; }
 		IGothicArguments GothicArguments { get; set; }
 		IGothicVdfsConfig GothicVdfsConfig { get; set; }
-        ICommandsConditions CommandsConditions { get; set; }
-		ILoggerService LoggerService { get; set; }
+        public ICommandsConditions CommandsConditions { get; set; }
 	}
 }

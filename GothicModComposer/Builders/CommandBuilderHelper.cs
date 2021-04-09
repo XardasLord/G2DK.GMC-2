@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GothicModComposer.Commands;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
-using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Builders
 {
