@@ -22,7 +22,7 @@ namespace GothicModComposer.UnitTests.Commands
         private void Act() => new CreateBackupCommand(_profileMock.Object, _fileSystemMock.Object).Execute();
 
         [Fact]
-        public void ExecuteCreateBackupCommand_WhenBackupFolderExists_Returns()
+        public void Execute_WhenBackupFolderExists_ShouldReturn()
         {
             _profileMock.SetupGet(x => x.GmcFolder.DoesBackupFolderExist).Returns(true);
 
@@ -32,7 +32,7 @@ namespace GothicModComposer.UnitTests.Commands
         }
 
         [Fact]
-        public void ExecuteCreateBackupCommand_WhenBackupFolderNotExist_ShouldCreateBackupFolder()
+        public void Execute_WhenBackupFolderNotExist_ShouldCreateBackupFolder()
         {
             const string gothicWorkDataFolderPath = "C:/WorkDataFolderPath";
             const string modExtensionsFolderPath = "C:/ExtensionsFolderPath";
@@ -55,7 +55,7 @@ namespace GothicModComposer.UnitTests.Commands
         }
 
         [Fact]
-        public void ExecuteCreateBackupCommand_WhenAssetDirectoryInGothicNotExist_ShouldNotMoveAssetFolderToBackup()
+        public void Execute_WhenAssetDirectoryInGothicNotExist_ShouldNotMoveAssetFolderToBackup()
         {
             const string gothicWorkDataFolderPath = "C:/WorkDataFolderPath";
             const string modExtensionsFolderPath = "C:/ExtensionsFolderPath";
@@ -78,7 +78,7 @@ namespace GothicModComposer.UnitTests.Commands
         }
 
         [Fact]
-        public void ExecuteCreateBackupCommand_WhenAssetDirectoryInGothicExists_ShouldMoveAssetFolderToBackup()
+        public void Execute_WhenAssetDirectoryInGothicExists_ShouldMoveAllAssetFoldersToBackup()
         {
             const string gothicWorkDataFolderPath = "C:/WorkDataFolderPath";
             const string modExtensionsFolderPath = "C:/ExtensionsFolderPath";
