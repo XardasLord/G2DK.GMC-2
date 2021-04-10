@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.IO.Abstractions;
 
 namespace GothicModComposer.Utils.IOHelpers.FileSystem
 {
@@ -8,7 +7,7 @@ namespace GothicModComposer.Utils.IOHelpers.FileSystem
     {
         IFileSystemWithLogger FileSystem { get; }
 
-        IDirectoryInfo CreateDirectory(string path);
+        bool CreateIfNotExist(string path);
 
         void Delete(string path);
 
@@ -18,9 +17,8 @@ namespace GothicModComposer.Utils.IOHelpers.FileSystem
 
         void Move(string sourceDirName, string destDirName);
 
-        IEnumerable<string> EnumerateFiles(
-          string path,
-          string searchPattern,
-          SearchOption searchOption);
+        List<string> GetDirectories(string path);
+
+        List<string> GetAllFilesInDirectory(string directoryPath, SearchOption searchOption = SearchOption.AllDirectories);
     }
 }
