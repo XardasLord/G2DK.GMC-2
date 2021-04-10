@@ -1,26 +1,24 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.IO.Abstractions;
-using System.Linq;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Presets;
 using GothicModComposer.Utils;
+using GothicModComposer.Utils.IOHelpers.FileSystem;
 using GothicModComposer.Utils.ProgressBar;
 using ShellProgressBar;
 
 namespace GothicModComposer.Commands
 {
-    public class CreateBackupCommand : ICommand
+	public class CreateBackupCommand : ICommand
 	{
 		public string CommandName => "Create original Gothic backup";
 
 		private readonly IProfile _profile;
-        private readonly IFileSystem _fileSystem;
+        private readonly IFileSystemWithLogger _fileSystem;
         private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 		
-		public CreateBackupCommand(IProfile profile, IFileSystem fileSystem)
+		public CreateBackupCommand(IProfile profile, IFileSystemWithLogger fileSystem)
         {
             _profile = profile;
             _fileSystem = fileSystem;
@@ -60,7 +58,6 @@ namespace GothicModComposer.Commands
 						return;
 					
 					_fileSystem.Directory.Move(sourcePath, destinationPath);
-					//DirectoryHelper.Move(sourcePath, destinationPath);
 
 					ExecutedActions.Push(CommandActionIO.DirectoryMoved(sourcePath, destinationPath));
 				});
@@ -71,15 +68,10 @@ namespace GothicModComposer.Commands
         {
 			if (!_fileSystem.Directory.Exists(_profile.ModFolder.ExtensionsFolderPath))
 				return;
-            
-            _fileSystem.Directory
-                .EnumerateFiles(_profile.ModFolder.ExtensionsFolderPath, "*", SearchOption.AllDirectories)
-                .ToList()
-                .ForEach(BackupFileFromExtensionFolder);
 
-            //    DirectoryHelper
-            //.GetAllFilesInDirectory(_profile.ModFolder.ExtensionsFolderPath)
-            //.ForEach(BackupFileFromExtensionFolder);
+            _fileSystem.Directory
+                .GetAllFilesInDirectory(_profile.ModFolder.ExtensionsFolderPath)
+                .ForEach(BackupFileFromExtensionFolder);
 		}
 
 		private void BackupFileFromExtensionFolder(string filePath)
@@ -92,13 +84,12 @@ namespace GothicModComposer.Commands
 				return;
 
 			var folderFromExtensionDirectory = _fileSystem.Path.GetDirectoryName(extensionFileGmcBackupPath);
-			if (_fileSystem.Directory.Exists(folderFromExtensionDirectory))
+			
+            if (_fileSystem.Directory.Exists(folderFromExtensionDirectory))
 				return;
 
-            _fileSystem.Directory.CreateDirectory(folderFromExtensionDirectory);
-			//DirectoryHelper.CreateIfDoesNotExist(folderFromExtensionDirectory);
+            _fileSystem.Directory.CreateIfNotExist(folderFromExtensionDirectory);
 			_fileSystem.File.Copy(extensionFileGothicPath, extensionFileGmcBackupPath);
-			//FileHelper.Copy(extensionFileGothicPath, extensionFileGmcBackupPath);
 
 			ExecutedActions.Push(CommandActionIO.FileCopied(extensionFileGothicPath, extensionFileGmcBackupPath));
 		}
