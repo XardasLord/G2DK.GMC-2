@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Presets;
 using GothicModComposer.Utils;
-using GothicModComposer.Utils.IOHelpers;
+using GothicModComposer.Utils.IOHelpers.FileSystem;
 using GothicModComposer.Utils.ProgressBar;
 using ShellProgressBar;
 
@@ -16,12 +15,16 @@ namespace GothicModComposer.Commands
 		public string CommandName => "Create original Gothic backup";
 
 		private readonly IProfile _profile;
-		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
+        private readonly IFileSystemWithLogger _fileSystem;
+        private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 		
-		public CreateBackupCommand(IProfile profile)
-			=> _profile = profile;
+		public CreateBackupCommand(IProfile profile, IFileSystemWithLogger fileSystem)
+        {
+            _profile = profile;
+            _fileSystem = fileSystem;
+        }
 
-		public void Execute()
+        public void Execute()
 		{
 			if (_profile.GmcFolder.DoesBackupFolderExist)
 			{
@@ -48,36 +51,45 @@ namespace GothicModComposer.Commands
 				{
 					progress.Tick($"Copied {counter++} of {AssetPresetFolders.FoldersWithAssets.Count} folders");
 
-					var sourcePath = Path.Combine(_profile.GothicFolder.WorkDataFolderPath, assetFolder.ToString());
-					var destinationPath = Path.Combine(_profile.GmcFolder.BackupWorkDataFolderPath, assetFolder.ToString());
-
-					if (!Directory.Exists(sourcePath))
+					var sourcePath = _fileSystem.Path.Combine(_profile.GothicFolder.WorkDataFolderPath, assetFolder.ToString());
+					var destinationPath = _fileSystem.Path.Combine(_profile.GmcFolder.BackupWorkDataFolderPath, assetFolder.ToString());
+					
+					if (!_fileSystem.Directory.Exists(sourcePath))
 						return;
-
-					DirectoryHelper.Move(sourcePath, destinationPath);
+					
+					_fileSystem.Directory.Move(sourcePath, destinationPath);
 
 					ExecutedActions.Push(CommandActionIO.DirectoryMoved(sourcePath, destinationPath));
 				});
 			};
 		}
 
-		private void BackupFilesOverridenByExtensions()
-			=> DirectoryHelper
-				.GetAllFilesInDirectory(_profile.ModFolder.ExtensionsFolderPath)
-				.ForEach(BackupFileFromExtensionFolder);
+        private void BackupFilesOverridenByExtensions()
+        {
+			if (!_fileSystem.Directory.Exists(_profile.ModFolder.ExtensionsFolderPath))
+				return;
+
+            _fileSystem.Directory
+                .GetAllFilesInDirectory(_profile.ModFolder.ExtensionsFolderPath)
+                .ForEach(BackupFileFromExtensionFolder);
+		}
 
 		private void BackupFileFromExtensionFolder(string filePath)
 		{
-			var extensionFileRelativePath = DirectoryHelper.ToRelativePath(filePath, _profile.ModFolder.ExtensionsFolderPath);
-			var extensionFileGothicPath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.BasePath, extensionFileRelativePath);
-			var extensionFileGmcBackupPath = DirectoryHelper.MergeRelativePath(_profile.GmcFolder.BackupFolderPath, extensionFileRelativePath);
+			var extensionFileRelativePath = _fileSystem.Path.GetRelativePath(_profile.ModFolder.ExtensionsFolderPath, filePath);
+			var extensionFileGothicPath = _fileSystem.Path.Combine(_profile.GothicFolder.BasePath, extensionFileRelativePath);
+			var extensionFileGmcBackupPath = _fileSystem.Path.Combine(_profile.GmcFolder.BackupFolderPath, extensionFileRelativePath);
 
-			if (!File.Exists(extensionFileGothicPath))
+			if (!_fileSystem.File.Exists(extensionFileGothicPath))
 				return;
 
-			var folderFromExtensionDirectory = Path.GetDirectoryName(extensionFileGmcBackupPath);
-			DirectoryHelper.CreateIfDoesNotExist(folderFromExtensionDirectory);
-			FileHelper.Copy(extensionFileGothicPath, extensionFileGmcBackupPath);
+			var folderFromExtensionDirectory = _fileSystem.Path.GetDirectoryName(extensionFileGmcBackupPath);
+			
+            if (_fileSystem.Directory.Exists(folderFromExtensionDirectory))
+				return;
+
+            _fileSystem.Directory.CreateIfNotExist(folderFromExtensionDirectory);
+			_fileSystem.File.Copy(extensionFileGothicPath, extensionFileGmcBackupPath);
 
 			ExecutedActions.Push(CommandActionIO.FileCopied(extensionFileGothicPath, extensionFileGmcBackupPath));
 		}

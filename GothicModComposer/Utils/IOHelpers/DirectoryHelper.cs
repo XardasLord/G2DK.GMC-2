@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualBasic.FileIO;
 using SearchOption = System.IO.SearchOption;
 
 namespace GothicModComposer.Utils.IOHelpers
@@ -49,7 +48,7 @@ namespace GothicModComposer.Utils.IOHelpers
 
 		public static void Copy(string source, string dest)
 		{
-			FileSystem.CopyDirectory(source, dest);
+            Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(source, dest);
 
 			Logger.Info($"Copied directory \"{source}\" ---> \"{dest}\".");
 		}
