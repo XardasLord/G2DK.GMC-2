@@ -32,7 +32,7 @@ namespace GothicModComposer.Builders
 		{
 			{ RestoreGothicBackupCommand, profile => new RestoreGothicBackupCommand(profile) },
 			{ CreateBackupCommand, profile => new CreateBackupCommand(profile, new FileSystemWithLogger())},
-			{ OverrideIniCommand, profile => new OverrideIniCommand(profile) },
+			{ OverrideIniCommand, profile => new OverrideIniCommand(profile, new FileSystemWithLogger()) },
 			{ AddDefaultWorldCommand, profile => new AddDefaultWorldCommand(profile) },
 			{ DisableVdfFilesCommand, profile => new DisableVdfFilesCommand(profile) },
 			{ EnableVdfFilesCommand, profile => new EnableVdfFilesCommand(profile) },

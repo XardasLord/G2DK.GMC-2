@@ -7,21 +7,25 @@ using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.IniFiles;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
-using GothicModComposer.Utils.IOHelpers;
+using GothicModComposer.Utils.IOHelpers.FileSystem;
 
 namespace GothicModComposer.Commands
 {
-	public class OverrideIniCommand : ICommand
+    public class OverrideIniCommand : ICommand
 	{
 		public string CommandName => "Override .ini file";
 
 		private readonly IProfile _profile;
-		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
+        private readonly IFileSystemWithLogger _fileSystem;
+        private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
-		public OverrideIniCommand(IProfile profile) 
-			=> _profile = profile;
+		public OverrideIniCommand(IProfile profile, IFileSystemWithLogger fileSystem)
+        {
+            _profile = profile;
+            _fileSystem = fileSystem;
+        }
 
-		public void Execute()
+        public void Execute()
 		{
 			if (!_profile.IniOverrides.Any())
 			{
@@ -39,7 +43,7 @@ namespace GothicModComposer.Commands
 
 		private void OverrideIni()
 		{
-			if (!FileHelper.Exists(_profile.GothicFolder.GothicIniFilePath))
+			if (!_fileSystem.File.Exists(_profile.GothicFolder.GothicIniFilePath))
 				throw new Exception("Gothic.ini file was not found.");
 			
 			var gothicIni = _profile.GothicFolder.GetGothicIniContent();
