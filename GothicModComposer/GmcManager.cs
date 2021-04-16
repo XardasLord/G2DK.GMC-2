@@ -42,7 +42,7 @@ namespace GothicModComposer
 		{
 			_executedCommands.Push(command);
 
-			// TODO: Introduce general progress bar of the all profile processing (commands processing as childs)
+			// TODO: Introduce general progress bar of the all profile processing (commands processing as child)
 
 			var stopWatch = new Stopwatch();
 			stopWatch.Start();

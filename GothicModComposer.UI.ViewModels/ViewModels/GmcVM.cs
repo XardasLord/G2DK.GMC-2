@@ -13,19 +13,18 @@ namespace GothicModComposer.UI.ViewModels.ViewModels
         public RelayCommand RunBuildModFileProfile { get; }
         public RelayCommand RunEnableVDFProfile { get; }
 
-
         private readonly IGmcExecutor _gmcExecutor;
 
         public GmcVM()
         {
             _gmcExecutor = new GmcExecutor();
 
-            RunUpdateProfile = new RelayCommand(RunUpdateProfileExecute, x => true);
-            RunComposeProfile = new RelayCommand(RunComposeProfileExecute, x => true);
-            RunModProfile = new RelayCommand(RunModProfileExecute, x => true);
-            RunRestoreGothicProfile = new RelayCommand(RunRestoreGothicProfileExecute, x => true);
-            RunBuildModFileProfile = new RelayCommand(RunBuildModFileProfileProfileExecute, x => true);
-            RunEnableVDFProfile = new RelayCommand(RunEnableVDFProfileProfileExecute, x => true);
+            RunUpdateProfile = new RelayCommand(RunUpdateProfileExecute);
+            RunComposeProfile = new RelayCommand(RunComposeProfileExecute);
+            RunModProfile = new RelayCommand(RunModProfileExecute);
+            RunRestoreGothicProfile = new RelayCommand(RunRestoreGothicProfileExecute);
+            RunBuildModFileProfile = new RelayCommand(RunBuildModFileProfileProfileExecute);
+            RunEnableVDFProfile = new RelayCommand(RunEnableVDFProfileProfileExecute);
         }
 
 

@@ -52,7 +52,7 @@ namespace GothicModComposer.Commands
 			SaveIniFile(iniBlocks);
 		}
 
-		private void OverrideAttributes(List<IniBlock> iniBlocks)
+		private void OverrideAttributes(ICollection<IniBlock> iniBlocks)
 		{
 			var regex = new Regex(IniFileHelper.AttributeRegex);
 
