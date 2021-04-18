@@ -218,7 +218,8 @@ namespace GothicModComposer.Commands
                 _profile.CommandsConditions.ExecuteGothicStepRequired = true;
             }
 
-			AddGothicArgument(modFileEntry);
+			if (_profile.CommandsConditions.ExecuteGothicStepRequired)
+			    AddGothicArgument(modFileEntry);
         }
 
         private void AddGothicArgument(ModFileEntry modFileEntry)
