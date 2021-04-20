@@ -9,4 +9,8 @@
     <ProjectReference Include="..\GothicModComposer.UI.Infrastructure\GothicModComposer.UI.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands" />
+  </ItemGroup>
+
 </Project>

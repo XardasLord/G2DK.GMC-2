@@ -1,8 +1,9 @@
-﻿using GothicModComposer.UI.Application;
+﻿using System.Windows;
+using GothicModComposer.UI.Application;
+using GothicModComposer.UI.Commands;
 using GothicModComposer.UI.Infrastructure;
-using GothicModComposer.UI.ViewModels.Commands;
 
-namespace GothicModComposer.UI.ViewModels.ViewModels
+namespace GothicModComposer.UI.ViewModels
 {
     public class GmcVM : Observable
     {
@@ -32,13 +33,25 @@ namespace GothicModComposer.UI.ViewModels.ViewModels
             => _gmcExecutor.Execute(GmcExecutionProfile.Update);
 
         private void RunComposeProfileExecute(object obj)
-            => _gmcExecutor.Execute(GmcExecutionProfile.Compose);
+        {
+            var messageBoxResult = System.Windows.MessageBox.Show("Are you sure?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                _gmcExecutor.Execute(GmcExecutionProfile.Compose);
+            }
+        }
 
         private void RunModProfileExecute(object obj)
             => _gmcExecutor.Execute(GmcExecutionProfile.RunMod);
 
         private void RunRestoreGothicProfileExecute(object obj)
-            => _gmcExecutor.Execute(GmcExecutionProfile.RestoreGothic);
+        {
+            var messageBoxResult = System.Windows.MessageBox.Show("Are you sure?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                _gmcExecutor.Execute(GmcExecutionProfile.RestoreGothic);
+            }
+        }
 
         private void RunBuildModFileProfileProfileExecute(object obj)
             => _gmcExecutor.Execute(GmcExecutionProfile.BuildModFile);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace GothicModComposer.UI.ViewModels.Commands
+namespace GothicModComposer.UI.Commands
 {
     public class RelayCommand : ICommand
     {
