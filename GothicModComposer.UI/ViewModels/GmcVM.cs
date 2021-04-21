@@ -34,7 +34,7 @@ namespace GothicModComposer.UI.ViewModels
 
         private void RunComposeProfileExecute(object obj)
         {
-            var messageBoxResult = System.Windows.MessageBox.Show("Are you sure?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+            var messageBoxResult = MessageBox.Show("Are you sure you want to execute 'Compose' profile?", "Execute Confirmation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
                 _gmcExecutor.Execute(GmcExecutionProfile.Compose);
@@ -46,7 +46,7 @@ namespace GothicModComposer.UI.ViewModels
 
         private void RunRestoreGothicProfileExecute(object obj)
         {
-            var messageBoxResult = System.Windows.MessageBox.Show("Are you sure?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+            var messageBoxResult = MessageBox.Show("Are you sure to you want to execute 'RestoreGothic' profile?", "Execute Confirmation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
                 _gmcExecutor.Execute(GmcExecutionProfile.RestoreGothic);
