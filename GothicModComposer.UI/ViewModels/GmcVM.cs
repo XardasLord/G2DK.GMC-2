@@ -1,12 +1,14 @@
 ﻿using System.Windows;
 using GothicModComposer.UI.Commands;
 using GothicModComposer.UI.Enums;
+using GothicModComposer.UI.Helpers;
 using GothicModComposer.UI.Interfaces;
 using GothicModComposer.UI.Services;
 
+
 namespace GothicModComposer.UI.ViewModels
 {
-    public class GmcVM : Observable
+    public class GmcVM : ObservableVM
     {
         public RelayCommand RunUpdateProfile { get; }
         public RelayCommand RunComposeProfile { get; }
