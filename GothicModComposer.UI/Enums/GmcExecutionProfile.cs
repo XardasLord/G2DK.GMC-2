@@ -1,10 +1,10 @@
-﻿namespace GothicModComposer.UI.Application
+﻿namespace GothicModComposer.UI.Enums
 {
     public enum GmcExecutionProfile
     {
         Compose,
         RestoreGothic,
-        RunDK,
+        RunMod,
         Update,
         BuildModFile,
         EnableVDF

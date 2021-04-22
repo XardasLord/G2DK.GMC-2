@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using GothicModComposer.Commands;
-using GothicModComposer.Models.Folders;
+using GothicModComposer.Models.Interfaces;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 
 namespace GothicModComposer
 {
-	public class GmcManager
+    public class GmcManager
 	{
-		public GmcFolder GmcFolder { get; }
+		public IGmcFolder GmcFolder { get; }
 
 		private readonly ProfileLoaderResponse _profileLoaderResponse;
 		private readonly Stack<ICommand> _executedCommands = new();
@@ -42,7 +42,7 @@ namespace GothicModComposer
 		{
 			_executedCommands.Push(command);
 
-			// TODO: Introduce general progress bar of the all profile processing (commands processing as childs)
+			// TODO: Introduce general progress bar of the all profile processing (commands processing as child)
 
 			var stopWatch = new Stopwatch();
 			stopWatch.Start();

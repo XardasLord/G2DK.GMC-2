@@ -28,7 +28,7 @@ namespace GothicModComposer.Commands
 
 		private void AddDefaultWorld()
 		{
-			_profile.GothicArguments._3D(_profile.DefaultWorld);
+			_profile.GothicArguments.AddArgument_3D(_profile.DefaultWorld);
 			Logger.Info($"Added --3D:{_profile.DefaultWorld} to Gothic arguments.", true);
 		}
 	}

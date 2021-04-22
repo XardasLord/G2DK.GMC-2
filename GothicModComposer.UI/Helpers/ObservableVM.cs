@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace GothicModComposer.UI.ViewModels
+namespace GothicModComposer.UI.Helpers
 {
-    public class Observable : INotifyPropertyChanged
+    public class ObservableVM : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

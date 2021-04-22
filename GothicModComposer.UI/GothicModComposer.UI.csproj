@@ -7,8 +7,4 @@
     <AssemblyName>GMC-2 UI</AssemblyName>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\GothicModComposer.UI.ViewModels\GothicModComposer.UI.ViewModels.csproj" />
-  </ItemGroup>
-
 </Project>

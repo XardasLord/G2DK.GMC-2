@@ -7,21 +7,25 @@ using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.IniFiles;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
-using GothicModComposer.Utils.IOHelpers;
+using GothicModComposer.Utils.IOHelpers.FileSystem;
 
 namespace GothicModComposer.Commands
 {
-	public class OverrideIniCommand : ICommand
+    public class OverrideIniCommand : ICommand
 	{
 		public string CommandName => "Override .ini file";
 
 		private readonly IProfile _profile;
-		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
+        private readonly IFileSystemWithLogger _fileSystem;
+        private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
-		public OverrideIniCommand(IProfile profile) 
-			=> _profile = profile;
+		public OverrideIniCommand(IProfile profile, IFileSystemWithLogger fileSystem)
+        {
+            _profile = profile;
+            _fileSystem = fileSystem;
+        }
 
-		public void Execute()
+        public void Execute()
 		{
 			if (!_profile.IniOverrides.Any())
 			{
@@ -39,7 +43,7 @@ namespace GothicModComposer.Commands
 
 		private void OverrideIni()
 		{
-			if (!FileHelper.Exists(_profile.GothicFolder.GothicIniFilePath))
+			if (!_fileSystem.File.Exists(_profile.GothicFolder.GothicIniFilePath))
 				throw new Exception("Gothic.ini file was not found.");
 			
 			var gothicIni = _profile.GothicFolder.GetGothicIniContent();
@@ -48,23 +52,28 @@ namespace GothicModComposer.Commands
 			SaveIniFile(iniBlocks);
 		}
 
-		private void OverrideAttributes(List<IniBlock> iniBlocks)
+		private void OverrideAttributes(ICollection<IniBlock> iniBlocks)
 		{
 			var regex = new Regex(IniFileHelper.AttributeRegex);
 
 			_profile.IniOverrides.ForEach(item => {
 				var attribute = regex.Match(item);
 
-				iniBlocks.ForEach(block => {
-					var key = attribute.Groups["Key"].Value;
-					var value = attribute.Groups["Value"].Value;
+                var key = attribute.Groups["Key"].Value;
+                var value = attribute.Groups["Value"].Value;
 
-					if (!block.Contains(key)) 
-						return;
+                var blockToOverride = iniBlocks.FirstOrDefault(block => block.Contains(key));
+				if (blockToOverride is null)
+					return;
+				
+                var overridesSectionBlock = iniBlocks.FirstOrDefault(block => block.Header.Equals(IniFileHelper.OverridesSectionHeader));
+				if (overridesSectionBlock is null)
+					iniBlocks.Add(new IniBlock(IniFileHelper.OverridesSectionHeader));
 
-					block.Set(key, value);
-					Logger.Info($"Overriden {key}={value} in section: [{block.Header}].", true);
-				});
+                overridesSectionBlock = iniBlocks.Single(block => block.Header.Equals(IniFileHelper.OverridesSectionHeader));
+				overridesSectionBlock.Set($"{blockToOverride.Header}.{key}", value);
+				
+                Logger.Info($"Overriden {blockToOverride.Header}.{key}={value}.", true);
 			});
 
 		}

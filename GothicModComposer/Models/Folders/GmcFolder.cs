@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using GothicModComposer.Models.Interfaces;
 using GothicModComposer.Models.ModFiles;
 using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Models.Folders
 {
-	public class GmcFolder
-	{
+    public class GmcFolder : IGmcFolder
+    {
 		public string BasePath { get; }
 		public string BackupFolderPath => Path.Combine(BasePath, "backup");
 		public string LogsFolderPath => Path.Combine(BasePath, "Logs");
@@ -18,18 +20,21 @@ namespace GothicModComposer.Models.Folders
 		public string VdsfConfigFilePath => Path.Combine(BasePath, "vdfsConfig");
 		public string ModFilesTrackerFilePath => Path.Combine(BasePath, "modFiles.json");
 		public string BackupWorkDataFolderPath => Path.Combine(BackupFolderPath, "_Work", "Data");
-		public bool DoesBackupFolderExist => Directory.Exists(BackupFolderPath);
+		public bool DoesBackupFolderExist => _fileSystem.Directory.Exists(BackupFolderPath);
 		public string EssentialFilesRegexPattern => @"((Presets|Music|Video))|[\/\\](Fonts|_intern)";
 
 		private readonly List<ModFileEntry> _modFilesFromTrackerFile;
 		private readonly string _tmpCommandActionsBackupFolderPath;
+
+        private readonly IFileSystem _fileSystem;
 
 		private GmcFolder(string gmcFolderPath)
 		{
 			BasePath = gmcFolderPath;
 			_modFilesFromTrackerFile = GetModFilesFromTrackerFile();
 			_tmpCommandActionsBackupFolderPath = Path.Combine(BasePath, "tmpCommandActionsBackup");
-		}
+            _fileSystem = new FileSystem();
+        }
 
 		public static GmcFolder CreateFromPath(string gmcFolderPath)
 		{

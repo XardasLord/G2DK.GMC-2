@@ -1,4 +1,6 @@
-﻿namespace GothicModComposer.UI.Application
+﻿using GothicModComposer.UI.Enums;
+
+namespace GothicModComposer.UI.Interfaces
 {
     public interface IGmcExecutor
     {

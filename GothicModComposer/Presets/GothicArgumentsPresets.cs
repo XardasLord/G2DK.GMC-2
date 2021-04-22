@@ -18,14 +18,14 @@ namespace GothicModComposer.Presets
         public static GothicArguments Compile()
         {
             return GothicArguments.Empty()
-                .ZWindow()
-                ._3D("compile")
-                .ZRes()
-                .ZLog()
-                .NoMenu()
-                .ZNoTex()
-                .ZNoMusic()
-                .ZNoSound();
+                .AddArgument_ZWindow()
+                .AddArgument_3D("compile")
+                .AddArgument_ZRes()
+                .AddArgument_ZLog()
+                .AddArgument_NoMenu()
+                .AddArgument_ZNoTex()
+                .AddArgument_ZNoMusic()
+                .AddArgument_ZNoSound();
         }
 
         /// <summary>Returns gothic arguments configuration with attributes:
@@ -34,8 +34,8 @@ namespace GothicModComposer.Presets
         public static GothicArguments NoSounds()
         {
             return GothicArguments.Empty()
-                .ZNoSound()
-                .ZNoMusic();
+                .AddArgument_ZNoSound()
+                .AddArgument_ZNoMusic();
         }
 
         /// <summary>Returns gothic arguments configuration with attributes:
@@ -44,9 +44,9 @@ namespace GothicModComposer.Presets
         public static GothicArguments RecompileAll()
         {
             return GothicArguments.Empty()
-                .ZConvertAll()
-                .ZReparse()
-                .ZTexConvert();
+                .AddArgument_ZConvertAll()
+                .AddArgument_ZReparse()
+                .AddArgument_ZTexConvert();
         }
 
         /// <summary>Returns gothic arguments configuration with attributes:
@@ -55,10 +55,10 @@ namespace GothicModComposer.Presets
         public static GothicArguments Build()
         {
             return GothicArguments.Empty()
-                .ZWindow()
-                .ZLog()
-                .ZRes()
-                .NoMenu();
+                .AddArgument_ZWindow()
+                .AddArgument_ZLog()
+                .AddArgument_ZRes()
+                .AddArgument_NoMenu();
         }
 
         /// <summary>Returns gothic arguments configuration with attributes:
@@ -67,10 +67,10 @@ namespace GothicModComposer.Presets
         public static GothicArguments Run()
         {
             return GothicArguments.Empty()
-                .ZWindow()
-                .DevMode()
-                .ZRes()
-                .Vdfs();
+                .AddArgument_ZWindow()
+                .AddArgument_DevMode()
+                .AddArgument_ZRes()
+                .AddArgument_Vdfs();
         }
 
         /// <summary>Returns gothic arguments configuration with attributes:
@@ -79,11 +79,11 @@ namespace GothicModComposer.Presets
         public static GothicArguments Test()
         {
             return GothicArguments.Empty()
-                .ZWindow()
-                .ZRes()
-                .NoMenu()
-                ._3D()
-                .ZLog();
+                .AddArgument_ZWindow()
+                .AddArgument_ZRes()
+                .AddArgument_NoMenu()
+                .AddArgument_3D()
+                .AddArgument_ZLog();
         }
 
     }

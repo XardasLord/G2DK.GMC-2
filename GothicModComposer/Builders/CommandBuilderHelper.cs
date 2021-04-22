@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Abstractions;
 using GothicModComposer.Commands;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
+using GothicModComposer.Utils.IOHelpers;
+using GothicModComposer.Utils.IOHelpers.FileSystem;
 
 namespace GothicModComposer.Builders
 {
@@ -28,8 +31,8 @@ namespace GothicModComposer.Builders
         private static readonly Dictionary<string, Func<IProfile, ICommand>> Commands = new()
 		{
 			{ RestoreGothicBackupCommand, profile => new RestoreGothicBackupCommand(profile) },
-			{ CreateBackupCommand, profile => new CreateBackupCommand(profile) },
-			{ OverrideIniCommand, profile => new OverrideIniCommand(profile) },
+			{ CreateBackupCommand, profile => new CreateBackupCommand(profile, new FileSystemWithLogger())},
+			{ OverrideIniCommand, profile => new OverrideIniCommand(profile, new FileSystemWithLogger()) },
 			{ AddDefaultWorldCommand, profile => new AddDefaultWorldCommand(profile) },
 			{ DisableVdfFilesCommand, profile => new DisableVdfFilesCommand(profile) },
 			{ EnableVdfFilesCommand, profile => new EnableVdfFilesCommand(profile) },
@@ -45,8 +48,7 @@ namespace GothicModComposer.Builders
             { BuildModFileCommand, profile => new BuildModFileCommand(profile) }
 		};
 
-
-		public static ICommand FromString(IProfile profile, string commandName)
+        public static ICommand FromString(IProfile profile, string commandName)
 		{
 			if (Commands.TryGetValue(commandName, out var command)) 
 				return command(profile);

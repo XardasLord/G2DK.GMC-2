@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using GothicModComposer.UI.Application;
+using GothicModComposer.UI.Enums;
+using GothicModComposer.UI.Interfaces;
 
-namespace GothicModComposer.UI.Infrastructure
+namespace GothicModComposer.UI.Services
 {
     public class GmcExecutor : IGmcExecutor
     {
         private const string UpdateFileName = "Update.bat";
         private const string ComposeFileName = "Compose.bat";
-        private const string RunDKFileName = "RunMod.bat";
+        private const string RunModFileName = "RunMod.bat";
         private const string RestoreGothicFileName = "RestoreGothic.bat";
         private const string BuildModFileFileName = "BuildModFile.bat";
         private const string EnableVDFFileName = "EnableVDF.bat";
@@ -43,7 +44,7 @@ namespace GothicModComposer.UI.Infrastructure
             {
                 GmcExecutionProfile.Update => Path.Combine(gmcLocation, "..", UpdateFileName),
                 GmcExecutionProfile.Compose => Path.Combine(gmcLocation, "..", ComposeFileName),
-                GmcExecutionProfile.RunDK => Path.Combine(gmcLocation, "..", RunDKFileName),
+                GmcExecutionProfile.RunMod => Path.Combine(gmcLocation, "..", RunModFileName),
                 GmcExecutionProfile.RestoreGothic => Path.Combine(gmcLocation, "..", RestoreGothicFileName),
                 GmcExecutionProfile.BuildModFile => Path.Combine(gmcLocation, "..", BuildModFileFileName),
                 GmcExecutionProfile.EnableVDF => Path.Combine(gmcLocation, "..", EnableVDFFileName),

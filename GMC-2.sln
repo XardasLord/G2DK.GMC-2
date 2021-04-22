@@ -5,13 +5,17 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GothicModComposer", "GothicModComposer\GothicModComposer.csproj", "{352B68E6-1653-4633-8316-57524EA74AEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GothicModComposer.UI", "GothicModComposer.UI\GothicModComposer.UI.csproj", "{8A4F25F5-DB40-497A-B7CF-044874748BCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GothicModComposer.UI", "GothicModComposer.UI\GothicModComposer.UI.csproj", "{8A4F25F5-DB40-497A-B7CF-044874748BCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GothicModComposer.UI.ViewModels", "GothicModComposer.UI.ViewModels\GothicModComposer.UI.ViewModels.csproj", "{99CF89A3-3691-4E07-9BC9-6F6C30A2B629}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EAC91A04-5854-4818-9C15-3B86F7F50D7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GothicModComposer.UI.Infrastructure", "GothicModComposer.UI.Infrastructure\GothicModComposer.UI.Infrastructure.csproj", "{31938444-0CD7-4D64-8A9B-E421E739187A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{3AE3D570-DB18-45A4-8A92-8A28DA656360}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GothicModComposer.UI.Application", "GothicModComposer.UI.Application\GothicModComposer.UI.Application.csproj", "{140A3A44-9A6E-4A77-99DF-3190BCFDFD32}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GMC", "GMC", "{C86AED1A-C889-4912-B550-7A0D0426CAFC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GMC UI", "GMC UI", "{6CC657BD-D995-4B06-B729-2283EC930DBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GothicModComposer.UnitTests", "tests\GothicModComposer.UnitTests\GothicModComposer.UnitTests.csproj", "{B40FD3BF-AC93-4B76-AFBC-5158AC910EA9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,21 +31,20 @@ Global
 		{8A4F25F5-DB40-497A-B7CF-044874748BCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A4F25F5-DB40-497A-B7CF-044874748BCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A4F25F5-DB40-497A-B7CF-044874748BCC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99CF89A3-3691-4E07-9BC9-6F6C30A2B629}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99CF89A3-3691-4E07-9BC9-6F6C30A2B629}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99CF89A3-3691-4E07-9BC9-6F6C30A2B629}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99CF89A3-3691-4E07-9BC9-6F6C30A2B629}.Release|Any CPU.Build.0 = Release|Any CPU
-		{31938444-0CD7-4D64-8A9B-E421E739187A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{31938444-0CD7-4D64-8A9B-E421E739187A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{31938444-0CD7-4D64-8A9B-E421E739187A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{31938444-0CD7-4D64-8A9B-E421E739187A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{140A3A44-9A6E-4A77-99DF-3190BCFDFD32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{140A3A44-9A6E-4A77-99DF-3190BCFDFD32}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{140A3A44-9A6E-4A77-99DF-3190BCFDFD32}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{140A3A44-9A6E-4A77-99DF-3190BCFDFD32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B40FD3BF-AC93-4B76-AFBC-5158AC910EA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B40FD3BF-AC93-4B76-AFBC-5158AC910EA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B40FD3BF-AC93-4B76-AFBC-5158AC910EA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B40FD3BF-AC93-4B76-AFBC-5158AC910EA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{352B68E6-1653-4633-8316-57524EA74AEF} = {C86AED1A-C889-4912-B550-7A0D0426CAFC}
+		{8A4F25F5-DB40-497A-B7CF-044874748BCC} = {6CC657BD-D995-4B06-B729-2283EC930DBF}
+		{C86AED1A-C889-4912-B550-7A0D0426CAFC} = {EAC91A04-5854-4818-9C15-3B86F7F50D7D}
+		{6CC657BD-D995-4B06-B729-2283EC930DBF} = {EAC91A04-5854-4818-9C15-3B86F7F50D7D}
+		{B40FD3BF-AC93-4B76-AFBC-5158AC910EA9} = {3AE3D570-DB18-45A4-8A92-8A28DA656360}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70BE9BB3-F370-4478-A706-0F712B73E2E3}

@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using GothicModComposer.Models.Vdfs;
+using GothicModComposer.Models.Interfaces;
 
 namespace GothicModComposer.Utils.IOHelpers
 {
     public class GothicVdfsConfigWriter
     {
-        public static string GenerateContent(GothicVdfsConfig config, string gothicRoot, string outputPath)
+        public static string GenerateContent(IGothicVdfsConfig config, string gothicRoot, string outputPath)
         {
             var outputModFile = Path.Combine(outputPath, config.Filename);
             var builder = new StringBuilder();

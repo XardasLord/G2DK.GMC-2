@@ -1,11 +1,18 @@
 # Gothic Mod Composer
 
 Gothic Mod Composer (GMC-2) is a tool that helps to prepare Gothic II Dzieje Khorinis files to be properly automaticly arranged, copied, updated and compiled.
+The project board is available [here in Trello]
 
 ## Prerequisite
 - You need to have installed [.NET Desktop Runtime 5.0 x86](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-5.0.3-windows-x86-installer) on your computer.
 
 ## How to run?
+
+### GMC UI
+GUI is avaialable since GMC 1.1.0 version. GUI is constantly improving with new features and UX changes.
+
+### Running via .bat files
+Previously GMC could be run via `.bat` files, each one representing different profile to execute.
 After building solution the GMC.exe executable file will be available. To run GMC.exe you have to provide several parameters:
 - `profile` - a profile to execute. Available profiles are described in next section of this README file.
 - `modPath` - an absolute path to the Gothic II Dzieje Khorinis repository.
@@ -31,3 +38,9 @@ GMC-2 has several profile modes that can be run with. Below you can find the des
 
 ### BuildModFile
 > Builds the .mod file package from compiled files and save the package in the _gothicRoot/.gmc/Build path.
+
+### EnableVDF
+> Enabled VDF files from the assets directory.
+
+
+[here in Trello]: https://trello.com/b/ndyTLtzA/gmc-2
