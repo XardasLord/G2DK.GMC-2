@@ -3,6 +3,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.1.1] (2021-04-XX)
+### Added
+- `Gothic2.exe` compilation process is no longer ran when changes during the Update profile only happened in `Worlds` asset directory.
+- MessageBox with confirmation before executing Compose ot RestoreGothic profile.
+
+### Changed
+- Order profiles in GMC UI.
+- Improved `GMC.ini` content generation. Overriden elements are in the `[OVERRIDES]` section now.
+
+### Fixed
+- Order of dialogues compilation in *Compose* and *Update* profiles. Now dialogues compilation executes **after** scripts compilation by `Gothic2.exe` process.
+
 ## [1.1.0] (2021-04-02)
 ### Added
 - GUI for GMC
