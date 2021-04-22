@@ -27,8 +27,8 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.CopyEssentialAssetFilesFromBackupCommand,
 					CommandBuilderHelper.UpdateModDataFilesCommand,
 					CommandBuilderHelper.UpdateModExtensionFilesCommand,
-					CommandBuilderHelper.UpdateDialoguesCommand,
 					CommandBuilderHelper.ExecuteGothicKillOnLoadCommand,
+					CommandBuilderHelper.UpdateDialoguesCommand,
 					CommandBuilderHelper.DisableVdfFilesCommand,
 					CommandBuilderHelper.ClearGmcTemporaryFiles
 				}
@@ -80,8 +80,8 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.RemoveNotCompiledSourcesCommand,
 					CommandBuilderHelper.UpdateModDataFilesCommand,
 					CommandBuilderHelper.UpdateModExtensionFilesCommand,
-					CommandBuilderHelper.UpdateDialoguesCommand,
 					CommandBuilderHelper.ExecuteGothicKillOnLoadCommand,
+					CommandBuilderHelper.UpdateDialoguesCommand,
 					CommandBuilderHelper.DisableVdfFilesCommand,
 					CommandBuilderHelper.ClearGmcTemporaryFiles
 				}
