@@ -1,4 +1,4 @@
-﻿namespace GothicModComposer.UI.Application
+﻿namespace GothicModComposer.UI.Enums
 {
     public enum GmcExecutionProfile
     {

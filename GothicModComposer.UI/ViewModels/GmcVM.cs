@@ -1,7 +1,8 @@
 ﻿using System.Windows;
-using GothicModComposer.UI.Application;
 using GothicModComposer.UI.Commands;
-using GothicModComposer.UI.Infrastructure;
+using GothicModComposer.UI.Enums;
+using GothicModComposer.UI.Interfaces;
+using GothicModComposer.UI.Services;
 
 namespace GothicModComposer.UI.ViewModels
 {

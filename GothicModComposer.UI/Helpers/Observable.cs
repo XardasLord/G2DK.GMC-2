@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace GothicModComposer.UI
+namespace GothicModComposer.UI.Helpers
 {
     public class Observable : INotifyPropertyChanged
     {

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using GothicModComposer.UI.Application;
+using GothicModComposer.UI.Enums;
+using GothicModComposer.UI.Interfaces;
 
-namespace GothicModComposer.UI.Infrastructure
+namespace GothicModComposer.UI.Services
 {
     public class GmcExecutor : IGmcExecutor
     {
