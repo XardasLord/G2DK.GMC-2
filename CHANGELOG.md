@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
-## [1.1.1] (2021-04-XX)
+## [1.1.1] (2021-04-22)
 ### Added
 - `Gothic2.exe` compilation process is no longer ran when changes during the Update profile only happened in `Worlds` asset directory.
 - MessageBox with confirmation before executing Compose ot RestoreGothic profile.
@@ -75,6 +75,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.1.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.1.1
 [1.1.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.1.0
 [1.0.4]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.4
 [1.0.3]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.0.3
