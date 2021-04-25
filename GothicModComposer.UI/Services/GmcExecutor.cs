@@ -18,7 +18,7 @@ namespace GothicModComposer.UI.Services
         public void Execute(GmcExecutionProfile profile)
         {
 #if DEBUG
-            var gmcLocation = @"F:\Gry\Gothic II Dzieje Khorinis\TheHistoryOfKhorinis\_Tools\GMC 2\GMC UI Release";
+            var gmcLocation = @"C:\localRepository\Gothic 2 Dzieje Khorinis\GMC-2\GothicModComposer\bin\Debug\net5.0-windows";
 #else 
             var gmcLocation = AppDomain.CurrentDomain.BaseDirectory;
 #endif
