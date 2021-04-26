@@ -25,5 +25,12 @@ namespace GothicModComposer.Models
 			Required = true,
 			HelpText = "Profile to determine how build should be executed.")]
 		public ProfilePresetType Profile { get; set; }
+		
+		[Option(
+			'c',
+			"configurationFile",
+			Required = false,
+			HelpText = "Json configuration file for GMC.")]
+		public string ConfigurationFile { get; set; }
 	}
 }
