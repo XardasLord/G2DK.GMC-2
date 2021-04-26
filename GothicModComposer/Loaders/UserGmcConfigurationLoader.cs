@@ -10,9 +10,9 @@ namespace GothicModComposer.Loaders
 	{
 		private const string GmcConfigurationFileName = "gmc-2.json";
 
-		public static UserGmcConfiguration Load(string projectRootDirectory)
+		public static UserGmcConfiguration Load(string projectRootDirectory, string configurationFile)
 		{
-			var gmcConfigurationFilePath = Path.Combine(projectRootDirectory, GmcConfigurationFileName);
+			var gmcConfigurationFilePath = configurationFile ?? Path.Combine(projectRootDirectory, GmcConfigurationFileName);
 
 			var userGmcConfig = DeserializeConfigurationFromFile(gmcConfigurationFilePath);
 
