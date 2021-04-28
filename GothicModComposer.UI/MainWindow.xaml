@@ -17,7 +17,7 @@
         <Grid Grid.Row="0">
             <Menu Foreground="Black">
                 <MenuItem Header="File" IsEnabled="False" />
-                <MenuItem Header="Settings" IsEnabled="False" />
+                <MenuItem Header="Settings" Command="{Binding OpenSettings}" />
                 <MenuItem Header="Help" IsEnabled="False" />
             </Menu>
         </Grid>

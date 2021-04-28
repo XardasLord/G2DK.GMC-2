@@ -4,6 +4,7 @@ using GothicModComposer.UI.Enums;
 using GothicModComposer.UI.Helpers;
 using GothicModComposer.UI.Interfaces;
 using GothicModComposer.UI.Services;
+using GothicModComposer.UI.Views;
 
 
 namespace GothicModComposer.UI.ViewModels
@@ -16,6 +17,7 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand RunRestoreGothicProfile { get; }
         public RelayCommand RunBuildModFileProfile { get; }
         public RelayCommand RunEnableVDFProfile { get; }
+        public RelayCommand OpenSettings { get; }
 
         private readonly IGmcExecutor _gmcExecutor;
 
@@ -29,6 +31,7 @@ namespace GothicModComposer.UI.ViewModels
             RunRestoreGothicProfile = new RelayCommand(RunRestoreGothicProfileExecute);
             RunBuildModFileProfile = new RelayCommand(RunBuildModFileProfileProfileExecute);
             RunEnableVDFProfile = new RelayCommand(RunEnableVDFProfileProfileExecute);
+            OpenSettings = new RelayCommand(OpenSettingsExecute);
         }
 
 
@@ -61,5 +64,10 @@ namespace GothicModComposer.UI.ViewModels
 
         private void RunEnableVDFProfileProfileExecute(object obj)
             => _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF);
+
+        private static void OpenSettingsExecute(object obj)
+        {
+            new GmcSettings().ShowDialog();
+        }
     }
 }

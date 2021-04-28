@@ -7,4 +7,11 @@
     <AssemblyName>GMC-2 UI</AssemblyName>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Page Update="Views\GmcSettings.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>
