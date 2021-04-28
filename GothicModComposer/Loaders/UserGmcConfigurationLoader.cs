@@ -22,7 +22,7 @@ namespace GothicModComposer.Loaders
 		private static UserGmcConfiguration DeserializeConfigurationFromFile(string filepath)
 		{
 			if (!FileHelper.Exists(filepath))
-				throw new ConfigurationFileNotFoundException(filepath);
+				throw new GmcFileNotFoundException(filepath);
 
 			var jsonConfigurationFile = FileHelper.ReadFile(filepath);
 			return JsonSerializer.Deserialize<UserGmcConfiguration>(jsonConfigurationFile, new JsonSerializerOptions { AllowTrailingCommas = true });
