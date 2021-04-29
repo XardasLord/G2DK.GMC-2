@@ -9,6 +9,7 @@ namespace GothicModComposer.UI.ViewModels
     public class GmcSettingsVM : ObservableVM
     {
         public string GmcSettingsJsonFilePath { get; }
+        public GmcConfiguration GmcConfiguration { get; set; }
 
         public GmcSettingsVM()
         {
@@ -16,6 +17,8 @@ namespace GothicModComposer.UI.ViewModels
 
             if (!File.Exists(GmcSettingsJsonFilePath))
                 CreateDefaultConfigurationFile();
+
+            LoadConfiguration();
         }
 
         private void CreateDefaultConfigurationFile()
@@ -25,6 +28,13 @@ namespace GothicModComposer.UI.ViewModels
             var configurationJson = JsonSerializer.Serialize(configurationFile);
 
             File.WriteAllText(GmcSettingsJsonFilePath, configurationJson);
+        }
+
+        private void LoadConfiguration()
+        {
+            var configurationJson = File.ReadAllText(GmcSettingsJsonFilePath);
+
+            GmcConfiguration = JsonSerializer.Deserialize<GmcConfiguration>(configurationJson);
         }
     }
 }
