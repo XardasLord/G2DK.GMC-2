@@ -4,7 +4,7 @@
     {
         Compose,
         RestoreGothic,
-        Run,
+        RunMod,
         Update,
         BuildModFile,
         EnableVDF
