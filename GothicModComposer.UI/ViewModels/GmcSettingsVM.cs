@@ -15,19 +15,34 @@ namespace GothicModComposer.UI.ViewModels
     {
         private GmcConfiguration _gmcConfiguration;
         private ObservableCollection<string> _zen3DWorlds;
+        private bool _changesMade;
 
         public string GmcSettingsJsonFilePath { get; }
 
         public GmcConfiguration GmcConfiguration
         {
             get => _gmcConfiguration;
-            set => SetProperty(ref _gmcConfiguration, value);
+            set
+            {
+                if (SetProperty(ref _gmcConfiguration, value))
+                    ChangesMade = true;
+            }
         }
 
         public ObservableCollection<string> Zen3DWorlds
         {
             get => _zen3DWorlds;
-            set => SetProperty(ref _zen3DWorlds, value);
+            set
+            {
+                if (SetProperty(ref _zen3DWorlds, value))
+                    ChangesMade = true;
+            }
+        }
+
+        public bool ChangesMade
+        {
+            get => _changesMade;
+            set => SetProperty(ref _changesMade, value);
         }
 
         public RelayCommand SelectGothic2RootDirectory { get; }
@@ -43,6 +58,9 @@ namespace GothicModComposer.UI.ViewModels
                 CreateDefaultConfigurationFile();
 
             LoadConfiguration();
+            GmcConfiguration.PropertyChanged += (_, _) => ChangesMade = true;
+
+            LoadZen3DWorlds();
 
             SelectGothic2RootDirectory = new RelayCommand(SelectGothic2RootDirectoryExecute);
             SelectModificationRootDirectory = new RelayCommand(SelectModificationRootDirectoryExecute);
@@ -89,6 +107,8 @@ namespace GothicModComposer.UI.ViewModels
         {
             var configurationJson = JsonSerializer.Serialize(GmcConfiguration);
             File.WriteAllText(GmcSettingsJsonFilePath, configurationJson);
+
+            ChangesMade = false;
         }
 
         private void CreateDefaultConfigurationFile()

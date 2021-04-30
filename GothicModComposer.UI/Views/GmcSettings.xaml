@@ -55,6 +55,7 @@
         <StackPanel Grid.Row="3" Grid.Column="1" Margin="0, 20, 0, 0" HorizontalAlignment="Left">
             <Button  Width="200" Height="32"
                      Content="Save settings"
+                     IsEnabled="{Binding ChangesMade}"
                      Command="{Binding SaveSettings}" />
         </StackPanel>
     </Grid>

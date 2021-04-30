@@ -1,13 +1,33 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
+using GothicModComposer.UI.Helpers;
 
 namespace GothicModComposer.UI.Models
 {
-    public class GmcConfiguration
+    public class GmcConfiguration : ObservableVM
     {
-        public string Gothic2RootPath { get; set; }
-        public string ModificationRootPath { get; set; }
-        public string DefaultWorld { get; set; }
+        private string _gothic2RootPath;
+        private string _modificationRootPath;
+        private string _defaultWorld;
+
+        public string Gothic2RootPath
+        {
+            get => _gothic2RootPath;
+            set => SetProperty(ref _gothic2RootPath, value);
+        }
+
+        public string ModificationRootPath
+        {
+            get => _modificationRootPath;
+            set => SetProperty(ref _modificationRootPath, value);
+        }
+
+        public string DefaultWorld
+        {
+            get => _defaultWorld;
+            set => SetProperty(ref _defaultWorld, value);
+        }
+
         public List<string> IniOverrides { get; set; }
         public GothicVdfsConfig GothicVdfsConfig { get; set; }
 
