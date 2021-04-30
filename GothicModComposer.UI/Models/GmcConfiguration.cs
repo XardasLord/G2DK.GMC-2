@@ -5,6 +5,8 @@ namespace GothicModComposer.UI.Models
 {
     public class GmcConfiguration
     {
+        public string Gothic2RootPath { get; set; }
+        public string ModificationRootPath { get; set; }
         public string DefaultWorld { get; set; }
         public List<string> IniOverrides { get; set; }
         public GothicVdfsConfig GothicVdfsConfig { get; set; }
