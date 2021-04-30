@@ -130,6 +130,10 @@ namespace GothicModComposer.UI.ViewModels
         private void LoadZen3DWorlds()
         {
             Zen3DWorlds.Clear();
+            
+            if (GmcConfiguration.ModificationRootPath is null)
+                return;
+            
             var worldsPath = Path.Combine(GmcConfiguration.ModificationRootPath, "Worlds");
 
             if (!Directory.Exists(worldsPath))
