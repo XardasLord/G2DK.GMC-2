@@ -12,8 +12,11 @@ namespace GothicModComposer.UnitTests.Commands
 
         public const string GothicBasePath = "C:/BasePath";
         public const string GothicWorkDataFolderPath = "C:/WorkDataFolderPath";
+        public const string GothicIniFilePath = "C:/GothicIniFilePath";
+
         public const string GmcBackupFolderPath = "C:/BackupFolderPath";
         public const string GmcBackupWorkDataFolderPath = "C:/BackupWorkDataFolderPath";
+
         public const string ModExtensionsFolderPath = "C:/ExtensionsFolderPath";
 
         protected TestsFixture()
@@ -29,8 +32,11 @@ namespace GothicModComposer.UnitTests.Commands
         {
             ProfileMock.SetupGet(x => x.GothicFolder.BasePath).Returns(GothicBasePath);
             ProfileMock.SetupGet(x => x.GothicFolder.WorkDataFolderPath).Returns(GothicWorkDataFolderPath);
+            ProfileMock.SetupGet(x => x.GothicFolder.GmcIniFilePath).Returns(GothicIniFilePath);
+
             ProfileMock.SetupGet(x => x.GmcFolder.BackupFolderPath).Returns(GmcBackupFolderPath);
             ProfileMock.SetupGet(x => x.GmcFolder.BackupWorkDataFolderPath).Returns(GmcBackupWorkDataFolderPath);
+
             ProfileMock.SetupGet(x => x.ModFolder.ExtensionsFolderPath).Returns(ModExtensionsFolderPath);
         }
 

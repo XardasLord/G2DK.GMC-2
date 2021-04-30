@@ -8,9 +8,9 @@ namespace GothicModComposer.Builders
 	public static class GmcManagerBuilder
 	{
 		public static GmcManager PrepareGmcExecutor(
-            ProfilePresetType profileType, string absolutePathToProject, string absolutePathToGothic2Root)
+            ProfilePresetType profileType, string absolutePathToProject, string absolutePathToGothic2Root, string configurationFile)
 		{
-			var userGmcConfig = UserGmcConfigurationLoader.Load(absolutePathToProject);
+			var userGmcConfig = UserGmcConfigurationLoader.Load(absolutePathToProject, configurationFile);
 			var gmcFolderPath = Path.Combine(absolutePathToGothic2Root, ".gmc");
 
 			var gothicFolder = GothicFolder.CreateFromPath(absolutePathToGothic2Root);

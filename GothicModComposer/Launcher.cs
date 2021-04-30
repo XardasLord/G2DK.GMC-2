@@ -28,10 +28,10 @@ namespace GothicModComposer
 
         private static void RunGmc(GmcInitialParameter parameters)
 		{
-            var fullVersion = Assembly.GetExecutingAssembly().GetName().Version;
+			var fullVersion = Assembly.GetExecutingAssembly().GetName().Version;
 			var stopWatch = new Stopwatch();
 
-			var gmcManager = GmcManagerBuilder.PrepareGmcExecutor(parameters.Profile, parameters.AbsolutePathToProject, parameters.AbsolutePathToGothic2Game);
+			var gmcManager = GmcManagerBuilder.PrepareGmcExecutor(parameters.Profile, parameters.AbsolutePathToProject, parameters.AbsolutePathToGothic2Game, parameters.ConfigurationFile);
 
 			try
 			{

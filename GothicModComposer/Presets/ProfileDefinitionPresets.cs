@@ -48,7 +48,7 @@ namespace GothicModComposer.Presets
 		public static ProfileDefinition GetRunProfile()
 			=> new()
 			{
-				ProfileType = ProfilePresetType.Run,
+				ProfileType = ProfilePresetType.RunMod,
 				GothicArguments = GothicArgumentsPresets.Run().ToList(),
                 CommandsConditions = new CommandsConditions
                 {
