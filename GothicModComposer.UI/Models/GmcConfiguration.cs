@@ -9,6 +9,7 @@ namespace GothicModComposer.UI.Models
         private string _gothic2RootPath;
         private string _modificationRootPath;
         private string _defaultWorld;
+        private GothicArgumentsConfiguration _gothicArguments;
 
         public string Gothic2RootPath
         {
@@ -26,6 +27,12 @@ namespace GothicModComposer.UI.Models
         {
             get => _defaultWorld;
             set => SetProperty(ref _defaultWorld, value);
+        }
+
+        public GothicArgumentsConfiguration GothicArguments
+        {
+            get => _gothicArguments;
+            set => SetProperty(ref _gothicArguments, value);
         }
 
         public List<string> IniOverrides { get; set; }
@@ -74,6 +81,8 @@ namespace GothicModComposer.UI.Models
 
         public GmcConfiguration()
         {
+            GothicArguments = new GothicArgumentsConfiguration();
+            GothicArguments.PropertyChanged += (_, _) => OnPropertyChanged(nameof(GothicArguments));
         }
     }
 
@@ -84,5 +93,44 @@ namespace GothicModComposer.UI.Models
         public List<string> Include { get; set; }
         public List<string> Exclude { get; set; }
         public string Comment { get; set; }
+    }
+
+    public class GothicArgumentsConfiguration : ObservableVM
+    {
+        private bool _isWindowMode;
+        private bool _isDevMode;
+        private bool _isMusicDisabled;
+        private bool _isSoundDisabled;
+        private bool _isReparseScripts;
+
+        public bool IsWindowMode
+        {
+            get => _isWindowMode;
+            set => SetProperty(ref _isWindowMode, value);
+        }
+
+        public bool IsDevMode
+        {
+            get => _isDevMode;
+            set => SetProperty(ref _isDevMode, value);
+        }
+
+        public bool IsMusicDisabled
+        {
+            get => _isMusicDisabled;
+            set => SetProperty(ref _isMusicDisabled, value);
+        }
+
+        public bool IsSoundDisabled
+        {
+            get => _isSoundDisabled;
+            set => SetProperty(ref _isSoundDisabled, value);
+        }
+
+        public bool IsReparseScript
+        {
+            get => _isReparseScripts;
+            set => SetProperty(ref _isReparseScripts, value);
+        }
     }
 }

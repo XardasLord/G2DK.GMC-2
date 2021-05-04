@@ -13,6 +13,7 @@ namespace GothicModComposer.Models.Profiles
 		public IGothicArguments GothicArguments { get; set; }
         public IGothicVdfsConfig GothicVdfsConfig { get; set; }
         public ICommandsConditions CommandsConditions { get; set; }
+        public IGothicArgumentsConfiguration GothicArgumentsForceConfig { get; set; }
     }
 
 	public interface IProfile
@@ -25,5 +26,6 @@ namespace GothicModComposer.Models.Profiles
 		IGothicArguments GothicArguments { get; set; }
 		IGothicVdfsConfig GothicVdfsConfig { get; set; }
         ICommandsConditions CommandsConditions { get; set; }
+		IGothicArgumentsConfiguration GothicArgumentsForceConfig { get; set; }
 	}
 }
