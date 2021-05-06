@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.GothicSpyProcess;
@@ -82,14 +83,21 @@ namespace GothicModComposer.Commands
 		}
 
 		private ProcessStartInfo GetGothicProcessStartInfo()
-        {
-            var arguments = _profile.GothicArguments.Merge(_profile.GothicArgumentsForceConfig);
+		{
+			string arguments;
+			
+	        if (_killProcessMessage is null)
+		        // If we run the game then we need to merge configs from UI
+		        arguments = _profile.GothicArguments.Merge(_profile.GothicArgumentsForceConfig).ToString();
+	        else
+		        arguments = _profile.GothicArguments.ToString();
+            
 
             return new ProcessStartInfo
             {
                 FileName = _profile.GothicFolder.GothicExeFilePath,
                 WorkingDirectory = _profile.GothicFolder.BasePath,
-                Arguments = arguments.ToString(),
+                Arguments = arguments,
                 Verb = "runas", // Force to run the process as Administrator
                 UseShellExecute = false
             };
