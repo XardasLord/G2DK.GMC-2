@@ -3,6 +3,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.3.0] (2021-05-06)
+### Added
+- In GMC UI we have couple of additional setting parameters:
+  - Window mode
+  - Dev mode
+  - Disable music
+  - Disable sound
+  - Reparse scripts
+- GMC UI is looking for ZEN files also in subdirectories.
+
+### Fixed
+- In GMC UI ZEN files are now correctly verified if they are binary or not (based on their content instead of just size).
+
 ## [1.2.0] (2021-04-30)
 ### Added
 - Settings window in GMC UI. We can set Gothic 2 root path, modification path and select 3D ZEN World.
@@ -80,6 +93,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.3.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.3.0
 [1.2.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.2.0
 [1.1.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.1.1
 [1.1.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.1.0
