@@ -82,13 +82,17 @@ namespace GothicModComposer.Commands
 		}
 
 		private ProcessStartInfo GetGothicProcessStartInfo()
-			=> new()
-			{
-				FileName = _profile.GothicFolder.GothicExeFilePath,
-				WorkingDirectory = _profile.GothicFolder.BasePath,
-				Arguments = _profile.GothicArguments.ToString(),
-				Verb = "runas", // Force to run the process as Adminitrator
-				UseShellExecute = false
-			};
-	}
+        {
+            var arguments = _profile.GothicArguments.Merge(_profile.GothicArgumentsForceConfig);
+
+            return new ProcessStartInfo
+            {
+                FileName = _profile.GothicFolder.GothicExeFilePath,
+                WorkingDirectory = _profile.GothicFolder.BasePath,
+                Arguments = arguments.ToString(),
+                Verb = "runas", // Force to run the process as Administrator
+                UseShellExecute = false
+            };
+        }
+    }
 }

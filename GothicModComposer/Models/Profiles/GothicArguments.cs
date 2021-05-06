@@ -7,9 +7,12 @@ namespace GothicModComposer.Models.Profiles
 {
     public class GothicArguments : IGothicArguments
     {
+        // TODO: We need to provide RemoveArgument_XXX for all arguments instead of calling them directly by key
         public const string ZConvertAllParameter = "ZCONVERTALL";
         public const string ZReparseParameter = "ZREPARSE";
         public const string ZTexConvertParameter = "ZTEXCONVERT";
+        public const string ZWindowModeParameter = "ZWINDOW";
+        public const string DevModeParameter = "DEVMODE";
 
         private readonly Dictionary<string, string> _gothicArguments;
 
@@ -63,6 +66,36 @@ namespace GothicModComposer.Models.Profiles
         {
             return _gothicArguments.Select(item => item.Value == null ? $"{item.Key}" : $"{item.Key}:{item.Value}")
                 .ToList();
+        }
+
+        public GothicArguments Merge(IGothicArgumentsConfiguration profileGothicArgumentsForceConfig)
+        {
+            if (profileGothicArgumentsForceConfig.IsWindowMode)
+                SetArg(ZWindowModeParameter); 
+            else
+                RemoveArg(ZWindowModeParameter);
+
+            if (profileGothicArgumentsForceConfig.IsDevMode)
+                SetArg(DevModeParameter);
+            else
+                RemoveArg(DevModeParameter);
+
+            if (profileGothicArgumentsForceConfig.IsMusicDisabled)
+                AddArgument_ZNoMusic();
+            else
+                RemoveArg("ZNOMUSIC");
+
+            if (profileGothicArgumentsForceConfig.IsSoundDisabled)
+                AddArgument_ZNoSound();
+            else
+                RemoveArg("ZNOSOUND");
+
+            if (profileGothicArgumentsForceConfig.IsReparseScript)
+                AddArgument_ZReparse();
+            else
+                RemoveArg("ZREPARSE");
+
+            return this;
         }
 
         public override string ToString()

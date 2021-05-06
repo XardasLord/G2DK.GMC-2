@@ -21,6 +21,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -52,7 +53,16 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <StackPanel Grid.Row="3" Grid.Column="1" Margin="0, 20, 0, 0" HorizontalAlignment="Left">
+        <Label Grid.Row="3" Grid.Column="0" Content="Gothic arguments:" />
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Vertical">
+            <CheckBox IsChecked="{Binding GmcConfiguration.GothicArguments.IsWindowMode}">Window mode</CheckBox>
+            <CheckBox IsChecked="{Binding GmcConfiguration.GothicArguments.IsDevMode}">Dev mode</CheckBox>
+            <CheckBox IsChecked="{Binding GmcConfiguration.GothicArguments.IsMusicDisabled}">Disable music</CheckBox>
+            <CheckBox IsChecked="{Binding GmcConfiguration.GothicArguments.IsSoundDisabled}">Disable sound</CheckBox>
+            <CheckBox IsChecked="{Binding GmcConfiguration.GothicArguments.IsReparseScript}">Reparse scripts</CheckBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="4" Grid.Column="1" Margin="0, 20, 0, 0" HorizontalAlignment="Left">
             <Button  Width="200" Height="32"
                      Content="Save settings"
                      IsEnabled="{Binding ChangesMade}"

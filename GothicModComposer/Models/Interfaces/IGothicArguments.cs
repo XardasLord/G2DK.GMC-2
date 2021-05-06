@@ -9,6 +9,7 @@ namespace GothicModComposer.Models.Interfaces
         void SetArg(string argument, string value = null);
         bool RemoveArg(string argument);
         List<string> ToList();
+        GothicArguments Merge(IGothicArgumentsConfiguration profileGothicArgumentsForceConfig);
         string ToString();
 
         /// <summary>MISSING SUMMARY</summary>
