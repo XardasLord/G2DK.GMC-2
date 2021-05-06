@@ -59,6 +59,7 @@ namespace GothicModComposer.UI.ViewModels
             LoadConfiguration();
             GmcConfiguration.PropertyChanged += (_, _) => ChangesMade = true;
 
+            // TODO: Would be nice to have this operation async
             LoadZen3DWorlds();
 
             SelectGothic2RootDirectory = new RelayCommand(SelectGothic2RootDirectoryExecute);
@@ -138,15 +139,30 @@ namespace GothicModComposer.UI.ViewModels
             if (!Directory.Exists(worldsPath))
                 return;
 
-            var worldFiles = Directory.EnumerateFiles(worldsPath, "*.ZEN", SearchOption.TopDirectoryOnly).ToList();
+            var worldFiles = Directory.EnumerateFiles(worldsPath, "*.ZEN", SearchOption.AllDirectories).ToList();
             worldFiles.ForEach(zenFilePath =>
             {
-                var zenFile = new FileInfo(zenFilePath);
-                if (zenFile.Length > 100000) // TODO: This is hardcoded. Maybe we can check if file has binary content?
-                {
-                    Zen3DWorlds.Add(zenFile.Name);
-                }
+                if (HasBinaryContent(zenFilePath))
+                    Zen3DWorlds.Add(new FileInfo(zenFilePath).Name);
             });
+        }
+        
+        private static bool HasBinaryContent(string filePath)
+        {
+            if (!File.Exists(filePath)) 
+                return false;
+            
+            var content = File.ReadAllBytes(filePath);
+                
+            for (var i = 1; i < 512 && i < content.Length; i++) {
+                // Is it binary? Check for consecutive nulls..
+                if (content[i] == 0x00 && content[i-1] == 0x00)
+                {
+                    return true;
+                }
+            }
+                
+            return false;
         }
     }
 }
