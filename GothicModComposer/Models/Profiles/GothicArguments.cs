@@ -70,6 +70,10 @@ namespace GothicModComposer.Models.Profiles
 
         public GothicArguments Merge(IGothicArgumentsConfiguration profileGothicArgumentsForceConfig)
         {
+            if (profileGothicArgumentsForceConfig is null)
+                // If we don't pass config (e.g. running from bat files)
+                return this;
+            
             if (profileGothicArgumentsForceConfig.IsWindowMode)
                 SetArg(ZWindowModeParameter); 
             else
