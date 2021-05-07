@@ -1,4 +1,6 @@
-﻿namespace GothicModComposer.Models.Interfaces
+﻿using GothicModComposer.Models.Configurations;
+
+namespace GothicModComposer.Models.Interfaces
 {
     public interface IGothicArgumentsConfiguration
     {
@@ -7,5 +9,6 @@
         bool IsMusicDisabled { get; set; }
         bool IsSoundDisabled { get; set; }
         bool IsReparseScript { get; set; }
+        Resolution Resolution { get; set; }
     }
 }
