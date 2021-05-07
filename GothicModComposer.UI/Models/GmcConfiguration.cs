@@ -58,7 +58,17 @@ namespace GothicModComposer.UI.Models
             const string defaultConfig = @"
 {
 	""DefaultWorld"": ""VADUZWORLD.ZEN"",
-
+    ""GothicArguments"": {
+        ""IsWindowMode"": false,
+        ""IsDevMode"": true,
+        ""IsMusicDisabled"": false,
+        ""IsSoundDisabled"": false,
+        ""IsReparseScript"": false,
+        ""Resolution"": {
+            ""Width"": 800,
+            ""Height"": 600
+        }
+    },
     ""IniOverrides"": 
     [
 
