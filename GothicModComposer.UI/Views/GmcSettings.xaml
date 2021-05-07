@@ -22,6 +22,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -60,9 +61,13 @@
             <CheckBox IsChecked="{Binding GmcConfiguration.GothicArguments.IsMusicDisabled}">Disable music</CheckBox>
             <CheckBox IsChecked="{Binding GmcConfiguration.GothicArguments.IsSoundDisabled}">Disable sound</CheckBox>
             <CheckBox IsChecked="{Binding GmcConfiguration.GothicArguments.IsReparseScript}">Reparse scripts</CheckBox>
+            <ComboBox ItemsSource="{Binding Path=GmcConfiguration.AvailableResolutions}"
+                      SelectedItem="{Binding Path=GmcConfiguration.GothicArguments.Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                      HorizontalAlignment="Left"
+                      Width="400"/>
         </StackPanel>
-
-        <StackPanel Grid.Row="4" Grid.Column="1" Margin="0, 20, 0, 0" HorizontalAlignment="Left">
+        
+        <StackPanel Grid.Row="5" Grid.Column="1" Margin="0, 20, 0, 0" HorizontalAlignment="Left">
             <Button  Width="200" Height="32"
                      Content="Save settings"
                      IsEnabled="{Binding ChangesMade}"
