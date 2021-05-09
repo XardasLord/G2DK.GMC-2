@@ -17,6 +17,7 @@ namespace GothicModComposer.UI.Models
             new Resolution { Width = 800, Height = 600 },
             new Resolution { Width = 1024, Height = 768 },
             new Resolution { Width = 1280, Height = 720 },
+            new Resolution { Width = 1280, Height = 1024 },
             new Resolution { Width = 1366, Height = 768 },
             new Resolution { Width = 1600, Height = 900 },
             new Resolution { Width = 1600, Height = 1200 },
