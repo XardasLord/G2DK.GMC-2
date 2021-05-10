@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -17,6 +18,7 @@ namespace GothicModComposer.UI.ViewModels
         private bool _changesMade;
 
         public string GmcSettingsJsonFilePath { get; }
+        public string LogsDirectoryPath => Path.Combine(GmcConfiguration?.Gothic2RootPath ?? string.Empty, ".gmc", "Logs");
 
         public GmcConfiguration GmcConfiguration
         {
@@ -47,6 +49,9 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand SelectGothic2RootDirectory { get; }
         public RelayCommand SelectModificationRootDirectory { get; }
         public RelayCommand SaveSettings { get; }
+        public RelayCommand RestoreDefaultConfiguration { get; }
+        public RelayCommand OpenLogsDirectory { get; }
+        public RelayCommand ClearLogsDirectory { get; }
 
         public GmcSettingsVM()
         {
@@ -65,6 +70,9 @@ namespace GothicModComposer.UI.ViewModels
             SelectGothic2RootDirectory = new RelayCommand(SelectGothic2RootDirectoryExecute);
             SelectModificationRootDirectory = new RelayCommand(SelectModificationRootDirectoryExecute);
             SaveSettings = new RelayCommand(SaveSettingsExecute);
+            RestoreDefaultConfiguration = new RelayCommand(RestoreDefaultConfigurationExecute);
+            OpenLogsDirectory = new RelayCommand(OpenLogsDirectoryExecute);
+            ClearLogsDirectory = new RelayCommand(ClearLogsDirectoryExecute);
         }
 
         private void SelectGothic2RootDirectoryExecute(object obj)
@@ -111,6 +119,37 @@ namespace GothicModComposer.UI.ViewModels
             ChangesMade = false;
         }
 
+        private void RestoreDefaultConfigurationExecute(object obj)
+        {
+            if (File.Exists(GmcSettingsJsonFilePath))
+            {
+                File.Delete(GmcSettingsJsonFilePath);
+            }
+            
+            CreateDefaultConfigurationFile();
+            LoadConfiguration();
+        }
+        
+        private void OpenLogsDirectoryExecute(object obj)
+        {
+            if (Directory.Exists(LogsDirectoryPath))
+                Process.Start("explorer.exe", LogsDirectoryPath);
+        }
+
+        private void ClearLogsDirectoryExecute(object obj)
+        {
+            if (!Directory.Exists(LogsDirectoryPath))
+                return;
+            
+            var directoryInfo = new DirectoryInfo(LogsDirectoryPath);
+
+            foreach (var file in directoryInfo.GetFiles())
+                file.Delete(); 
+            
+            foreach (var dir in directoryInfo.GetDirectories())
+                dir.Delete(true); 
+        }
+
         private void CreateDefaultConfigurationFile()
         {
             var configurationFile = GmcConfiguration.CreateDefault();
@@ -125,6 +164,11 @@ namespace GothicModComposer.UI.ViewModels
             var configurationJson = File.ReadAllText(GmcSettingsJsonFilePath);
 
             GmcConfiguration = JsonSerializer.Deserialize<GmcConfiguration>(configurationJson);
+
+            if (GmcConfiguration != null && GmcConfiguration.GothicArguments.Resolution is null)
+            {
+                GmcConfiguration.GothicArguments.Resolution = new Resolution {Width = 800, Height = 600};
+            }
         }
 
         private void LoadZen3DWorlds()
