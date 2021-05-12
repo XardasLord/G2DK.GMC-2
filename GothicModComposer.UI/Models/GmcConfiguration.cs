@@ -11,6 +11,22 @@ namespace GothicModComposer.UI.Models
         private string _defaultWorld;
         private GothicArgumentsConfiguration _gothicArguments;
 
+        public static IEnumerable<Resolution> AvailableResolutions => new List<Resolution>
+        {
+            new Resolution { Width = 640, Height = 480 },
+            new Resolution { Width = 800, Height = 600 },
+            new Resolution { Width = 1024, Height = 768 },
+            new Resolution { Width = 1280, Height = 720 },
+            new Resolution { Width = 1280, Height = 1024 },
+            new Resolution { Width = 1366, Height = 768 },
+            new Resolution { Width = 1600, Height = 900 },
+            new Resolution { Width = 1600, Height = 1200 },
+            new Resolution { Width = 1920, Height = 1080 },
+            new Resolution { Width = 2048, Height = 1152 },
+            new Resolution { Width = 2048, Height = 1536 },
+            new Resolution { Width = 2560, Height = 1440 },
+        };
+
         public string Gothic2RootPath
         {
             get => _gothic2RootPath;
@@ -43,7 +59,17 @@ namespace GothicModComposer.UI.Models
             const string defaultConfig = @"
 {
 	""DefaultWorld"": ""VADUZWORLD.ZEN"",
-
+    ""GothicArguments"": {
+        ""IsWindowMode"": false,
+        ""IsDevMode"": true,
+        ""IsMusicDisabled"": false,
+        ""IsSoundDisabled"": false,
+        ""IsReparseScript"": false,
+        ""Resolution"": {
+            ""Width"": 800,
+            ""Height"": 600
+        }
+    },
     ""IniOverrides"": 
     [
 
@@ -102,6 +128,7 @@ namespace GothicModComposer.UI.Models
         private bool _isMusicDisabled;
         private bool _isSoundDisabled;
         private bool _isReparseScripts;
+        private Resolution _resolution;
 
         public bool IsWindowMode
         {
@@ -131,6 +158,36 @@ namespace GothicModComposer.UI.Models
         {
             get => _isReparseScripts;
             set => SetProperty(ref _isReparseScripts, value);
+        }
+
+        public Resolution Resolution
+        {
+            get => _resolution;
+            set => SetProperty(ref _resolution, value);
+        }
+    }
+
+    public class Resolution
+    {
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Width}x{Height}";
+        }
+        
+        public override bool Equals(object obj)
+        {
+            if (obj is not Resolution resolution)
+                return false;
+            
+            return resolution.Height == Height && resolution.Width == Width;
+        }
+
+        public override int GetHashCode()
+        {
+            return Height.GetHashCode() + Width.GetHashCode();
         }
     }
 }
