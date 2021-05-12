@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.4.0] (2021-05-12)
+### Added
+- New settings in GUI:
+  - Restore Default configuration
+  - Open Logs directory
+  - Clear Logs directory
+
 ## [1.3.1] (2021-05-06)
 ### Fixed
 - Settings from GUI are now used only for RunMod profile.
@@ -97,6 +104,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.4.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.4.0
 [1.3.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.3.1
 [1.3.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.3.0
 [1.2.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.2.0
