@@ -90,6 +90,8 @@ namespace GothicModComposer.UI.ViewModels
             
             GmcConfiguration.Gothic2RootPath = openFolderDialog.SelectedPath;
             OnPropertyChanged(nameof(GmcConfiguration));
+            
+            LoadZen3DWorlds();
         }
 
         private void SelectModificationRootDirectoryExecute(object obj)
@@ -107,8 +109,6 @@ namespace GothicModComposer.UI.ViewModels
 
             GmcConfiguration.ModificationRootPath = openFolderDialog.SelectedPath;
             OnPropertyChanged(nameof(GmcConfiguration));
-            
-            LoadZen3DWorlds();
         }
 
         private void SaveSettingsExecute(object obj)
@@ -175,10 +175,10 @@ namespace GothicModComposer.UI.ViewModels
         {
             Zen3DWorlds.Clear();
             
-            if (GmcConfiguration.ModificationRootPath is null)
+            if (GmcConfiguration.Gothic2RootPath is null)
                 return;
             
-            var worldsPath = Path.Combine(GmcConfiguration.ModificationRootPath, "Worlds");
+            var worldsPath = Path.Combine(GmcConfiguration.Gothic2RootPath, "_Work", "Data", "Worlds");
 
             if (!Directory.Exists(worldsPath))
                 return;
