@@ -73,8 +73,6 @@ namespace GothicModComposer.UI.ViewModels
         private void OpenSettingsExecute(object obj)
         {
             new GmcSettings(GmcSettings).ShowDialog();
-
-            GmcSettings.LoadZen3DWorlds();
         }
     }
 }
