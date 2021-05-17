@@ -32,7 +32,7 @@
             <Button Content="Enable VDF" Margin="0 15 0 0" Height="30" Command="{Binding RunEnableVDFProfile}" Width="130" />
         </StackPanel>
 
-        <Label Grid.Column="0" Content="3D World:" FontSize="20" Margin="0,23,441,319" Grid.Row="1" HorizontalAlignment="Right" Width="349" />
+        <Label Grid.Column="0" Content="3D World:" FontSize="20" Margin="0,20,425,0" Grid.Row="1" HorizontalAlignment="Right" Width="349" />
         <ListView Grid.Row="1"
                   Margin="10,62,0,10" 
                   HorizontalAlignment="Left"
