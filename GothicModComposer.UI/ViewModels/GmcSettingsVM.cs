@@ -15,7 +15,6 @@ namespace GothicModComposer.UI.ViewModels
     {
         private GmcConfiguration _gmcConfiguration;
         private ObservableCollection<string> _zen3DWorlds;
-        private bool _changesMade;
 
         public string GmcSettingsJsonFilePath { get; }
         public string LogsDirectoryPath => Path.Combine(GmcConfiguration?.Gothic2RootPath ?? string.Empty, ".gmc", "Logs");
@@ -23,27 +22,13 @@ namespace GothicModComposer.UI.ViewModels
         public GmcConfiguration GmcConfiguration
         {
             get => _gmcConfiguration;
-            set
-            {
-                if (SetProperty(ref _gmcConfiguration, value))
-                    ChangesMade = true;
-            }
+            set => SetProperty(ref _gmcConfiguration, value);
         }
 
         public ObservableCollection<string> Zen3DWorlds
         {
             get => _zen3DWorlds;
-            set
-            {
-                if (SetProperty(ref _zen3DWorlds, value))
-                    ChangesMade = true;
-            }
-        }
-
-        public bool ChangesMade
-        {
-            get => _changesMade;
-            set => SetProperty(ref _changesMade, value);
+            set => SetProperty(ref _zen3DWorlds, value);
         }
 
         public RelayCommand SelectGothic2RootDirectory { get; }
@@ -62,7 +47,8 @@ namespace GothicModComposer.UI.ViewModels
                 CreateDefaultConfigurationFile();
 
             LoadConfiguration();
-            GmcConfiguration.PropertyChanged += (_, _) => ChangesMade = true;
+            
+            GmcConfiguration.PropertyChanged += (_, _) => SaveSettings.Execute(null);
 
             // TODO: Would be nice to have this operation async
             LoadZen3DWorlds();
@@ -115,8 +101,6 @@ namespace GothicModComposer.UI.ViewModels
         {
             var configurationJson = JsonSerializer.Serialize(GmcConfiguration);
             File.WriteAllText(GmcSettingsJsonFilePath, configurationJson);
-
-            ChangesMade = false;
         }
 
         private void RestoreDefaultConfigurationExecute(object obj)
@@ -171,7 +155,7 @@ namespace GothicModComposer.UI.ViewModels
             }
         }
 
-        private void LoadZen3DWorlds()
+        public void LoadZen3DWorlds()
         {
             Zen3DWorlds.Clear();
             
