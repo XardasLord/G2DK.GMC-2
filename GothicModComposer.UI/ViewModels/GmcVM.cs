@@ -11,6 +11,7 @@ namespace GothicModComposer.UI.ViewModels
 {
     public class GmcVM : ObservableVM
     {
+        public GmcSettingsVM GmcSettings { get; }
         public RelayCommand RunUpdateProfile { get; }
         public RelayCommand RunComposeProfile { get; }
         public RelayCommand RunModProfile { get; }
@@ -24,6 +25,8 @@ namespace GothicModComposer.UI.ViewModels
         public GmcVM()
         {
             _gmcExecutor = new GmcExecutor();
+
+            GmcSettings = new GmcSettingsVM();
 
             RunUpdateProfile = new RelayCommand(RunUpdateProfileExecute);
             RunComposeProfile = new RelayCommand(RunComposeProfileExecute);
