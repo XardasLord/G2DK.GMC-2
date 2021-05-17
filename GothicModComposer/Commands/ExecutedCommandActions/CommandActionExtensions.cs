@@ -21,7 +21,23 @@ namespace GothicModComposer.Commands.ExecutedCommandActions
 				executedAction?.Undo();
 			}
 		}
+		
 		public static void Undo(this Stack<ICommandActionVDF> executedActions)
+		{
+			if (!executedActions.Any())
+			{
+				Logger.Info("There is nothing to undo, because no actions were executed.", true);
+				return;
+			}
+
+			while (executedActions.Count > 0)
+			{
+				var executedAction = executedActions.Pop();
+				executedAction?.Undo();
+			}
+		}
+		
+		public static void Undo(this Stack<ICommandActionVideoBik> executedActions)
 		{
 			if (!executedActions.Any())
 			{
