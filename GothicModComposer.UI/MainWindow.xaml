@@ -36,23 +36,12 @@
             <!-- Footer in the future -->
         </StackPanel>
         <Label Grid.Column="0" Content="3D World:" Margin="0,23,441,327" Grid.Row="1" HorizontalAlignment="Right" Width="349" />
-        <ComboBox Grid.Row="1" 
-            HorizontalAlignment="Left"
-            Width="349"
-            IsEditable="False"
-            ItemsSource="{Binding GmcSettings.Zen3DWorlds}"
-            SelectedValue="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10,63,0,269">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        <ListView Grid.Row="1" Margin="10,112,0,10" HorizontalAlignment="Left" Width="349"
-         ItemsSource="{Binding GmcSettings.Zen3DWorlds}"
-            SelectedValue="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <ListView Grid.Row="1" 
+                  Margin="10,62,0,10" 
+                  HorizontalAlignment="Left"
+                  Width="349"
+                  ItemsSource="{Binding GmcSettings.Zen3DWorlds}"
+                  SelectedValue="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
@@ -67,8 +56,8 @@
             <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsSoundDisabled}" Content="Disable sound"/>
             <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsReparseScript}" Content="Reparse scripts"/>
             <ComboBox ItemsSource="{Binding GmcSettings.GmcConfiguration.AvailableResolutions}"
-                SelectedItem="{Binding GmcSettings.GmcConfiguration.GothicArguments.Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Width="178"/>
+                      SelectedItem="{Binding GmcSettings.GmcConfiguration.GothicArguments.Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Width="178"/>
         </StackPanel>
     </Grid>
 </Window>
