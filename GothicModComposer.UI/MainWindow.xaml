@@ -39,11 +39,6 @@
                   Width="349"
                   ItemsSource="{Binding GmcSettings.Zen3DWorlds}"
                   SelectedValue="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
         </ListView>
         <Label Grid.Row="1" Grid.Column="0" Content="Gothic arguments:" Margin="377,67,291,212" />
         <StackPanel Grid.Row="1" Orientation="Vertical" Margin="377,98,225,10">
