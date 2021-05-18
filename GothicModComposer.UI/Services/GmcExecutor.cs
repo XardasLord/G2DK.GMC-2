@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using GothicModComposer.UI.Enums;
 using GothicModComposer.UI.Interfaces;
@@ -18,8 +17,6 @@ namespace GothicModComposer.UI.Services
 #endif
 
             var settingsVM = new GmcSettingsVM();
-
-            //var fileNameToRun = GetFileNameToExecute(profile, gmcLocation);
 
             var process = new Process
             {
