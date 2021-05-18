@@ -6,10 +6,6 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=viewModels:GmcSettingsVM}"
         Title="GMC Settings" Height="450" Width="800">
-    
-    <Window.DataContext>
-        <viewModels:GmcSettingsVM />
-    </Window.DataContext>
 
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
@@ -18,7 +14,6 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -41,42 +36,6 @@
             <Button Width="32" Content="..." Command="{Binding SelectModificationRootDirectory}" />
         </StackPanel>
 
-        <Label Grid.Row="2" Grid.Column="0" Content="3D World:" />
-        <ComboBox Grid.Row="2" Grid.Column="1" 
-                  HorizontalAlignment="Left"
-                  Width="400"
-                  IsEditable="False"
-                  ItemsSource="{Binding Zen3DWorlds}"
-                  SelectedValue="{Binding GmcConfiguration.DefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-
-        <Label Grid.Row="3" Grid.Column="0" Content="Gothic arguments:" />
-        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Vertical">
-            <CheckBox IsChecked="{Binding GmcConfiguration.GothicArguments.IsWindowMode}">Window mode</CheckBox>
-            <CheckBox IsChecked="{Binding GmcConfiguration.GothicArguments.IsDevMode}">Dev mode</CheckBox>
-            <CheckBox IsChecked="{Binding GmcConfiguration.GothicArguments.IsMusicDisabled}">Disable music</CheckBox>
-            <CheckBox IsChecked="{Binding GmcConfiguration.GothicArguments.IsSoundDisabled}">Disable sound</CheckBox>
-            <CheckBox IsChecked="{Binding GmcConfiguration.GothicArguments.IsReparseScript}">Reparse scripts</CheckBox>
-            <ComboBox ItemsSource="{Binding Path=GmcConfiguration.AvailableResolutions}"
-                      SelectedItem="{Binding Path=GmcConfiguration.GothicArguments.Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                      HorizontalAlignment="Left"
-                      Width="400"/>
-        </StackPanel>
-        
-        <StackPanel Grid.Row="4" Grid.Column="1" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
-            <Button  Width="200" Height="32"
-                     Content="Save settings"
-                     IsEnabled="{Binding ChangesMade}"
-                     Command="{Binding SaveSettings}" />
-        </StackPanel>
-        
         <StackPanel Grid.Row="5" Grid.Column="1" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
             <Button Width="200" Height="32"
                     Content="Open Logs directory"

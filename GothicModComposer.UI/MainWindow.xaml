@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewModels="clr-namespace:GothicModComposer.UI.ViewModels"
         Title="GMC UI" Height="450" Width="800">
-    
+
     <Window.DataContext>
         <viewModels:GmcVM />
     </Window.DataContext>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="28" />
@@ -21,19 +21,43 @@
                 <MenuItem Header="Help" IsEnabled="False" />
             </Menu>
         </Grid>
+       
+        <StackPanel Grid.Row="1" HorizontalAlignment="Left" Margin="580,0,0,0" Width="220">
+            <Label Content="" FontWeight="Bold" FontSize="25"/>
+            <Button Content="Run mod" Margin="0 15 0 0" Height="30" Command="{Binding RunModProfile}" Width="130" />
+            <Button Content="Update" Margin="0 15 0 0" Height="30" Command="{Binding RunUpdateProfile}" Width="130" />
+            <Button Content="Compose" Margin="0 15 0 0" Height="30" Command="{Binding RunComposeProfile}" Width="130" />
+            <Button Content="Build mod file" Margin="0 15 0 0" Height="30" Command="{Binding RunBuildModFileProfile}" Width="130" />
+            <Button Content="Restore Gothic" Margin="0 15 0 0" Height="30" Command="{Binding RunRestoreGothicProfile}" Width="130" />
+            <Button Content="Enable VDF" Margin="0 15 0 0" Height="30" Command="{Binding RunEnableVDFProfile}" Width="130" />
+        </StackPanel>
 
-        <StackPanel Grid.Row="1">
-            <Label Content="Available profiles:" FontWeight="Bold" FontSize="25"/>
-            <Button Content="Run mod" Margin="0 15 0 0" Height="30" Command="{Binding RunModProfile}" />
-            <Button Content="Update" Margin="0 15 0 0" Height="30" Command="{Binding RunUpdateProfile}" />
-            <Button Content="Compose" Margin="0 15 0 0" Height="30" Command="{Binding RunComposeProfile}" />
-            <Button Content="Build mod file" Margin="0 15 0 0" Height="30" Command="{Binding RunBuildModFileProfile}" />
-            <Button Content="Restore Gothic" Margin="0 15 0 0" Height="30" Command="{Binding RunRestoreGothicProfile}" />
-            <Button Content="Enable VDF" Margin="0 15 0 0" Height="30" Command="{Binding RunEnableVDFProfile}" />
+        <Label Grid.Column="0" Content="World ZEN's" FontSize="20" Margin="10,23,0,0" Grid.Row="1" HorizontalAlignment="Left" Width="329" />
+        <ListView Grid.Row="1"
+                  Margin="10,62,0,10" 
+                  HorizontalAlignment="Left"
+                  Width="349"
+                  ItemsSource="{Binding GmcSettings.Zen3DWorlds}"
+                  SelectedValue="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        </ListView>
+
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="377,62,225,188">
+            <Label Content="Gothic arguments:" />
+            <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsWindowMode}" Content="Window mode"/>
+            <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsDevMode}" Content="Dev mode"/>
+            <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsMusicDisabled}" Content="Disable music"/>
+            <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsSoundDisabled}" Content="Disable sound"/>
+            <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsReparseScript}" Content="Reparse scripts"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="10,0,0,0">
             <!-- Footer in the future -->
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="377,196,225,104">
+            <Label Content="Resolution:" />
+            <ComboBox ItemsSource="{Binding GmcSettings.GmcConfiguration.AvailableResolutions}"
+                SelectedItem="{Binding GmcSettings.GmcConfiguration.GothicArguments.Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Width="178"/>
         </StackPanel>
     </Grid>
 </Window>

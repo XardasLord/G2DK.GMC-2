@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace GothicModComposer.UI
+﻿namespace GothicModComposer.UI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
