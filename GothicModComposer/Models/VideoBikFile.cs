@@ -34,7 +34,7 @@ namespace GothicModComposer.Models
             var enabledPath = Path.Combine(_folderPath, $"{FileNameWithoutExtension}"); // Because it this case FileNameWithoutExtension has '.bik' extension (cause original extension is '.disabled')
             var disabledPath = $"{enabledPath}.disabled";
             
-            FileHelper.Move(disabledPath, enabledPath);
+            FileHelper.Rename(disabledPath, enabledPath);
         }
 
         public void Disable()
@@ -45,7 +45,7 @@ namespace GothicModComposer.Models
             var enabledPath = Path.Combine(_folderPath, $"{FileNameWithoutExtension}.bik");
             var disabledPath = $"{enabledPath}.disabled";
             
-            FileHelper.Move(enabledPath, disabledPath);
+            FileHelper.Rename(enabledPath, disabledPath);
         }
     }
 }

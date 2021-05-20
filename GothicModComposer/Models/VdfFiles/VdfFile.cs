@@ -34,7 +34,7 @@ namespace GothicModComposer.Models.VdfFiles
 		public void Enable()
 		{
 			var paths = new VdfHelperPath(_folderPath, FileNameWithoutExtension);
-			FileHelper.Move(paths.DisabledPath, paths.EnabledPath);
+			FileHelper.Rename(paths.DisabledPath, paths.EnabledPath);
 
 			Logger.Info($"Enabled VDF file \"{FileNameWithoutExtension}\".");
 		}
@@ -42,7 +42,7 @@ namespace GothicModComposer.Models.VdfFiles
 		public void Disable()
 		{
 			var paths = new VdfHelperPath(_folderPath, FileNameWithoutExtension);
-			FileHelper.Move(paths.EnabledPath, paths.DisabledPath);
+			FileHelper.Rename(paths.EnabledPath, paths.DisabledPath);
 
 			Logger.Info($"Disabled VDF file \"{FileNameWithoutExtension}\".");
 		}
