@@ -66,6 +66,13 @@ namespace GothicModComposer.Utils.IOHelpers
 			Logger.Info($"Moved file \"{source}\" ---> \"{dest}\".");
 		}
 
+		public static void Rename(string oldNamePath, string newNamePath)
+		{
+			File.Move(oldNamePath, newNamePath);
+
+			Logger.Info($"Renamed file \"{oldNamePath}\" ---> \"{newNamePath}\".");
+		}
+
 		public static bool DeleteIfExists(string path)
 		{
 			if (!File.Exists(path))
