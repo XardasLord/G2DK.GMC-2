@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Windows;
 using GothicModComposer.UI.Enums;
 using GothicModComposer.UI.Interfaces;
 using GothicModComposer.UI.ViewModels;
@@ -10,6 +11,12 @@ namespace GothicModComposer.UI.Services
     {
         public void Execute(GmcExecutionProfile profile)
         {
+            if (IsGmcAlreadyRun())
+            {
+                MessageBox.Show("GMC is already running. Close the existing GMC-2.exe process if you want to execute a new one.", "GMC is running", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            
 #if DEBUG
             var gmcLocation = @"C:\localRepository\Gothic 2 Dzieje Khorinis\GMC-2\GothicModComposer\bin\Debug\net5.0-windows";
 #else
@@ -36,7 +43,8 @@ namespace GothicModComposer.UI.Services
             };
 
             process.Start();
-            process.WaitForExit();
         }
+
+        private static bool IsGmcAlreadyRun() => Process.GetProcessesByName("GMC-2").Length > 0;
     }
 }
