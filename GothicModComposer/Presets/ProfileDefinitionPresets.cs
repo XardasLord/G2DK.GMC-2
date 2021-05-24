@@ -27,7 +27,9 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.CopyEssentialAssetFilesFromBackupCommand,
 					CommandBuilderHelper.UpdateModDataFilesCommand,
 					CommandBuilderHelper.UpdateModExtensionFilesCommand,
+					CommandBuilderHelper.DisableVideoBikFilesCommand,
 					CommandBuilderHelper.ExecuteGothicKillOnLoadCommand,
+					CommandBuilderHelper.EnableVideoBikFilesCommand,
 					CommandBuilderHelper.UpdateDialoguesCommand,
 					CommandBuilderHelper.DisableVdfFilesCommand,
 					CommandBuilderHelper.ClearGmcTemporaryFiles

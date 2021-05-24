@@ -11,6 +11,7 @@ namespace GothicModComposer.UI.ViewModels
 {
     public class GmcVM : ObservableVM
     {
+        public GmcSettingsVM GmcSettings { get; private set; }
         public RelayCommand RunUpdateProfile { get; }
         public RelayCommand RunComposeProfile { get; }
         public RelayCommand RunModProfile { get; }
@@ -24,6 +25,10 @@ namespace GothicModComposer.UI.ViewModels
         public GmcVM()
         {
             _gmcExecutor = new GmcExecutor();
+
+            GmcSettings = new GmcSettingsVM();
+            GmcSettings.PropertyChanged += (_, _) => GmcSettings.SaveSettings.Execute(null);
+            GmcSettings.GmcConfiguration.GothicArguments.PropertyChanged += (_, _) => GmcSettings.SaveSettings.Execute(null);
 
             RunUpdateProfile = new RelayCommand(RunUpdateProfileExecute);
             RunComposeProfile = new RelayCommand(RunComposeProfileExecute);
@@ -65,9 +70,9 @@ namespace GothicModComposer.UI.ViewModels
         private void RunEnableVDFProfileProfileExecute(object obj)
             => _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF);
 
-        private static void OpenSettingsExecute(object obj)
+        private void OpenSettingsExecute(object obj)
         {
-            new GmcSettings().ShowDialog();
+            new GmcSettings(GmcSettings).ShowDialog();
         }
     }
 }

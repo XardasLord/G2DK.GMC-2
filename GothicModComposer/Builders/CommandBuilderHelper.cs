@@ -27,6 +27,8 @@ namespace GothicModComposer.Builders
 		public const string ExecuteGothicKillOnLoadCommand = nameof(ExecuteGothicKillOnLoadCommand);
 		public const string ExecuteGothicCommand = nameof(ExecuteGothicCommand);
 		public const string BuildModFileCommand = nameof(BuildModFileCommand);
+		public const string EnableVideoBikFilesCommand = nameof(EnableVideoBikFilesCommand);
+		public const string DisableVideoBikFilesCommand = nameof(DisableVideoBikFilesCommand);
 
         private static readonly Dictionary<string, Func<IProfile, ICommand>> Commands = new()
 		{
@@ -45,7 +47,9 @@ namespace GothicModComposer.Builders
 			{ ClearGmcTemporaryFiles, profile => new ClearGmcTemporaryFilesCommand(profile) },
 			{ ExecuteGothicKillOnLoadCommand, profile => new ExecuteGothicCommand(profile, GothicModComposer.Commands.ExecuteGothicCommand.WorldLoadedMessage) },
 			{ ExecuteGothicCommand, profile => new ExecuteGothicCommand(profile) },
-            { BuildModFileCommand, profile => new BuildModFileCommand(profile) }
+            { BuildModFileCommand, profile => new BuildModFileCommand(profile) },
+            { EnableVideoBikFilesCommand, profile => new EnableVideoBikFilesCommand(profile) },
+            { DisableVideoBikFilesCommand, profile => new DisableVideoBikFilesCommand(profile) },
 		};
 
         public static ICommand FromString(IProfile profile, string commandName)

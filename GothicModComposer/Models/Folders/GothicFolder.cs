@@ -15,6 +15,7 @@ namespace GothicModComposer.Models.Folders
 		public string WorkFolderPath => Path.Combine(BasePath, "_Work");
 		public string DataFolderPath => Path.Combine(BasePath, "Data");
 		public string WorkDataFolderPath => Path.Combine(WorkFolderPath, "Data");
+		public string VideoBikFolderPath => Path.Combine(WorkDataFolderPath, "Video");
 		public string GmcIniFilePath => Path.Combine(SystemFolderPath, "GMC.ini");
 		public string GothicIniFilePath => Path.Combine(SystemFolderPath, "Gothic.ini");
 		public string GothicExeFilePath => Path.Combine(SystemFolderPath, "Gothic2.exe");
