@@ -3,6 +3,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.5.0] (2021-05-24)
+### Added
+- New settings in GUI:
+  - Resolution
+- Add new steps in Compose profile. Video BIK are disabled before Gothic2.exe process is run and enabled after process is finished.
+- Two GMC profiles cannot be executed at the same time (this works only from GUI).
+- GMC logo icon (first draft).
+  
+### Changed
+- GUI main page reorganization.
+- ZEN's are read from Gothic directory, not from repository directory.
+- When file is renamed that this action is loged as a 'rename' instead of 'moved'.
+- GUI is starting centralized.
+
 ## [1.4.0] (2021-05-12)
 ### Added
 - New settings in GUI:
@@ -104,6 +118,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.5.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.5.0
 [1.4.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.4.0
 [1.3.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.3.1
 [1.3.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.3.0
