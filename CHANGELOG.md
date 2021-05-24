@@ -8,14 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - New settings in GUI:
   - Resolution
 - Add new steps in Compose profile. Video BIK are disabled before Gothic2.exe process is run and enabled after process is finished.
-- Two GMC profiles cannot be executed at the same time (this works only from GUI).
+- More than one GMC profile cannot be executed at the same time (this works only from GUI).
 - GMC logo icon (first draft).
   
 ### Changed
 - GUI main page reorganization.
 - ZEN's are read from Gothic directory, not from repository directory.
 - When file is renamed that this action is loged as a 'rename' instead of 'moved'.
-- GUI is starting centralized.
+- GUI is now centered at startup.
 
 ## [1.4.0] (2021-05-12)
 ### Added
