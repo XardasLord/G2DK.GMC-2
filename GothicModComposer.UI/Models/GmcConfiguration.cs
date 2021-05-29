@@ -52,6 +52,7 @@ namespace GothicModComposer.UI.Models
         }
 
         public List<string> IniOverrides { get; set; }
+        public List<string> IniOverridesSystemPack { get; set; }
         public GothicVdfsConfig GothicVdfsConfig { get; set; }
 
         public static GmcConfiguration CreateDefault()
@@ -72,9 +73,12 @@ namespace GothicModComposer.UI.Models
     },
     ""IniOverrides"": 
     [
-
         ""playLogoVideos = 0"",
         ""subTitles = 1""
+    ],
+    ""IniOverridesSystemPack"": 
+    [
+        ""InteractionCollision = 1""
     ],
     ""GothicVdfsConfig"": 
     {

@@ -37,6 +37,9 @@ namespace GothicModComposer.Loaders
 				IniOverrides = userGmcConfiguration.IniOverrides 
                                ?? profileDefinition.IniOverrides
 							   ?? new List<string>(),
+				IniOverridesSystemPack = userGmcConfiguration.IniOverridesSystemPack 
+				                         ?? profileDefinition.IniOverridesSystemPack 
+				                         ?? new List<string>(),
 				GothicVdfsConfig = userGmcConfiguration.GothicVdfsConfig 
 								   ?? throw new VdfsGothicGmcNotFoundException(),
 				GothicArguments = GothicArgumentsHelper.ParseGothicArguments(profileDefinition.GothicArguments.ToArray()),
