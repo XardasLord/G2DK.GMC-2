@@ -18,6 +18,7 @@ namespace GothicModComposer.Models.Folders
 		public string VideoBikFolderPath => Path.Combine(WorkDataFolderPath, "Video");
 		public string GmcIniFilePath => Path.Combine(SystemFolderPath, "GMC.ini");
 		public string GothicIniFilePath => Path.Combine(SystemFolderPath, "Gothic.ini");
+		public string SystemPackIniFilePath => Path.Combine(SystemFolderPath, "SystemPack.ini");
 		public string GothicExeFilePath => Path.Combine(SystemFolderPath, "Gothic2.exe");
 		public string GothicSrcFilePath => Path.Combine(WorkDataFolderPath, "Scripts", "Content", "Gothic.src");
 		public string CutsceneFolderPath => Path.Combine(WorkDataFolderPath, "Scripts", "Content", "Cutscene");
@@ -47,6 +48,19 @@ namespace GothicModComposer.Models.Folders
 			}
 
 			return gothicIni.Replace("\r", "");
+		}
+
+		public string GetSystemPackIniContent(bool removeComments = true)
+		{
+			var systemPackIni = File.ReadAllText(SystemPackIniFilePath);
+
+			if (removeComments)
+			{
+				var commentRegex = new Regex(IniFileHelper.CommentRegex, RegexOptions.Multiline);
+				systemPackIni = commentRegex.Replace(systemPackIni, "");
+			}
+
+			return systemPackIni.Replace("\r", "");
 		}
 
 		public void SaveGmcIni(List<IniBlock> iniBlocks)
