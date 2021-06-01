@@ -28,10 +28,13 @@ namespace GothicModComposer.Commands
         public void Execute()
 		{
 			if (!_profile.IniOverrides.Any())
-			{
 				Logger.Info("There is no .ini attributes to override.", true);
+
+			if (!_profile.IniOverridesSystemPack.Any())
+				Logger.Info("There is no System Pack .ini attributes to override.", true);
+
+			if (!_profile.IniOverrides.Any() && !_profile.IniOverridesSystemPack.Any())
 				return;
-			}
 
 			if (_profile.GmcFolder.CreateGmcFolder())
 				ExecutedActions.Push(CommandActionIO.DirectoryCreated(_profile.GmcFolder.BasePath));
@@ -46,36 +49,61 @@ namespace GothicModComposer.Commands
 			if (!_fileSystem.File.Exists(_profile.GothicFolder.GothicIniFilePath))
 				throw new Exception("Gothic.ini file was not found.");
 			
+			if (!_fileSystem.File.Exists(_profile.GothicFolder.SystemPackIniFilePath))
+				throw new Exception("SystemPack.ini file was not found.");
+
 			var gothicIni = _profile.GothicFolder.GetGothicIniContent();
-			var iniBlocks = IniFileHelper.CreateSections(gothicIni); // TODO: Replace IniBlock class to something like IniFile class
-			OverrideAttributes(iniBlocks);
-			SaveIniFile(iniBlocks);
+			var gothicIniBlocks = IniFileHelper.CreateSections(gothicIni); // TODO: Replace IniBlock class to something like IniFile class
+				
+			var systemPackIni = _profile.GothicFolder.GetSystemPackIniContent();
+			var systemPackIniBlocks = IniFileHelper.CreateSections(systemPackIni); // TODO: Replace IniBlock class to something like IniFile class
+			
+			OverrideGothicIniAttributes(gothicIniBlocks, systemPackIniBlocks);
+
+			// Merge
+			gothicIniBlocks.AddRange(systemPackIniBlocks);
+				
+			SaveIniFile(gothicIniBlocks);
 		}
 
-		private void OverrideAttributes(ICollection<IniBlock> iniBlocks)
+		private void OverrideGothicIniAttributes(ICollection<IniBlock> gothicIniBlocks, ICollection<IniBlock> systemPackIniBlocks)
 		{
 			var regex = new Regex(IniFileHelper.AttributeRegex);
 
-			_profile.IniOverrides.ForEach(item => {
-				var attribute = regex.Match(item);
-
-                var key = attribute.Groups["Key"].Value;
-                var value = attribute.Groups["Value"].Value;
-
-                var blockToOverride = iniBlocks.FirstOrDefault(block => block.Contains(key));
-				if (blockToOverride is null)
-					return;
-				
-                var overridesSectionBlock = iniBlocks.FirstOrDefault(block => block.Header.Equals(IniFileHelper.OverridesSectionHeader));
-				if (overridesSectionBlock is null)
-					iniBlocks.Add(new IniBlock(IniFileHelper.OverridesSectionHeader));
-
-                overridesSectionBlock = iniBlocks.Single(block => block.Header.Equals(IniFileHelper.OverridesSectionHeader));
-				overridesSectionBlock.Set($"{blockToOverride.Header}.{key}", value);
-				
-                Logger.Info($"Overriden {blockToOverride.Header}.{key}={value}.", true);
+			_profile.IniOverrides.ForEach(item =>
+			{ 
+				VerifySingleIniItem(gothicIniBlocks, regex, item, false);
 			});
 
+			_profile.IniOverridesSystemPack.ForEach(item =>
+			{ 
+				VerifySingleIniItem(systemPackIniBlocks, regex, item, true);
+			});
+		}
+
+		private static void VerifySingleIniItem(ICollection<IniBlock> iniBlocks, Regex regex, string item, bool isSystemPack = false) // TODO: Refactor parameters
+		{
+			var attribute = regex.Match(item);
+
+			var key = attribute.Groups["Key"].Value;
+			var value = attribute.Groups["Value"].Value;
+
+			var blockToOverride = iniBlocks.FirstOrDefault(block => block.Contains(key));
+			if (blockToOverride is null)
+				return;
+
+			var overrideSectionHeaderName = isSystemPack
+				? IniFileHelper.OverridesSystemPackSectionHeader
+				: IniFileHelper.OverridesGothicSectionHeader;
+
+			var overridesSectionBlock = iniBlocks.FirstOrDefault(block => block.Header.Equals(overrideSectionHeaderName));
+			if (overridesSectionBlock is null)
+				iniBlocks.Add(new IniBlock(overrideSectionHeaderName));
+
+			overridesSectionBlock = iniBlocks.Single(block => block.Header.Equals(overrideSectionHeaderName));
+			overridesSectionBlock.Set($"{blockToOverride.Header}.{key}", value);
+
+			Logger.Info($"Overriden {blockToOverride.Header}.{key}={value}.", true);
 		}
 
 		private void SaveIniFile(List<IniBlock> iniBlocks)
