@@ -18,6 +18,8 @@ namespace GothicModComposer.Utils.IOHelpers.FileSystem
 
         void MoveWithOverride(string sourceFileName, string destFileName);
 
+        void Rename(string oldNamePath, string newNamePath);
+
         string ReadAllText(string path);
 
         string ReadAllText(string path, Encoding encoding);

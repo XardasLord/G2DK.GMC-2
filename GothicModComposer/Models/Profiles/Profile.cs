@@ -10,6 +10,7 @@ namespace GothicModComposer.Models.Profiles
 		public IModFolder ModFolder { get; set; }
 		public string DefaultWorld { get; set; }
 		public List<string> IniOverrides { get; set; }
+		public List<string> IniOverridesSystemPack { get; set; }
 		public IGothicArguments GothicArguments { get; set; }
         public IGothicVdfsConfig GothicVdfsConfig { get; set; }
         public ICommandsConditions CommandsConditions { get; set; }
@@ -23,6 +24,7 @@ namespace GothicModComposer.Models.Profiles
 		IModFolder ModFolder { get; set; }
 		string DefaultWorld { get; set; }
 		List<string> IniOverrides { get; set; }
+		List<string> IniOverridesSystemPack { get; set; }
 		IGothicArguments GothicArguments { get; set; }
 		IGothicVdfsConfig GothicVdfsConfig { get; set; }
         ICommandsConditions CommandsConditions { get; set; }

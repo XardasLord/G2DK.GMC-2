@@ -27,8 +27,11 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.CopyEssentialAssetFilesFromBackupCommand,
 					CommandBuilderHelper.UpdateModDataFilesCommand,
 					CommandBuilderHelper.UpdateModExtensionFilesCommand,
+					CommandBuilderHelper.DisableVideoBikFilesCommand,
 					CommandBuilderHelper.ExecuteGothicKillOnLoadCommand,
+					CommandBuilderHelper.EnableVideoBikFilesCommand,
 					CommandBuilderHelper.UpdateDialoguesCommand,
+					CommandBuilderHelper.RemoveNotCompiledSourcesCommand,
 					CommandBuilderHelper.DisableVdfFilesCommand,
 					CommandBuilderHelper.ClearGmcTemporaryFiles
 				}
@@ -59,7 +62,6 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.OverrideIniCommand,
 					CommandBuilderHelper.AddDefaultWorldCommand,
 					CommandBuilderHelper.EnableVdfFilesCommand,
-                    CommandBuilderHelper.RemoveNotCompiledSourcesCommand,
 					CommandBuilderHelper.ExecuteGothicCommand,
 					CommandBuilderHelper.DisableVdfFilesCommand,
 					CommandBuilderHelper.ClearGmcTemporaryFiles

@@ -22,6 +22,8 @@ namespace GothicModComposer.Utils.IOHelpers.FileSystem
 
         public void MoveWithOverride(string sourceFileName, string destFileName) => FileHelper.MoveWithOverwrite(sourceFileName, destFileName);
 
+        public void Rename(string oldNamePath, string newNamePath) => FileHelper.Rename(oldNamePath, newNamePath);
+
         public string ReadAllText(string path) => File.ReadAllText(path);
 
         public string ReadAllText(string path, Encoding encoding) => File.ReadAllText(path, encoding);

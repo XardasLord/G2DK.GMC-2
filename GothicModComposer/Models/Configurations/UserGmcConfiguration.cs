@@ -7,6 +7,7 @@ namespace GothicModComposer.Models.Configurations
 	{
 		public string DefaultWorld { get; set; }
 		public List<string> IniOverrides { get; set; }
+		public List<string> IniOverridesSystemPack { get; set; }
         public GothicVdfsConfig GothicVdfsConfig { get; set; }
 		public GothicArgumentsConfiguration GothicArguments { get; set; }
     }
