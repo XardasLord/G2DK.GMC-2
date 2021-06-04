@@ -31,7 +31,7 @@ namespace GothicModComposer.Models.ModFiles
 		public string GetCompiledFileName()
 			=> AssetType switch
 			{
-				AssetPresetType.Textures => $"{Path.GetFileNameWithoutExtension(FilePath)}-C{Path.GetExtension(FilePath)}",
+				AssetPresetType.Textures => $"{Path.GetFileNameWithoutExtension(FilePath)}-C.TEX",
 				AssetPresetType.Meshes => $"{Path.GetFileNameWithoutExtension(FilePath)}.MRM",
 				AssetPresetType.Scripts => null, // TODO
 				AssetPresetType.Anims => null, // TODO: Parser needed from mark56
