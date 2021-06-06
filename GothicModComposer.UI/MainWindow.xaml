@@ -54,7 +54,6 @@
             <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsMusicDisabled}" Content="Disable music"/>
             <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsSoundDisabled}" Content="Disable sound"/>
             <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsReparseScript}" Content="Reparse scripts"/>
-            <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsReparseScript}" Content="Enable VDF" IsEnabled="False"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="10,0,0,0">

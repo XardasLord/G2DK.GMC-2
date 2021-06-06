@@ -7,10 +7,7 @@
         d:DataContext="{d:DesignInstance Type=viewModels:GmcSettingsVM}"
         Title="GMC Settings" Height="450" Width="800">
 
-
-
-
-    <TabControl Grid.ColumnSpan="2" Margin="0,0,0,0" Grid.RowSpan="8">
+    <TabControl Margin="0,0,0,0">
         <TabItem Header="Main settings">
 
             <Grid Margin="10">
@@ -54,13 +51,12 @@
                     Command="{Binding ClearLogsDirectory}" />
                 </StackPanel>
             </Grid>
-
         </TabItem>
+
         <TabItem Header="Ini settings">
             <Grid Margin="10">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" MinWidth="200" />
-                    <ColumnDefinition Width="Auto" MinWidth="200" />
+                    <ColumnDefinition Width="Auto" MinWidth="400" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
@@ -68,17 +64,22 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-
-                <GroupBox Header="Orginal" Grid.Row="0" Grid.Column="0" Margin="0,15,0,0" HorizontalAlignment="Center" >
-                    <Button Width="200" Height="32" Content="Open Logs directory" Command="{Binding OpenLogsDirectory}" />
+                <GroupBox Header="Overrides" Grid.Row="0" Grid.Column="0" Margin="0,15,0,0" HorizontalAlignment="Center" >
+                    <DataGrid AutoGenerateColumns="False" 
+                              Height="300" 
+                              Width="350"
+                              HorizontalAlignment="Left" 
+                              Name="OverridesIniTable" 
+                              VerticalAlignment="Top"
+                              ItemsSource="{Binding Path=GmcConfiguration.IniOverrides, Mode=OneWay}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding .}" Foreground="Black" Width="*" Header="Override value" IsReadOnly="false" />
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </GroupBox>
 
-                <GroupBox Header="Overrides" Grid.Row="0" Grid.Column="1" Margin="0,15,0,0" HorizontalAlignment="Center" >
-                    <Button Width="200" Height="32" Content="Open Logs directory" Command="{Binding OpenLogsDirectory}" />
-                </GroupBox>
-
-                <GroupBox Header="Overrides SP" Grid.Row="0" Grid.Column="2" Margin="0,15,0,0" HorizontalAlignment="Center" >
-                    <Button Width="200" Height="32" Content="Open Logs directory" Command="{Binding OpenLogsDirectory}" />
+                <GroupBox Header="Overrides SP" Grid.Row="0" Grid.Column="1" Margin="0,15,0,0" HorizontalAlignment="Center" >
+                    <Button Width="300" Height="32" Content="Open Logs directory" Command="{Binding OpenLogsDirectory}" />
                 </GroupBox>
             </Grid>
         </TabItem>
