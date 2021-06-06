@@ -28,7 +28,7 @@ namespace GothicModComposer.Commands
 		{
 			Logger.Info($"Start copying all mod files to {_profile.GothicFolder.WorkDataFolderPath}", true);
 
-			var filesFromTrackerFileHelper = _profile.GmcFolder.GetModFilesFromTrackerFile();
+			var filesFromTrackerFileHelper = _profile.GmcFolder.ModFilesFromTrackedFile;
 			var modFiles = _profile.ModFolder.GetAllModFiles();
             var warnMessages = new List<string>();
 			
@@ -93,6 +93,8 @@ namespace GothicModComposer.Commands
 				}
 
 				parentProgressBar.Tick();
+
+				// --------------------------
 				
 				var modFilesToDelete = filesFromTrackerFileHelper
                     .Where(x => !x.ExistsInModFiles())
@@ -162,26 +164,38 @@ namespace GothicModComposer.Commands
         private bool DeleteAssetFromGothicWorkDataFolder(ModFileEntry modFileEntry, List<string> warnMessage)
         {
             var gothicWorkDataFile = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, modFileEntry.RelativePath);
-
-            if (FileHelper.Exists(gothicWorkDataFile))
+            
+            if (modFileEntry.AssetType != AssetPresetType.Textures && modFileEntry.AssetType != AssetPresetType.Meshes)
             {
-                var tmpCommandActionBackupPath =
-                    Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), modFileEntry.RelativePath);
+	            if (FileHelper.Exists(gothicWorkDataFile))
+	            {
+		            var tmpCommandActionBackupPath =
+			            Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), modFileEntry.RelativePath);
 
-                FileHelper.CopyWithOverwrite(gothicWorkDataFile, tmpCommandActionBackupPath);
-                FileHelper.DeleteIfExists(gothicWorkDataFile);
+		            FileHelper.CopyWithOverwrite(gothicWorkDataFile, tmpCommandActionBackupPath);
+		            FileHelper.DeleteIfExists(gothicWorkDataFile);
 
-                ExecutedActions.Push(CommandActionIO.FileDeleted(gothicWorkDataFile, tmpCommandActionBackupPath));
+		            ExecutedActions.Push(CommandActionIO.FileDeleted(gothicWorkDataFile, tmpCommandActionBackupPath));
 
-                DeleteCompiledAssetIfExists(modFileEntry);
+		            DeleteCompiledAssetIfExists(modFileEntry);
 
-                return true;
+		            return true;
+	            }
+	            else
+	            {
+		            warnMessage.Add($"File {gothicWorkDataFile} should exists but it doesn't. File could be removed manually.");
+		            return false;
+	            }
             }
             else
             {
-                warnMessage.Add($"File {gothicWorkDataFile} should exists but it doesn't. File could be removed manually.");
-                return false;
+	            // Is Textures or Meshes so all non compiled files are deleted, so we need to look at the files in _compiled folder
+	            // and we do it in method below, don't need to create any backup here of the base file, cause it basically doesn't exist.
+	            DeleteCompiledAssetIfExists(modFileEntry);
+	            return true;
             }
+
+            
         }
 
 		private void DeleteCompiledAssetIfExists(ModFileEntry modFile)
