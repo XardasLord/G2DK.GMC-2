@@ -71,9 +71,12 @@
                               HorizontalAlignment="Left" 
                               Name="OverridesIniTable" 
                               VerticalAlignment="Top"
-                              ItemsSource="{Binding Path=GmcConfiguration.IniOverrides, Mode=OneWay}">
+                              CanUserAddRows="True"
+                              CanUserDeleteRows="True"
+                              ItemsSource="{Binding Path=GmcConfiguration.IniOverrides}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding .}" Foreground="Black" Width="*" Header="Override value" IsReadOnly="false" />
+                            <DataGridTextColumn Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Key" IsReadOnly="false" />
+                            <DataGridTextColumn Binding="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Value" IsReadOnly="false" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </GroupBox>
