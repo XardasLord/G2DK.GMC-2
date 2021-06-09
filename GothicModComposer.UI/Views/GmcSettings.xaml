@@ -73,7 +73,7 @@
                               VerticalAlignment="Top"
                               CanUserAddRows="True"
                               CanUserDeleteRows="True"
-                              ItemsSource="{Binding Path=GmcConfiguration.IniOverrides}">
+                              ItemsSource="{Binding GmcConfiguration.IniOverrides}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Key" IsReadOnly="false" />
                             <DataGridTextColumn Binding="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Value" IsReadOnly="false" />
@@ -82,7 +82,20 @@
                 </GroupBox>
 
                 <GroupBox Header="Overrides SP" Grid.Row="0" Grid.Column="1" Margin="0,15,0,0" HorizontalAlignment="Center" >
-                    <Button Width="300" Height="32" Content="Open Logs directory" Command="{Binding OpenLogsDirectory}" />
+                    <DataGrid AutoGenerateColumns="False" 
+                              Height="300" 
+                              Width="350"
+                              HorizontalAlignment="Left" 
+                              Name="OverridesIniSystemPackTable" 
+                              VerticalAlignment="Top"
+                              CanUserAddRows="True"
+                              CanUserDeleteRows="True"
+                              ItemsSource="{Binding GmcConfiguration.IniOverridesSystemPack}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Key" IsReadOnly="false" />
+                            <DataGridTextColumn Binding="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Value" IsReadOnly="false" />
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </GroupBox>
             </Grid>
         </TabItem>
