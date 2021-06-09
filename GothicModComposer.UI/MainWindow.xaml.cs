@@ -1,4 +1,6 @@
-﻿namespace GothicModComposer.UI
+﻿using System.Reflection;
+
+namespace GothicModComposer.UI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -8,6 +10,9 @@
         public MainWindow()
         {
             InitializeComponent();
+
+            var fullVersion = Assembly.GetExecutingAssembly().GetName().Version;
+            Title = $"GMC UI v{fullVersion?.Major}.{fullVersion?.Minor}.{fullVersion?.Build}";
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GothicModComposer.Models.Configurations;
 using GothicModComposer.Models.Interfaces;
 
 namespace GothicModComposer.Models.Profiles
@@ -9,7 +10,8 @@ namespace GothicModComposer.Models.Profiles
 		public IGmcFolder GmcFolder { get; set; }
 		public IModFolder ModFolder { get; set; }
 		public string DefaultWorld { get; set; }
-		public List<string> IniOverrides { get; set; }
+		public List<IniOverride> IniOverrides { get; set; }
+		public List<IniOverride> IniOverridesSystemPack { get; set; }
 		public IGothicArguments GothicArguments { get; set; }
         public IGothicVdfsConfig GothicVdfsConfig { get; set; }
         public ICommandsConditions CommandsConditions { get; set; }
@@ -22,7 +24,8 @@ namespace GothicModComposer.Models.Profiles
 		IGmcFolder GmcFolder { get; set; }
 		IModFolder ModFolder { get; set; }
 		string DefaultWorld { get; set; }
-		List<string> IniOverrides { get; set; }
+		List<IniOverride> IniOverrides { get; set; }
+		List<IniOverride> IniOverridesSystemPack { get; set; }
 		IGothicArguments GothicArguments { get; set; }
 		IGothicVdfsConfig GothicVdfsConfig { get; set; }
         ICommandsConditions CommandsConditions { get; set; }

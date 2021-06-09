@@ -5,6 +5,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>GMC-2 UI</AssemblyName>
+    <Version>1.6.0</Version>
     <PackageIcon>GMC-logo.ico</PackageIcon>
     <ApplicationIcon>Resources\GMC-logo.ico</ApplicationIcon>
   </PropertyGroup>

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Windows;
 using GothicModComposer.UI.Commands;
 using GothicModComposer.UI.Helpers;
 using GothicModComposer.UI.Models;
@@ -49,6 +51,8 @@ namespace GothicModComposer.UI.ViewModels
             LoadConfiguration();
             
             GmcConfiguration.PropertyChanged += (_, _) => SaveSettings.Execute(null);
+            GmcConfiguration.IniOverrides.CollectionChanged += IniOverrides_CollectionChanged;
+            GmcConfiguration.IniOverridesSystemPack.CollectionChanged += IniOverrides_CollectionChanged;
 
             // TODO: Would be nice to have this operation async
             LoadZen3DWorlds();
@@ -59,6 +63,23 @@ namespace GothicModComposer.UI.ViewModels
             RestoreDefaultConfiguration = new RelayCommand(RestoreDefaultConfigurationExecute);
             OpenLogsDirectory = new RelayCommand(OpenLogsDirectoryExecute);
             ClearLogsDirectory = new RelayCommand(ClearLogsDirectoryExecute);
+        }
+
+        private void IniOverrides_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+                foreach (INotifyPropertyChanged added in e.NewItems)
+                {
+                    added.PropertyChanged += (_, _) => SaveSettings.Execute(null);
+                }
+
+            if (e.OldItems != null)
+                foreach (INotifyPropertyChanged removed in e.OldItems)
+                {
+                    removed.PropertyChanged -= (_, _) => SaveSettings.Execute(null);
+                }
+
+            SaveSettings.Execute(null);
         }
 
         private void SelectGothic2RootDirectoryExecute(object obj)
@@ -147,11 +168,33 @@ namespace GothicModComposer.UI.ViewModels
         {
             var configurationJson = File.ReadAllText(GmcSettingsJsonFilePath);
 
-            GmcConfiguration = JsonSerializer.Deserialize<GmcConfiguration>(configurationJson);
+            try
+            {
+                GmcConfiguration = JsonSerializer.Deserialize<GmcConfiguration>(configurationJson);
+            }
+            catch
+            {
+                MessageBox.Show(
+                    $"Your gmc-2-ui.json file under {GmcSettingsJsonFilePath} path has invalid format.{Environment.NewLine}{Environment.NewLine}Please delete this file and run GMC UI again.",
+                    "Invalid configuration file format", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+
+                Environment.Exit(0);
+            }
 
             if (GmcConfiguration != null && GmcConfiguration.GothicArguments.Resolution is null)
             {
                 GmcConfiguration.GothicArguments.Resolution = new Resolution {Width = 800, Height = 600};
+            }
+
+            foreach (var iniOverrideItem in GmcConfiguration.IniOverrides)
+            {
+                iniOverrideItem.PropertyChanged += (_, _) => SaveSettings.Execute(null);
+            }
+
+            foreach (var iniOverrideItem in GmcConfiguration.IniOverridesSystemPack)
+            {
+                iniOverrideItem.PropertyChanged += (_, _) => SaveSettings.Execute(null);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GothicModComposer.Builders;
+using GothicModComposer.Models.Configurations;
 using GothicModComposer.Models.Profiles;
 
 namespace GothicModComposer.Presets
@@ -10,7 +11,7 @@ namespace GothicModComposer.Presets
 			=> new()
 			{
 				ProfileType = ProfilePresetType.Compose,
-				IniOverrides = new List<string>(),
+				IniOverrides = new List<IniOverride>(),
 				GothicArguments = GothicArgumentsPresets.Build().ToList(),
 				CommandsConditions = new CommandsConditions
                 {
@@ -31,6 +32,7 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.ExecuteGothicKillOnLoadCommand,
 					CommandBuilderHelper.EnableVideoBikFilesCommand,
 					CommandBuilderHelper.UpdateDialoguesCommand,
+					CommandBuilderHelper.RemoveNotCompiledSourcesCommand,
 					CommandBuilderHelper.DisableVdfFilesCommand,
 					CommandBuilderHelper.ClearGmcTemporaryFiles
 				}
@@ -61,7 +63,6 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.OverrideIniCommand,
 					CommandBuilderHelper.AddDefaultWorldCommand,
 					CommandBuilderHelper.EnableVdfFilesCommand,
-                    CommandBuilderHelper.RemoveNotCompiledSourcesCommand,
 					CommandBuilderHelper.ExecuteGothicCommand,
 					CommandBuilderHelper.DisableVdfFilesCommand,
 					CommandBuilderHelper.ClearGmcTemporaryFiles

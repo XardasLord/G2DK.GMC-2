@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using GothicModComposer.UI.Commands;
 using GothicModComposer.UI.Enums;
 using GothicModComposer.UI.Helpers;
@@ -19,6 +20,8 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand RunBuildModFileProfile { get; }
         public RelayCommand RunEnableVDFProfile { get; }
         public RelayCommand OpenSettings { get; }
+        public RelayCommand OpenChangeLog { get; }
+        public RelayCommand OpenTrelloProjectBoard { get; }
 
         private readonly IGmcExecutor _gmcExecutor;
 
@@ -37,8 +40,9 @@ namespace GothicModComposer.UI.ViewModels
             RunBuildModFileProfile = new RelayCommand(RunBuildModFileProfileProfileExecute);
             RunEnableVDFProfile = new RelayCommand(RunEnableVDFProfileProfileExecute);
             OpenSettings = new RelayCommand(OpenSettingsExecute);
+            OpenChangeLog = new RelayCommand(OpenChangeLogExecute);
+            OpenTrelloProjectBoard = new RelayCommand(OpenTrelloProjectBoardExecute);
         }
-
 
         private void RunUpdateProfileExecute(object obj)
             => _gmcExecutor.Execute(GmcExecutionProfile.Update);
@@ -70,9 +74,29 @@ namespace GothicModComposer.UI.ViewModels
         private void RunEnableVDFProfileProfileExecute(object obj)
             => _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF);
 
-        private void OpenSettingsExecute(object obj)
+        private void OpenSettingsExecute(object obj) 
+            => new GmcSettings(GmcSettings).ShowDialog();
+
+        private static void OpenChangeLogExecute(object obj)
         {
-            new GmcSettings(GmcSettings).ShowDialog();
+            var processStartInfo = new ProcessStartInfo
+            {
+                FileName = "https://gitlab.com/dzieje-khorinis/gmc-2/-/blob/master/CHANGELOG.md",
+                UseShellExecute = true
+            };
+
+            Process.Start(processStartInfo);
+        }
+
+        private static void OpenTrelloProjectBoardExecute(object obj)
+        {
+            var processStartInfo = new ProcessStartInfo
+            {
+                FileName = "https://trello.com/b/ndyTLtzA/gmc-2",
+                UseShellExecute = true
+            };
+
+            Process.Start(processStartInfo);
         }
     }
 }

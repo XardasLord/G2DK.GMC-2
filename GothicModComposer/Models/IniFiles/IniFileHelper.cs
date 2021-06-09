@@ -8,7 +8,8 @@ namespace GothicModComposer.Models.IniFiles
 		public const string CommentRegex = @"(?<Comment>^;.*)";
 		public const string SectionRegex = @"\[(?<Header>\w+)\]\n(?<Attributes>[\s\S]+?(?![^[]))";
 		public const string AttributeRegex = @"(?<Key>\w+)\s*=\s*?(?<Value>.*)";
-        public const string OverridesSectionHeader = "OVERRIDES";
+        public const string OverridesGothicSectionHeader = "OVERRIDES";
+        public const string OverridesSystemPackSectionHeader = "OVERRIDES_SP";
 
 		public static List<IniBlock> CreateSections(string iniFileContent)
 		{

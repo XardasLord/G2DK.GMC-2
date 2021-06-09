@@ -22,6 +22,7 @@ namespace GothicModComposer.Models.Folders
 		public string BackupWorkDataFolderPath => Path.Combine(BackupFolderPath, "_Work", "Data");
 		public bool DoesBackupFolderExist => _fileSystem.Directory.Exists(BackupFolderPath);
 		public string EssentialFilesRegexPattern => @"((Presets|Music|Video))|[\/\\](Fonts|_intern)";
+		public List<ModFileEntry> ModFilesFromTrackedFile => _modFilesFromTrackerFile;
 
 		private readonly List<ModFileEntry> _modFilesFromTrackerFile;
 		private readonly string _tmpCommandActionsBackupFolderPath;
@@ -62,8 +63,6 @@ namespace GothicModComposer.Models.Folders
 
 		public void UpdateModFileEntryInTrackerFile(ModFileEntry modFileEntry)
 		{
-			modFileEntry.Timestamp = FileHelper.GetFileTimestamp(modFileEntry.FilePath);
-
 			var timestamp = FileHelper.GetFileTimestamp(modFileEntry.FilePath);
 			_modFilesFromTrackerFile.Single(x => x.FilePath == modFileEntry.FilePath).Timestamp = timestamp;
 		}
@@ -79,7 +78,7 @@ namespace GothicModComposer.Models.Folders
 
 		public bool DeleteTrackerFileIfExist() => FileHelper.DeleteIfExists(ModFilesTrackerFilePath);
 
-		public List<ModFileEntry> GetModFilesFromTrackerFile()
+		private List<ModFileEntry> GetModFilesFromTrackerFile()
 		{
 			if (!FileHelper.Exists(ModFilesTrackerFilePath))
 				return new List<ModFileEntry>();

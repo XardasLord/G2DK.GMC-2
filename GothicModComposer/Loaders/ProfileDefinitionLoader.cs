@@ -36,7 +36,10 @@ namespace GothicModComposer.Loaders
                                ?? throw new DefaultWorldNotFoundException(),
 				IniOverrides = userGmcConfiguration.IniOverrides 
                                ?? profileDefinition.IniOverrides
-							   ?? new List<string>(),
+							   ?? new List<IniOverride>(),
+				IniOverridesSystemPack = userGmcConfiguration.IniOverridesSystemPack 
+				                         ?? profileDefinition.IniOverridesSystemPack 
+				                         ?? new List<IniOverride>(),
 				GothicVdfsConfig = userGmcConfiguration.GothicVdfsConfig 
 								   ?? throw new VdfsGothicGmcNotFoundException(),
 				GothicArguments = GothicArgumentsHelper.ParseGothicArguments(profileDefinition.GothicArguments.ToArray()),

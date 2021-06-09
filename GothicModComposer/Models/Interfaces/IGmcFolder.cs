@@ -14,6 +14,7 @@ namespace GothicModComposer.Models.Interfaces
         string BackupWorkDataFolderPath { get; }
         bool DoesBackupFolderExist { get; }
         string EssentialFilesRegexPattern { get; }
+        List<ModFileEntry> ModFilesFromTrackedFile { get; }
         bool CreateGmcFolder();
         void CreateBackupWorkDataFolder();
         string GetTemporaryCommandActionBackupPath(string commandName);
@@ -23,6 +24,5 @@ namespace GothicModComposer.Models.Interfaces
         void RemoveModFileEntryFromTrackerFile(ModFileEntry modFileEntry);
         void SaveTrackerFile();
         bool DeleteTrackerFileIfExist();
-        List<ModFileEntry> GetModFilesFromTrackerFile();
     }
 }

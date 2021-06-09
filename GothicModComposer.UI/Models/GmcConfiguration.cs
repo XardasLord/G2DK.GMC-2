@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Text.Json;
 using GothicModComposer.UI.Helpers;
 
@@ -10,6 +12,8 @@ namespace GothicModComposer.UI.Models
         private string _modificationRootPath;
         private string _defaultWorld;
         private GothicArgumentsConfiguration _gothicArguments;
+        private ObservableCollection<IniOverride> _iniOverrides;
+        private ObservableCollection<IniOverride> _iniOverridesSystemPack;
 
         public static IEnumerable<Resolution> AvailableResolutions => new List<Resolution>
         {
@@ -51,7 +55,18 @@ namespace GothicModComposer.UI.Models
             set => SetProperty(ref _gothicArguments, value);
         }
 
-        public List<string> IniOverrides { get; set; }
+        public ObservableCollection<IniOverride> IniOverrides
+        {
+            get => _iniOverrides;
+            set => SetProperty(ref _iniOverrides, value);
+        }
+
+        public ObservableCollection<IniOverride> IniOverridesSystemPack
+        {
+            get => _iniOverridesSystemPack;
+            set => SetProperty(ref _iniOverridesSystemPack, value);
+        }
+
         public GothicVdfsConfig GothicVdfsConfig { get; set; }
 
         public static GmcConfiguration CreateDefault()
@@ -72,9 +87,12 @@ namespace GothicModComposer.UI.Models
     },
     ""IniOverrides"": 
     [
-
-        ""playLogoVideos = 0"",
-        ""subTitles = 1""
+        { ""Key"": ""playLogoVideos"", ""Value"": ""0""},
+        { ""Key"": ""subTitles"", ""Value"": ""1""}
+    ],
+    ""IniOverridesSystemPack"": 
+    [
+        { ""Key"": ""InteractionCollision"", ""Value"": ""1""}
     ],
     ""GothicVdfsConfig"": 
     {
@@ -108,6 +126,9 @@ namespace GothicModComposer.UI.Models
         public GmcConfiguration()
         {
             GothicArguments = new GothicArgumentsConfiguration();
+            IniOverrides = new ObservableCollection<IniOverride>();
+            IniOverridesSystemPack = new ObservableCollection<IniOverride>();
+
             GothicArguments.PropertyChanged += (_, _) => OnPropertyChanged(nameof(GothicArguments));
         }
     }
