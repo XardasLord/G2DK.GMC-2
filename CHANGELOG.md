@@ -3,6 +3,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.6.0] (2021-06-09)
+### Added
+- Handle Ini Overrides for SystemPack.
+- New options in GUI Settings. We can now manage `IniOverrides` and `IniOverridesSP` values.
+- Uncompiled files are now cleared during 'Compose' profile instead of 'RunMod' profile.
+- GMC Version is now displayed directly in GUI also.
+- GUI has option in menu to show ChangeLog and Trello board for the GMC project.
+
+### Fixed
+- Problem with duplication entries in `modFiles.json` file.
+- Warnings are not displayed anymore when files are removed from the repository.
+
+### Breaking Changes
+- `gmc-2-ui.json` file has a little bit different structure. Because of this GUI will notify if we try to use the old one and will ask for removing the old configuration file.
+
 ## [1.5.0] (2021-05-24)
 ### Added
 - New settings in GUI:
@@ -118,6 +133,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.6.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.6.0
 [1.5.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.5.0
 [1.4.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.4.0
 [1.3.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.3.1
