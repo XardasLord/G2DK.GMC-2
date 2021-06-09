@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using GothicModComposer.Commands;
+using GothicModComposer.Models.Configurations;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils.IOHelpers.FileSystem;
 using Moq;
@@ -25,7 +26,8 @@ namespace GothicModComposer.UnitTests.Commands
         [Fact]
         public void Execute_WhenIniOverridesAreNotDefined_ShouldReturn()
         {
-            _profileMock.SetupGet(x => x.IniOverrides).Returns(new List<string>());
+            _profileMock.SetupGet(x => x.IniOverrides).Returns(new List<IniOverride>());
+            _profileMock.SetupGet(x => x.IniOverridesSystemPack).Returns(new List<IniOverride>());
 
             Act();
 
@@ -36,7 +38,11 @@ namespace GothicModComposer.UnitTests.Commands
         [Fact]
         public void Execute_WhenIniOverridesAreDefined_ThrowsException()
         {
-            _profileMock.SetupGet(x => x.IniOverrides).Returns(new List<string> {"Test1=x"});
+            _profileMock.SetupGet(x => x.IniOverrides).Returns(new List<IniOverride>
+            {
+                new IniOverride { Key = "Test1", Value = "2" }
+            });
+            _profileMock.SetupGet(x => x.IniOverridesSystemPack).Returns(new List<IniOverride>());
             _fileSystemMock.Setup(x => x.File.Exists(GothicIniFilePath)).Returns(false);
 
             var result = Record.Exception(Act);
