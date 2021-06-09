@@ -47,7 +47,7 @@
                   SelectedValue="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </ListView>
 
-        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="377,62,225,188">
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="377,62,225,162">
             <Label Content="Gothic arguments:" />
             <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsWindowMode}" Content="Window mode"/>
             <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsDevMode}" Content="Dev mode"/>
@@ -59,7 +59,7 @@
         <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="10,0,0,0">
             <!-- Footer in the future -->
         </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="377,196,225,104">
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="377,230,225,70">
             <Label Content="Resolution:" />
             <ComboBox ItemsSource="{Binding GmcSettings.GmcConfiguration.AvailableResolutions}"
                 SelectedItem="{Binding GmcSettings.GmcConfiguration.GothicArguments.Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

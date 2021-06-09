@@ -7,51 +7,97 @@
         d:DataContext="{d:DesignInstance Type=viewModels:GmcSettingsVM}"
         Title="GMC Settings" Height="450" Width="800">
 
-    <Grid Margin="10">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+    <TabControl Margin="0,0,0,0">
+        <TabItem Header="Main settings">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Content="Gothic II root path:" />
-        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-            <TextBox Width="400" Text="{Binding GmcConfiguration.Gothic2RootPath}" IsReadOnly="True" />
-            <Button Width="32" Content="..." Command="{Binding SelectGothic2RootDirectory}" />
-        </StackPanel>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-        <Label Grid.Row="1" Grid.Column="0" Content="Modification root path:" />
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-            <TextBox Width="400" Text="{Binding GmcConfiguration.ModificationRootPath}" IsReadOnly="True" />
-            <Button Width="32" Content="..." Command="{Binding SelectModificationRootDirectory}" />
-        </StackPanel>
+                <Label Grid.Row="0" Grid.Column="0" Content="Gothic II root path:" />
+                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                    <TextBox Width="400" Text="{Binding GmcConfiguration.Gothic2RootPath}" IsReadOnly="True" />
+                    <Button Width="32" Content="..." Command="{Binding SelectGothic2RootDirectory}" />
+                </StackPanel>
 
-        <StackPanel Grid.Row="5" Grid.Column="1" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
-            <Button Width="200" Height="32"
+                <Label Grid.Row="1" Grid.Column="0" Content="Modification root path:" />
+                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                    <TextBox Width="400" Text="{Binding GmcConfiguration.ModificationRootPath}" IsReadOnly="True" />
+                    <Button Width="32" Content="..." Command="{Binding SelectModificationRootDirectory}" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="5" Grid.Column="1" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
+                    <Button Width="200" Height="32"
                     Content="Open Logs directory"
                     Command="{Binding OpenLogsDirectory}" />
-        </StackPanel>
-        
-        <StackPanel Grid.Row="6" Grid.Column="1" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
-            <Button Width="200" Height="32"
+                </StackPanel>
+
+                <StackPanel Grid.Row="6" Grid.Column="1" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
+                    <Button Width="200" Height="32"
                     Content="Clear logs directory"
                     Command="{Binding ClearLogsDirectory}" />
-        </StackPanel>
-        
-        <StackPanel Grid.Row="7" Grid.Column="1" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
-            <Button Width="200" Height="32"
-                    Content="Restore default configuration"
-                    Command="{Binding RestoreDefaultConfiguration}" />
-        </StackPanel>
-    </Grid>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Ini settings">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="400" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <GroupBox Header="Overrides" Grid.Row="0" Grid.Column="0" Margin="0,15,0,0" HorizontalAlignment="Center" >
+                    <DataGrid AutoGenerateColumns="False" 
+                              Height="300" 
+                              Width="350"
+                              HorizontalAlignment="Left" 
+                              Name="OverridesIniTable" 
+                              VerticalAlignment="Top"
+                              CanUserAddRows="True"
+                              CanUserDeleteRows="True"
+                              ItemsSource="{Binding GmcConfiguration.IniOverrides}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Key" IsReadOnly="false" />
+                            <DataGridTextColumn Binding="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Value" IsReadOnly="false" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+
+                <GroupBox Header="Overrides SP" Grid.Row="0" Grid.Column="1" Margin="0,15,0,0" HorizontalAlignment="Center" >
+                    <DataGrid AutoGenerateColumns="False" 
+                              Height="300" 
+                              Width="350"
+                              HorizontalAlignment="Left" 
+                              Name="OverridesIniSystemPackTable" 
+                              VerticalAlignment="Top"
+                              CanUserAddRows="True"
+                              CanUserDeleteRows="True"
+                              ItemsSource="{Binding GmcConfiguration.IniOverridesSystemPack}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Key" IsReadOnly="false" />
+                            <DataGridTextColumn Binding="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Value" IsReadOnly="false" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>

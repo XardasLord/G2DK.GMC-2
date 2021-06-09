@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
+using GothicModComposer.Models.Configurations;
 using GothicModComposer.Models.IniFiles;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
@@ -81,9 +82,11 @@ namespace GothicModComposer.Commands
 			});
 		}
 
-		private static void VerifySingleIniItem(ICollection<IniBlock> iniBlocks, Regex regex, string item, bool isSystemPack = false) // TODO: Refactor parameters
-		{
-			var attribute = regex.Match(item);
+		private static void VerifySingleIniItem(ICollection<IniBlock> iniBlocks, Regex regex, IniOverride item, bool isSystemPack = false) // TODO: Refactor parameters
+        {
+            var formatItem = $"{item.Key}={item.Value}";
+
+			var attribute = regex.Match(formatItem);
 
 			var key = attribute.Groups["Key"].Value;
 			var value = attribute.Groups["Value"].Value;
