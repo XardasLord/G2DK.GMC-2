@@ -71,8 +71,8 @@
                               HorizontalAlignment="Left" 
                               Name="OverridesIniTable" 
                               VerticalAlignment="Top"
-                              CanUserAddRows="True"
-                              CanUserDeleteRows="True"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
                               ItemsSource="{Binding GmcConfiguration.IniOverrides}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Key" IsReadOnly="false" />
