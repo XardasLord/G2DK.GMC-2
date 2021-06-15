@@ -77,6 +77,19 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Key" IsReadOnly="false" />
                             <DataGridTextColumn Binding="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Value" IsReadOnly="false" />
+                                <DataGridTextColumn.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Setter Property="ToolTip" Value="[Placeholder]" />
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Value" IsReadOnly="false">
+                                <DataGridTextColumn.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Setter Property="ToolTip" Value="[Placeholder]" />
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </GroupBox>
