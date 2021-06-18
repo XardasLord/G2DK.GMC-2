@@ -45,6 +45,13 @@ namespace GothicModComposer.UI.ViewModels
             GmcSettingsJsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "gmc-2-ui.json");
             Zen3DWorlds = new ObservableCollection<string>();
 
+            SelectGothic2RootDirectory = new RelayCommand(SelectGothic2RootDirectoryExecute);
+            SelectModificationRootDirectory = new RelayCommand(SelectModificationRootDirectoryExecute);
+            SaveSettings = new RelayCommand(SaveSettingsExecute);
+            RestoreDefaultConfiguration = new RelayCommand(RestoreDefaultConfigurationExecute);
+            OpenLogsDirectory = new RelayCommand(OpenLogsDirectoryExecute);
+            ClearLogsDirectory = new RelayCommand(ClearLogsDirectoryExecute);
+
             if (!File.Exists(GmcSettingsJsonFilePath))
                 CreateDefaultConfigurationFile();
 
@@ -56,13 +63,6 @@ namespace GothicModComposer.UI.ViewModels
 
             // TODO: Would be nice to have this operation async
             LoadZen3DWorlds();
-
-            SelectGothic2RootDirectory = new RelayCommand(SelectGothic2RootDirectoryExecute);
-            SelectModificationRootDirectory = new RelayCommand(SelectModificationRootDirectoryExecute);
-            SaveSettings = new RelayCommand(SaveSettingsExecute);
-            RestoreDefaultConfiguration = new RelayCommand(RestoreDefaultConfigurationExecute);
-            OpenLogsDirectory = new RelayCommand(OpenLogsDirectoryExecute);
-            ClearLogsDirectory = new RelayCommand(ClearLogsDirectoryExecute);
         }
 
         private void IniOverrides_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
