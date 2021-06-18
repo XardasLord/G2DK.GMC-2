@@ -196,6 +196,43 @@ namespace GothicModComposer.UI.ViewModels
             {
                 iniOverrideItem.PropertyChanged += (_, _) => SaveSettings.Execute(null);
             }
+
+            AddMissingDefaultIniOverrides();
+            RemoveExistingIniOverridesThatAreNotDefaults();
+        }
+
+        private void AddMissingDefaultIniOverrides()
+        {
+            var defaultIniOverrideAdded = false;
+
+            IniOverrideHelper.DefaultIniOverrideKeys.ForEach(defaultIniOverrideItem =>
+            {
+                if (GmcConfiguration.IniOverrides.Any(x => x.Key == defaultIniOverrideItem.Key))
+                    return;
+
+                GmcConfiguration.IniOverrides.Add(defaultIniOverrideItem);
+                defaultIniOverrideAdded = true;
+            });
+
+            if (defaultIniOverrideAdded)
+                SaveSettings.Execute(null);
+        }
+
+        private void RemoveExistingIniOverridesThatAreNotDefaults()
+        {
+            var iniOverrideRemoved = false;
+
+            foreach (var iniOverrideItemFromConfiguration in GmcConfiguration.IniOverrides.Reverse())
+            {
+                if (IniOverrideHelper.DefaultIniOverrideKeys.Any(x => x.Key == iniOverrideItemFromConfiguration.Key))
+                    continue;
+
+                GmcConfiguration.IniOverrides.Remove(iniOverrideItemFromConfiguration);
+                iniOverrideRemoved = true;
+            }
+
+            if (iniOverrideRemoved)
+                SaveSettings.Execute(null);
         }
 
         public void LoadZen3DWorlds()
