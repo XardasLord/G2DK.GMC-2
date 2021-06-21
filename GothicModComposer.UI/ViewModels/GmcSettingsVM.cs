@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -39,6 +40,7 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand RestoreDefaultConfiguration { get; }
         public RelayCommand OpenLogsDirectory { get; }
         public RelayCommand ClearLogsDirectory { get; }
+        public RelayCommand RestoreDefaultIniOverrides { get; }
 
         public GmcSettingsVM()
         {
@@ -51,6 +53,7 @@ namespace GothicModComposer.UI.ViewModels
             RestoreDefaultConfiguration = new RelayCommand(RestoreDefaultConfigurationExecute);
             OpenLogsDirectory = new RelayCommand(OpenLogsDirectoryExecute);
             ClearLogsDirectory = new RelayCommand(ClearLogsDirectoryExecute);
+            RestoreDefaultIniOverrides = new RelayCommand(RestoreDefaultIniOverridesExecute);
 
             if (!File.Exists(GmcSettingsJsonFilePath))
                 CreateDefaultConfigurationFile();
@@ -152,7 +155,14 @@ namespace GothicModComposer.UI.ViewModels
                 file.Delete(); 
             
             foreach (var dir in directoryInfo.GetDirectories())
-                dir.Delete(true); 
+                dir.Delete(true);
+        }
+
+        private void RestoreDefaultIniOverridesExecute(object obj)
+        {
+            GmcConfiguration.IniOverrides.Clear();
+            
+            AddMissingDefaultIniOverrides();
         }
 
         private void CreateDefaultConfigurationFile()

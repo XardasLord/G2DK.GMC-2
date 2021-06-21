@@ -65,32 +65,40 @@
                 </Grid.RowDefinitions>
 
                 <GroupBox Header="Overrides" Grid.Row="0" Grid.Column="0" Margin="0,15,0,0" HorizontalAlignment="Center" >
-                    <DataGrid AutoGenerateColumns="False" 
-                              Height="300" 
-                              Width="350"
-                              HorizontalAlignment="Left" 
-                              Name="OverridesIniTable" 
-                              VerticalAlignment="Top"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              ItemsSource="{Binding GmcConfiguration.IniOverrides}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Key" IsReadOnly="True">
-                                <DataGridTextColumn.CellStyle>
-                                    <Style TargetType="DataGridCell">
-                                        <Setter Property="ToolTip" Value="[Placeholder]" />
-                                    </Style>
-                                </DataGridTextColumn.CellStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Binding="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Value" IsReadOnly="false">
-                                <DataGridTextColumn.CellStyle>
-                                    <Style TargetType="DataGridCell">
-                                        <Setter Property="ToolTip" Value="[Placeholder]" />
-                                    </Style>
-                                </DataGridTextColumn.CellStyle>
-                            </DataGridTextColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <StackPanel>
+                        <DataGrid AutoGenerateColumns="False" 
+                                  Height="250" 
+                                  Width="350"
+                                  HorizontalAlignment="Left" 
+                                  Name="OverridesIniTable" 
+                                  VerticalAlignment="Top"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  ItemsSource="{Binding GmcConfiguration.IniOverrides}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Key" IsReadOnly="True">
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="ToolTip" Value="[Placeholder]" />
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Value" IsReadOnly="false">
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="ToolTip" Value="[Placeholder]" />
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Button Width="200" Height="32"
+                                Margin="0,15,0,0"
+                                HorizontalAlignment="Left"
+                                Content="Restore default settings"
+                                Command="{Binding RestoreDefaultIniOverrides}" />
+                    </StackPanel>
                 </GroupBox>
 
                 <GroupBox Header="Overrides SP" Grid.Row="0" Grid.Column="1" Margin="0,15,0,0" HorizontalAlignment="Center" >
