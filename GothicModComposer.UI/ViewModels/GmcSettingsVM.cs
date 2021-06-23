@@ -18,6 +18,7 @@ namespace GothicModComposer.UI.ViewModels
     {
         private GmcConfiguration _gmcConfiguration;
         private ObservableCollection<string> _zen3DWorlds;
+        private bool _isSystemPackAvailable;
 
         public string GmcSettingsJsonFilePath { get; }
         public string LogsDirectoryPath => Path.Combine(GmcConfiguration?.Gothic2RootPath ?? string.Empty, ".gmc", "Logs");
@@ -32,6 +33,12 @@ namespace GothicModComposer.UI.ViewModels
         {
             get => _zen3DWorlds;
             set => SetProperty(ref _zen3DWorlds, value);
+        }
+
+        public bool IsSystemPackAvailable
+        {
+            get => _isSystemPackAvailable;
+            set => SetProperty(ref _isSystemPackAvailable, value);
         }
 
         public RelayCommand SelectGothic2RootDirectory { get; }
@@ -100,6 +107,8 @@ namespace GothicModComposer.UI.ViewModels
             
             GmcConfiguration.Gothic2RootPath = openFolderDialog.SelectedPath;
             OnPropertyChanged(nameof(GmcConfiguration));
+
+            IsSystemPackAvailable = File.Exists(Path.Combine(GmcConfiguration.Gothic2RootPath, "System", "SystemPack.ini"));
             
             LoadZen3DWorlds();
         }
@@ -209,6 +218,8 @@ namespace GothicModComposer.UI.ViewModels
 
             AddMissingDefaultIniOverrides();
             RemoveExistingIniOverridesThatAreNotDefaults();
+
+            IsSystemPackAvailable = File.Exists(Path.Combine(GmcConfiguration.Gothic2RootPath, "System", "SystemPack.ini"));
         }
 
         private void AddMissingDefaultIniOverrides()
