@@ -229,7 +229,10 @@ namespace GothicModComposer.UI.ViewModels
             IniOverrideHelper.DefaultIniOverrideKeys.ForEach(defaultIniOverrideItem =>
             {
                 if (GmcConfiguration.IniOverrides.Any(x => x.Key == defaultIniOverrideItem.Key))
+                {
+                    GmcConfiguration.IniOverrides.Single(x => x.Key == defaultIniOverrideItem.Key).Section = defaultIniOverrideItem.Section; // Just to be sure if section is not filled
                     return;
+                }
 
                 GmcConfiguration.IniOverrides.Add(defaultIniOverrideItem);
                 defaultIniOverrideAdded = true;
