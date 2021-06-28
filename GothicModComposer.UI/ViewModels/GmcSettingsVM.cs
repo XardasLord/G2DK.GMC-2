@@ -132,7 +132,11 @@ namespace GothicModComposer.UI.ViewModels
 
         private void SaveSettingsExecute(object obj)
         {
-            var configurationJson = JsonSerializer.Serialize(GmcConfiguration);
+            var configurationJson = JsonSerializer.Serialize(GmcConfiguration, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+
             File.WriteAllText(GmcSettingsJsonFilePath, configurationJson);
         }
 
