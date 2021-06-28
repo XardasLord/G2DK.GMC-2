@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using GothicModComposer.UI.Helpers;
 
 namespace GothicModComposer.UI.Models
@@ -22,5 +23,11 @@ namespace GothicModComposer.UI.Models
 
         [JsonIgnore]
         public string Section { get; set; }
+        
+        [JsonIgnore]
+        public string DisplayAs { get; set; }
+        
+        [JsonIgnore]
+        public List<string> AvailableValues { get; set; }
     }
 }

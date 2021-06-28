@@ -234,7 +234,10 @@ namespace GothicModComposer.UI.ViewModels
             {
                 if (GmcConfiguration.IniOverrides.Any(x => x.Key == defaultIniOverrideItem.Key))
                 {
-                    GmcConfiguration.IniOverrides.Single(x => x.Key == defaultIniOverrideItem.Key).Section = defaultIniOverrideItem.Section; // Just to be sure if section is not filled
+                    // Just to be sure if section is not filled
+                    GmcConfiguration.IniOverrides.Single(x => x.Key == defaultIniOverrideItem.Key).Section = defaultIniOverrideItem.Section;
+                    GmcConfiguration.IniOverrides.Single(x => x.Key == defaultIniOverrideItem.Key).DisplayAs = defaultIniOverrideItem.DisplayAs;
+                    GmcConfiguration.IniOverrides.Single(x => x.Key == defaultIniOverrideItem.Key).AvailableValues = defaultIniOverrideItem.AvailableValues;
                     return;
                 }
 
