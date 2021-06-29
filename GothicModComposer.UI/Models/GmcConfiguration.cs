@@ -72,6 +72,8 @@ namespace GothicModComposer.UI.Models
         {
             const string defaultConfig = @"
 {
+    ""Gothic2RootPath"": """",
+    ""ModificationRootPath"": """",
 	""DefaultWorld"": ""VADUZWORLD.ZEN"",
     ""GothicArguments"": {
         ""IsWindowMode"": false,
