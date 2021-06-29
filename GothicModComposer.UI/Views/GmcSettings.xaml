@@ -4,12 +4,14 @@
         xmlns:viewModels="clr-namespace:GothicModComposer.UI.ViewModels" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:GothicModComposer.UI.Converters"
+        xmlns:helpers="clr-namespace:GothicModComposer.UI.Helpers"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=viewModels:GmcSettingsVM}"
         Title="GMC Settings" Height="450" Width="800">
 
     <Window.Resources>
         <converters:BooleanToVisibilityConverter x:Key="VisibilityConverter" True="Collapsed" False="Visible" />
+        <helpers:DynamicDataTemplateSelector x:Key="DynamicDataTemplateSelector" />
     </Window.Resources>
 
     <TabControl Margin="0,0,0,0">
@@ -80,23 +82,31 @@
                                   CanUserAddRows="False"
                                   CanUserDeleteRows="False"
                                   ItemsSource="{Binding GmcConfiguration.IniOverrides}">
+                            
+                            <DataGrid.Resources>
+                                <DataTemplate x:Key="TextBoxTemplate">
+                                    <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                                <DataTemplate x:Key="CheckBoxTemplate">
+                                    <CheckBox IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                                <DataTemplate x:Key="ComboBoxTemplate">
+                                    <ComboBox SelectedItem="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              ItemsSource="{Binding AvailableValues}" />
+                                </DataTemplate>
+                            </DataGrid.Resources>
 
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{Binding Section}" Foreground="Black" Width="*" Header="Section" IsReadOnly="True" />
                                 <DataGridTextColumn Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Key" IsReadOnly="True">
-                                <DataGridTextColumn.CellStyle>
-                                    <Style TargetType="DataGridCell">
-                                        <Setter Property="ToolTip" Value="[Placeholder]" />
-                                    </Style>
-                                </DataGridTextColumn.CellStyle>
-                                </DataGridTextColumn>
-                                <DataGridTextColumn Binding="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Value" IsReadOnly="false">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
                                             <Setter Property="ToolTip" Value="[Placeholder]" />
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>
+                                <DataGridTemplateColumn Header="Value" 
+                                                        CellTemplateSelector="{StaticResource DynamicDataTemplateSelector}" />
                             </DataGrid.Columns>
                         </DataGrid>
 
