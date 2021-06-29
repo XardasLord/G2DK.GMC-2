@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.7.0] (2021-06-29)
+### Added
+- Manage IniOverrides in GUI:
+  - Predefined values with custom values available.
+  - Disable Overrides_SP section if System Pack is not available.
+  - Restore default settings for IniOverrides section.
+
 ## [1.6.0] (2021-06-09)
 ### Added
 - Handle Ini Overrides for SystemPack.
@@ -133,6 +140,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.7.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.7.0
 [1.6.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.6.0
 [1.5.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.5.0
 [1.4.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.4.0

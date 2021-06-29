@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Text.Json;
 using GothicModComposer.UI.Helpers;
 
@@ -73,6 +72,8 @@ namespace GothicModComposer.UI.Models
         {
             const string defaultConfig = @"
 {
+    ""Gothic2RootPath"": """",
+    ""ModificationRootPath"": """",
 	""DefaultWorld"": ""VADUZWORLD.ZEN"",
     ""GothicArguments"": {
         ""IsWindowMode"": false,

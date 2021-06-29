@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -17,6 +18,7 @@ namespace GothicModComposer.UI.ViewModels
     {
         private GmcConfiguration _gmcConfiguration;
         private ObservableCollection<string> _zen3DWorlds;
+        private bool _isSystemPackAvailable;
 
         public string GmcSettingsJsonFilePath { get; }
         public string LogsDirectoryPath => Path.Combine(GmcConfiguration?.Gothic2RootPath ?? string.Empty, ".gmc", "Logs");
@@ -33,17 +35,32 @@ namespace GothicModComposer.UI.ViewModels
             set => SetProperty(ref _zen3DWorlds, value);
         }
 
+        public bool IsSystemPackAvailable
+        {
+            get => _isSystemPackAvailable;
+            set => SetProperty(ref _isSystemPackAvailable, value);
+        }
+
         public RelayCommand SelectGothic2RootDirectory { get; }
         public RelayCommand SelectModificationRootDirectory { get; }
         public RelayCommand SaveSettings { get; }
         public RelayCommand RestoreDefaultConfiguration { get; }
         public RelayCommand OpenLogsDirectory { get; }
         public RelayCommand ClearLogsDirectory { get; }
+        public RelayCommand RestoreDefaultIniOverrides { get; }
 
         public GmcSettingsVM()
         {
             GmcSettingsJsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "gmc-2-ui.json");
             Zen3DWorlds = new ObservableCollection<string>();
+
+            SelectGothic2RootDirectory = new RelayCommand(SelectGothic2RootDirectoryExecute);
+            SelectModificationRootDirectory = new RelayCommand(SelectModificationRootDirectoryExecute);
+            SaveSettings = new RelayCommand(SaveSettingsExecute);
+            RestoreDefaultConfiguration = new RelayCommand(RestoreDefaultConfigurationExecute);
+            OpenLogsDirectory = new RelayCommand(OpenLogsDirectoryExecute);
+            ClearLogsDirectory = new RelayCommand(ClearLogsDirectoryExecute);
+            RestoreDefaultIniOverrides = new RelayCommand(RestoreDefaultIniOverridesExecute);
 
             if (!File.Exists(GmcSettingsJsonFilePath))
                 CreateDefaultConfigurationFile();
@@ -56,13 +73,6 @@ namespace GothicModComposer.UI.ViewModels
 
             // TODO: Would be nice to have this operation async
             LoadZen3DWorlds();
-
-            SelectGothic2RootDirectory = new RelayCommand(SelectGothic2RootDirectoryExecute);
-            SelectModificationRootDirectory = new RelayCommand(SelectModificationRootDirectoryExecute);
-            SaveSettings = new RelayCommand(SaveSettingsExecute);
-            RestoreDefaultConfiguration = new RelayCommand(RestoreDefaultConfigurationExecute);
-            OpenLogsDirectory = new RelayCommand(OpenLogsDirectoryExecute);
-            ClearLogsDirectory = new RelayCommand(ClearLogsDirectoryExecute);
         }
 
         private void IniOverrides_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -97,6 +107,8 @@ namespace GothicModComposer.UI.ViewModels
             
             GmcConfiguration.Gothic2RootPath = openFolderDialog.SelectedPath;
             OnPropertyChanged(nameof(GmcConfiguration));
+
+            IsSystemPackAvailable = File.Exists(Path.Combine(GmcConfiguration.Gothic2RootPath, "System", "SystemPack.ini"));
             
             LoadZen3DWorlds();
         }
@@ -120,7 +132,11 @@ namespace GothicModComposer.UI.ViewModels
 
         private void SaveSettingsExecute(object obj)
         {
-            var configurationJson = JsonSerializer.Serialize(GmcConfiguration);
+            var configurationJson = JsonSerializer.Serialize(GmcConfiguration, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+
             File.WriteAllText(GmcSettingsJsonFilePath, configurationJson);
         }
 
@@ -152,7 +168,14 @@ namespace GothicModComposer.UI.ViewModels
                 file.Delete(); 
             
             foreach (var dir in directoryInfo.GetDirectories())
-                dir.Delete(true); 
+                dir.Delete(true);
+        }
+
+        private void RestoreDefaultIniOverridesExecute(object obj)
+        {
+            GmcConfiguration.IniOverrides.Clear();
+            
+            AddMissingDefaultIniOverrides();
         }
 
         private void CreateDefaultConfigurationFile()
@@ -196,6 +219,51 @@ namespace GothicModComposer.UI.ViewModels
             {
                 iniOverrideItem.PropertyChanged += (_, _) => SaveSettings.Execute(null);
             }
+
+            AddMissingDefaultIniOverrides();
+            RemoveExistingIniOverridesThatAreNotDefaults();
+
+            IsSystemPackAvailable = File.Exists(Path.Combine(GmcConfiguration.Gothic2RootPath, "System", "SystemPack.ini"));
+        }
+
+        private void AddMissingDefaultIniOverrides()
+        {
+            var defaultIniOverrideAdded = false;
+
+            IniOverrideHelper.DefaultIniOverrideKeys.ForEach(defaultIniOverrideItem =>
+            {
+                if (GmcConfiguration.IniOverrides.Any(x => x.Key == defaultIniOverrideItem.Key))
+                {
+                    // Just to be sure if section is not filled
+                    GmcConfiguration.IniOverrides.Single(x => x.Key == defaultIniOverrideItem.Key).Section = defaultIniOverrideItem.Section;
+                    GmcConfiguration.IniOverrides.Single(x => x.Key == defaultIniOverrideItem.Key).DisplayAs = defaultIniOverrideItem.DisplayAs;
+                    GmcConfiguration.IniOverrides.Single(x => x.Key == defaultIniOverrideItem.Key).AvailableValues = defaultIniOverrideItem.AvailableValues;
+                    return;
+                }
+
+                GmcConfiguration.IniOverrides.Add(defaultIniOverrideItem);
+                defaultIniOverrideAdded = true;
+            });
+
+            if (defaultIniOverrideAdded)
+                SaveSettings.Execute(null);
+        }
+
+        private void RemoveExistingIniOverridesThatAreNotDefaults()
+        {
+            var iniOverrideRemoved = false;
+
+            foreach (var iniOverrideItemFromConfiguration in GmcConfiguration.IniOverrides.Reverse())
+            {
+                if (IniOverrideHelper.DefaultIniOverrideKeys.Any(x => x.Key == iniOverrideItemFromConfiguration.Key))
+                    continue;
+
+                GmcConfiguration.IniOverrides.Remove(iniOverrideItemFromConfiguration);
+                iniOverrideRemoved = true;
+            }
+
+            if (iniOverrideRemoved)
+                SaveSettings.Execute(null);
         }
 
         public void LoadZen3DWorlds()
