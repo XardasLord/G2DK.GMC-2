@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.7.1] (2021-07-01)
+### Fixed
+- Remove the original entries in GMC.ini when have them in the `[OVERRIDES]` section in `OverrideIniCommand` step.
+  
 ## [1.7.0] (2021-06-29)
 ### Added
 - Manage IniOverrides in GUI:
@@ -140,6 +144,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.7.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.7.1
 [1.7.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.7.0
 [1.6.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.6.0
 [1.5.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.5.0
