@@ -106,8 +106,14 @@ namespace GothicModComposer.Commands
 			overridesSectionBlock = iniBlocks.Single(block => block.Header.Equals(overrideSectionHeaderName));
 			overridesSectionBlock.Set($"{blockToOverride.Header}.{key}", value);
 
-			Logger.Info($"Overriden {blockToOverride.Header}.{key}={value}.", true);
-		}
+			Logger.Info($"Overriden {blockToOverride.Header}.{key}={value}", true);
+			
+			// Delete from original ini section
+			blockToOverride.Remove(key);
+			
+			if (!blockToOverride.Properties.Any())
+				iniBlocks.Remove(blockToOverride);
+        }
 
 		private void SaveIniFile(List<IniBlock> iniBlocks)
 		{

@@ -20,5 +20,15 @@ namespace GothicModComposer.Models.IniFiles
 
 		public void Set(string key, string value) 
 			=> _settings[key] = value;
+		
+		public void Remove(string key)
+		{
+			var itemToDelete = _settings.FirstOrDefault(x => x.Key == key);
+			
+			if (itemToDelete.Equals(default(KeyValuePair<string, string>)))
+				return;
+			
+			_settings.Remove(itemToDelete.Key);
+		}
 	}
 }
