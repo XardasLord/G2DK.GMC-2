@@ -21,7 +21,6 @@ namespace GothicModComposer.UI.Models
             set => SetProperty(ref _value, value);
         }
 
-        [JsonIgnore]
         public string Section { get; set; }
         
         [JsonIgnore]
