@@ -51,8 +51,8 @@ namespace GothicModComposer.Commands
 			if (!_fileSystem.File.Exists(_profile.GothicFolder.GothicIniFilePath))
 				throw new Exception("Gothic.ini file was not found.");
 			
-			if (!_fileSystem.File.Exists(_profile.GothicFolder.SystemPackIniFilePath))
-				throw new Exception("SystemPack.ini file was not found.");
+			// if (!_fileSystem.File.Exists(_profile.GothicFolder.SystemPackIniFilePath))
+			// 	throw new Exception("SystemPack.ini file was not found.");
 
 			var defaultGmcIniBlocks = GmcIniHelper.GetDefaultGmcIni();
 				
@@ -62,7 +62,7 @@ namespace GothicModComposer.Commands
 			OverrideGothicIniAttributes(defaultGmcIniBlocks, systemPackIniBlocks);
 
 			// Merge
-			defaultGmcIniBlocks.AddRange(systemPackIniBlocks);
+			// defaultGmcIniBlocks.AddRange(systemPackIniBlocks);
 				
 			SaveIniFile(defaultGmcIniBlocks);
 		}
@@ -76,10 +76,10 @@ namespace GothicModComposer.Commands
 				VerifySingleIniItem(gothicIniBlocks, regex, item, false);
 			});
 
-			_profile.IniOverridesSystemPack.ForEach(item =>
-			{ 
-				VerifySingleIniItem(systemPackIniBlocks, regex, item, true);
-			});
+			// _profile.IniOverridesSystemPack.ForEach(item =>
+			// { 
+			// 	VerifySingleIniItem(systemPackIniBlocks, regex, item, true);
+			// });
 		}
 
 		private static void VerifySingleIniItem(ICollection<IniBlock> iniBlocks, Regex regex, IniOverride item, bool isSystemPack = false) // TODO: Refactor parameters
@@ -88,6 +88,7 @@ namespace GothicModComposer.Commands
 
 			var attribute = regex.Match(formatItem);
 
+			var section = item.Section;
 			var key = attribute.Groups["Key"].Value;
 			var value = attribute.Groups["Value"].Value;
 			
@@ -105,9 +106,9 @@ namespace GothicModComposer.Commands
 			if (blockToOverride is null)
 			{
 				// Not found in default ini section, so we only add
-				overridesSectionBlock.Set(key, value);
+				overridesSectionBlock.Set($"{section}.{key}", value);
 				
-				Logger.Info($"Overriden {key}={value}", true);
+				Logger.Info($"Overriden {section}.{key}={value}", true);
 			}
 			else
 			{

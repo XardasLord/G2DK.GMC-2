@@ -12,9 +12,9 @@ namespace GothicModComposer.UI.Helpers
         public static List<IniOverride> DefaultIniOverrideKeys
             => new()
             {
-                new IniOverride { Key = "recalc", Value = "0", Section = "[PERFORMANCE]", DisplayAs = ComboBoxColumnName, AvailableValues = new List<string> { "0", "1" } },
-                new IniOverride { Key = "sightValue", Value = "14", Section = "[PERFORMANCE]", DisplayAs = TextBoxColumnName },
-                new IniOverride { Key = "modelDetail", Value = "1", Section = "[PERFORMANCE]", DisplayAs = TextBoxColumnName },
+                new IniOverride { Key = "recalc", Value = "0", Section = "PERFORMANCE", DisplayAs = ComboBoxColumnName, AvailableValues = new List<string> { "0", "1" } },
+                new IniOverride { Key = "sightValue", Value = "14", Section = "PERFORMANCE", DisplayAs = TextBoxColumnName },
+                new IniOverride { Key = "modelDetail", Value = "1", Section = "PERFORMANCE", DisplayAs = TextBoxColumnName },
             };
     }
 }

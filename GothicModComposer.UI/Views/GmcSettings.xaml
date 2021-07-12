@@ -75,7 +75,7 @@
                     <StackPanel>
                         <DataGrid AutoGenerateColumns="False" 
                                   Height="250" 
-                                  Width="350"
+                                  Width="750"
                                   HorizontalAlignment="Left" 
                                   Name="OverridesIniTable" 
                                   VerticalAlignment="Top"
@@ -97,7 +97,7 @@
                             </DataGrid.Resources>
 
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Section}" Foreground="Black" Width="*" Header="Section" IsReadOnly="True" />
+                                <DataGridTextColumn Binding="{Binding Section, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Section" IsReadOnly="True" />
                                 <DataGridTextColumn Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Key" IsReadOnly="True">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
@@ -118,27 +118,27 @@
                     </StackPanel>
                 </GroupBox>
 
-                <GroupBox Header="Overrides SP" Grid.Row="0" Grid.Column="1" Margin="0,15,0,0" HorizontalAlignment="Center"
-                          IsEnabled="{Binding IsSystemPackAvailable}">
-                    <StackPanel>
-                        <TextBlock Foreground="Red" Visibility="{Binding Path=IsSystemPackAvailable, Converter={StaticResource VisibilityConverter}}">SystemPack is not available.</TextBlock>
-
-                        <DataGrid AutoGenerateColumns="False" 
-                                  Height="300" 
-                                  Width="350"
-                                  HorizontalAlignment="Left" 
-                                  Name="OverridesIniSystemPackTable" 
-                                  VerticalAlignment="Top"
-                                  CanUserAddRows="True"
-                                  CanUserDeleteRows="True"
-                                  ItemsSource="{Binding GmcConfiguration.IniOverridesSystemPack}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Key" IsReadOnly="false" />
-                                <DataGridTextColumn Binding="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Value" IsReadOnly="false" />
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </StackPanel>
-                </GroupBox>
+                <!-- <GroupBox Header="Overrides SP" Grid.Row="0" Grid.Column="1" Margin="0,15,0,0" HorizontalAlignment="Center" -->
+                <!--           IsEnabled="{Binding IsSystemPackAvailable}"> -->
+                <!--     <StackPanel> -->
+                <!--         <TextBlock Foreground="Red" Visibility="{Binding Path=IsSystemPackAvailable, Converter={StaticResource VisibilityConverter}}">SystemPack is not available.</TextBlock> -->
+                <!-- -->
+                <!--         <DataGrid AutoGenerateColumns="False"  -->
+                <!--                   Height="300"  -->
+                <!--                   Width="350" -->
+                <!--                   HorizontalAlignment="Left"  -->
+                <!--                   Name="OverridesIniSystemPackTable"  -->
+                <!--                   VerticalAlignment="Top" -->
+                <!--                   CanUserAddRows="True" -->
+                <!--                   CanUserDeleteRows="True" -->
+                <!--                   ItemsSource="{Binding GmcConfiguration.IniOverridesSystemPack}"> -->
+                <!--             <DataGrid.Columns> -->
+                <!--                 <DataGridTextColumn Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Key" IsReadOnly="false" /> -->
+                <!--                 <DataGridTextColumn Binding="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Value" IsReadOnly="false" /> -->
+                <!--             </DataGrid.Columns> -->
+                <!--         </DataGrid> -->
+                <!--     </StackPanel> -->
+                <!-- </GroupBox> -->
             </Grid>
         </TabItem>
     </TabControl>
