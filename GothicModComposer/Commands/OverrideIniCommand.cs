@@ -8,6 +8,7 @@ using GothicModComposer.Models.Configurations;
 using GothicModComposer.Models.IniFiles;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
+using GothicModComposer.Utils.IOHelpers;
 using GothicModComposer.Utils.IOHelpers.FileSystem;
 
 namespace GothicModComposer.Commands
@@ -53,18 +54,17 @@ namespace GothicModComposer.Commands
 			if (!_fileSystem.File.Exists(_profile.GothicFolder.SystemPackIniFilePath))
 				throw new Exception("SystemPack.ini file was not found.");
 
-			var gothicIni = _profile.GothicFolder.GetGothicIniContent();
-			var gothicIniBlocks = IniFileHelper.CreateSections(gothicIni); // TODO: Replace IniBlock class to something like IniFile class
+			var defaultGmcIniBlocks = GmcIniHelper.GetDefaultGmcIni();
 				
 			var systemPackIni = _profile.GothicFolder.GetSystemPackIniContent();
 			var systemPackIniBlocks = IniFileHelper.CreateSections(systemPackIni); // TODO: Replace IniBlock class to something like IniFile class
 			
-			OverrideGothicIniAttributes(gothicIniBlocks, systemPackIniBlocks);
+			OverrideGothicIniAttributes(defaultGmcIniBlocks, systemPackIniBlocks);
 
 			// Merge
-			gothicIniBlocks.AddRange(systemPackIniBlocks);
+			defaultGmcIniBlocks.AddRange(systemPackIniBlocks);
 				
-			SaveIniFile(gothicIniBlocks);
+			SaveIniFile(defaultGmcIniBlocks);
 		}
 
 		private void OverrideGothicIniAttributes(ICollection<IniBlock> gothicIniBlocks, ICollection<IniBlock> systemPackIniBlocks)
@@ -90,29 +90,37 @@ namespace GothicModComposer.Commands
 
 			var key = attribute.Groups["Key"].Value;
 			var value = attribute.Groups["Value"].Value;
-
-			var blockToOverride = iniBlocks.FirstOrDefault(block => block.Contains(key));
-			if (blockToOverride is null)
-				return;
-
+			
 			var overrideSectionHeaderName = isSystemPack
 				? IniFileHelper.OverridesSystemPackSectionHeader
 				: IniFileHelper.OverridesGothicSectionHeader;
-
+			
 			var overridesSectionBlock = iniBlocks.FirstOrDefault(block => block.Header.Equals(overrideSectionHeaderName));
 			if (overridesSectionBlock is null)
 				iniBlocks.Add(new IniBlock(overrideSectionHeaderName));
-
+			
 			overridesSectionBlock = iniBlocks.Single(block => block.Header.Equals(overrideSectionHeaderName));
-			overridesSectionBlock.Set($"{blockToOverride.Header}.{key}", value);
 
-			Logger.Info($"Overriden {blockToOverride.Header}.{key}={value}", true);
+			var blockToOverride = iniBlocks.FirstOrDefault(block => block.Contains(key));
+			if (blockToOverride is null)
+			{
+				// Not found in default ini section, so we only add
+				overridesSectionBlock.Set(key, value);
+				
+				Logger.Info($"Overriden {key}={value}", true);
+			}
+			else
+			{
+				overridesSectionBlock.Set($"{blockToOverride.Header}.{key}", value);
+
+				Logger.Info($"Overriden {blockToOverride.Header}.{key}={value}", true);
 			
-			// Delete from original ini section
-			blockToOverride.Remove(key);
+				// Delete from original ini section
+				blockToOverride.Remove(key);
 			
-			if (!blockToOverride.Properties.Any())
-				iniBlocks.Remove(blockToOverride);
+				if (!blockToOverride.Properties.Any())
+					iniBlocks.Remove(blockToOverride);
+			}
         }
 
 		private void SaveIniFile(List<IniBlock> iniBlocks)
