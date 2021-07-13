@@ -17,7 +17,7 @@ namespace GothicModComposer.UI.ViewModels
     public class GmcSettingsVM : ObservableVM
     {
         private GmcConfiguration _gmcConfiguration;
-        private ObservableCollection<string> _zen3DWorlds;
+        private ObservableCollection<Zen3DWorld> _zen3DWorlds;
         private bool _isSystemPackAvailable;
 
         public string GmcSettingsJsonFilePath { get; }
@@ -29,7 +29,7 @@ namespace GothicModComposer.UI.ViewModels
             set => SetProperty(ref _gmcConfiguration, value);
         }
 
-        public ObservableCollection<string> Zen3DWorlds
+        public ObservableCollection<Zen3DWorld> Zen3DWorlds
         {
             get => _zen3DWorlds;
             set => SetProperty(ref _zen3DWorlds, value);
@@ -52,7 +52,7 @@ namespace GothicModComposer.UI.ViewModels
         public GmcSettingsVM()
         {
             GmcSettingsJsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "gmc-2-ui.json");
-            Zen3DWorlds = new ObservableCollection<string>();
+            Zen3DWorlds = new ObservableCollection<Zen3DWorld>();
 
             SelectGothic2RootDirectory = new RelayCommand(SelectGothic2RootDirectoryExecute);
             SelectModificationRootDirectory = new RelayCommand(SelectModificationRootDirectoryExecute);
@@ -269,10 +269,10 @@ namespace GothicModComposer.UI.ViewModels
         public void LoadZen3DWorlds()
         {
             Zen3DWorlds.Clear();
-            
+
             if (GmcConfiguration.Gothic2RootPath is null)
                 return;
-            
+
             var worldsPath = Path.Combine(GmcConfiguration.Gothic2RootPath, "_Work", "Data", "Worlds");
 
             if (!Directory.Exists(worldsPath))
@@ -281,27 +281,31 @@ namespace GothicModComposer.UI.ViewModels
             var worldFiles = Directory.EnumerateFiles(worldsPath, "*.ZEN", SearchOption.AllDirectories).ToList();
             worldFiles.ForEach(zenFilePath =>
             {
-                if (HasBinaryContent(zenFilePath))
-                    Zen3DWorlds.Add(new FileInfo(zenFilePath).Name);
+                if (!HasBinaryContent(zenFilePath)) 
+                    return;
+                
+                var zenFileInfo = new FileInfo(zenFilePath);
+
+                Zen3DWorlds.Add(new Zen3DWorld(zenFilePath, zenFileInfo.Name));
             });
         }
-        
+
         private static bool HasBinaryContent(string filePath)
-        {
-            if (!File.Exists(filePath)) 
-                return false;
+            {
+                if (!File.Exists(filePath)) 
+                    return false;
             
-            var content = File.ReadAllBytes(filePath);
+                var content = File.ReadAllBytes(filePath);
                 
-            for (var i = 1; i < 512 && i < content.Length; i++) {
-                // Is it binary? Check for consecutive nulls..
-                if (content[i] == 0x00 && content[i-1] == 0x00)
-                {
-                    return true;
+                for (var i = 1; i < 512 && i < content.Length; i++) {
+                    // Is it binary? Check for consecutive nulls..
+                    if (content[i] == 0x00 && content[i-1] == 0x00)
+                    {
+                        return true;
+                    }
                 }
-            }
                 
-            return false;
-        }
+                return false;
+            }
     }
 }
