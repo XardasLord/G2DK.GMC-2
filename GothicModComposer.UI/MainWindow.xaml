@@ -44,7 +44,9 @@
                   HorizontalAlignment="Left"
                   Width="349"
                   ItemsSource="{Binding GmcSettings.Zen3DWorlds}"
-                  SelectedValue="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                  SelectedValue="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  DisplayMemberPath="Path"
+                  SelectedValuePath="Name">
         </ListView>
 
         <StackPanel Grid.Row="1" Orientation="Vertical" Margin="377,62,225,162">
