@@ -81,6 +81,8 @@
                                   VerticalAlignment="Top"
                                   CanUserAddRows="False"
                                   CanUserDeleteRows="False"
+                                  CanUserSortColumns="False"
+                                  CanUserReorderColumns="False"
                                   ItemsSource="{Binding GmcConfiguration.IniOverrides}">
                             
                             <DataGrid.Resources>
@@ -131,6 +133,8 @@
                 <!--                   VerticalAlignment="Top" -->
                 <!--                   CanUserAddRows="True" -->
                 <!--                   CanUserDeleteRows="True" -->
+                <!--                   CanUserSortColumns="False" -->
+                <!--                   CanUserReorderColumns="False" -->
                 <!--                   ItemsSource="{Binding GmcConfiguration.IniOverridesSystemPack}"> -->
                 <!--             <DataGrid.Columns> -->
                 <!--                 <DataGridTextColumn Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Width="*" Header="Key" IsReadOnly="false" /> -->
