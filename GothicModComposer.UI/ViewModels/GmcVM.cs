@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using GothicModComposer.UI.Commands;
 using GothicModComposer.UI.Enums;
@@ -33,7 +34,6 @@ namespace GothicModComposer.UI.ViewModels
             GmcSettings = new GmcSettingsVM();
             GmcSettings.PropertyChanged += (_, _) => GmcSettings.SaveSettings.Execute(null);
             GmcSettings.GmcConfiguration.GothicArguments.PropertyChanged += (_, _) => GmcSettings.SaveSettings.Execute(null);
-            GmcSettings.GmcConfiguration.OnGothic2RootPathChanged += OnGothic2RootPathChanged;
 
             RunUpdateProfile = new RelayCommand(RunUpdateProfileExecute);
             RunComposeProfile = new RelayCommand(RunComposeProfileExecute);
@@ -99,11 +99,6 @@ namespace GothicModComposer.UI.ViewModels
             };
 
             Process.Start(processStartInfo);
-        }
-
-        private void OnGothic2RootPathChanged(string obj)
-        {
-            // TODO: Subscribe/unsubscribe file watcher on given path.
         }
     }
 }
