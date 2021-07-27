@@ -83,6 +83,7 @@
                                   CanUserDeleteRows="False"
                                   CanUserSortColumns="False"
                                   CanUserReorderColumns="False"
+                                  AlternatingRowBackground="LightGray"
                                   ItemsSource="{Binding GmcConfiguration.IniOverrides}">
                             
                             <DataGrid.Resources>
@@ -110,6 +111,28 @@
                                 <DataGridTemplateColumn Header="Value" 
                                                         CellTemplateSelector="{StaticResource DynamicDataTemplateSelector}" />
                             </DataGrid.Columns>
+                            
+                            <DataGrid.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.ContainerStyle>
+                                        <Style TargetType="{x:Type GroupItem}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                        <StackPanel>
+                                                            <StackPanel Orientation="Horizontal" Background="LightYellow">
+                                                                <TextBlock Text="{Binding Name}" />
+                                                                <TextBlock Text="{Binding ItemCount, StringFormat=Count: {0}}" Margin="30,0,0,0" />
+                                                            </StackPanel>
+                                                            <ItemsPresenter />
+                                                        </StackPanel>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </GroupStyle.ContainerStyle>
+                                </GroupStyle>
+                            </DataGrid.GroupStyle>
                         </DataGrid>
 
                         <Button Width="200" Height="32"
