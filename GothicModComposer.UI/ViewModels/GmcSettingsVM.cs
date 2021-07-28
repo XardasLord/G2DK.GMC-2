@@ -217,6 +217,9 @@ namespace GothicModComposer.UI.ViewModels
             {
                 GmcConfiguration.GothicArguments.Resolution = new Resolution {Width = 800, Height = 600};
             }
+            
+            AddMissingDefaultIniOverrides();
+            RemoveExistingIniOverridesThatAreNotDefaults();
 
             foreach (var iniOverrideItem in GmcConfiguration.IniOverrides)
             {
@@ -227,9 +230,6 @@ namespace GothicModComposer.UI.ViewModels
             {
                 iniOverrideItem.PropertyChanged += (_, _) => SaveSettings.Execute(null);
             }
-
-            AddMissingDefaultIniOverrides();
-            RemoveExistingIniOverridesThatAreNotDefaults();
 
             IsSystemPackAvailable = File.Exists(Path.Combine(GmcConfiguration.Gothic2RootPath, "System", "SystemPack.ini"));
         }
