@@ -44,6 +44,14 @@ namespace GothicModComposer.UI.Helpers
                 new IniOverride { Key = "useQuickSaveKeys", Value = "0", Section = "GAME", DisplayAs = DataGridColumnType.ComboBox, AvailableValues = new List<string> { "0", "1" } },
                 new IniOverride { Key = "useSpeechReverbLevel", Value = "1", Section = "GAME", DisplayAs = DataGridColumnType.ComboBox, AvailableValues = new List<string> { "0", "1", "2" } },
                 new IniOverride { Key = "keyboardLayout", Value = "00020409", Section = "GAME", DisplayAs = DataGridColumnType.ComboBox, AvailableValues = new List<string> { "00020409", "00000407" } },
+                
+                new IniOverride { Key = "zVidDevice", Value = "0", Section = "VIDEO", DisplayAs = DataGridColumnType.TextBox },
+                new IniOverride { Key = "zVidResFullscreenBPP", Value = "32", Section = "VIDEO", DisplayAs = DataGridColumnType.ComboBox, AvailableValues = new List<string> { "16", "32" } },
+                new IniOverride { Key = "zVidBrightness", Value = "0.5", Section = "VIDEO", DisplayAs = DataGridColumnType.TextBox }, // TODO: values from 0.0 to 1.0
+                new IniOverride { Key = "zVidContrast", Value = "0.5", Section = "VIDEO", DisplayAs = DataGridColumnType.TextBox }, // TODO: values from 0.0 to 1.0
+                new IniOverride { Key = "zVidGamma", Value = "0.5", Section = "VIDEO", DisplayAs = DataGridColumnType.TextBox }, // TODO: values from 0.0 to 1.0
+                new IniOverride { Key = "zTexMaxSize", Value = "16384", Section = "VIDEO", DisplayAs = DataGridColumnType.TextBox }, // TODO: values from 0 to 16384
+                
             };
     }
 }
