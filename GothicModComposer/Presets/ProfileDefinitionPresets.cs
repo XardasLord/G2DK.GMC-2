@@ -85,7 +85,9 @@ namespace GothicModComposer.Presets
 					CommandBuilderHelper.RemoveNotCompiledSourcesCommand,
 					CommandBuilderHelper.UpdateModDataFilesCommand,
 					CommandBuilderHelper.UpdateModExtensionFilesCommand,
+					CommandBuilderHelper.DisableVideoBikFilesCommand,
 					CommandBuilderHelper.ExecuteGothicKillOnLoadCommand,
+					CommandBuilderHelper.EnableVideoBikFilesCommand,
 					CommandBuilderHelper.UpdateDialoguesCommand,
 					CommandBuilderHelper.DisableVdfFilesCommand,
 					CommandBuilderHelper.ClearGmcTemporaryFiles
