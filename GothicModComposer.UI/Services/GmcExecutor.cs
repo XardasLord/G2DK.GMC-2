@@ -43,7 +43,11 @@ namespace GothicModComposer.UI.Services
                 }
             };
 
+            settingsVM.UnsubscribeOnWorldDirectoryChanges();
+            
             process.Start();
+            
+            settingsVM.SubscribeOnWorldDirectoryChanges();
         }
 
         private static bool IsGmcAlreadyRun() => Process.GetProcessesByName("GMC-2").Length > 0;

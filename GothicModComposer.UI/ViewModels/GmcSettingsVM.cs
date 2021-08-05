@@ -325,19 +325,31 @@ namespace GothicModComposer.UI.ViewModels
 
             if (!Directory.Exists(worldsPath))
             {
-                _zenWorldsFileWatcher.Created -= ZenWorldFilesChanged;
-                _zenWorldsFileWatcher.Renamed -= ZenWorldFilesChanged;
-                _zenWorldsFileWatcher.Deleted -= ZenWorldFilesChanged;
+                UnsubscribeOnWorldDirectoryChanges();
             }
             
             _zenWorldsFileWatcher.Path = gothic2RootPath;
             _zenWorldsFileWatcher.IncludeSubdirectories = true;
             
+            SubscribeOnWorldDirectoryChanges();
+        }
+
+        public void SubscribeOnWorldDirectoryChanges()
+        {
             _zenWorldsFileWatcher.Created += ZenWorldFilesChanged;
             _zenWorldsFileWatcher.Renamed += ZenWorldFilesChanged;
             _zenWorldsFileWatcher.Deleted += ZenWorldFilesChanged;
             
             _zenWorldsFileWatcher.EnableRaisingEvents = true;
+        }
+
+        public void UnsubscribeOnWorldDirectoryChanges()
+        {
+            _zenWorldsFileWatcher.Created -= ZenWorldFilesChanged;
+            _zenWorldsFileWatcher.Renamed -= ZenWorldFilesChanged;
+            _zenWorldsFileWatcher.Deleted -= ZenWorldFilesChanged;
+            
+            _zenWorldsFileWatcher.EnableRaisingEvents = false;
         }
 
         private void ZenWorldFilesChanged(object sender, FileSystemEventArgs e)
