@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using GothicModComposer.UI.Commands;
 using GothicModComposer.UI.Enums;

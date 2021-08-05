@@ -1,4 +1,6 @@
-﻿using GothicModComposer.UI.ViewModels;
+﻿using System.Windows.Data;
+using GothicModComposer.UI.Models;
+using GothicModComposer.UI.ViewModels;
 
 namespace GothicModComposer.UI.Views
 {
@@ -12,6 +14,11 @@ namespace GothicModComposer.UI.Views
             InitializeComponent();
 
             DataContext = gmcSettingsVM;
+            
+            var collectionView = new ListCollectionView(gmcSettingsVM.GmcConfiguration.IniOverrides);
+            collectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(IniOverride.Section)));
+            
+            OverridesIniTable.ItemsSource = collectionView;
         }
     }
 }

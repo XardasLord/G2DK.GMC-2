@@ -17,8 +17,9 @@ namespace GothicModComposer.UI.ViewModels
     public class GmcSettingsVM : ObservableVM
     {
         private GmcConfiguration _gmcConfiguration;
-        private ObservableCollection<string> _zen3DWorlds;
+        private ObservableCollection<Zen3DWorld> _zen3DWorlds;
         private bool _isSystemPackAvailable;
+        private readonly FileSystemWatcher _zenWorldsFileWatcher;
 
         public string GmcSettingsJsonFilePath { get; }
         public string LogsDirectoryPath => Path.Combine(GmcConfiguration?.Gothic2RootPath ?? string.Empty, ".gmc", "Logs");
@@ -29,7 +30,7 @@ namespace GothicModComposer.UI.ViewModels
             set => SetProperty(ref _gmcConfiguration, value);
         }
 
-        public ObservableCollection<string> Zen3DWorlds
+        public ObservableCollection<Zen3DWorld> Zen3DWorlds
         {
             get => _zen3DWorlds;
             set => SetProperty(ref _zen3DWorlds, value);
@@ -51,8 +52,10 @@ namespace GothicModComposer.UI.ViewModels
 
         public GmcSettingsVM()
         {
+            _zenWorldsFileWatcher = new FileSystemWatcher();
+            
             GmcSettingsJsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "gmc-2-ui.json");
-            Zen3DWorlds = new ObservableCollection<string>();
+            Zen3DWorlds = new ObservableCollection<Zen3DWorld>();
 
             SelectGothic2RootDirectory = new RelayCommand(SelectGothic2RootDirectoryExecute);
             SelectModificationRootDirectory = new RelayCommand(SelectModificationRootDirectoryExecute);
@@ -70,6 +73,11 @@ namespace GothicModComposer.UI.ViewModels
             GmcConfiguration.PropertyChanged += (_, _) => SaveSettings.Execute(null);
             GmcConfiguration.IniOverrides.CollectionChanged += IniOverrides_CollectionChanged;
             GmcConfiguration.IniOverridesSystemPack.CollectionChanged += IniOverrides_CollectionChanged;
+            
+            GmcConfiguration.OnGothic2RootPathChanged += OnGothic2RootPathChanged;
+            
+            if (!string.IsNullOrWhiteSpace(GmcConfiguration.Gothic2RootPath))
+                OnGothic2RootPathChanged(GmcConfiguration.Gothic2RootPath);
 
             // TODO: Would be nice to have this operation async
             LoadZen3DWorlds();
@@ -209,6 +217,9 @@ namespace GothicModComposer.UI.ViewModels
             {
                 GmcConfiguration.GothicArguments.Resolution = new Resolution {Width = 800, Height = 600};
             }
+            
+            AddMissingDefaultIniOverrides();
+            RemoveExistingIniOverridesThatAreNotDefaults();
 
             foreach (var iniOverrideItem in GmcConfiguration.IniOverrides)
             {
@@ -219,9 +230,6 @@ namespace GothicModComposer.UI.ViewModels
             {
                 iniOverrideItem.PropertyChanged += (_, _) => SaveSettings.Execute(null);
             }
-
-            AddMissingDefaultIniOverrides();
-            RemoveExistingIniOverridesThatAreNotDefaults();
 
             IsSystemPackAvailable = File.Exists(Path.Combine(GmcConfiguration.Gothic2RootPath, "System", "SystemPack.ini"));
         }
@@ -269,10 +277,10 @@ namespace GothicModComposer.UI.ViewModels
         public void LoadZen3DWorlds()
         {
             Zen3DWorlds.Clear();
-            
+
             if (GmcConfiguration.Gothic2RootPath is null)
                 return;
-            
+
             var worldsPath = Path.Combine(GmcConfiguration.Gothic2RootPath, "_Work", "Data", "Worlds");
 
             if (!Directory.Exists(worldsPath))
@@ -281,27 +289,60 @@ namespace GothicModComposer.UI.ViewModels
             var worldFiles = Directory.EnumerateFiles(worldsPath, "*.ZEN", SearchOption.AllDirectories).ToList();
             worldFiles.ForEach(zenFilePath =>
             {
-                if (HasBinaryContent(zenFilePath))
-                    Zen3DWorlds.Add(new FileInfo(zenFilePath).Name);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (!HasBinaryContent(zenFilePath))
+                        return;
+
+                    var zenFileInfo = new FileInfo(zenFilePath);
+
+                    Zen3DWorlds.Add(new Zen3DWorld(zenFilePath, zenFileInfo.Name));
+                });
             });
         }
-        
+
         private static bool HasBinaryContent(string filePath)
-        {
-            if (!File.Exists(filePath)) 
-                return false;
+            {
+                if (!File.Exists(filePath)) 
+                    return false;
             
-            var content = File.ReadAllBytes(filePath);
+                var content = File.ReadAllBytes(filePath);
                 
-            for (var i = 1; i < 512 && i < content.Length; i++) {
-                // Is it binary? Check for consecutive nulls..
-                if (content[i] == 0x00 && content[i-1] == 0x00)
-                {
-                    return true;
+                for (var i = 1; i < 512 && i < content.Length; i++) {
+                    // Is it binary? Check for consecutive nulls..
+                    if (content[i] == 0x00 && content[i-1] == 0x00)
+                    {
+                        return true;
+                    }
                 }
-            }
                 
-            return false;
+                return false;
+            }
+        
+        private void OnGothic2RootPathChanged(string gothic2RootPath)
+        {
+            var worldsPath = Path.Combine(GmcConfiguration.Gothic2RootPath, "_Work", "Data", "Worlds");
+
+            if (!Directory.Exists(worldsPath))
+            {
+                _zenWorldsFileWatcher.Created -= ZenWorldFilesChanged;
+                _zenWorldsFileWatcher.Renamed -= ZenWorldFilesChanged;
+                _zenWorldsFileWatcher.Deleted -= ZenWorldFilesChanged;
+            }
+            
+            _zenWorldsFileWatcher.Path = gothic2RootPath;
+            _zenWorldsFileWatcher.IncludeSubdirectories = true;
+            
+            _zenWorldsFileWatcher.Created += ZenWorldFilesChanged;
+            _zenWorldsFileWatcher.Renamed += ZenWorldFilesChanged;
+            _zenWorldsFileWatcher.Deleted += ZenWorldFilesChanged;
+            
+            _zenWorldsFileWatcher.EnableRaisingEvents = true;
+        }
+
+        private void ZenWorldFilesChanged(object sender, FileSystemEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(LoadZen3DWorlds);
         }
     }
 }

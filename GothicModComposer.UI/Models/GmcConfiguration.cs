@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 using GothicModComposer.UI.Helpers;
@@ -13,6 +14,8 @@ namespace GothicModComposer.UI.Models
         private GothicArgumentsConfiguration _gothicArguments;
         private ObservableCollection<IniOverride> _iniOverrides;
         private ObservableCollection<IniOverride> _iniOverridesSystemPack;
+
+        public event Action<string> OnGothic2RootPathChanged = delegate(string s) { };
 
         public static IEnumerable<Resolution> AvailableResolutions => new List<Resolution>
         {
@@ -33,7 +36,11 @@ namespace GothicModComposer.UI.Models
         public string Gothic2RootPath
         {
             get => _gothic2RootPath;
-            set => SetProperty(ref _gothic2RootPath, value);
+            set
+            {
+                SetProperty(ref _gothic2RootPath, value);
+                OnGothic2RootPathChanged(value);
+            }
         }
 
         public string ModificationRootPath
