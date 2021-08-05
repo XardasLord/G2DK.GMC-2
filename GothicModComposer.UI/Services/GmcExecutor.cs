@@ -46,6 +46,7 @@ namespace GothicModComposer.UI.Services
             settingsVM.UnsubscribeOnWorldDirectoryChanges();
             
             process.Start();
+            process.WaitForExit();
             
             settingsVM.SubscribeOnWorldDirectoryChanges();
         }
