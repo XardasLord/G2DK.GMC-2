@@ -3,6 +3,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.9.0] (2021-08-05)
+### Added
+- New IniOverrides values in the following sections:
+  - GAME
+  - VIDEO
+  - SOUND
+- Zen 3D Worlds have visible full path with subfolders on the list.
+- Zen 3D Worlds list is now automatically refreshed when there is any change (add new world, delete, rename) in the directory under `_Work\Data\Worlds`.
+
+
+### Changed
+- Cannot order IniOverrides table by `Key` column.
+
+### Fixed
+- Issue with saving newly added IniOverrides at the first time.
+- Issue with playing Video when running Gothic with `RunMod` and `Update` profiles.
+
 ## [1.8.0] (2021-07-12)
 ### Changed
 - New GMC.ini structure with default template.
@@ -149,6 +166,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.9.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.9.0
 [1.8.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.8.0
 [1.7.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.7.1
 [1.7.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.7.0
