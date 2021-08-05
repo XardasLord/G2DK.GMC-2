@@ -52,6 +52,9 @@ namespace GothicModComposer.UI.Helpers
                 new IniOverride { Key = "zVidGamma", Value = "0.5", Section = "VIDEO", DisplayAs = DataGridColumnType.TextBox }, // TODO: values from 0.0 to 1.0
                 new IniOverride { Key = "zTexMaxSize", Value = "16384", Section = "VIDEO", DisplayAs = DataGridColumnType.TextBox }, // TODO: values from 0 to 16384
                 
+                new IniOverride { Key = "musicVolume", Value = "0.800000012", Section = "SOUND", DisplayAs = DataGridColumnType.TextBox }, // TODO: values from 0.0 to 1.0
+                new IniOverride { Key = "soundUseReverb", Value = "1", Section = "SOUND", DisplayAs = DataGridColumnType.ComboBox, AvailableValues = new List<string> { "0", "1" } },
+                new IniOverride { Key = "extendedProviders", Value = "0", Section = "SOUND", DisplayAs = DataGridColumnType.ComboBox, AvailableValues = new List<string> { "0", "1" } },
             };
     }
 }
