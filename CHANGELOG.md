@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.9.1] (2021-08-05)
+### Fixed
+- Issue with locked files by FileWatcher in `_Work\Data\Worlds` directory while running profiles.
+
 ## [1.9.0] (2021-08-05)
 ### Added
 - New IniOverrides values in the following sections:
@@ -166,6 +170,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.9.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.9.1
 [1.9.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.9.0
 [1.8.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.8.0
 [1.7.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.7.1
