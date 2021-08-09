@@ -7,6 +7,7 @@ using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Configurations;
 using GothicModComposer.Models.IniFiles;
 using GothicModComposer.Models.Profiles;
+using GothicModComposer.Presets;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
 using GothicModComposer.Utils.IOHelpers.FileSystem;
@@ -54,8 +55,10 @@ namespace GothicModComposer.Commands
 			// if (!_fileSystem.File.Exists(_profile.GothicFolder.SystemPackIniFilePath))
 			// 	throw new Exception("SystemPack.ini file was not found.");
 
-			var defaultGmcIniBlocks = GmcIniHelper.GetDefaultGmcIni();
-				
+			var world = _profile.ProfileType == ProfilePresetType.RunMod ? _profile.DefaultWorld : string.Empty;
+			
+			var defaultGmcIniBlocks = GmcIniHelper.GetDefaultGmcIni(world);
+
 			var systemPackIni = _profile.GothicFolder.GetSystemPackIniContent();
 			var systemPackIniBlocks = IniFileHelper.CreateSections(systemPackIni); // TODO: Replace IniBlock class to something like IniFile class
 			

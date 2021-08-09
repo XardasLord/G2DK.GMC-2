@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GothicModComposer.Builders;
 using GothicModComposer.Models.Configurations;
@@ -28,12 +29,13 @@ namespace GothicModComposer.Loaders
 
 			var profile = new Profile
 			{
+				ProfileType = profileType,
 				GothicFolder = gothicFolder,
 				GmcFolder = gmcFolder,
 				ModFolder = modFolder,
 				DefaultWorld = userGmcConfiguration.DefaultWorld
-							   ?? profileDefinition.DefaultWorld 
-                               ?? throw new DefaultWorldNotFoundException(),
+				               ?? profileDefinition.DefaultWorld 
+				               ?? throw new DefaultWorldNotFoundException(),
 				IniOverrides = userGmcConfiguration.IniOverrides 
                                ?? profileDefinition.IniOverrides
 							   ?? new List<IniOverride>(),

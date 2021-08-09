@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using GothicModComposer.Models.Configurations;
 using GothicModComposer.Models.Interfaces;
+using GothicModComposer.Presets;
 
 namespace GothicModComposer.Models.Profiles
 {
     public class Profile : IProfile
 	{
+		public ProfilePresetType ProfileType { get; set; }
 		public IGothicFolder GothicFolder { get; set; }
 		public IGmcFolder GmcFolder { get; set; }
 		public IModFolder ModFolder { get; set; }
@@ -20,6 +22,7 @@ namespace GothicModComposer.Models.Profiles
 
 	public interface IProfile
 	{
+		ProfilePresetType ProfileType { get; set; }
 		IGothicFolder GothicFolder { get; set; }
 		IGmcFolder GmcFolder { get; set; }
 		IModFolder ModFolder { get; set; }

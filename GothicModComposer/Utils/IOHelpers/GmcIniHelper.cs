@@ -6,7 +6,7 @@ namespace GothicModComposer.Utils.IOHelpers
 {
     public static class GmcIniHelper
     {
-        public static List<IniBlock> GetDefaultGmcIni()
+        public static List<IniBlock> GetDefaultGmcIni(string world = "")
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
 
@@ -32,7 +32,7 @@ namespace GothicModComposer.Utils.IOHelpers
                 
             var settingsSection = new IniBlock("SETTINGS");
             settingsSection.Set("Player", "PC_HERO");
-            settingsSection.Set("World", "");
+            settingsSection.Set("World", world);
                 
             var optionsSettings = new IniBlock("OPTIONS");
             optionsSettings.Set("show_Info", "0");

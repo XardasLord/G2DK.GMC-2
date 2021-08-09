@@ -61,7 +61,6 @@ namespace GothicModComposer.Presets
 				ExecutionCommands = new List<string>
 				{
 					CommandBuilderHelper.OverrideIniCommand,
-					CommandBuilderHelper.AddDefaultWorldCommand,
 					CommandBuilderHelper.EnableVdfFilesCommand,
 					CommandBuilderHelper.DisableVideoBikFilesCommand,
 					CommandBuilderHelper.ExecuteGothicCommand,
