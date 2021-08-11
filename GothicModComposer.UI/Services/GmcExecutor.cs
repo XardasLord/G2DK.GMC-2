@@ -39,6 +39,7 @@ namespace GothicModComposer.UI.Services
                         $"--configurationFile={settingsVM.GmcSettingsJsonFilePath}"
 
                     },
+                    Verb = "runas", // Force to run the process as Administrator
                     UseShellExecute = false
                 }
             };
