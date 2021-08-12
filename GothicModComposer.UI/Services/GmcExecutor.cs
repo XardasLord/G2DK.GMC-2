@@ -10,7 +10,7 @@ namespace GothicModComposer.UI.Services
 {
     public class GmcExecutor : IGmcExecutor
     {
-        public void Execute(GmcExecutionProfile profile)
+        public void Execute(GmcExecutionProfile profile, GmcSettingsVM settingsVM)
         {
             if (IsGmcAlreadyRun())
             {
@@ -23,8 +23,6 @@ namespace GothicModComposer.UI.Services
 #else
             var gmcLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "Release");
 #endif
-
-            var settingsVM = new GmcSettingsVM();
 
             var process = new Process
             {
