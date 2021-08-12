@@ -10,7 +10,7 @@ namespace GothicModComposer.UI.Services
 {
     public class GmcExecutor : IGmcExecutor
     {
-        public void Execute(GmcExecutionProfile profile, GmcSettingsVM settingsVM)
+        public void Execute(GmcExecutionProfile profile, GmcSettingsVM gmcSettingsVM)
         {
             if (IsGmcAlreadyRun())
             {
@@ -31,10 +31,10 @@ namespace GothicModComposer.UI.Services
                     FileName = Path.Combine(gmcLocation, "GMC-2.exe"),
                     ArgumentList =
                     {
-                        $"--gothic2Path={settingsVM.GmcConfiguration.Gothic2RootPath}",
-                        $"--modPath={settingsVM.GmcConfiguration.ModificationRootPath}",
+                        $"--gothic2Path={gmcSettingsVM.GmcConfiguration.Gothic2RootPath}",
+                        $"--modPath={gmcSettingsVM.GmcConfiguration.ModificationRootPath}",
                         $"--profile={profile}",
-                        $"--configurationFile={settingsVM.GmcSettingsJsonFilePath}"
+                        $"--configurationFile={gmcSettingsVM.GmcSettingsJsonFilePath}"
 
                     },
                     Verb = "runas", // Force to run the process as Administrator
@@ -42,12 +42,12 @@ namespace GothicModComposer.UI.Services
                 }
             };
 
-            settingsVM.UnsubscribeOnWorldDirectoryChanges();
+            gmcSettingsVM.UnsubscribeOnWorldDirectoryChanges();
             
             process.Start();
             process.WaitForExit();
             
-            settingsVM.SubscribeOnWorldDirectoryChanges();
+            gmcSettingsVM.SubscribeOnWorldDirectoryChanges();
         }
 
         private static bool IsGmcAlreadyRun() => Process.GetProcessesByName("GMC-2").Length > 0;

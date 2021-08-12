@@ -52,7 +52,15 @@ namespace GothicModComposer.UI.Models
         public string DefaultWorld
         {
             get => _defaultWorld;
-            set => SetProperty(ref _defaultWorld, value);
+            set
+            {
+                if (value != null)
+                {
+                    SetProperty(ref _defaultWorld, value);
+                }
+                
+                OnPropertyChanged(nameof(DefaultWorld));
+            }
         }
 
         public GothicArgumentsConfiguration GothicArguments
