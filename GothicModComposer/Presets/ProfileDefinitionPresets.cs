@@ -21,7 +21,6 @@ namespace GothicModComposer.Presets
 				ExecutionCommands = new List<string>
 				{
 					CommandBuilderHelper.CreateBackupCommand,
-					CommandBuilderHelper.OverrideIniCommand,
 					CommandBuilderHelper.AddDefaultWorldCommand,
 					CommandBuilderHelper.EnableVdfFilesCommand,
 					CommandBuilderHelper.ClearWorkDataCommand,
@@ -79,7 +78,6 @@ namespace GothicModComposer.Presets
 				ExecutionCommands = new List<string>
 				{
 					CommandBuilderHelper.CreateBackupCommand,
-					CommandBuilderHelper.OverrideIniCommand,
 					CommandBuilderHelper.AddDefaultWorldCommand,
 					CommandBuilderHelper.EnableVdfFilesCommand,
 					CommandBuilderHelper.RemoveNotCompiledSourcesCommand,
