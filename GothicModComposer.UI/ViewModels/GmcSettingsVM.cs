@@ -299,6 +299,14 @@ namespace GothicModComposer.UI.ViewModels
                     Zen3DWorlds.Add(new Zen3DWorld(zenFilePath, zenFileInfo.Name));
                 });
             });
+
+            foreach (var zen3DWorld in Zen3DWorlds)
+            {
+                zen3DWorld.SetAsUnselected();
+                
+                if (zen3DWorld.Path == GmcConfiguration.DefaultWorld)
+                    zen3DWorld.SetAsSelected();
+            }
         }
 
         private static bool HasBinaryContent(string filePath)

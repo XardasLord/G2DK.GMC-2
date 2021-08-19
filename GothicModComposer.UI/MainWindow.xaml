@@ -47,8 +47,9 @@
                   SelectedValue="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   DisplayMemberPath="Path"
                   SelectedValuePath="Name">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
+            <ListView.Resources>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=OneWay}"/>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True" >
                             <Setter Property="FontWeight" Value="Bold" />
@@ -56,15 +57,8 @@
                             <Setter Property="Foreground" Value="Black" />
                         </Trigger>
                     </Style.Triggers>
-                    <Style.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
-                        <!-- Background of selected item when focussed -->
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightCyan"/>
-                        <!-- Background of selected item when not focussed -->
-                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="LightGray" />
-                    </Style.Resources>
                 </Style>
-            </ListBox.ItemContainerStyle>
+            </ListView.Resources>
         </ListView>
 
         <StackPanel Grid.Row="1" Orientation="Vertical" Margin="377,62,225,162">
