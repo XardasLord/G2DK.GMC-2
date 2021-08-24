@@ -6,9 +6,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
     <AssemblyName>GMC-2</AssemblyName>
-    <AssemblyVersion>1.9.2.0</AssemblyVersion>
     <Version>1.9.2</Version>
-    <PackageVersion>1.9.2</PackageVersion>
     <PackageIcon>GMC-logo.png</PackageIcon>
     <ApplicationIcon>Resources\GMC-logo.ico</ApplicationIcon>
   </PropertyGroup>
