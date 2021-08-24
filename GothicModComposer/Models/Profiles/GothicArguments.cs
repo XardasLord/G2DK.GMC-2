@@ -10,6 +10,7 @@ namespace GothicModComposer.Models.Profiles
         // TODO: We need to provide RemoveArgument_XXX for all arguments instead of calling them directly by key
         public const string ZConvertAllParameter = "ZCONVERTALL";
         public const string ZReparseParameter = "ZREPARSE";
+        public const string ReparseVisParameter = "REPARSEVIS";
         public const string ZTexConvertParameter = "ZTEXCONVERT";
         public const string ZWindowModeParameter = "ZWINDOW";
         public const string DevModeParameter = "DEVMODE";
@@ -214,7 +215,7 @@ namespace GothicModComposer.Models.Profiles
         /// <summary>MISSING SUMMARY: NOT KNOWN ATTRIBUTE</summary>
         public GothicArguments AddArgument_ReparseVis(string value = null)
         {
-            SetArg("REPARSEVIS", value);
+            SetArg(ReparseVisParameter, value);
             return this;
         }
 
@@ -438,7 +439,7 @@ namespace GothicModComposer.Models.Profiles
         /// <summary>MISSING SUMMARY</summary>
         public GothicArguments AddArgument_ZReparse()
         {
-            SetArg("ZREPARSE");
+            SetArg(ZReparseParameter);
             return this;
         }
 
