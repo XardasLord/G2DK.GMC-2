@@ -6,13 +6,16 @@ using GothicModComposer.Models.Profiles;
 namespace GothicModComposer.Presets
 {
     public static class ProfileDefinitionPresets
-	{
+    {
+	    private const string DefaultWorldName = "TestWorld.ZEN";
+
 		public static ProfileDefinition GetComposeProfile()
 			=> new()
 			{
 				ProfileType = ProfilePresetType.Compose,
 				IniOverrides = new List<IniOverride>(),
 				GothicArguments = GothicArgumentsPresets.Build().ToList(),
+				DefaultWorld = DefaultWorldName,
 				CommandsConditions = new CommandsConditions
                 {
 					ExecuteGothicStepRequired =  true,
@@ -42,6 +45,7 @@ namespace GothicModComposer.Presets
 			{
 				ProfileType = ProfilePresetType.RestoreGothic,
 				GothicArguments = GothicArgumentsPresets.Default().ToList(),
+				DefaultWorld = DefaultWorldName,
 				ExecutionCommands = new List<string>
 				{
 					CommandBuilderHelper.RestoreGothicBackupCommand
@@ -75,6 +79,7 @@ namespace GothicModComposer.Presets
 			{
 				ProfileType = ProfilePresetType.Update,
 				GothicArguments = GothicArgumentsPresets.Build().ToList(),
+				DefaultWorld = DefaultWorldName,
 				ExecutionCommands = new List<string>
 				{
 					CommandBuilderHelper.CreateBackupCommand,
@@ -97,7 +102,8 @@ namespace GothicModComposer.Presets
             {
                 ProfileType = ProfilePresetType.EnableVDF,
                 GothicArguments = GothicArgumentsPresets.Default().ToList(),
-                ExecutionCommands = new List<string>
+                DefaultWorld = DefaultWorldName,
+				ExecutionCommands = new List<string>
                 {
                     CommandBuilderHelper.EnableVdfFilesCommand
                 }
@@ -108,7 +114,8 @@ namespace GothicModComposer.Presets
             {
                 ProfileType = ProfilePresetType.BuildModFile,
                 GothicArguments = GothicArgumentsPresets.Default().ToList(),
-                ExecutionCommands = new List<string>
+                DefaultWorld = DefaultWorldName,
+				ExecutionCommands = new List<string>
                 {
                     CommandBuilderHelper.BuildModFileCommand
 				}
