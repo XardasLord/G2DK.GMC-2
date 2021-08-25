@@ -3,6 +3,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.10.0] (2021-08-25)
+### Changed
+- Disable IniOverrides command step for 'Compose' and 'Update' profiles.
+- Disable 'RunMod'/'Update'/'Compose' buttons when there is no 3D world selected.
+- Profiles like 'Build Mod File', 'Restore Gothic', 'Enable VDF' don't require 3D world to be selected.
+- REPARSEVIS parameter is not applied when there is ZREPARSE parameter set.
+
+### Fixed
+- Selected 3D world is now properly selected when running GMC UI or refreshing worlds list.
+
 ## [1.9.2] (2021-08-05)
 ### Fixed
 - Wait for the process to exit before enabling FileWatcher directory subscription.
@@ -19,7 +29,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - SOUND
 - Zen 3D Worlds have visible full path with subfolders on the list.
 - Zen 3D Worlds list is now automatically refreshed when there is any change (add new world, delete, rename) in the directory under `_Work\Data\Worlds`.
-
 
 ### Changed
 - Cannot order IniOverrides table by `Key` column.
@@ -174,6 +183,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.10.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.10.0
 [1.9.2]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.9.2
 [1.9.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.9.1
 [1.9.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.9.0
