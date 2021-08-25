@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewModels="clr-namespace:GothicModComposer.UI.ViewModels"
+        xmlns:converters="clr-namespace:GothicModComposer.UI.Converters"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize"
         Title="GMC UI" Height="450" Width="800">
@@ -9,6 +10,10 @@
     <Window.DataContext>
         <viewModels:GmcVM />
     </Window.DataContext>
+
+    <Window.Resources>
+        <converters:IsNotNullToBoolConverter x:Key="IsNotNullToBoolConverter" />
+    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -30,9 +35,12 @@
        
         <StackPanel Grid.Row="1" HorizontalAlignment="Left" Margin="580,0,0,0" Width="220">
             <Label Content="" FontWeight="Bold" FontSize="25"/>
-            <Button Content="Run mod" Margin="0 15 0 0" Height="30" Command="{Binding RunModProfile}" Width="130" />
-            <Button Content="Update" Margin="0 15 0 0" Height="30" Command="{Binding RunUpdateProfile}" Width="130" />
-            <Button Content="Compose" Margin="0 15 0 0" Height="30" Command="{Binding RunComposeProfile}" Width="130" />
+            <Button Content="Run mod" Margin="0 15 0 0" Height="30" Command="{Binding RunModProfile}" Width="130" 
+                    IsEnabled="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Converter={StaticResource IsNotNullToBoolConverter}}" />
+            <Button Content="Update" Margin="0 15 0 0" Height="30" Command="{Binding RunUpdateProfile}" Width="130" 
+                    IsEnabled="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Converter={StaticResource IsNotNullToBoolConverter}}" />
+            <Button Content="Compose" Margin="0 15 0 0" Height="30" Command="{Binding RunComposeProfile}" Width="130" 
+                    IsEnabled="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Converter={StaticResource IsNotNullToBoolConverter}}" />
             <Button Content="Build mod file" Margin="0 15 0 0" Height="30" Command="{Binding RunBuildModFileProfile}" Width="130" />
             <Button Content="Restore Gothic" Margin="0 15 0 0" Height="30" Command="{Binding RunRestoreGothicProfile}" Width="130" />
             <Button Content="Enable VDF" Margin="0 15 0 0" Height="30" Command="{Binding RunEnableVDFProfile}" Width="130" />
