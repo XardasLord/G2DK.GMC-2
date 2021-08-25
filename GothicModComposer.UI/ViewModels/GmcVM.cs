@@ -47,34 +47,34 @@ namespace GothicModComposer.UI.ViewModels
         }
 
         private void RunUpdateProfileExecute(object obj)
-            => _gmcExecutor.Execute(GmcExecutionProfile.Update);
+            => _gmcExecutor.Execute(GmcExecutionProfile.Update, GmcSettings);
 
         private void RunComposeProfileExecute(object obj)
         {
             var messageBoxResult = MessageBox.Show("Are you sure you want to execute 'Compose' profile?", "Execute Confirmation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
-                _gmcExecutor.Execute(GmcExecutionProfile.Compose);
+                _gmcExecutor.Execute(GmcExecutionProfile.Compose, GmcSettings);
             }
         }
 
         private void RunModProfileExecute(object obj)
-            => _gmcExecutor.Execute(GmcExecutionProfile.RunMod);
+            => _gmcExecutor.Execute(GmcExecutionProfile.RunMod, GmcSettings);
 
         private void RunRestoreGothicProfileExecute(object obj)
         {
             var messageBoxResult = MessageBox.Show("Are you sure to you want to execute 'RestoreGothic' profile?", "Execute Confirmation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
-                _gmcExecutor.Execute(GmcExecutionProfile.RestoreGothic);
+                _gmcExecutor.Execute(GmcExecutionProfile.RestoreGothic, GmcSettings);
             }
         }
 
         private void RunBuildModFileProfileProfileExecute(object obj)
-            => _gmcExecutor.Execute(GmcExecutionProfile.BuildModFile);
+            => _gmcExecutor.Execute(GmcExecutionProfile.BuildModFile, GmcSettings);
 
         private void RunEnableVDFProfileProfileExecute(object obj)
-            => _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF);
+            => _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF, GmcSettings);
 
         private void OpenSettingsExecute(object obj) 
             => new GmcSettings(GmcSettings).ShowDialog();

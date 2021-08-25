@@ -6,7 +6,9 @@ using GothicModComposer.Models.Profiles;
 namespace GothicModComposer.Presets
 {
     public static class ProfileDefinitionPresets
-	{
+    {
+	    private const string DefaultWorldName = "TestWorld.ZEN";
+
 		public static ProfileDefinition GetComposeProfile()
 			=> new()
 			{
@@ -21,7 +23,6 @@ namespace GothicModComposer.Presets
 				ExecutionCommands = new List<string>
 				{
 					CommandBuilderHelper.CreateBackupCommand,
-					CommandBuilderHelper.OverrideIniCommand,
 					CommandBuilderHelper.AddDefaultWorldCommand,
 					CommandBuilderHelper.EnableVdfFilesCommand,
 					CommandBuilderHelper.ClearWorkDataCommand,
@@ -43,6 +44,7 @@ namespace GothicModComposer.Presets
 			{
 				ProfileType = ProfilePresetType.RestoreGothic,
 				GothicArguments = GothicArgumentsPresets.Default().ToList(),
+				DefaultWorld = DefaultWorldName,
 				ExecutionCommands = new List<string>
 				{
 					CommandBuilderHelper.RestoreGothicBackupCommand
@@ -79,7 +81,6 @@ namespace GothicModComposer.Presets
 				ExecutionCommands = new List<string>
 				{
 					CommandBuilderHelper.CreateBackupCommand,
-					CommandBuilderHelper.OverrideIniCommand,
 					CommandBuilderHelper.AddDefaultWorldCommand,
 					CommandBuilderHelper.EnableVdfFilesCommand,
 					CommandBuilderHelper.RemoveNotCompiledSourcesCommand,
@@ -99,7 +100,8 @@ namespace GothicModComposer.Presets
             {
                 ProfileType = ProfilePresetType.EnableVDF,
                 GothicArguments = GothicArgumentsPresets.Default().ToList(),
-                ExecutionCommands = new List<string>
+                DefaultWorld = DefaultWorldName,
+				ExecutionCommands = new List<string>
                 {
                     CommandBuilderHelper.EnableVdfFilesCommand
                 }
@@ -110,7 +112,8 @@ namespace GothicModComposer.Presets
             {
                 ProfileType = ProfilePresetType.BuildModFile,
                 GothicArguments = GothicArgumentsPresets.Default().ToList(),
-                ExecutionCommands = new List<string>
+                DefaultWorld = DefaultWorldName,
+				ExecutionCommands = new List<string>
                 {
                     CommandBuilderHelper.BuildModFileCommand
 				}

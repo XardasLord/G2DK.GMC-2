@@ -245,10 +245,18 @@ namespace GothicModComposer.Commands
                     _profile.GothicArguments.AddArgument_ZConvertAll();
                     break;
                 case AssetPresetType.Scripts:
-                    _profile.GothicArguments.AddArgument_ZReparse();
-
-                    if (modFileEntry.FilePath.Contains(@"System\VisualFX"))
-                        _profile.GothicArguments.AddArgument_ReparseVis();
+	                if (modFileEntry.FilePath.Contains(@"System\VisualFX"))
+					{
+						if (!_profile.GothicArguments.Contains(GothicArguments.ZReparseParameter))
+						{
+							_profile.GothicArguments.AddArgument_ReparseVis();
+						}
+						else
+						{
+							_profile.GothicArguments.AddArgument_ZReparse();
+							_profile.GothicArguments.RemoveArg(GothicArguments.ReparseVisParameter);
+						}
+					}
 
                     break;
                 case AssetPresetType.Textures:
