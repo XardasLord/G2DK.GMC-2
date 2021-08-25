@@ -15,7 +15,6 @@ namespace GothicModComposer.Presets
 				ProfileType = ProfilePresetType.Compose,
 				IniOverrides = new List<IniOverride>(),
 				GothicArguments = GothicArgumentsPresets.Build().ToList(),
-				DefaultWorld = DefaultWorldName,
 				CommandsConditions = new CommandsConditions
                 {
 					ExecuteGothicStepRequired =  true,
@@ -79,7 +78,6 @@ namespace GothicModComposer.Presets
 			{
 				ProfileType = ProfilePresetType.Update,
 				GothicArguments = GothicArgumentsPresets.Build().ToList(),
-				DefaultWorld = DefaultWorldName,
 				ExecutionCommands = new List<string>
 				{
 					CommandBuilderHelper.CreateBackupCommand,
