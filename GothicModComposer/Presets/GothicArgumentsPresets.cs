@@ -62,6 +62,19 @@ namespace GothicModComposer.Presets
         }
 
         /// <summary>Returns gothic arguments configuration with attributes:
+        /// <para>--zwindowed --zlog:5,s --zres:800,600,32 --nomenu</para>
+        /// </summary>
+        public static GothicArguments Compose()
+        {
+            return GothicArguments.Empty()
+                .AddArgument_ZWindow()
+                .AddArgument_ZLog()
+                .AddArgument_ZRes()
+                .AddArgument_ZReparse()
+                .AddArgument_NoMenu();
+        }
+
+        /// <summary>Returns gothic arguments configuration with attributes:
         /// <para>--zwindowed --devmode --zlog:5,s --zres:800,600,32</para>
         /// </summary>
         public static GothicArguments Run()
