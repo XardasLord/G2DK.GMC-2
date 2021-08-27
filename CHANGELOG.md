@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.10.1] (2021-08-27)
+### Fixed
+- Missing MUSIC.DAT file during 'Compose'.
+- Add disable VDF files step during 'RestoreGothic'.
+
 ## [1.10.0] (2021-08-25)
 ### Changed
 - Disable IniOverrides command step for 'Compose' and 'Update' profiles.
@@ -183,6 +188,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.10.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.10.1
 [1.10.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.10.0
 [1.9.2]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.9.2
 [1.9.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.9.1
