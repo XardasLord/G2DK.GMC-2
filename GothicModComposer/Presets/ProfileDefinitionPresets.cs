@@ -47,7 +47,8 @@ namespace GothicModComposer.Presets
 				DefaultWorld = DefaultWorldName,
 				ExecutionCommands = new List<string>
 				{
-					CommandBuilderHelper.RestoreGothicBackupCommand
+					CommandBuilderHelper.RestoreGothicBackupCommand,
+					CommandBuilderHelper.DisableVdfFilesCommand
 				}
 			};
 
