@@ -14,7 +14,7 @@ namespace GothicModComposer.Presets
 			{
 				ProfileType = ProfilePresetType.Compose,
 				IniOverrides = new List<IniOverride>(),
-				GothicArguments = GothicArgumentsPresets.Build().ToList(),
+				GothicArguments = GothicArgumentsPresets.Compose().ToList(),
 				CommandsConditions = new CommandsConditions
                 {
 					ExecuteGothicStepRequired =  true,
