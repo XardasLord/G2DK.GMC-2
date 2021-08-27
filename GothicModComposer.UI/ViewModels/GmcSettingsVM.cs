@@ -307,6 +307,9 @@ namespace GothicModComposer.UI.ViewModels
                 if (zen3DWorld.Path == GmcConfiguration.DefaultWorld)
                     zen3DWorld.SetAsSelected();
             }
+
+            if (Zen3DWorlds.All(x => !x.IsSelected))
+                GmcConfiguration.DefaultWorld = null;
         }
 
         private static bool HasBinaryContent(string filePath)
