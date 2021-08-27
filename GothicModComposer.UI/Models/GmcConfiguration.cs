@@ -89,7 +89,7 @@ namespace GothicModComposer.UI.Models
 {
     ""Gothic2RootPath"": """",
     ""ModificationRootPath"": """",
-	""DefaultWorld"": ""VADUZWORLD.ZEN"",
+	""DefaultWorld"": null,
     ""GothicArguments"": {
         ""IsWindowMode"": false,
         ""IsDevMode"": true,
