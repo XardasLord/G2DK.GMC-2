@@ -349,6 +349,9 @@ namespace GothicModComposer.UI.ViewModels
             _zenWorldsFileWatcher.Deleted += ZenWorldFilesChanged;
             
             _zenWorldsFileWatcher.EnableRaisingEvents = true;
+            
+            // Force to LoadZen3DWorlds when starting subscribing
+            Application.Current.Dispatcher.Invoke(LoadZen3DWorlds);
         }
 
         public void UnsubscribeOnWorldDirectoryChanges()
