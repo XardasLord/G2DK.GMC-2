@@ -5,10 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [1.10.2] (2021-08-28)
 ### Fixed
-- During 'Compose' only Scripts/_compiled files are copied instead of whole Scripts directory.
-- Issue with copying/pasting big size of world file to Worlds directory.
-- World's list in GUI is now properly refreshed after executing GMC process.
-- Disable buttons when there is no world on the list that is defined in configuration file.
+- During 'Compose' only 'Scripts/_compiled' files are copied instead of whole Scripts directory. Whole Compose process should work properly now.
+- Issue with worlds list refreshing in GUI when copying/pasting big size of world file to Worlds directory.
+- Disable buttons (RunMod, Compose, Update) when there is no world on the list in GUI that is defined in configuration file.
 
 ## [1.10.1] (2021-08-27)
 ### Fixed
