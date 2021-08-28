@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Windows;
 using GothicModComposer.UI.Commands;
 using GothicModComposer.UI.Helpers;
@@ -312,23 +313,30 @@ namespace GothicModComposer.UI.ViewModels
                 GmcConfiguration.DefaultWorld = null;
         }
 
-        private static bool HasBinaryContent(string filePath)
+        private bool HasBinaryContent(string filePath)
+        {
+            var fileInfo = new FileInfo(filePath);
+
+            if (IsFileLocked(fileInfo))
             {
-                if (!File.Exists(filePath)) 
-                    return false;
-            
-                var content = File.ReadAllBytes(filePath);
-                
-                for (var i = 1; i < 512 && i < content.Length; i++) {
-                    // Is it binary? Check for consecutive nulls..
-                    if (content[i] == 0x00 && content[i-1] == 0x00)
-                    {
-                        return true;
-                    }
-                }
-                
                 return false;
             }
+            
+            if (!File.Exists(filePath)) 
+                return false;
+        
+            var content = File.ReadAllBytes(filePath);
+            
+            for (var i = 1; i < 512 && i < content.Length; i++) {
+                // Is it binary? Check for consecutive nulls..
+                if (content[i] == 0x00 && content[i-1] == 0x00)
+                {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
         
         private void OnGothic2RootPathChanged(string gothic2RootPath)
         {
@@ -369,6 +377,32 @@ namespace GothicModComposer.UI.ViewModels
         private void ZenWorldFilesChanged(object sender, FileSystemEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(LoadZen3DWorlds);
+        }
+        
+        private bool IsFileLocked(FileInfo file)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+
+            //file is not locked
+            return false;
         }
     }
 }
