@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.10.2] (2021-08-28)
+### Fixed
+- During 'Compose' only Scripts/_compiled files are copied instead of whole Scripts directory.
+- Issue with copying/pasting big size of world file to Worlds directory.
+- World's list in GUI is now properly refreshed after executing GMC process.
+- Disable buttons when there is no world on the list that is defined in configuration file.
+
 ## [1.10.1] (2021-08-27)
 ### Fixed
 - Missing MUSIC.DAT file during 'Compose'.
@@ -188,6 +195,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.10.2]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.10.2
 [1.10.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.10.1
 [1.10.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.10.0
 [1.9.2]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.9.2

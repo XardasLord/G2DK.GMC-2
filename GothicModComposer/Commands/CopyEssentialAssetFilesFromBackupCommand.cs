@@ -14,22 +14,20 @@ namespace GothicModComposer.Commands
 {
 	public class CopyEssentialAssetFilesFromBackupCommand : ICommand
 	{
-		public string CommandName => "Copy essential asset files from backup";
+		public string CommandName => "Copy essential asset files from backup (Preset, Music, Video, Scripts/_compiled)";
 
 		private readonly IProfile _profile;
-		private readonly Regex _essentialFileRegex;
 		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
 		public CopyEssentialAssetFilesFromBackupCommand(IProfile profile)
 		{
 			_profile = profile;
-			_essentialFileRegex = new Regex(_profile.GmcFolder.EssentialFilesRegexPattern);
 		}
 
 		public void Execute()
 		{
 			var workDataBackupFiles = DirectoryHelper.GetAllFilesInDirectory(_profile.GmcFolder.BackupWorkDataFolderPath);
-			var essentialFiles = workDataBackupFiles.FindAll(IsEssential).ToList();
+			var essentialFiles = workDataBackupFiles.FindAll(IsEssentialFile).ToList();
 
 			Logger.Info($"Start copying all asset files from backup to {_profile.GothicFolder.WorkDataFolderPath} ...", true);
 
@@ -68,10 +66,10 @@ namespace GothicModComposer.Commands
 
 		public void Undo() => ExecutedActions.Undo();
 
-		private bool IsEssential(string filePath)
+		private bool IsEssentialFile(string filePath)
 		{
 			var relativeFilePath = DirectoryHelper.ToRelativePath(filePath, _profile.GmcFolder.BackupWorkDataFolderPath);
-			return _essentialFileRegex.IsMatch(relativeFilePath);
+			return _profile.GmcFolder.EssentialDirectoriesFiles.Any(folder => relativeFilePath.StartsWith(folder));
 		}
 	}
 }

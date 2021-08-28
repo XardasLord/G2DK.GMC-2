@@ -13,7 +13,7 @@ namespace GothicModComposer.Models.Interfaces
         string ModFilesTrackerFilePath { get; }
         string BackupWorkDataFolderPath { get; }
         bool DoesBackupFolderExist { get; }
-        string EssentialFilesRegexPattern { get; }
+        IEnumerable<string> EssentialDirectoriesFiles { get; }
         List<ModFileEntry> ModFilesFromTrackedFile { get; }
         bool CreateGmcFolder();
         void CreateBackupWorkDataFolder();

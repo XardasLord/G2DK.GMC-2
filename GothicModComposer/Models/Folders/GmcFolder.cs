@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using GothicModComposer.Models.Interfaces;
 using GothicModComposer.Models.ModFiles;
+using GothicModComposer.Presets;
 using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Models.Folders
@@ -21,7 +22,15 @@ namespace GothicModComposer.Models.Folders
 		public string ModFilesTrackerFilePath => Path.Combine(BasePath, "modFiles.json");
 		public string BackupWorkDataFolderPath => Path.Combine(BackupFolderPath, "_Work", "Data");
 		public bool DoesBackupFolderExist => _fileSystem.Directory.Exists(BackupFolderPath);
-		public string EssentialFilesRegexPattern => @"((Presets|Music|Video|Scripts))|[\/\\](Fonts|_intern|_compiled)";
+
+		public IEnumerable<string> EssentialDirectoriesFiles => new List<string>
+		{
+			nameof(AssetPresetType.Presets),
+			nameof(AssetPresetType.Music),
+			nameof(AssetPresetType.Video),
+			$"{nameof(AssetPresetType.Scripts)}\\_compiled",
+		};
+		
 		public List<ModFileEntry> ModFilesFromTrackedFile => _modFilesFromTrackerFile;
 
 		private readonly List<ModFileEntry> _modFilesFromTrackerFile;
