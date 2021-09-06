@@ -173,11 +173,19 @@ namespace GothicModComposer.UI.ViewModels
             
             var directoryInfo = new DirectoryInfo(LogsDirectoryPath);
 
-            foreach (var file in directoryInfo.GetFiles())
-                file.Delete(); 
-            
-            foreach (var dir in directoryInfo.GetDirectories())
-                dir.Delete(true);
+            try
+            {
+	            foreach (var file in directoryInfo.GetFiles())
+		            file.Delete();
+
+	            foreach (var dir in directoryInfo.GetDirectories())
+		            dir.Delete(true);
+            }
+            catch (IOException ex)
+            {
+	            MessageBox.Show($"Cannot clear Logs directory. Try to run GMC application again with Administrator privileges.{Environment.NewLine}Reason: {ex.Message}",
+		            "Cannot clear Logs directory", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void RestoreDefaultIniOverridesExecute(object obj)
