@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GothicModComposer.Commands.ExecutedCommandActions;
@@ -24,7 +23,6 @@ namespace GothicModComposer.Commands
 		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
         private const string OuCslFileName = "OU.CSL";
-        private const string OuBinFileName = "OU.BIN";
 
         public UpdateDialoguesCommand(IProfile profile) 
 			=> _profile = profile;
@@ -46,18 +44,6 @@ namespace GothicModComposer.Commands
 
             var scriptFilesPaths = ScriptTreeReader.Parse(_profile.GothicFolder.GothicSrcFilePath);
 			var dialoguePopupsRecords = ReadDialoguesFromScripts(scriptFilesPaths);
-			
-			var ouBinFilePath = Path.Combine(_profile.GothicFolder.CutsceneFolderPath, OuBinFileName);
-			if (FileHelper.Exists(ouBinFilePath))
-			{
-				var tmpCommandActionBackupPath =
-					Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(ouBinFilePath));
-
-				FileHelper.CopyWithOverwrite(ouBinFilePath, tmpCommandActionBackupPath);
-				FileHelper.DeleteIfExists(ouBinFilePath);
-
-				ExecutedActions.Push(CommandActionIO.FileDeleted(ouBinFilePath, tmpCommandActionBackupPath));
-			}
 
 			var ouCslPath = Path.Combine(_profile.GothicFolder.CutsceneFolderPath, OuCslFileName);
 			
