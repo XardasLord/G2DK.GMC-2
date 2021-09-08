@@ -10,7 +10,7 @@ namespace GothicModComposer.Commands
 {
     public class DisableVideoBikFilesCommand : ICommand
     {
-        public string CommandName => "Disable Video BIK files";
+        public string CommandName => "Disable Logo Video BIK files";
 
         private readonly IProfile _profile;
         private static readonly Stack<ICommandActionVideoBik> ExecutedActions = new();
@@ -22,7 +22,7 @@ namespace GothicModComposer.Commands
         {
             DirectoryHelper.GetAllFilesInDirectory(_profile.GothicFolder.VideoBikFolderPath, SearchOption.TopDirectoryOnly)
                 .ConvertAll(file => new VideoBikFile(file))
-                .FindAll(videoFile => videoFile.IsEnabled && videoFile.IsValidVideoBikFile)
+                .FindAll(videoFile => videoFile.IsEnabled && videoFile.IsValidVideoBikFile && videoFile.IsLogoVideo)
                 .ForEach(videoFile =>
                 {
                     videoFile.Disable();

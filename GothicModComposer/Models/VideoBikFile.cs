@@ -10,18 +10,22 @@ namespace GothicModComposer.Models
         public bool IsValidVideoBikFile { get; }
         public bool IsDisabled { get; }
         public bool IsEnabled { get; }
+        public bool IsLogoVideo { get; set; }
 
         private readonly string _folderPath;
+        private readonly string _fileName;
 
         public VideoBikFile(string filePath)
         {
             FilePath = filePath;
             _folderPath = Path.GetDirectoryName(FilePath);
+            _fileName = Path.GetFileName(FilePath);
             
             var fileInfo = new FileInfo(filePath);
 
             FileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileInfo.Name);
             IsValidVideoBikFile = fileInfo.Exists;
+            IsLogoVideo = _fileName.Contains("Logo1") || _fileName.Contains("Logo2");
             IsDisabled = fileInfo.Extension == ".disabled";
             IsEnabled = !IsDisabled;
         }
