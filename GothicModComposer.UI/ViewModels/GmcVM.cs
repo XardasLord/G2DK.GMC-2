@@ -1,20 +1,19 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Diagnostics;
 using System.Windows;
 using GothicModComposer.UI.Commands;
 using GothicModComposer.UI.Enums;
 using GothicModComposer.UI.Helpers;
 using GothicModComposer.UI.Interfaces;
-using GothicModComposer.UI.Services;
 using GothicModComposer.UI.Views;
-
 
 namespace GothicModComposer.UI.ViewModels
 {
     public class GmcVM : ObservableVM
     {
-        public GmcSettingsVM GmcSettings { get; private set; }
+        private readonly IGmcExecutor _gmcExecutor;
+        private readonly ISpacerService _spacerService;
+
+        public GmcSettingsVM GmcSettings { get; }
         public RelayCommand RunUpdateProfile { get; }
         public RelayCommand RunComposeProfile { get; }
         public RelayCommand RunModProfile { get; }
@@ -26,14 +25,10 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand OpenTrelloProjectBoard { get; }
         public RelayCommand RunSpacer { get; }
 
-
-        private readonly IGmcExecutor _gmcExecutor;
-        private readonly ISpacerService _spacerService;
-
-        public GmcVM()
+        public GmcVM(IGmcExecutor gmcExecutor, ISpacerService spacerService)
         {
-            _gmcExecutor = new GmcExecutor();
-            _spacerService = new SpacerService();
+            _gmcExecutor = gmcExecutor;
+            _spacerService = spacerService;
 
             GmcSettings = new GmcSettingsVM();
             GmcSettings.PropertyChanged += (_, _) => GmcSettings.SaveSettings.Execute(null);
