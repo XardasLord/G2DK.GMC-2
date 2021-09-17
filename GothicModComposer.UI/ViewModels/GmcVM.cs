@@ -109,7 +109,10 @@ namespace GothicModComposer.UI.ViewModels
         private void RunSpacerExecute(object obj)
         {
             if (!_spacerService.SpacerExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
+            {
                 MessageBox.Show("Spacer.exe editor does not exist in 'System' directory.", "Spacer does not exist", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF, GmcSettings);
             _spacerService.RunSpacer(GmcSettings.GmcConfiguration.Gothic2RootPath);
