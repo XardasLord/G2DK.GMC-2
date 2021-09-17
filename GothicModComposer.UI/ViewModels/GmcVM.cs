@@ -24,12 +24,16 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand OpenSettings { get; }
         public RelayCommand OpenChangeLog { get; }
         public RelayCommand OpenTrelloProjectBoard { get; }
+        public RelayCommand RunSpacer { get; }
+
 
         private readonly IGmcExecutor _gmcExecutor;
+        private readonly ISpacerService _spacerService;
 
         public GmcVM()
         {
             _gmcExecutor = new GmcExecutor();
+            _spacerService = new SpacerService();
 
             GmcSettings = new GmcSettingsVM();
             GmcSettings.PropertyChanged += (_, _) => GmcSettings.SaveSettings.Execute(null);
@@ -44,6 +48,7 @@ namespace GothicModComposer.UI.ViewModels
             OpenSettings = new RelayCommand(OpenSettingsExecute);
             OpenChangeLog = new RelayCommand(OpenChangeLogExecute);
             OpenTrelloProjectBoard = new RelayCommand(OpenTrelloProjectBoardExecute);
+            RunSpacer = new RelayCommand(RunSpacerExecute);
         }
 
         private void RunUpdateProfileExecute(object obj)
@@ -76,7 +81,7 @@ namespace GothicModComposer.UI.ViewModels
         private void RunEnableVDFProfileProfileExecute(object obj)
             => _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF, GmcSettings);
 
-        private void OpenSettingsExecute(object obj) 
+        private void OpenSettingsExecute(object obj)
             => new GmcSettings(GmcSettings).ShowDialog();
 
         private static void OpenChangeLogExecute(object obj)
@@ -99,6 +104,15 @@ namespace GothicModComposer.UI.ViewModels
             };
 
             Process.Start(processStartInfo);
+        }
+
+        private void RunSpacerExecute(object obj)
+        {
+            if (!_spacerService.SpacerExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
+                MessageBox.Show("Spacer.exe editor does not exist in 'System' directory.", "Spacer does not exist", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+            _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF, GmcSettings);
+            _spacerService.RunSpacer(GmcSettings.GmcConfiguration.Gothic2RootPath);
         }
     }
 }
