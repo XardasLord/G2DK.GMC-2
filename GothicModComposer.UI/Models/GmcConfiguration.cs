@@ -52,7 +52,8 @@ namespace GothicModComposer.UI.Models
         public string DefaultWorld
         {
             get => _defaultWorld;
-            set => SetProperty(ref _defaultWorld, value);
+            // We ensure that binding will not set null value here directly.
+            set => SetProperty(ref _defaultWorld, value ?? _defaultWorld);
         }
 
         public GothicArgumentsConfiguration GothicArguments
@@ -138,6 +139,12 @@ namespace GothicModComposer.UI.Models
             IniOverridesSystemPack = new ObservableCollection<IniOverride>();
 
             GothicArguments.PropertyChanged += (_, _) => OnPropertyChanged(nameof(GothicArguments));
+        }
+
+        public void ForceGmcDefaultWorldSetNull()
+        {
+            _defaultWorld = null;
+            OnPropertyChanged(nameof(DefaultWorld));
         }
     }
 

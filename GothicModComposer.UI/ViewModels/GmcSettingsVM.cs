@@ -318,7 +318,7 @@ namespace GothicModComposer.UI.ViewModels
             }
 
             if (Zen3DWorlds.All(x => !x.IsSelected))
-                GmcConfiguration.DefaultWorld = null;
+                GmcConfiguration.ForceGmcDefaultWorldSetNull();
         }
 
         private bool HasBinaryContent(string filePath)
