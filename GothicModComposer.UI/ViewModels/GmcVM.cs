@@ -25,12 +25,12 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand OpenTrelloProjectBoard { get; }
         public RelayCommand RunSpacer { get; }
 
-        public GmcVM(IGmcExecutor gmcExecutor, ISpacerService spacerService)
+        public GmcVM(IGmcExecutor gmcExecutor, ISpacerService spacerService, GmcSettingsVM gmcSettingsVM)
         {
             _gmcExecutor = gmcExecutor;
             _spacerService = spacerService;
 
-            GmcSettings = new GmcSettingsVM();
+            GmcSettings = gmcSettingsVM;
             GmcSettings.PropertyChanged += (_, _) => GmcSettings.SaveSettings.Execute(null);
             GmcSettings.GmcConfiguration.GothicArguments.PropertyChanged += (_, _) => GmcSettings.SaveSettings.Execute(null);
 

@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using System.Threading;
 using System.Windows;
 using GothicModComposer.UI.Commands;
 using GothicModComposer.UI.Helpers;
+using GothicModComposer.UI.Interfaces;
 using GothicModComposer.UI.Models;
 using Ookii.Dialogs.Wpf;
 
@@ -17,10 +17,12 @@ namespace GothicModComposer.UI.ViewModels
 {
     public class GmcSettingsVM : ObservableVM
     {
+        private readonly IFileService _fileService;
+        private readonly FileSystemWatcher _zenWorldsFileWatcher;
+
         private GmcConfiguration _gmcConfiguration;
         private ObservableCollection<Zen3DWorld> _zen3DWorlds;
         private bool _isSystemPackAvailable;
-        private readonly FileSystemWatcher _zenWorldsFileWatcher;
 
         public string GmcSettingsJsonFilePath { get; }
         public string LogsDirectoryPath => Path.Combine(GmcConfiguration?.Gothic2RootPath ?? string.Empty, ".gmc", "Logs");
@@ -51,10 +53,11 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand ClearLogsDirectory { get; }
         public RelayCommand RestoreDefaultIniOverrides { get; }
 
-        public GmcSettingsVM()
+        public GmcSettingsVM(IFileService fileService)
         {
+            _fileService = fileService;
             _zenWorldsFileWatcher = new FileSystemWatcher();
-            
+
             GmcSettingsJsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "gmc-2-ui.json");
             Zen3DWorlds = new ObservableCollection<Zen3DWorld>();
 
@@ -70,13 +73,13 @@ namespace GothicModComposer.UI.ViewModels
                 CreateDefaultConfigurationFile();
 
             LoadConfiguration();
-            
+
             GmcConfiguration.PropertyChanged += (_, _) => SaveSettings.Execute(null);
             GmcConfiguration.IniOverrides.CollectionChanged += IniOverrides_CollectionChanged;
             GmcConfiguration.IniOverridesSystemPack.CollectionChanged += IniOverrides_CollectionChanged;
-            
+
             GmcConfiguration.OnGothic2RootPathChanged += OnGothic2RootPathChanged;
-            
+
             if (!string.IsNullOrWhiteSpace(GmcConfiguration.Gothic2RootPath))
                 OnGothic2RootPathChanged(GmcConfiguration.Gothic2RootPath);
 
@@ -84,7 +87,7 @@ namespace GothicModComposer.UI.ViewModels
             LoadZen3DWorlds();
         }
 
-        private void IniOverrides_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void IniOverrides_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
                 foreach (INotifyPropertyChanged added in e.NewItems)
@@ -113,12 +116,12 @@ namespace GothicModComposer.UI.ViewModels
 
             if (string.IsNullOrWhiteSpace(openFolderDialog.SelectedPath))
                 return;
-            
+
             GmcConfiguration.Gothic2RootPath = openFolderDialog.SelectedPath;
             OnPropertyChanged(nameof(GmcConfiguration));
 
             IsSystemPackAvailable = File.Exists(Path.Combine(GmcConfiguration.Gothic2RootPath, "System", "SystemPack.ini"));
-            
+
             LoadZen3DWorlds();
         }
 
@@ -155,11 +158,11 @@ namespace GothicModComposer.UI.ViewModels
             {
                 File.Delete(GmcSettingsJsonFilePath);
             }
-            
+
             CreateDefaultConfigurationFile();
             LoadConfiguration();
         }
-        
+
         private void OpenLogsDirectoryExecute(object obj)
         {
             if (Directory.Exists(LogsDirectoryPath))
@@ -170,28 +173,28 @@ namespace GothicModComposer.UI.ViewModels
         {
             if (!Directory.Exists(LogsDirectoryPath))
                 return;
-            
+
             var directoryInfo = new DirectoryInfo(LogsDirectoryPath);
 
             try
             {
-	            foreach (var file in directoryInfo.GetFiles())
-		            file.Delete();
+                foreach (var file in directoryInfo.GetFiles())
+                    file.Delete();
 
-	            foreach (var dir in directoryInfo.GetDirectories())
-		            dir.Delete(true);
+                foreach (var dir in directoryInfo.GetDirectories())
+                    dir.Delete(true);
             }
             catch (IOException ex)
             {
-	            MessageBox.Show($"Cannot clear Logs directory. Try to run GMC application again with Administrator privileges.{Environment.NewLine}Reason: {ex.Message}",
-		            "Cannot clear Logs directory", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Cannot clear Logs directory. Try to run GMC application again with Administrator privileges.{Environment.NewLine}Reason: {ex.Message}",
+                    "Cannot clear Logs directory", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void RestoreDefaultIniOverridesExecute(object obj)
         {
             GmcConfiguration.IniOverrides.Clear();
-            
+
             AddMissingDefaultIniOverrides();
         }
 
@@ -216,7 +219,7 @@ namespace GothicModComposer.UI.ViewModels
             {
                 MessageBox.Show(
                     $"Your gmc-2-ui.json file under {GmcSettingsJsonFilePath} path has invalid format.{Environment.NewLine}{Environment.NewLine}Please delete this file and run GMC UI again.",
-                    "Invalid configuration file format", 
+                    "Invalid configuration file format",
                     MessageBoxButton.OK, MessageBoxImage.Error);
 
                 Environment.Exit(0);
@@ -224,9 +227,9 @@ namespace GothicModComposer.UI.ViewModels
 
             if (GmcConfiguration != null && GmcConfiguration.GothicArguments.Resolution is null)
             {
-                GmcConfiguration.GothicArguments.Resolution = new Resolution {Width = 800, Height = 600};
+                GmcConfiguration.GothicArguments.Resolution = new Resolution { Width = 800, Height = 600 };
             }
-            
+
             AddMissingDefaultIniOverrides();
             RemoveExistingIniOverridesThatAreNotDefaults();
 
@@ -300,7 +303,7 @@ namespace GothicModComposer.UI.ViewModels
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    if (!HasBinaryContent(zenFilePath))
+                    if (!_fileService.HasBinaryContent(zenFilePath))
                         return;
 
                     var zenFileInfo = new FileInfo(zenFilePath);
@@ -312,7 +315,7 @@ namespace GothicModComposer.UI.ViewModels
             foreach (var zen3DWorld in Zen3DWorlds)
             {
                 zen3DWorld.SetAsUnselected();
-                
+
                 if (zen3DWorld.Path == GmcConfiguration.DefaultWorld)
                     zen3DWorld.SetAsSelected();
             }
@@ -321,31 +324,6 @@ namespace GothicModComposer.UI.ViewModels
                 GmcConfiguration.ForceGmcDefaultWorldSetNull();
         }
 
-        private bool HasBinaryContent(string filePath)
-        {
-            var fileInfo = new FileInfo(filePath);
-
-            if (IsFileLocked(fileInfo))
-            {
-                return false;
-            }
-            
-            if (!File.Exists(filePath)) 
-                return false;
-        
-            var content = File.ReadAllBytes(filePath);
-            
-            for (var i = 1; i < 512 && i < content.Length; i++) {
-                // Is it binary? Check for consecutive nulls..
-                if (content[i] == 0x00 && content[i-1] == 0x00)
-                {
-                    return true;
-                }
-            }
-            
-            return false;
-        }
-        
         private void OnGothic2RootPathChanged(string gothic2RootPath)
         {
             var worldsPath = Path.Combine(GmcConfiguration.Gothic2RootPath, "_Work", "Data", "Worlds");
@@ -354,10 +332,10 @@ namespace GothicModComposer.UI.ViewModels
             {
                 UnsubscribeOnWorldDirectoryChanges();
             }
-            
+
             _zenWorldsFileWatcher.Path = gothic2RootPath;
             _zenWorldsFileWatcher.IncludeSubdirectories = true;
-            
+
             SubscribeOnWorldDirectoryChanges();
         }
 
@@ -366,9 +344,9 @@ namespace GothicModComposer.UI.ViewModels
             _zenWorldsFileWatcher.Created += ZenWorldFilesChanged;
             _zenWorldsFileWatcher.Renamed += ZenWorldFilesChanged;
             _zenWorldsFileWatcher.Deleted += ZenWorldFilesChanged;
-            
+
             _zenWorldsFileWatcher.EnableRaisingEvents = true;
-            
+
             // Force to LoadZen3DWorlds when starting subscribing
             Application.Current.Dispatcher.Invoke(LoadZen3DWorlds);
         }
@@ -378,39 +356,13 @@ namespace GothicModComposer.UI.ViewModels
             _zenWorldsFileWatcher.Created -= ZenWorldFilesChanged;
             _zenWorldsFileWatcher.Renamed -= ZenWorldFilesChanged;
             _zenWorldsFileWatcher.Deleted -= ZenWorldFilesChanged;
-            
+
             _zenWorldsFileWatcher.EnableRaisingEvents = false;
         }
 
         private void ZenWorldFilesChanged(object sender, FileSystemEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(LoadZen3DWorlds);
-        }
-        
-        private bool IsFileLocked(FileInfo file)
-        {
-            FileStream stream = null;
-
-            try
-            {
-                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            }
-            catch (IOException)
-            {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
-                return true;
-            }
-            finally
-            {
-                if (stream != null)
-                    stream.Close();
-            }
-
-            //file is not locked
-            return false;
         }
     }
 }
