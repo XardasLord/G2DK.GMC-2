@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -18,6 +17,7 @@ namespace GothicModComposer.UI.ViewModels
     public class GmcSettingsVM : ObservableVM
     {
         private readonly IFileService _fileService;
+        private readonly IGmcLogsDirectoryService _gmcLogsDirectoryService;
         private readonly FileSystemWatcher _zenWorldsFileWatcher;
 
         private GmcConfiguration _gmcConfiguration;
@@ -53,9 +53,10 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand ClearLogsDirectory { get; }
         public RelayCommand RestoreDefaultIniOverrides { get; }
 
-        public GmcSettingsVM(IFileService fileService)
+        public GmcSettingsVM(IFileService fileService, IGmcLogsDirectoryService gmcLogsDirectoryService)
         {
             _fileService = fileService;
+            _gmcLogsDirectoryService = gmcLogsDirectoryService;
             _zenWorldsFileWatcher = new FileSystemWatcher();
 
             GmcSettingsJsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "gmc-2-ui.json");
@@ -163,33 +164,11 @@ namespace GothicModComposer.UI.ViewModels
             LoadConfiguration();
         }
 
-        private void OpenLogsDirectoryExecute(object obj)
-        {
-            if (Directory.Exists(LogsDirectoryPath))
-                Process.Start("explorer.exe", LogsDirectoryPath);
-        }
+        private void OpenLogsDirectoryExecute(object obj) 
+            => _gmcLogsDirectoryService.OpenLogsDirectoryExecute(LogsDirectoryPath);
 
         private void ClearLogsDirectoryExecute(object obj)
-        {
-            if (!Directory.Exists(LogsDirectoryPath))
-                return;
-
-            var directoryInfo = new DirectoryInfo(LogsDirectoryPath);
-
-            try
-            {
-                foreach (var file in directoryInfo.GetFiles())
-                    file.Delete();
-
-                foreach (var dir in directoryInfo.GetDirectories())
-                    dir.Delete(true);
-            }
-            catch (IOException ex)
-            {
-                MessageBox.Show($"Cannot clear Logs directory. Try to run GMC application again with Administrator privileges.{Environment.NewLine}Reason: {ex.Message}",
-                    "Cannot clear Logs directory", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+            => _gmcLogsDirectoryService.ClearLogsDirectoryExecute(LogsDirectoryPath);
 
         private void RestoreDefaultIniOverridesExecute(object obj)
         {

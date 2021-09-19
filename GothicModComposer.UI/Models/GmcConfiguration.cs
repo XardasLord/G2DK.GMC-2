@@ -15,7 +15,7 @@ namespace GothicModComposer.UI.Models
         private ObservableCollection<IniOverride> _iniOverrides;
         private ObservableCollection<IniOverride> _iniOverridesSystemPack;
 
-        public event Action<string> OnGothic2RootPathChanged = delegate(string s) { };
+        public event Action<string> OnGothic2RootPathChanged = delegate { };
 
         public static IEnumerable<Resolution> AvailableResolutions => new List<Resolution>
         {
