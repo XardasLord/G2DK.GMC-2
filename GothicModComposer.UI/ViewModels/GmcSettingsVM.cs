@@ -18,7 +18,7 @@ namespace GothicModComposer.UI.ViewModels
     {
         private readonly IFileService _fileService;
         private readonly IGmcLogsDirectoryService _gmcLogsDirectoryService;
-        private readonly FileSystemWatcher _zenWorldsFileWatcher;
+        private readonly IZenWorldsFileWatcherService _zenWorldsFileWatcherService;
 
         private GmcConfiguration _gmcConfiguration;
         private ObservableCollection<Zen3DWorld> _zen3DWorlds;
@@ -53,11 +53,14 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand ClearLogsDirectory { get; }
         public RelayCommand RestoreDefaultIniOverrides { get; }
 
-        public GmcSettingsVM(IFileService fileService, IGmcLogsDirectoryService gmcLogsDirectoryService)
+        public GmcSettingsVM(
+            IFileService fileService,
+            IGmcLogsDirectoryService gmcLogsDirectoryService,
+            IZenWorldsFileWatcherService zenWorldsFileWatcherService)
         {
             _fileService = fileService;
             _gmcLogsDirectoryService = gmcLogsDirectoryService;
-            _zenWorldsFileWatcher = new FileSystemWatcher();
+            _zenWorldsFileWatcherService = zenWorldsFileWatcherService;
 
             GmcSettingsJsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "gmc-2-ui.json");
             Zen3DWorlds = new ObservableCollection<Zen3DWorld>();
@@ -87,6 +90,55 @@ namespace GothicModComposer.UI.ViewModels
             // TODO: Would be nice to have this operation async
             LoadZen3DWorlds();
         }
+
+        public void LoadZen3DWorlds()
+        {
+            Zen3DWorlds.Clear();
+
+            if (GmcConfiguration.Gothic2RootPath is null)
+                return;
+
+            var worldsPath = Path.Combine(GmcConfiguration.Gothic2RootPath, "_Work", "Data", "Worlds");
+
+            if (!Directory.Exists(worldsPath))
+                return;
+
+            var worldFiles = Directory.EnumerateFiles(worldsPath, "*.ZEN", SearchOption.AllDirectories).ToList();
+            worldFiles.ForEach(zenFilePath =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (!_fileService.HasBinaryContent(zenFilePath))
+                        return;
+
+                    var zenFileInfo = new FileInfo(zenFilePath);
+
+                    Zen3DWorlds.Add(new Zen3DWorld(zenFilePath, zenFileInfo.Name));
+                });
+            });
+
+            foreach (var zen3DWorld in Zen3DWorlds)
+            {
+                zen3DWorld.SetAsUnselected();
+
+                if (zen3DWorld.Path == GmcConfiguration.DefaultWorld)
+                    zen3DWorld.SetAsSelected();
+            }
+
+            if (Zen3DWorlds.All(x => !x.IsSelected))
+                GmcConfiguration.ForceGmcDefaultWorldSetNull();
+        }
+
+        public void SubscribeOnWorldDirectoryChanges()
+        {
+            _zenWorldsFileWatcherService.StartWatching(ZenWorldFilesChanged);
+
+            // Force to LoadZen3DWorlds when starting subscribing
+            Application.Current.Dispatcher.Invoke(LoadZen3DWorlds);
+        }
+
+        public void UnsubscribeOnWorldDirectoryChanges() 
+            => _zenWorldsFileWatcherService.StopWatching(ZenWorldFilesChanged);
 
         private void IniOverrides_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -265,83 +317,20 @@ namespace GothicModComposer.UI.ViewModels
                 SaveSettings.Execute(null);
         }
 
-        public void LoadZen3DWorlds()
-        {
-            Zen3DWorlds.Clear();
-
-            if (GmcConfiguration.Gothic2RootPath is null)
-                return;
-
-            var worldsPath = Path.Combine(GmcConfiguration.Gothic2RootPath, "_Work", "Data", "Worlds");
-
-            if (!Directory.Exists(worldsPath))
-                return;
-
-            var worldFiles = Directory.EnumerateFiles(worldsPath, "*.ZEN", SearchOption.AllDirectories).ToList();
-            worldFiles.ForEach(zenFilePath =>
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    if (!_fileService.HasBinaryContent(zenFilePath))
-                        return;
-
-                    var zenFileInfo = new FileInfo(zenFilePath);
-
-                    Zen3DWorlds.Add(new Zen3DWorld(zenFilePath, zenFileInfo.Name));
-                });
-            });
-
-            foreach (var zen3DWorld in Zen3DWorlds)
-            {
-                zen3DWorld.SetAsUnselected();
-
-                if (zen3DWorld.Path == GmcConfiguration.DefaultWorld)
-                    zen3DWorld.SetAsSelected();
-            }
-
-            if (Zen3DWorlds.All(x => !x.IsSelected))
-                GmcConfiguration.ForceGmcDefaultWorldSetNull();
-        }
-
         private void OnGothic2RootPathChanged(string gothic2RootPath)
         {
             var worldsPath = Path.Combine(GmcConfiguration.Gothic2RootPath, "_Work", "Data", "Worlds");
+            
+            _zenWorldsFileWatcherService.StopWatching(ZenWorldFilesChanged);
 
-            if (!Directory.Exists(worldsPath))
+            if (Directory.Exists(worldsPath))
             {
-                UnsubscribeOnWorldDirectoryChanges();
+                _zenWorldsFileWatcherService.SetWorldsPath(worldsPath);
+                _zenWorldsFileWatcherService.StartWatching(ZenWorldFilesChanged);
             }
-
-            _zenWorldsFileWatcher.Path = gothic2RootPath;
-            _zenWorldsFileWatcher.IncludeSubdirectories = true;
-
-            SubscribeOnWorldDirectoryChanges();
         }
 
-        public void SubscribeOnWorldDirectoryChanges()
-        {
-            _zenWorldsFileWatcher.Created += ZenWorldFilesChanged;
-            _zenWorldsFileWatcher.Renamed += ZenWorldFilesChanged;
-            _zenWorldsFileWatcher.Deleted += ZenWorldFilesChanged;
-
-            _zenWorldsFileWatcher.EnableRaisingEvents = true;
-
-            // Force to LoadZen3DWorlds when starting subscribing
-            Application.Current.Dispatcher.Invoke(LoadZen3DWorlds);
-        }
-
-        public void UnsubscribeOnWorldDirectoryChanges()
-        {
-            _zenWorldsFileWatcher.Created -= ZenWorldFilesChanged;
-            _zenWorldsFileWatcher.Renamed -= ZenWorldFilesChanged;
-            _zenWorldsFileWatcher.Deleted -= ZenWorldFilesChanged;
-
-            _zenWorldsFileWatcher.EnableRaisingEvents = false;
-        }
-
-        private void ZenWorldFilesChanged(object sender, FileSystemEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(LoadZen3DWorlds);
-        }
+        private void ZenWorldFilesChanged(object sender, FileSystemEventArgs e) 
+            => Application.Current.Dispatcher.Invoke(LoadZen3DWorlds);
     }
 }
