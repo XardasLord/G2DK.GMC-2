@@ -34,10 +34,8 @@
             <Button Content="Run mod" Margin="0 15 0 0" Height="28" Command="{Binding RunModProfile}" Width="130" 
                     IsEnabled="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Converter={StaticResource IsNotNullToBoolConverter}}" />
             <Button Content="Run Editor/Spacer" Margin="0 15 0 0" Height="28" Command="{Binding RunSpacer}" Width="130" />
-            <Button Content="Update" Margin="0 15 0 0" Height="28" Command="{Binding RunUpdateProfile}" Width="130" 
-                    IsEnabled="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Converter={StaticResource IsNotNullToBoolConverter}}" />
-            <Button Content="Compose" Margin="0 15 0 0" Height="28" Command="{Binding RunComposeProfile}" Width="130" 
-                    IsEnabled="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Converter={StaticResource IsNotNullToBoolConverter}}" />
+            <Button Content="Update" Margin="0 15 0 0" Height="28" Command="{Binding RunUpdateProfile}" Width="130" />
+            <Button Content="Compose" Margin="0 15 0 0" Height="28" Command="{Binding RunComposeProfile}" Width="130" />
             <Button Content="Build mod file" Margin="0 15 0 0" Height="28" Command="{Binding RunBuildModFileProfile}" Width="130" />
             <Button Content="Restore Gothic" Margin="0 15 0 0" Height="28" Command="{Binding RunRestoreGothicProfile}" Width="130" />
             <Button Content="Enable VDF" Margin="0 15 0 0" Height="28" Command="{Binding RunEnableVDFProfile}" Width="130" />
