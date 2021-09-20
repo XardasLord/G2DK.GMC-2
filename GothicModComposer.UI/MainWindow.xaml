@@ -82,7 +82,7 @@
             <Label Content="Resolution:" FontWeight="Bold"/>
             <ComboBox ItemsSource="{Binding GmcSettings.GmcConfiguration.AvailableResolutions}"
                 SelectedItem="{Binding GmcSettings.GmcConfiguration.GothicArguments.Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Width="198"/>
+                Width="178"/>
         </StackPanel>
     </Grid>
 </Window>
