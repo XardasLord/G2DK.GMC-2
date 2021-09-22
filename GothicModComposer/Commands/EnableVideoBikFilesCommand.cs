@@ -10,23 +10,25 @@ namespace GothicModComposer.Commands
 {
     public class EnableVideoBikFilesCommand : ICommand
     {
-        public string CommandName => "Enable Video BIK files";
-
-        private readonly IProfile _profile;
         private static readonly Stack<ICommandActionVideoBik> ExecutedActions = new();
 
-        public EnableVideoBikFilesCommand(IProfile profile) 
+        private readonly IProfile _profile;
+
+        public EnableVideoBikFilesCommand(IProfile profile)
             => _profile = profile;
+
+        public string CommandName => "Enable Video BIK files";
 
         public void Execute()
         {
-            DirectoryHelper.GetAllFilesInDirectory(_profile.GothicFolder.VideoBikFolderPath, SearchOption.TopDirectoryOnly)
+            DirectoryHelper
+                .GetAllFilesInDirectory(_profile.GothicFolder.VideoBikFolderPath, SearchOption.TopDirectoryOnly)
                 .ConvertAll(file => new VideoBikFile(file))
                 .FindAll(videoFile => videoFile.IsDisabled && videoFile.IsValidVideoBikFile)
                 .ForEach(videoFile =>
                 {
                     videoFile.Enable();
-					
+
                     ExecutedActions.Push(CommandActionVideoBik.FileEnabled(videoFile));
                 });
         }

@@ -5,22 +5,16 @@ namespace GothicModComposer.Models
 {
     public class VideoBikFile
     {
-        public string FilePath { get; }
-        public string FileNameWithoutExtension { get; }
-        public bool IsValidVideoBikFile { get; }
-        public bool IsDisabled { get; }
-        public bool IsEnabled { get; }
-        public bool IsLogoVideo { get; set; }
+        private readonly string _fileName;
 
         private readonly string _folderPath;
-        private readonly string _fileName;
 
         public VideoBikFile(string filePath)
         {
             FilePath = filePath;
             _folderPath = Path.GetDirectoryName(FilePath);
             _fileName = Path.GetFileName(FilePath);
-            
+
             var fileInfo = new FileInfo(filePath);
 
             FileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileInfo.Name);
@@ -30,14 +24,23 @@ namespace GothicModComposer.Models
             IsEnabled = !IsDisabled;
         }
 
+        public string FilePath { get; }
+        public string FileNameWithoutExtension { get; }
+        public bool IsValidVideoBikFile { get; }
+        public bool IsDisabled { get; }
+        public bool IsEnabled { get; }
+        public bool IsLogoVideo { get; set; }
+
         public void Enable()
         {
             if (IsEnabled)
                 return;
-            
-            var enabledPath = Path.Combine(_folderPath, $"{FileNameWithoutExtension}"); // Because it this case FileNameWithoutExtension has '.bik' extension (cause original extension is '.disabled')
+
+            var enabledPath =
+                Path.Combine(_folderPath,
+                    $"{FileNameWithoutExtension}"); // Because it this case FileNameWithoutExtension has '.bik' extension (cause original extension is '.disabled')
             var disabledPath = $"{enabledPath}.disabled";
-            
+
             FileHelper.Rename(disabledPath, enabledPath);
         }
 
@@ -45,10 +48,10 @@ namespace GothicModComposer.Models
         {
             if (IsDisabled)
                 return;
-            
+
             var enabledPath = Path.Combine(_folderPath, $"{FileNameWithoutExtension}.bik");
             var disabledPath = $"{enabledPath}.disabled";
-            
+
             FileHelper.Rename(enabledPath, disabledPath);
         }
     }

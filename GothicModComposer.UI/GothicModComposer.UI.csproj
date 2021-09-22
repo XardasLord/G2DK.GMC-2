@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
-    <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
+    <PackageReference Include="Ookii.Dialogs.Wpf" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +45,10 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GothicModComposer\GothicModComposer.csproj" />
   </ItemGroup>
 
 </Project>

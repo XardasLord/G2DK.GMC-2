@@ -20,7 +20,7 @@ namespace GothicModComposer.Utils.IOHelpers
             return builder.ToString();
         }
 
-        private static List<string> GenerateHeader(string comment, string gothicRoot, string outputVdf) 
+        private static List<string> GenerateHeader(string comment, string gothicRoot, string outputVdf)
             => new()
             {
                 $"Comment={comment}",
