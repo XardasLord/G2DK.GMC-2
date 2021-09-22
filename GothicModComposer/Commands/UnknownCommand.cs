@@ -1,11 +1,15 @@
 ﻿namespace GothicModComposer.Commands
 {
-	public class UnknownCommand : ICommand
-	{
-		public string CommandName => "Unknown";
+    public class UnknownCommand : ICommand
+    {
+        public string CommandName => "Unknown";
 
-		public void Execute() { }
+        public void Execute()
+        {
+        }
 
-		public void Undo() { }
-	}
+        public void Undo()
+        {
+        }
+    }
 }

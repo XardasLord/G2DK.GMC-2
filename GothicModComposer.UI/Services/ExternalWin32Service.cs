@@ -21,7 +21,8 @@ namespace GothicModComposer.UI.Services
 
         public void MaximizeAlreadyOpenedApplication()
         {
-            var openedApplicationProcess = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).FirstOrDefault();
+            var openedApplicationProcess =
+                Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).FirstOrDefault();
 
             if (openedApplicationProcess != null)
                 ShowWindow(openedApplicationProcess.MainWindowHandle, SW_SHOW);

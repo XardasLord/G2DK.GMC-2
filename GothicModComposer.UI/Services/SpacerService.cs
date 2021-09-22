@@ -15,7 +15,7 @@ namespace GothicModComposer.UI.Services
         {
             if (!SpacerExists(gothicRootPath))
                 return;
-            
+
             var spacerPath = Path.Combine(gothicRootPath, PathToSpacer);
 
             Process.Start(spacerPath);

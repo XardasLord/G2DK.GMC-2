@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Profiles;
@@ -12,64 +11,70 @@ using ShellProgressBar;
 
 namespace GothicModComposer.Commands
 {
-	public class CopyEssentialAssetFilesFromBackupCommand : ICommand
-	{
-		public string CommandName => "Copy essential asset files from backup (Preset, Music, Video, Scripts/_compiled)";
+    public class CopyEssentialAssetFilesFromBackupCommand : ICommand
+    {
+        private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
-		private readonly IProfile _profile;
-		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
+        private readonly IProfile _profile;
 
-		public CopyEssentialAssetFilesFromBackupCommand(IProfile profile)
-		{
-			_profile = profile;
-		}
+        public CopyEssentialAssetFilesFromBackupCommand(IProfile profile) => _profile = profile;
 
-		public void Execute()
-		{
-			var workDataBackupFiles = DirectoryHelper.GetAllFilesInDirectory(_profile.GmcFolder.BackupWorkDataFolderPath);
-			var essentialFiles = workDataBackupFiles.FindAll(IsEssentialFile).ToList();
+        public string CommandName => "Copy essential asset files from backup (Preset, Music, Video, Scripts/_compiled)";
 
-			Logger.Info($"Start copying all asset files from backup to {_profile.GothicFolder.WorkDataFolderPath} ...", true);
+        public void Execute()
+        {
+            var workDataBackupFiles =
+                DirectoryHelper.GetAllFilesInDirectory(_profile.GmcFolder.BackupWorkDataFolderPath);
+            var essentialFiles = workDataBackupFiles.FindAll(IsEssentialFile).ToList();
 
-			using (var progress = new ProgressBar(essentialFiles.Count, "Copying asset files from backup", ProgressBarOptionsHelper.Get()))
-			{
-				var counter = 1;
+            Logger.Info($"Start copying all asset files from backup to {_profile.GothicFolder.WorkDataFolderPath} ...",
+                true);
 
-				essentialFiles.ForEach(essentialFilePath =>
-				{
-					var relativePath = DirectoryHelper.ToRelativePath(essentialFilePath, _profile.GmcFolder.BackupWorkDataFolderPath);
-					var destinationPath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, relativePath);
+            using (var progress = new ProgressBar(essentialFiles.Count, "Copying asset files from backup",
+                ProgressBarOptionsHelper.Get()))
+            {
+                var counter = 1;
 
-					if (FileHelper.Exists(destinationPath))
-					{
-						var tmpCommandActionBackupPath =
-							Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(destinationPath));
+                essentialFiles.ForEach(essentialFilePath =>
+                {
+                    var relativePath = DirectoryHelper.ToRelativePath(essentialFilePath,
+                        _profile.GmcFolder.BackupWorkDataFolderPath);
+                    var destinationPath =
+                        DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, relativePath);
 
-						FileHelper.CopyWithOverwrite(destinationPath, tmpCommandActionBackupPath);
-						FileHelper.CopyWithOverwrite(essentialFilePath, destinationPath);
-						
-						ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(destinationPath, tmpCommandActionBackupPath));
-					}
-					else
-					{
-						FileHelper.Copy(essentialFilePath, destinationPath);
+                    if (FileHelper.Exists(destinationPath))
+                    {
+                        var tmpCommandActionBackupPath =
+                            Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name),
+                                Path.GetFileName(destinationPath));
 
-						ExecutedActions.Push(CommandActionIO.FileCopied(essentialFilePath, destinationPath));
-					}
+                        FileHelper.CopyWithOverwrite(destinationPath, tmpCommandActionBackupPath);
+                        FileHelper.CopyWithOverwrite(essentialFilePath, destinationPath);
 
-					progress.Tick($"Copied {counter++} of {essentialFiles.Count} files");
-				});
-			}
+                        ExecutedActions.Push(
+                            CommandActionIO.FileCopiedWithOverwrite(destinationPath, tmpCommandActionBackupPath));
+                    }
+                    else
+                    {
+                        FileHelper.Copy(essentialFilePath, destinationPath);
 
-			Logger.Info($"Copied all asset files from backup to {_profile.GothicFolder.WorkDataFolderPath}", true);
-		}
+                        ExecutedActions.Push(CommandActionIO.FileCopied(essentialFilePath, destinationPath));
+                    }
 
-		public void Undo() => ExecutedActions.Undo();
+                    progress.Tick($"Copied {counter++} of {essentialFiles.Count} files");
+                });
+            }
 
-		private bool IsEssentialFile(string filePath)
-		{
-			var relativeFilePath = DirectoryHelper.ToRelativePath(filePath, _profile.GmcFolder.BackupWorkDataFolderPath);
-			return _profile.GmcFolder.EssentialDirectoriesFiles.Any(folder => relativeFilePath.StartsWith(folder));
-		}
-	}
+            Logger.Info($"Copied all asset files from backup to {_profile.GothicFolder.WorkDataFolderPath}", true);
+        }
+
+        public void Undo() => ExecutedActions.Undo();
+
+        private bool IsEssentialFile(string filePath)
+        {
+            var relativeFilePath =
+                DirectoryHelper.ToRelativePath(filePath, _profile.GmcFolder.BackupWorkDataFolderPath);
+            return _profile.GmcFolder.EssentialDirectoriesFiles.Any(folder => relativeFilePath.StartsWith(folder));
+        }
+    }
 }

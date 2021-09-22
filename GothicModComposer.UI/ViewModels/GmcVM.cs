@@ -13,18 +13,6 @@ namespace GothicModComposer.UI.ViewModels
         private readonly IGmcExecutor _gmcExecutor;
         private readonly ISpacerService _spacerService;
 
-        public GmcSettingsVM GmcSettings { get; }
-        public RelayCommand RunUpdateProfile { get; }
-        public RelayCommand RunComposeProfile { get; }
-        public RelayCommand RunModProfile { get; }
-        public RelayCommand RunRestoreGothicProfile { get; }
-        public RelayCommand RunBuildModFileProfile { get; }
-        public RelayCommand RunEnableVDFProfile { get; }
-        public RelayCommand OpenSettings { get; }
-        public RelayCommand OpenChangeLog { get; }
-        public RelayCommand OpenTrelloProjectBoard { get; }
-        public RelayCommand RunSpacer { get; }
-
         public GmcVM(IGmcExecutor gmcExecutor, ISpacerService spacerService, GmcSettingsVM gmcSettingsVM)
         {
             _gmcExecutor = gmcExecutor;
@@ -32,7 +20,8 @@ namespace GothicModComposer.UI.ViewModels
 
             GmcSettings = gmcSettingsVM;
             GmcSettings.PropertyChanged += (_, _) => GmcSettings.SaveSettings.Execute(null);
-            GmcSettings.GmcConfiguration.GothicArguments.PropertyChanged += (_, _) => GmcSettings.SaveSettings.Execute(null);
+            GmcSettings.GmcConfiguration.GothicArguments.PropertyChanged +=
+                (_, _) => GmcSettings.SaveSettings.Execute(null);
 
             RunUpdateProfile = new RelayCommand(RunUpdateProfileExecute);
             RunComposeProfile = new RelayCommand(RunComposeProfileExecute);
@@ -46,16 +35,27 @@ namespace GothicModComposer.UI.ViewModels
             RunSpacer = new RelayCommand(RunSpacerExecute);
         }
 
+        public GmcSettingsVM GmcSettings { get; }
+        public RelayCommand RunUpdateProfile { get; }
+        public RelayCommand RunComposeProfile { get; }
+        public RelayCommand RunModProfile { get; }
+        public RelayCommand RunRestoreGothicProfile { get; }
+        public RelayCommand RunBuildModFileProfile { get; }
+        public RelayCommand RunEnableVDFProfile { get; }
+        public RelayCommand OpenSettings { get; }
+        public RelayCommand OpenChangeLog { get; }
+        public RelayCommand OpenTrelloProjectBoard { get; }
+        public RelayCommand RunSpacer { get; }
+
         private void RunUpdateProfileExecute(object obj)
             => _gmcExecutor.Execute(GmcExecutionProfile.Update, GmcSettings);
 
         private void RunComposeProfileExecute(object obj)
         {
-            var messageBoxResult = MessageBox.Show("Are you sure you want to execute 'Compose' profile?", "Execute Confirmation", MessageBoxButton.YesNo);
+            var messageBoxResult = MessageBox.Show("Are you sure you want to execute 'Compose' profile?",
+                "Execute Confirmation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
-            {
                 _gmcExecutor.Execute(GmcExecutionProfile.Compose, GmcSettings);
-            }
         }
 
         private void RunModProfileExecute(object obj)
@@ -63,11 +63,10 @@ namespace GothicModComposer.UI.ViewModels
 
         private void RunRestoreGothicProfileExecute(object obj)
         {
-            var messageBoxResult = MessageBox.Show("Are you sure to you want to execute 'RestoreGothic' profile?", "Execute Confirmation", MessageBoxButton.YesNo);
+            var messageBoxResult = MessageBox.Show("Are you sure to you want to execute 'RestoreGothic' profile?",
+                "Execute Confirmation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
-            {
                 _gmcExecutor.Execute(GmcExecutionProfile.RestoreGothic, GmcSettings);
-            }
         }
 
         private void RunBuildModFileProfileProfileExecute(object obj)
@@ -105,7 +104,8 @@ namespace GothicModComposer.UI.ViewModels
         {
             if (!_spacerService.SpacerExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
             {
-                MessageBox.Show("Spacer.exe editor does not exist in 'System' directory.", "Spacer does not exist", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Spacer.exe editor does not exist in 'System' directory.", "Spacer does not exist",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 

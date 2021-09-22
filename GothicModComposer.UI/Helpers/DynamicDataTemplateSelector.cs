@@ -14,7 +14,7 @@ namespace GothicModComposer.UI.Helpers
             {
                 var model = item as IniOverride;
 
-                return (DataTemplate)element.FindResource(model.DisplayAs.ToString() + "Template");
+                return (DataTemplate) element.FindResource(model.DisplayAs + "Template");
             }
 
             return null;

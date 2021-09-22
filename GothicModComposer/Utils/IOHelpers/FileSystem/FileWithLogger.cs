@@ -5,14 +5,15 @@ namespace GothicModComposer.Utils.IOHelpers.FileSystem
 {
     public class FileWithLogger : IFileWithLogger
     {
-        public IFileSystemWithLogger FileSystem { get; }
-
-        protected internal FileWithLogger(IFileSystemWithLogger fileSystem) 
+        protected internal FileWithLogger(IFileSystemWithLogger fileSystem)
             => FileSystem = fileSystem;
+
+        public IFileSystemWithLogger FileSystem { get; }
 
         public void Copy(string sourceFileName, string destFileName) => FileHelper.Copy(sourceFileName, destFileName);
 
-        public void CopyWithOverride(string sourceFileName, string destFileName) => FileHelper.CopyWithOverwrite(sourceFileName, destFileName);
+        public void CopyWithOverride(string sourceFileName, string destFileName) =>
+            FileHelper.CopyWithOverwrite(sourceFileName, destFileName);
 
         public void Delete(string path) => FileHelper.DeleteIfExists(path);
 
@@ -20,7 +21,8 @@ namespace GothicModComposer.Utils.IOHelpers.FileSystem
 
         public void Move(string sourceFileName, string destFileName) => FileHelper.Move(sourceFileName, destFileName);
 
-        public void MoveWithOverride(string sourceFileName, string destFileName) => FileHelper.MoveWithOverwrite(sourceFileName, destFileName);
+        public void MoveWithOverride(string sourceFileName, string destFileName) =>
+            FileHelper.MoveWithOverwrite(sourceFileName, destFileName);
 
         public void Rename(string oldNamePath, string newNamePath) => FileHelper.Rename(oldNamePath, newNamePath);
 
@@ -30,6 +32,7 @@ namespace GothicModComposer.Utils.IOHelpers.FileSystem
 
         public void WriteAllText(string path, string contents) => File.WriteAllText(path, contents);
 
-        public void WriteAllText(string path, string contents, Encoding encoding) => File.WriteAllText(path, contents, encoding);
+        public void WriteAllText(string path, string contents, Encoding encoding) =>
+            File.WriteAllText(path, contents, encoding);
     }
 }
