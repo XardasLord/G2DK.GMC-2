@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - GUI doesn't loose ZEN World selection after profile execution.
 - GUI can only we run once.
 - Issue with crashing GMC when clearing logs.
-- `Update Dialogues` step does noto remove OU.BIN file anymore.
+- `Update Dialogues` step does not remove OU.BIN file anymore.
 
 ### Changed
 - `Update Mod Extension` step copies files from mod's repo to Gothic root directory only if files differ.
