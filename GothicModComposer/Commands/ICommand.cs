@@ -1,10 +1,10 @@
 ﻿namespace GothicModComposer.Commands
 {
-	public interface ICommand
-	{
-		string CommandName { get; }
+    public interface ICommand
+    {
+        string CommandName { get; }
 
-		void Execute();
-		void Undo();
-	}
+        void Execute();
+        void Undo();
+    }
 }

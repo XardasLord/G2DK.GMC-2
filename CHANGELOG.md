@@ -3,12 +3,29 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.11.0] (2021-09-23)
+### Fixed
+- Issue with long time closing GMC console.
+- GUI doesn't loose ZEN World selection after profile execution.
+- GUI can only we run once.
+- Issue with crashing GMC when clearing logs.
+- `Update Dialogues` step does noto remove OU.BIN file anymore.
+
+### Changed
+- `Update Mod Extension` step copies files from mod's repo to Gothic root directory only if files differ.
+- `Update`, `Compose` and `Enable VDF` profiles don't require ZEN World to be selected.
+- `Disable BIK Video Files` step only disables `Logo1.bik` and `Logo2.bik` files instead of all `.bik` files.
+
+### Added
+- Option in GUI to make GMC console auto close after finish profile executing or not.
+- Information in GUI when logs directory is cleared.
+- New button in GUI to Run Editor/Spacer.
+
 ## [1.10.2] (2021-08-28)
 ### Fixed
-- During 'Compose' only Scripts/_compiled files are copied instead of whole Scripts directory.
-- Issue with copying/pasting big size of world file to Worlds directory.
-- World's list in GUI is now properly refreshed after executing GMC process.
-- Disable buttons when there is no world on the list that is defined in configuration file.
+- During 'Compose' only 'Scripts/_compiled' files are copied instead of whole Scripts directory. Whole Compose process should work properly now.
+- Issue with worlds list refreshing in GUI when copying/pasting big size of world file to Worlds directory.
+- Disable buttons (RunMod, Compose, Update) when there is no world on the list in GUI that is defined in configuration file.
 
 ## [1.10.1] (2021-08-27)
 ### Fixed
@@ -195,6 +212,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.11.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.11.0
 [1.10.2]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.10.2
 [1.10.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.10.1
 [1.10.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.10.0

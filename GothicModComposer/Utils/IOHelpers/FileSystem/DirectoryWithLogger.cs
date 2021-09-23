@@ -6,10 +6,10 @@ namespace GothicModComposer.Utils.IOHelpers.FileSystem
 {
     public class DirectoryWithLogger : IDirectoryWithLogger
     {
-        public IFileSystemWithLogger FileSystem { get; }
-
         protected internal DirectoryWithLogger(IFileSystemWithLogger fileSystem)
             => FileSystem = fileSystem;
+
+        public IFileSystemWithLogger FileSystem { get; }
 
         public bool CreateIfNotExist(string path) => DirectoryHelper.CreateIfDoesNotExist(path);
 
@@ -23,7 +23,8 @@ namespace GothicModComposer.Utils.IOHelpers.FileSystem
 
         public List<string> GetDirectories(string path) => Directory.GetDirectories(path).ToList();
 
-        public List<string> GetAllFilesInDirectory(string directoryPath, SearchOption searchOption = SearchOption.AllDirectories)
+        public List<string> GetAllFilesInDirectory(string directoryPath,
+            SearchOption searchOption = SearchOption.AllDirectories)
             => Directory.Exists(directoryPath)
                 ? Directory.EnumerateFiles(directoryPath, "*", searchOption).ToList()
                 : new List<string>();

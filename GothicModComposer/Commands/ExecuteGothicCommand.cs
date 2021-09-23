@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.GothicSpyProcess;
@@ -8,90 +7,96 @@ using ShellProgressBar;
 
 namespace GothicModComposer.Commands
 {
-	public class ExecuteGothicCommand : ICommand
-	{
-		public string CommandName => "Execute Gothic2.exe";
+    public class ExecuteGothicCommand : ICommand
+    {
+        public const string WorldLoadedMessage =
+            "Info:  1 B:     GMAN: Completed loading the world ... .... <oGameManager.cpp,#1476>";
 
-		public const string WorldLoadedMessage =
-			"Info:  1 B:     GMAN: Completed loading the world ... .... <oGameManager.cpp,#1476>";
-		public const string MainMenuOpenMessage =
-			"Info:  4 B:     GMAN: Open InitScreen .... <oGameManager.cpp,#811>";
-		public const string MainMenuClosedMessage =
-			"Info:  4 B:     GMAN: Close InitScreen .... <oGameManager.cpp,#849>";
-		public const string LoadingGothicSrcOrGothicDat =
-			"Info:  4 N:     GAME: Loading file Content\\Gothic.src or .dat .... <oGame.cpp,#739>";
+        public const string MainMenuOpenMessage =
+            "Info:  4 B:     GMAN: Open InitScreen .... <oGameManager.cpp,#811>";
 
-		private readonly IProfile _profile;
-		private readonly string _killProcessMessage;
-		private Process _gothicProcess;
-		private readonly GothicSpyProcessRunner _gothicSpyProcessRunner;
-		private IndeterminateProgressBar _progressBar;
+        public const string MainMenuClosedMessage =
+            "Info:  4 B:     GMAN: Close InitScreen .... <oGameManager.cpp,#849>";
 
-		public ExecuteGothicCommand(IProfile profile, string killProcessMessage = null)
-		{
-			_profile = profile;
-			_killProcessMessage = killProcessMessage;
-			_gothicSpyProcessRunner = new GothicSpyProcessRunner();
-		}
+        public const string LoadingGothicSrcOrGothicDat =
+            "Info:  4 N:     GAME: Loading file Content\\Gothic.src or .dat .... <oGame.cpp,#739>";
 
-		public void Execute()
-		{
+        private readonly GothicSpyProcessRunner _gothicSpyProcessRunner;
+        private readonly string _killProcessMessage;
+
+        private readonly IProfile _profile;
+        private Process _gothicProcess;
+        private IndeterminateProgressBar _progressBar;
+
+        public ExecuteGothicCommand(IProfile profile, string killProcessMessage = null)
+        {
+            _profile = profile;
+            _killProcessMessage = killProcessMessage;
+            _gothicSpyProcessRunner = new GothicSpyProcessRunner();
+        }
+
+        public string CommandName => "Execute Gothic2.exe";
+
+        public void Execute()
+        {
             if (!_profile.CommandsConditions.ExecuteGothicStepRequired)
             {
                 Logger.Info("Gothic compilation is not required, so this step can be skipped.", true);
                 return;
-			}
+            }
 
-			Logger.Info($"Executing with kill process message: '{_killProcessMessage}'", true);
+            Logger.Info($"Executing with kill process message: '{_killProcessMessage}'", true);
 
-			_gothicProcess = new Process
-			{
-				StartInfo = GetGothicProcessStartInfo()
-			};
+            _gothicProcess = new Process
+            {
+                StartInfo = GetGothicProcessStartInfo()
+            };
 
-			_gothicSpyProcessRunner.Run();
-			_gothicSpyProcessRunner.Subscribe(Notify);
+            _gothicSpyProcessRunner.Run();
+            _gothicSpyProcessRunner.Subscribe(Notify);
 
-			Logger.Info($"{_gothicProcess.StartInfo.FileName} {_gothicProcess.StartInfo.Arguments}", true);
+            Logger.Info($"{_gothicProcess.StartInfo.FileName} {_gothicProcess.StartInfo.Arguments}", true);
 
-			using (_progressBar = new IndeterminateProgressBar($"Gothic2.exe process executed with arguments '{_gothicProcess.StartInfo.Arguments}'", ProgressBarOptionsHelper.Get()))
-			{
-				_gothicProcess.Start();
-				_gothicProcess.WaitForExit();
+            using (_progressBar = new IndeterminateProgressBar(
+                $"Gothic2.exe process executed with arguments '{_gothicProcess.StartInfo.Arguments}'",
+                ProgressBarOptionsHelper.Get()))
+            {
+                _gothicProcess.Start();
+                _gothicProcess.WaitForExit();
 
-				_progressBar.Finished();
-			}
+                _progressBar.Finished();
+            }
 
-			_gothicSpyProcessRunner.Abort();
-		}
+            _gothicSpyProcessRunner.Abort();
+        }
 
-		public void Undo() => Logger.Warn("Undo for this command is not implemented yet.");
+        public void Undo() => Logger.Warn("Undo for this command is not implemented yet.");
 
-		private void Notify(string message)
-		{
-			Logger.zLog(message);
+        private void Notify(string message)
+        {
+            Logger.zLog(message);
 
-			if (_progressBar != null)
-				_progressBar.Message = message;
+            if (_progressBar != null)
+                _progressBar.Message = message;
 
-			if (_killProcessMessage is null || !message.Contains(_killProcessMessage))
-				return;
+            if (_killProcessMessage is null || !message.Contains(_killProcessMessage))
+                return;
 
-			_gothicProcess.Kill();
+            _gothicProcess.Kill();
 
-			Logger.Info("Gothic process was terminated.", true);
-		}
+            Logger.Info("Gothic process was terminated.", true);
+        }
 
-		private ProcessStartInfo GetGothicProcessStartInfo()
-		{
-			string arguments;
-			
-	        if (_killProcessMessage is null)
-		        // If we run the game then we need to merge configs from UI
-		        arguments = _profile.GothicArguments.Merge(_profile.GothicArgumentsForceConfig).ToString();
-	        else
-		        arguments = _profile.GothicArguments.ToString();
-            
+        private ProcessStartInfo GetGothicProcessStartInfo()
+        {
+            string arguments;
+
+            if (_killProcessMessage is null)
+                // If we run the game then we need to merge configs from UI
+                arguments = _profile.GothicArguments.Merge(_profile.GothicArgumentsForceConfig).ToString();
+            else
+                arguments = _profile.GothicArguments.ToString();
+
 
             return new ProcessStartInfo
             {

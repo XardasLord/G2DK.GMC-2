@@ -30,33 +30,37 @@ namespace GothicModComposer.Commands
 			{
 				var counter = 1;
 
-				extensionFiles.ForEach(extensionFilePath =>
+				extensionFiles.ForEach(extensionFilePathToCopy =>
 				{
-					var extensionRelativePath = DirectoryHelper.ToRelativePath(extensionFilePath, _profile.ModFolder.ExtensionsFolderPath);
-					var extensionRootPath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.BasePath, extensionRelativePath);
+					var extensionRelativePath = DirectoryHelper.ToRelativePath(extensionFilePathToCopy, _profile.ModFolder.ExtensionsFolderPath);
+					var extensionDestinationPath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.BasePath, extensionRelativePath);
 
-					if (FileHelper.Exists(extensionRootPath))
+					if (FileHelper.Exists(extensionDestinationPath))
 					{
+						if (FileHelper.GetFileTimestamp(extensionDestinationPath) == FileHelper.GetFileTimestamp(extensionFilePathToCopy))
+						{
+							progress.Tick();
+							return;
+						}
+						
 						var tmpCommandActionBackupPath =
-							Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(extensionRootPath));
+							Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(extensionDestinationPath));
 
-						FileHelper.CopyWithOverwrite(extensionRootPath, tmpCommandActionBackupPath);
-						FileHelper.CopyWithOverwrite(extensionFilePath, extensionRootPath);
+						FileHelper.CopyWithOverwrite(extensionDestinationPath, tmpCommandActionBackupPath);
+						FileHelper.CopyWithOverwrite(extensionFilePathToCopy, extensionDestinationPath);
 
-						ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(extensionRootPath, tmpCommandActionBackupPath));
+						ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(extensionDestinationPath, tmpCommandActionBackupPath));
 					}
 					else
 					{
-						FileHelper.Copy(extensionFilePath, extensionRootPath);
+						FileHelper.Copy(extensionFilePathToCopy, extensionDestinationPath);
 
-						ExecutedActions.Push(CommandActionIO.FileCopied(extensionFilePath, extensionRootPath));
+						ExecutedActions.Push(CommandActionIO.FileCopied(extensionFilePathToCopy, extensionDestinationPath));
 					}
 
 					progress.Tick($"Copied {counter++} of {extensionFiles.Count} files");
 				});
 			}
-
-			Logger.Info("Copied all mod extension files.", true);
 		}
 
 		public void Undo() => ExecutedActions.Undo();

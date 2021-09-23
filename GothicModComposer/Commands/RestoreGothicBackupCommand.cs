@@ -6,52 +6,54 @@ using ShellProgressBar;
 
 namespace GothicModComposer.Commands
 {
-	public class RestoreGothicBackupCommand : ICommand
-	{
-		public string CommandName => "Restore original Gothic backup files";
+    public class RestoreGothicBackupCommand : ICommand
+    {
+        private readonly IProfile _profile;
 
-		private readonly IProfile _profile;
+        public RestoreGothicBackupCommand(IProfile profile)
+            => _profile = profile;
 
-		public RestoreGothicBackupCommand(IProfile profile) 
-			=> _profile = profile;
+        public string CommandName => "Restore original Gothic backup files";
 
-		public void Execute()
-		{
-			if (!_profile.GmcFolder.DoesBackupFolderExist)
-			{
-				Logger.Info("There is no backup folder to restore.", true);
-				return;
-			}
+        public void Execute()
+        {
+            if (!_profile.GmcFolder.DoesBackupFolderExist)
+            {
+                Logger.Info("There is no backup folder to restore.", true);
+                return;
+            }
 
-			RestoreBackup();
-			RemoveGmcFolder();
-		}
+            RestoreBackup();
+            RemoveGmcFolder();
+        }
 
-		private void RestoreBackup()
-		{
-			DirectoryHelper.DeleteIfExists(_profile.GothicFolder.WorkDataFolderPath);
+        public void Undo() => Logger.Warn("Undo of this command is not implemented.");
 
-			var backupFiles = DirectoryHelper.GetAllFilesInDirectory(_profile.GmcFolder.BackupFolderPath);
+        private void RestoreBackup()
+        {
+            DirectoryHelper.DeleteIfExists(_profile.GothicFolder.WorkDataFolderPath);
 
-			using (var progress = new ProgressBar(backupFiles.Count, "Restoring files from backup", ProgressBarOptionsHelper.Get()))
-			{
-				var counter = 1;
+            var backupFiles = DirectoryHelper.GetAllFilesInDirectory(_profile.GmcFolder.BackupFolderPath);
 
-				backupFiles.ForEach(backupFilePath =>
-				{
-					var relativePath = DirectoryHelper.ToRelativePath(backupFilePath, _profile.GmcFolder.BackupFolderPath);
-					var gothicFilePath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.BasePath, relativePath);
+            using (var progress = new ProgressBar(backupFiles.Count, "Restoring files from backup",
+                ProgressBarOptionsHelper.Get()))
+            {
+                var counter = 1;
 
-					FileHelper.MoveWithOverwrite(backupFilePath, gothicFilePath);
+                backupFiles.ForEach(backupFilePath =>
+                {
+                    var relativePath =
+                        DirectoryHelper.ToRelativePath(backupFilePath, _profile.GmcFolder.BackupFolderPath);
+                    var gothicFilePath =
+                        DirectoryHelper.MergeRelativePath(_profile.GothicFolder.BasePath, relativePath);
 
-					progress.Tick($"Restored {counter++} of {backupFiles.Count} files");
-				});
-			}
-			
-		}
+                    FileHelper.MoveWithOverwrite(backupFilePath, gothicFilePath);
 
-		private void RemoveGmcFolder() => DirectoryHelper.DeleteIfExists(_profile.GmcFolder.BasePath);
+                    progress.Tick($"Restored {counter++} of {backupFiles.Count} files");
+                });
+            }
+        }
 
-		public void Undo() => Logger.Warn("Undo of this command is not implemented.");
-	}
+        private void RemoveGmcFolder() => DirectoryHelper.DeleteIfExists(_profile.GmcFolder.BasePath);
+    }
 }

@@ -12,114 +12,124 @@ using ShellProgressBar;
 
 namespace GothicModComposer.Commands
 {
-	public class RemoveNotCompiledSourcesCommand : ICommand
-	{
-		public string CommandName => "Remove not compiled sources inside Textures/Meshes assets";
+    public class RemoveNotCompiledSourcesCommand : ICommand
+    {
+        private static readonly Stack<ICommandActionIO> ExecutedActions = new();
 
-		private readonly IProfile _profile;
-		private readonly List<AssetPresetType> _assertsToRemoveFilesFrom = new()
-		{
-			AssetPresetType.Textures, 
-			AssetPresetType.Meshes
-		};
-		private ProgressBar _parentProgressBar;
-		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
+        private readonly List<AssetPresetType> _assertsToRemoveFilesFrom = new()
+        {
+            AssetPresetType.Textures,
+            AssetPresetType.Meshes
+        };
 
-		public RemoveNotCompiledSourcesCommand(IProfile profile) 
-			=> _profile = profile;
+        private readonly IProfile _profile;
+        private ProgressBar _parentProgressBar;
 
-		public void Execute()
-		{
-			_parentProgressBar = new ProgressBar(2, "Removing not compiled base files from _Work/Data", ProgressBarOptionsHelper.Get());
+        public RemoveNotCompiledSourcesCommand(IProfile profile)
+            => _profile = profile;
 
-			AssetPresetFolders.FoldersWithAssets.ForEach(assetType =>
-			{
-				if (!_assertsToRemoveFilesFrom.Exists(x => x == assetType))
-					return;
+        public string CommandName => "Remove not compiled sources inside Textures/Meshes assets";
 
-				var assetFolderPath = Path.Combine(_profile.GothicFolder.WorkDataFolderPath, assetType.ToString());
-				var assetFolder = new AssetFolder(assetFolderPath, assetType);
+        public void Execute()
+        {
+            _parentProgressBar = new ProgressBar(2, "Removing not compiled base files from _Work/Data",
+                ProgressBarOptionsHelper.Get());
 
-				DeleteSubFolders(assetFolder);
+            AssetPresetFolders.FoldersWithAssets.ForEach(assetType =>
+            {
+                if (!_assertsToRemoveFilesFrom.Exists(x => x == assetType))
+                    return;
 
-				_parentProgressBar.Tick();
+                var assetFolderPath = Path.Combine(_profile.GothicFolder.WorkDataFolderPath, assetType.ToString());
+                var assetFolder = new AssetFolder(assetFolderPath, assetType);
 
-				DeleteFiles(assetFolder);
-			});
+                DeleteSubFolders(assetFolder);
 
-			_parentProgressBar.Dispose();
-		}
+                _parentProgressBar.Tick();
 
-		public void Undo() => ExecutedActions.Undo();
+                DeleteFiles(assetFolder);
+            });
 
-		private void DeleteFiles(AssetFolder assetFolder)
-		{
-			// TODO: Refactor - introduce something like AssetSubFolder and AssetFile objects and move some of the logic there.
+            _parentProgressBar.Dispose();
+        }
 
-			var filesInAssetFolder = DirectoryHelper.GetAllFilesInDirectory(assetFolder.BasePath, SearchOption.TopDirectoryOnly);
+        public void Undo() => ExecutedActions.Undo();
 
-			using var childProgressBar = _parentProgressBar.Spawn(filesInAssetFolder.Count, "Creating backup and delete not compiled files", ProgressBarOptionsHelper.Get());
+        private void DeleteFiles(AssetFolder assetFolder)
+        {
+            // TODO: Refactor - introduce something like AssetSubFolder and AssetFile objects and move some of the logic there.
 
-			var counter = 1;
-			foreach (var assetFile in filesInAssetFolder)
-			{
-				var tmpCommandActionBackupPath = GetTmpBackupPathForFile(assetFile);
+            var filesInAssetFolder =
+                DirectoryHelper.GetAllFilesInDirectory(assetFolder.BasePath, SearchOption.TopDirectoryOnly);
 
-				FileHelper.CopyWithOverwrite(assetFile, tmpCommandActionBackupPath);
+            using var childProgressBar = _parentProgressBar.Spawn(filesInAssetFolder.Count,
+                "Creating backup and delete not compiled files", ProgressBarOptionsHelper.Get());
 
-				FileHelper.DeleteIfExists(assetFile);
-				ExecutedActions.Push(CommandActionIO.FileDeleted(assetFile, tmpCommandActionBackupPath));
+            var counter = 1;
+            foreach (var assetFile in filesInAssetFolder)
+            {
+                var tmpCommandActionBackupPath = GetTmpBackupPathForFile(assetFile);
 
-				childProgressBar.Tick($"Created backup and deleted {counter++} of {filesInAssetFolder.Count} files inside '{assetFolder.AssetFolderName}' asset folder");
-			}
-		}
+                FileHelper.CopyWithOverwrite(assetFile, tmpCommandActionBackupPath);
 
-		private void DeleteSubFolders(AssetFolder assetFolder)
-		{
-			var subDirectories = assetFolder
-				.SubDirectories
-				.Where(subDirectoryPath => !Path.GetFileName(subDirectoryPath).Equals("_compiled"))
-				.Where(subDirectoryPath => !Path.GetFileName(subDirectoryPath).Equals("Level"));
+                FileHelper.DeleteIfExists(assetFile);
+                ExecutedActions.Push(CommandActionIO.FileDeleted(assetFile, tmpCommandActionBackupPath));
 
-			using var childProgressBar = _parentProgressBar.Spawn(subDirectories.Count(), "Creating backup and delete subfolders", ProgressBarOptionsHelper.Get());
+                childProgressBar.Tick(
+                    $"Created backup and deleted {counter++} of {filesInAssetFolder.Count} files inside '{assetFolder.AssetFolderName}' asset folder");
+            }
+        }
 
-			var counter = 1;
-			foreach (var subDirectoryPath in subDirectories)
-			{
-				var tmpCommandActionBackupPath = GetTmpBackupPathForDirectory(subDirectoryPath);
+        private void DeleteSubFolders(AssetFolder assetFolder)
+        {
+            var subDirectories = assetFolder
+                .SubDirectories
+                .Where(subDirectoryPath => !Path.GetFileName(subDirectoryPath).Equals("_compiled"))
+                .Where(subDirectoryPath => !Path.GetFileName(subDirectoryPath).Equals("Level"));
 
-				if (DirectoryHelper.Exists(tmpCommandActionBackupPath))
-					DirectoryHelper.DeleteIfExists(tmpCommandActionBackupPath);
+            using var childProgressBar = _parentProgressBar.Spawn(subDirectories.Count(),
+                "Creating backup and delete subfolders", ProgressBarOptionsHelper.Get());
 
-				DirectoryHelper.Copy(subDirectoryPath, tmpCommandActionBackupPath);
+            var counter = 1;
+            foreach (var subDirectoryPath in subDirectories)
+            {
+                var tmpCommandActionBackupPath = GetTmpBackupPathForDirectory(subDirectoryPath);
 
-				DirectoryHelper.DeleteIfExists(subDirectoryPath);
-				ExecutedActions.Push(CommandActionIO.DirectoryDeleted(subDirectoryPath, tmpCommandActionBackupPath));
+                if (DirectoryHelper.Exists(tmpCommandActionBackupPath))
+                    DirectoryHelper.DeleteIfExists(tmpCommandActionBackupPath);
 
-				childProgressBar.Tick($"Created backup and deleted {counter++} of {subDirectories.Count()} subfolders inside '{assetFolder.AssetFolderName}' asset folder");
-			}
-		}
+                DirectoryHelper.Copy(subDirectoryPath, tmpCommandActionBackupPath);
 
-		private string GetTmpBackupPathForDirectory(string subDirectoryPath)
-		{
-			var directoryInfo = new DirectoryInfo(subDirectoryPath);
-			var twoLastDirectories = Path.Combine(Path.GetFileName(directoryInfo.Parent.FullName), directoryInfo.Name);
+                DirectoryHelper.DeleteIfExists(subDirectoryPath);
+                ExecutedActions.Push(CommandActionIO.DirectoryDeleted(subDirectoryPath, tmpCommandActionBackupPath));
 
-			var tmpCommandActionBackupPath =
-				Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), twoLastDirectories);
+                childProgressBar.Tick(
+                    $"Created backup and deleted {counter++} of {subDirectories.Count()} subfolders inside '{assetFolder.AssetFolderName}' asset folder");
+            }
+        }
 
-			return tmpCommandActionBackupPath;
-		}
+        private string GetTmpBackupPathForDirectory(string subDirectoryPath)
+        {
+            var directoryInfo = new DirectoryInfo(subDirectoryPath);
+            var twoLastDirectories = Path.Combine(Path.GetFileName(directoryInfo.Parent.FullName), directoryInfo.Name);
 
-		private string GetTmpBackupPathForFile(string filePath)
-		{
-			var fileInfo = new FileInfo(filePath);
-			var parentDirectory = Path.GetFileName(fileInfo.DirectoryName);
+            var tmpCommandActionBackupPath =
+                Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name),
+                    twoLastDirectories);
 
-			var tmpCommandActionBackupPath =
-				Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), parentDirectory, Path.GetFileName(filePath));
+            return tmpCommandActionBackupPath;
+        }
 
-			return tmpCommandActionBackupPath;
-		}
-	}
+        private string GetTmpBackupPathForFile(string filePath)
+        {
+            var fileInfo = new FileInfo(filePath);
+            var parentDirectory = Path.GetFileName(fileInfo.DirectoryName);
+
+            var tmpCommandActionBackupPath =
+                Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), parentDirectory,
+                    Path.GetFileName(filePath));
+
+            return tmpCommandActionBackupPath;
+        }
+    }
 }

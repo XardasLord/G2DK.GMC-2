@@ -2,10 +2,12 @@
 
 namespace GothicModComposer.Utils.Exceptions
 {
-	public abstract class GMCExceptionBase : Exception
-	{
-		public abstract string Code { get; }
+    public abstract class GMCExceptionBase : Exception
+    {
+        protected GMCExceptionBase(string message) : base(message)
+        {
+        }
 
-		protected GMCExceptionBase(string message) : base(message) { }
-	}
+        public abstract string Code { get; }
+    }
 }

@@ -17,7 +17,7 @@ namespace GothicModComposer.Utils.IOHelpers
             infoSection.Set("Webpage", "");
             infoSection.Set("Description", "!<symlink>GothicGame.rtf");
             infoSection.Set("Icon", "GothicStarter.exe");
-            
+
             var filesSection = new IniBlock("FILES");
             filesSection.Set("VDF", "");
             filesSection.Set("Game", "Content\\Gothic");
@@ -29,11 +29,11 @@ namespace GothicModComposer.Utils.IOHelpers
             filesSection.Set("ParticleEffects", "System\\ParticleFX");
             filesSection.Set("VisualEffects", "System\\VisualFX");
             filesSection.Set("OutputUnits", "OU");
-                
+
             var settingsSection = new IniBlock("SETTINGS");
             settingsSection.Set("Player", "PC_HERO");
             settingsSection.Set("World", "");
-                
+
             var optionsSettings = new IniBlock("OPTIONS");
             optionsSettings.Set("show_Info", "0");
             optionsSettings.Set("show_InfoX", "800");
@@ -48,10 +48,10 @@ namespace GothicModComposer.Utils.IOHelpers
             optionsSettings.Set("show_FocusBar", "1");
             optionsSettings.Set("force_Subtitles", "0");
             optionsSettings.Set("force_Parameters", "");
-            
+
             var overridesSection = new IniBlock("OVERRIDES");
             overridesSection.Set("INTERNAL.extendedMenu", "1");
-            
+
             return new List<IniBlock>
             {
                 infoSection, filesSection, settingsSection, optionsSettings, overridesSection

@@ -22,18 +22,9 @@ namespace GothicModComposer.UI.Models
         }
 
         public string Section { get; set; }
-        
-        [JsonIgnore]
-        public DataGridColumnType DisplayAs { get; set; }
-        
-        [JsonIgnore]
-        public List<string> AvailableValues { get; set; }
-    }
 
-    public enum DataGridColumnType
-    {
-        TextBox,
-        CheckBox,
-        ComboBox
+        [JsonIgnore] public DataGridColumnType DisplayAs { get; set; }
+
+        [JsonIgnore] public List<string> AvailableValues { get; set; }
     }
 }

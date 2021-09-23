@@ -2,10 +2,10 @@
 
 namespace GothicModComposer.Builders
 {
-	public class GothicArgumentsBuilder
-	{
-		private GothicArguments _gothicArguments;
+    public class GothicArgumentsBuilder
+    {
+        private GothicArguments _gothicArguments;
 
-		// TODO: Implement builder pattern here
-	}
+        // TODO: Implement builder pattern here
+    }
 }

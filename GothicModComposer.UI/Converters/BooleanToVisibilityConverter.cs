@@ -6,6 +6,7 @@ namespace GothicModComposer.UI.Converters
     {
         public BooleanToVisibilityConverter() :
             base(Visibility.Visible, Visibility.Collapsed)
-        { }
+        {
+        }
     }
 }

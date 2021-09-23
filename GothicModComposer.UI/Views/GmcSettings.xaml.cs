@@ -5,7 +5,7 @@ using GothicModComposer.UI.ViewModels;
 namespace GothicModComposer.UI.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class GmcSettings
     {
@@ -14,10 +14,10 @@ namespace GothicModComposer.UI.Views
             InitializeComponent();
 
             DataContext = gmcSettingsVM;
-            
+
             var collectionView = new ListCollectionView(gmcSettingsVM.GmcConfiguration.IniOverrides);
             collectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(IniOverride.Section)));
-            
+
             OverridesIniTable.ItemsSource = collectionView;
         }
     }

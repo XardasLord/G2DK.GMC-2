@@ -17,15 +17,10 @@ namespace GothicModComposer.Models.Profiles
 
         private readonly Dictionary<string, string> _gothicArguments;
 
-        private GothicArguments()
-        {
-            _gothicArguments = new Dictionary<string, string>();
-        }
+        private GothicArguments() => _gothicArguments = new Dictionary<string, string>();
 
-        private GothicArguments(IEnumerable<KeyValuePair<string, string>> args)
-        {
-            _gothicArguments = new Dictionary<string, string>((IDictionary<string, string>)args);
-        }
+        private GothicArguments(IEnumerable<KeyValuePair<string, string>> args) => _gothicArguments =
+            new Dictionary<string, string>((IDictionary<string, string>) args);
 
         public bool Contains(string parameter)
             => _gothicArguments.ContainsKey(parameter);
@@ -38,31 +33,6 @@ namespace GothicModComposer.Models.Profiles
         public bool RemoveArg(string argument)
             => _gothicArguments.Remove(argument.ToUpper());
 
-        public static GothicArguments operator +(GothicArguments o1, GothicArguments o2)
-        {
-            GothicArguments result = new GothicArguments(o1._gothicArguments);
-            foreach (var key in o2._gothicArguments.Keys)
-            {
-                result._gothicArguments[key] = o2._gothicArguments[key];
-            }
-
-            return result;
-        }
-
-        public static GothicArguments operator -(GothicArguments o1, GothicArguments o2)
-        {
-            GothicArguments result = new GothicArguments(o1._gothicArguments);
-            foreach (var key in o2._gothicArguments.Keys)
-            {
-                if (result._gothicArguments.ContainsKey(key))
-                {
-                    result._gothicArguments.Remove(key);
-                }
-            }
-
-            return result;
-        }
-
         public List<string> ToList()
         {
             return _gothicArguments.Select(item => item.Value == null ? $"{item.Key}" : $"{item.Key}:{item.Value}")
@@ -74,9 +44,9 @@ namespace GothicModComposer.Models.Profiles
             if (profileGothicArgumentsForceConfig is null)
                 // If we don't pass config (e.g. running from bat files)
                 return this;
-            
+
             if (profileGothicArgumentsForceConfig.IsWindowMode)
-                SetArg(ZWindowModeParameter); 
+                SetArg(ZWindowModeParameter);
             else
                 RemoveArg(ZWindowModeParameter);
 
@@ -115,17 +85,9 @@ namespace GothicModComposer.Models.Profiles
             var args = new StringBuilder();
 
             foreach (var key in _gothicArguments.Keys)
-            {
                 args.Append(_gothicArguments[key] == null ? $"-{key} " : $"-{key}:{_gothicArguments[key]} ");
-            }
 
             return args.ToString();
-        }
-
-        /// <summary>Returns new empty GothicArguments Object</summary>
-        public static GothicArguments Empty()
-        {
-            return new GothicArguments();
         }
 
         /// <summary>MISSING SUMMARY</summary>
@@ -450,5 +412,25 @@ namespace GothicModComposer.Models.Profiles
             return this;
         }
 
+        public static GothicArguments operator +(GothicArguments o1, GothicArguments o2)
+        {
+            var result = new GothicArguments(o1._gothicArguments);
+            foreach (var key in o2._gothicArguments.Keys) result._gothicArguments[key] = o2._gothicArguments[key];
+
+            return result;
+        }
+
+        public static GothicArguments operator -(GothicArguments o1, GothicArguments o2)
+        {
+            var result = new GothicArguments(o1._gothicArguments);
+            foreach (var key in o2._gothicArguments.Keys)
+                if (result._gothicArguments.ContainsKey(key))
+                    result._gothicArguments.Remove(key);
+
+            return result;
+        }
+
+        /// <summary>Returns new empty GothicArguments Object</summary>
+        public static GothicArguments Empty() => new GothicArguments();
     }
 }
