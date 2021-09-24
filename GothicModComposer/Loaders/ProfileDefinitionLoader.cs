@@ -19,7 +19,8 @@ namespace GothicModComposer.Loaders
             ProfileDefinitionPresets.GetRunProfile(),
             ProfileDefinitionPresets.GetUpdateProfile(),
             ProfileDefinitionPresets.GetBuildModFileProfile(),
-            ProfileDefinitionPresets.GetEnableVDFProfile()
+            ProfileDefinitionPresets.GetEnableVDFProfile(),
+            ProfileDefinitionPresets.GetDisableVDFProfile()
         };
 
         public static ProfileLoaderResponse Load(ProfilePresetType profileType, GothicFolder gothicFolder,

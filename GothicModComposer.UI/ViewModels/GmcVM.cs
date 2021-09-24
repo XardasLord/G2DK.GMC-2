@@ -110,7 +110,12 @@ namespace GothicModComposer.UI.ViewModels
             }
 
             _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF, GmcSettings);
-            _spacerService.RunSpacer(GmcSettings.GmcConfiguration.Gothic2RootPath);
+            
+            var spacerProcess = _spacerService.RunSpacer(GmcSettings.GmcConfiguration.Gothic2RootPath);
+
+            spacerProcess.WaitForExit();
+            
+            _gmcExecutor.Execute(GmcExecutionProfile.DisableVDF, GmcSettings);
         }
     }
 }

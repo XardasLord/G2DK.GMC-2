@@ -110,6 +110,18 @@ namespace GothicModComposer.Presets
                 }
             };
 
+        public static ProfileDefinition GetDisableVDFProfile()
+	        => new()
+	        {
+		        ProfileType = ProfilePresetType.DisableVDF,
+		        GothicArguments = GothicArgumentsPresets.Default().ToList(),
+		        DefaultWorld = DefaultWorldName,
+		        ExecutionCommands = new List<string>
+		        {
+			        CommandBuilderHelper.DisableVdfFilesCommand
+		        }
+	        };
+
 		public static ProfileDefinition GetBuildModFileProfile()
             => new()
             {
