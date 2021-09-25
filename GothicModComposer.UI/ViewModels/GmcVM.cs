@@ -48,10 +48,24 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand RunSpacer { get; }
 
         private void RunUpdateProfileExecute(object obj)
-            => _gmcExecutor.Execute(GmcExecutionProfile.Update, GmcSettings);
+        {
+            if (!_gmcExecutor.GothicExecutableExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
+            {
+                ShowGothicExeNotFoundMessage();
+                return;
+            }
+            
+            _gmcExecutor.Execute(GmcExecutionProfile.Update, GmcSettings);
+        }
 
         private void RunComposeProfileExecute(object obj)
         {
+            if (!_gmcExecutor.GothicExecutableExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
+            {
+                ShowGothicExeNotFoundMessage();
+                return;
+            }
+            
             var messageBoxResult = MessageBox.Show("Are you sure you want to execute 'Compose' profile?",
                 "Execute Confirmation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
@@ -59,7 +73,15 @@ namespace GothicModComposer.UI.ViewModels
         }
 
         private void RunModProfileExecute(object obj)
-            => _gmcExecutor.Execute(GmcExecutionProfile.RunMod, GmcSettings);
+        {
+            if (!_gmcExecutor.GothicExecutableExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
+            {
+                ShowGothicExeNotFoundMessage();
+                return;
+            }
+            
+            _gmcExecutor.Execute(GmcExecutionProfile.RunMod, GmcSettings);
+        }
 
         private void RunRestoreGothicProfileExecute(object obj)
         {
@@ -70,7 +92,15 @@ namespace GothicModComposer.UI.ViewModels
         }
 
         private void RunBuildModFileProfileProfileExecute(object obj)
-            => _gmcExecutor.Execute(GmcExecutionProfile.BuildModFile, GmcSettings);
+        {
+            if (!_gmcExecutor.GothicVdfsExecutableExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
+            {
+                ShowGothicVdfsExeNotFoundMessage();
+                return;
+            }
+            
+            _gmcExecutor.Execute(GmcExecutionProfile.BuildModFile, GmcSettings);
+        }
 
         private void RunEnableVDFProfileProfileExecute(object obj)
             => _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF, GmcSettings);
@@ -117,5 +147,13 @@ namespace GothicModComposer.UI.ViewModels
             
             _gmcExecutor.Execute(GmcExecutionProfile.DisableVDF, GmcSettings);
         }
+
+        private static void ShowGothicExeNotFoundMessage() =>
+            MessageBox.Show("Gothic2.exe does not exist in 'System' directory.", "Gothic2.exe does not exist",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
+
+        private static void ShowGothicVdfsExeNotFoundMessage() =>
+            MessageBox.Show("GothicVDFS.exe does not exist in '_Work/Tools/VDFS' directory.", "GothicVDFS.exe does not exist",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
     }
 }
