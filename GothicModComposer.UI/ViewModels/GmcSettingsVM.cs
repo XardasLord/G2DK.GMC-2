@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using GothicModComposer.UI.Commands;
 using GothicModComposer.UI.Helpers;
@@ -22,10 +24,13 @@ namespace GothicModComposer.UI.ViewModels
 
         private GmcConfiguration _gmcConfiguration;
         private ObservableCollection<Zen3DWorld> _zen3DWorlds;
+        private int _zen3DWorldsLoadingProgress = 0;
         private bool _isSystemPackAvailable;
 
         public string GmcSettingsJsonFilePath { get; }
-        public string LogsDirectoryPath => Path.Combine(GmcConfiguration?.Gothic2RootPath ?? string.Empty, ".gmc", "Logs");
+
+        public string LogsDirectoryPath =>
+            Path.Combine(GmcConfiguration?.Gothic2RootPath ?? string.Empty, ".gmc", "Logs");
 
         public GmcConfiguration GmcConfiguration
         {
@@ -37,6 +42,17 @@ namespace GothicModComposer.UI.ViewModels
         {
             get => _zen3DWorlds;
             set => SetProperty(ref _zen3DWorlds, value);
+        }
+
+        public int Zen3DWorldsLoadingProgress
+        {
+            get => _zen3DWorldsLoadingProgress;
+            set
+            {
+                if (value < 0) value = 0;
+                if (value > 100) value = 100;
+                SetProperty(ref _zen3DWorldsLoadingProgress, value);
+            }
         }
 
         public bool IsSystemPackAvailable
@@ -87,57 +103,16 @@ namespace GothicModComposer.UI.ViewModels
             if (!string.IsNullOrWhiteSpace(GmcConfiguration.Gothic2RootPath))
                 OnGothic2RootPathChanged(GmcConfiguration.Gothic2RootPath);
 
-            // TODO: Would be nice to have this operation async
             LoadZen3DWorlds();
-        }
-
-        public void LoadZen3DWorlds()
-        {
-            Zen3DWorlds.Clear();
-
-            if (GmcConfiguration.Gothic2RootPath is null)
-                return;
-
-            var worldsPath = Path.Combine(GmcConfiguration.Gothic2RootPath, "_Work", "Data", "Worlds");
-
-            if (!Directory.Exists(worldsPath))
-                return;
-
-            var worldFiles = Directory.EnumerateFiles(worldsPath, "*.ZEN", SearchOption.AllDirectories).ToList();
-            worldFiles.ForEach(zenFilePath =>
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    if (!_fileService.HasBinaryContent(zenFilePath))
-                        return;
-
-                    var zenFileInfo = new FileInfo(zenFilePath);
-
-                    Zen3DWorlds.Add(new Zen3DWorld(zenFilePath, zenFileInfo.Name));
-                });
-            });
-
-            foreach (var zen3DWorld in Zen3DWorlds)
-            {
-                zen3DWorld.SetAsUnselected();
-
-                if (zen3DWorld.Path == GmcConfiguration.DefaultWorld)
-                    zen3DWorld.SetAsSelected();
-            }
-
-            if (Zen3DWorlds.All(x => !x.IsSelected))
-                GmcConfiguration.ForceGmcDefaultWorldSetNull();
         }
 
         public void SubscribeOnWorldDirectoryChanges()
         {
             _zenWorldsFileWatcherService.StartWatching(ZenWorldFilesChanged);
-
-            // Force to LoadZen3DWorlds when starting subscribing
-            Application.Current.Dispatcher.Invoke(LoadZen3DWorlds);
+            LoadZen3DWorlds();
         }
 
-        public void UnsubscribeOnWorldDirectoryChanges() 
+        public void UnsubscribeOnWorldDirectoryChanges()
             => _zenWorldsFileWatcherService.StopWatching(ZenWorldFilesChanged);
 
         private void IniOverrides_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -173,7 +148,8 @@ namespace GothicModComposer.UI.ViewModels
             GmcConfiguration.Gothic2RootPath = openFolderDialog.SelectedPath;
             OnPropertyChanged(nameof(GmcConfiguration));
 
-            IsSystemPackAvailable = File.Exists(Path.Combine(GmcConfiguration.Gothic2RootPath, "System", "SystemPack.ini"));
+            IsSystemPackAvailable =
+                File.Exists(Path.Combine(GmcConfiguration.Gothic2RootPath, "System", "SystemPack.ini"));
 
             LoadZen3DWorlds();
         }
@@ -216,7 +192,7 @@ namespace GothicModComposer.UI.ViewModels
             LoadConfiguration();
         }
 
-        private void OpenLogsDirectoryExecute(object obj) 
+        private void OpenLogsDirectoryExecute(object obj)
             => _gmcLogsDirectoryService.OpenLogsDirectoryExecute(LogsDirectoryPath);
 
         private void ClearLogsDirectoryExecute(object obj)
@@ -258,7 +234,7 @@ namespace GothicModComposer.UI.ViewModels
 
             if (GmcConfiguration != null && GmcConfiguration.GothicArguments.Resolution is null)
             {
-                GmcConfiguration.GothicArguments.Resolution = new Resolution { Width = 800, Height = 600 };
+                GmcConfiguration.GothicArguments.Resolution = new Resolution {Width = 800, Height = 600};
             }
 
             AddMissingDefaultIniOverrides();
@@ -274,7 +250,8 @@ namespace GothicModComposer.UI.ViewModels
                 iniOverrideItem.PropertyChanged += (_, _) => SaveSettings.Execute(null);
             }
 
-            IsSystemPackAvailable = File.Exists(Path.Combine(GmcConfiguration.Gothic2RootPath, "System", "SystemPack.ini"));
+            IsSystemPackAvailable =
+                File.Exists(Path.Combine(GmcConfiguration.Gothic2RootPath, "System", "SystemPack.ini"));
         }
 
         private void AddMissingDefaultIniOverrides()
@@ -286,9 +263,12 @@ namespace GothicModComposer.UI.ViewModels
                 if (GmcConfiguration.IniOverrides.Any(x => x.Key == defaultIniOverrideItem.Key))
                 {
                     // Just to be sure if section is not filled
-                    GmcConfiguration.IniOverrides.Single(x => x.Key == defaultIniOverrideItem.Key).Section = defaultIniOverrideItem.Section;
-                    GmcConfiguration.IniOverrides.Single(x => x.Key == defaultIniOverrideItem.Key).DisplayAs = defaultIniOverrideItem.DisplayAs;
-                    GmcConfiguration.IniOverrides.Single(x => x.Key == defaultIniOverrideItem.Key).AvailableValues = defaultIniOverrideItem.AvailableValues;
+                    GmcConfiguration.IniOverrides.Single(x => x.Key == defaultIniOverrideItem.Key).Section =
+                        defaultIniOverrideItem.Section;
+                    GmcConfiguration.IniOverrides.Single(x => x.Key == defaultIniOverrideItem.Key).DisplayAs =
+                        defaultIniOverrideItem.DisplayAs;
+                    GmcConfiguration.IniOverrides.Single(x => x.Key == defaultIniOverrideItem.Key).AvailableValues =
+                        defaultIniOverrideItem.AvailableValues;
                     return;
                 }
 
@@ -320,7 +300,7 @@ namespace GothicModComposer.UI.ViewModels
         private void OnGothic2RootPathChanged(string gothic2RootPath)
         {
             var worldsPath = Path.Combine(GmcConfiguration.Gothic2RootPath, "_Work", "Data", "Worlds");
-            
+
             _zenWorldsFileWatcherService.StopWatching(ZenWorldFilesChanged);
 
             if (Directory.Exists(worldsPath))
@@ -330,7 +310,72 @@ namespace GothicModComposer.UI.ViewModels
             }
         }
 
-        private void ZenWorldFilesChanged(object sender, FileSystemEventArgs e) 
-            => Application.Current.Dispatcher.Invoke(LoadZen3DWorlds);
+        private void ZenWorldFilesChanged(object sender, FileSystemEventArgs e)
+            => LoadZen3DWorlds();
+
+        private void LoadZen3DWorlds()
+        {
+            var worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += LoadZen3DWorlds_Worker;
+            worker.ProgressChanged += LoadZen3DWorlds_ProgressChanged;
+            worker.RunWorkerAsync();
+        }
+
+        private void LoadZen3DWorlds_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            Zen3DWorldsLoadingProgress = e.ProgressPercentage;
+        }
+
+        private void LoadZen3DWorlds_Worker(object sender, DoWorkEventArgs e)
+        {
+            var worker = sender as BackgroundWorker;
+            worker?.ReportProgress(0);
+            Zen3DWorlds.Clear();
+            if (GmcConfiguration.Gothic2RootPath is null)
+                return;
+
+            worker?.ReportProgress(10);
+
+            var worldsPath = Path.Combine(GmcConfiguration.Gothic2RootPath, "_Work", "Data", "Worlds");
+
+            if (!Directory.Exists(worldsPath))
+                return;
+
+            worker?.ReportProgress(20);
+
+            var worldFiles = Directory.EnumerateFiles(worldsPath, "*.ZEN", SearchOption.AllDirectories);
+
+            worker?.ReportProgress(30);
+
+            Parallel.ForEach(worldFiles, zenFilePath =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (!_fileService.HasBinaryContent(zenFilePath))
+                        return;
+
+                    var zenFileInfo = new FileInfo(zenFilePath);
+                    Zen3DWorlds.Add(new Zen3DWorld(zenFilePath, zenFileInfo.Name));
+                });
+            });
+
+            worker?.ReportProgress(50);
+
+            Parallel.ForEach(Zen3DWorlds, zen3DWorld =>
+            {
+                zen3DWorld.SetAsUnselected();
+
+                if (zen3DWorld.Path == GmcConfiguration.DefaultWorld)
+                    zen3DWorld.SetAsSelected();
+            });
+
+            worker?.ReportProgress(80);
+
+            if (Zen3DWorlds.All(x => !x.IsSelected))
+                GmcConfiguration.ForceGmcDefaultWorldSetNull();
+
+            worker?.ReportProgress(100);
+        }
     }
 }

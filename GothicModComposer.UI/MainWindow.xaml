@@ -41,28 +41,29 @@
             <Button Content="Enable VDF" Margin="0 15 0 0" Height="28" Command="{Binding RunEnableVDFProfile}" Width="130" />
         </StackPanel>
 
-        <Label Grid.Column="0" Content="World ZEN's" FontSize="20" Margin="10,23,0,0" Grid.Row="1" HorizontalAlignment="Left" Width="329" />
-        <ListView Grid.Row="1"
-                  Margin="10,62,0,10" 
-                  HorizontalAlignment="Left"
-                  Width="349"
-                  ItemsSource="{Binding GmcSettings.Zen3DWorlds}"
-                  SelectedValue="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  DisplayMemberPath="Path"
-                  SelectedValuePath="Name">
-            <ListView.Resources>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=OneWay}"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True" >
-                            <Setter Property="FontWeight" Value="Bold" />
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Foreground" Value="Black" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ListView.Resources>
-        </ListView>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Left" Width="339" Margin="10,0,0,10">
+            <Label Content="World ZEN's" FontSize="20" Margin="10,23,0,0" Width="329" />
+            <ListView
+                      Width="324"
+                      ItemsSource="{Binding GmcSettings.Zen3DWorlds}"
+                      SelectedValue="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      DisplayMemberPath="Path"
+                      SelectedValuePath="Name" Height="253">
+                <ListView.Resources>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=OneWay}"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True" >
+                                <Setter Property="FontWeight" Value="Bold" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Foreground" Value="Black" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.Resources>
+            </ListView>
+            <ProgressBar Width="324" Minimum="0" Margin="0,5,0,0" Maximum="100" Value="{Binding GmcSettings.Zen3DWorldsLoadingProgress}" Height="20" />
+        </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Vertical" Margin="377,62,225,162">
             <Label Content="Gothic arguments (Run mod):" FontWeight="Bold" />
