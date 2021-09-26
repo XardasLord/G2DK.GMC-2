@@ -19,7 +19,7 @@ namespace GothicModComposer.UI.ViewModels
     public class GmcSettingsVM : ObservableVM
     {
         private readonly IFileService _fileService;
-        private readonly IGmcLogsDirectoryService _gmcLogsDirectoryService;
+        private readonly IGmcDirectoryService _gmcDirectoryService;
         private readonly IZenWorldsFileWatcherService _zenWorldsFileWatcherService;
 
         private GmcConfiguration _gmcConfiguration;
@@ -31,6 +31,9 @@ namespace GothicModComposer.UI.ViewModels
 
         public string LogsDirectoryPath =>
             Path.Combine(GmcConfiguration?.Gothic2RootPath ?? string.Empty, ".gmc", "Logs");
+        
+        public string ModBuildDirectoryPath =>
+            Path.Combine(GmcConfiguration?.Gothic2RootPath ?? string.Empty, ".gmc", "build");
 
         public GmcConfiguration GmcConfiguration
         {
@@ -67,15 +70,16 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand RestoreDefaultConfiguration { get; }
         public RelayCommand OpenLogsDirectory { get; }
         public RelayCommand ClearLogsDirectory { get; }
+        public RelayCommand OpenModBuildDirectory { get; }
         public RelayCommand RestoreDefaultIniOverrides { get; }
 
         public GmcSettingsVM(
             IFileService fileService,
-            IGmcLogsDirectoryService gmcLogsDirectoryService,
+            IGmcDirectoryService gmcDirectoryService,
             IZenWorldsFileWatcherService zenWorldsFileWatcherService)
         {
             _fileService = fileService;
-            _gmcLogsDirectoryService = gmcLogsDirectoryService;
+            _gmcDirectoryService = gmcDirectoryService;
             _zenWorldsFileWatcherService = zenWorldsFileWatcherService;
 
             GmcSettingsJsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "gmc-2-ui.json");
@@ -86,6 +90,7 @@ namespace GothicModComposer.UI.ViewModels
             SaveSettings = new RelayCommand(SaveSettingsExecute);
             RestoreDefaultConfiguration = new RelayCommand(RestoreDefaultConfigurationExecute);
             OpenLogsDirectory = new RelayCommand(OpenLogsDirectoryExecute);
+            OpenModBuildDirectory = new RelayCommand(OpenModBuildDirectoryExecute);
             ClearLogsDirectory = new RelayCommand(ClearLogsDirectoryExecute);
             RestoreDefaultIniOverrides = new RelayCommand(RestoreDefaultIniOverridesExecute);
 
@@ -193,10 +198,13 @@ namespace GothicModComposer.UI.ViewModels
         }
 
         private void OpenLogsDirectoryExecute(object obj)
-            => _gmcLogsDirectoryService.OpenLogsDirectoryExecute(LogsDirectoryPath);
+            => _gmcDirectoryService.OpenLogsDirectoryExecute(LogsDirectoryPath);
 
         private void ClearLogsDirectoryExecute(object obj)
-            => _gmcLogsDirectoryService.ClearLogsDirectoryExecute(LogsDirectoryPath);
+            => _gmcDirectoryService.ClearLogsDirectoryExecute(LogsDirectoryPath);
+
+        private void OpenModBuildDirectoryExecute(object obj)
+            => _gmcDirectoryService.OpenModBuildDirectoryExecute(ModBuildDirectoryPath);
 
         private void RestoreDefaultIniOverridesExecute(object obj)
         {

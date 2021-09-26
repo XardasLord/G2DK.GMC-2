@@ -27,7 +27,7 @@ namespace GothicModComposer.UI
             services.AddTransient<IGmcExecutor, GmcExecutor>();
             services.AddTransient<ISpacerService, SpacerService>();
             services.AddTransient<IFileService, FileService>();
-            services.AddTransient<IGmcLogsDirectoryService, GmcLogsDirectoryService>();
+            services.AddTransient<IGmcDirectoryService, GmcDirectoryService>();
             services.AddTransient<IZenWorldsFileWatcherService, ZenWorldsFileWatcherService>();
 
             services.AddSingleton<GmcVM>();

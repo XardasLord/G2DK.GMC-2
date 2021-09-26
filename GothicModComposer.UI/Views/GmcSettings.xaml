@@ -32,6 +32,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -59,7 +60,13 @@
                             Command="{Binding ClearLogsDirectory}" />
                 </StackPanel>
 
-                <StackPanel Grid.Row="7" Grid.Column="0" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
+                <StackPanel Grid.Row="7" Grid.Column="1" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
+                    <Button Width="200" Height="32"
+                            Content="Open mod build directory"
+                            Command="{Binding OpenModBuildDirectory}" />
+                </StackPanel>
+                
+                <StackPanel Grid.Row="8" Grid.Column="0" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
                     <CheckBox IsChecked="{Binding GmcConfiguration.CloseAfterFinish}"
                               Content="Auto close console after finish" />
                 </StackPanel>
