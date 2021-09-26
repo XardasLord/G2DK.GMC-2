@@ -331,7 +331,12 @@ namespace GothicModComposer.UI.ViewModels
         {
             var worker = sender as BackgroundWorker;
             worker?.ReportProgress(0);
-            Zen3DWorlds.Clear();
+            
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Zen3DWorlds.Clear();
+            });
+            
             if (GmcConfiguration.Gothic2RootPath is null)
                 return;
 
@@ -340,8 +345,11 @@ namespace GothicModComposer.UI.ViewModels
             var worldsPath = Path.Combine(GmcConfiguration.Gothic2RootPath, "_Work", "Data", "Worlds");
 
             if (!Directory.Exists(worldsPath))
+            {
+                worker?.ReportProgress(0);
                 return;
-
+            }
+            
             worker?.ReportProgress(20);
 
             var worldFiles = Directory.EnumerateFiles(worldsPath, "*.ZEN", SearchOption.AllDirectories);
@@ -365,7 +373,6 @@ namespace GothicModComposer.UI.ViewModels
             Parallel.ForEach(Zen3DWorlds, zen3DWorld =>
             {
                 zen3DWorld.SetAsUnselected();
-
                 if (zen3DWorld.Path == GmcConfiguration.DefaultWorld)
                     zen3DWorld.SetAsSelected();
             });

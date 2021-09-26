@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.Json;
+using System.Windows;
 using GothicModComposer.UI.Helpers;
 
 namespace GothicModComposer.UI.Models
@@ -150,8 +151,11 @@ namespace GothicModComposer.UI.Models
 
         public void ForceGmcDefaultWorldSetNull()
         {
-            _defaultWorld = null;
-            OnPropertyChanged(nameof(DefaultWorld));
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                _defaultWorld = null;
+                OnPropertyChanged(nameof(DefaultWorld));
+            });
         }
     }
 }
