@@ -32,7 +32,7 @@ namespace GothicModComposer.UI.ViewModels
 
         public string LogsDirectoryPath =>
             Path.Combine(GmcConfiguration?.Gothic2RootPath ?? string.Empty, ".gmc", "Logs");
-        
+
         public string ModBuildDirectoryPath =>
             Path.Combine(GmcConfiguration?.Gothic2RootPath ?? string.Empty, ".gmc", "build");
 
@@ -112,11 +112,8 @@ namespace GothicModComposer.UI.ViewModels
             LoadZen3DWorlds();
         }
 
-        public void SubscribeOnWorldDirectoryChanges()
-        {
+        public void SubscribeOnWorldDirectoryChanges() =>
             _zenWorldsFileWatcherService.StartWatching(ZenWorldFilesChanged);
-            LoadZen3DWorlds();
-        }
 
         public void UnsubscribeOnWorldDirectoryChanges()
             => _zenWorldsFileWatcherService.StopWatching(ZenWorldFilesChanged);
@@ -184,7 +181,10 @@ namespace GothicModComposer.UI.ViewModels
                 WriteIndented = true
             });
 
-            File.WriteAllText(GmcSettingsJsonFilePath, configurationJson);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                File.WriteAllText(GmcSettingsJsonFilePath, configurationJson);
+            });
         }
 
         private void RestoreDefaultConfigurationExecute(object obj)
