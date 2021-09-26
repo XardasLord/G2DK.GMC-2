@@ -69,6 +69,8 @@
                 <StackPanel Grid.Row="8" Grid.Column="0" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
                     <CheckBox IsChecked="{Binding GmcConfiguration.CloseAfterFinish}"
                               Content="Auto close console after finish" />
+                    <CheckBox Unchecked="WindowsStartup_Unchecked" Checked="WindowsStartup_Checked" IsChecked="{Binding GmcConfiguration.StartWithWindows}"
+                              Content="Start with Windows" />
                 </StackPanel>
             </Grid>
         </TabItem>

@@ -18,6 +18,7 @@ namespace GothicModComposer.UI.Models
         private ObservableCollection<IniOverride> _iniOverridesSystemPack;
         private string _modificationRootPath;
         private bool _closeAfterFinish = true;
+        private bool _startWithWindows = false;
 
         public GmcConfiguration()
         {
@@ -52,6 +53,12 @@ namespace GothicModComposer.UI.Models
             set => SetProperty(ref _closeAfterFinish, value);
         }
 
+        public bool StartWithWindows
+        {
+            get => _startWithWindows;
+            set => SetProperty(ref _startWithWindows, value);
+        }
+        
         public string DefaultWorld
         {
             get => _defaultWorld;
