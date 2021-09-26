@@ -44,7 +44,7 @@ namespace GothicModComposer.UI.Views
             {
                 var registryKey =
                     Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                registryKey?.DeleteValue("GMC_2_UI");
+                registryKey?.DeleteValue("GMC_2_UI", false);
             }
             catch (Exception ex)
             {
