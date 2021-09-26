@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using GothicModComposer.UI.Commands;
 using GothicModComposer.UI.Enums;
@@ -32,6 +33,8 @@ namespace GothicModComposer.UI.ViewModels
             OpenSettings = new RelayCommand(OpenSettingsExecute);
             OpenChangeLog = new RelayCommand(OpenChangeLogExecute);
             OpenTrelloProjectBoard = new RelayCommand(OpenTrelloProjectBoardExecute);
+            OpenGameDirectory = new RelayCommand(OpenGameDirectoryExecute);
+            OpenModDirectory = new RelayCommand(OpenModDirectoryExecute);
             RunSpacer = new RelayCommand(RunSpacerExecute);
         }
 
@@ -45,6 +48,8 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand OpenSettings { get; }
         public RelayCommand OpenChangeLog { get; }
         public RelayCommand OpenTrelloProjectBoard { get; }
+        public RelayCommand OpenGameDirectory { get; }
+        public RelayCommand OpenModDirectory { get; }
         public RelayCommand RunSpacer { get; }
 
         private void RunUpdateProfileExecute(object obj)
@@ -119,6 +124,30 @@ namespace GothicModComposer.UI.ViewModels
             Process.Start(processStartInfo);
         }
 
+        private void OpenGameDirectoryExecute(object obj)
+        {
+            if (Directory.Exists(GmcSettings.GmcConfiguration.Gothic2RootPath))
+            {
+                Process.Start("explorer.exe", GmcSettings.GmcConfiguration.Gothic2RootPath);
+            }
+            else
+            {
+                MessageBox.Show("Invalid Gothic II path.");
+            }
+        }
+
+        private void OpenModDirectoryExecute(object obj)
+        {
+            if (Directory.Exists(GmcSettings.GmcConfiguration.ModificationRootPath))
+            {
+                Process.Start("explorer.exe", GmcSettings.GmcConfiguration.ModificationRootPath);
+            }
+            else
+            {
+                MessageBox.Show("Invalid mod path.");
+            }
+        }
+
         private static void OpenTrelloProjectBoardExecute(object obj)
         {
             var processStartInfo = new ProcessStartInfo
@@ -140,11 +169,11 @@ namespace GothicModComposer.UI.ViewModels
             }
 
             _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF, GmcSettings);
-            
+
             var spacerProcess = _spacerService.RunSpacer(GmcSettings.GmcConfiguration.Gothic2RootPath);
 
             spacerProcess.WaitForExit();
-            
+
             _gmcExecutor.Execute(GmcExecutionProfile.DisableVDF, GmcSettings);
         }
 

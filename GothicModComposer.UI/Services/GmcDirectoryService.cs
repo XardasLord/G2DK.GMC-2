@@ -7,8 +7,20 @@ using GothicModComposer.UI.Interfaces;
 
 namespace GothicModComposer.UI.Services
 {
-    public class GmcLogsDirectoryService : IGmcLogsDirectoryService
+    public class GmcDirectoryService : IGmcDirectoryService
     {
+        public void OpenModBuildDirectoryExecute(string modBuildDirectoryPath)
+        {
+            if (Directory.Exists(modBuildDirectoryPath))
+            {
+                Process.Start("explorer.exe", modBuildDirectoryPath);
+            }
+            else
+            {
+                MessageBox.Show("Mod build directory does not exists.");
+            }
+        }
+        
         public void OpenLogsDirectoryExecute(string gmcLogsPath)
         {
             if (Directory.Exists(gmcLogsPath))
