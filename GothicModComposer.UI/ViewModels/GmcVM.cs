@@ -36,6 +36,7 @@ namespace GothicModComposer.UI.ViewModels
             OpenGameDirectory = new RelayCommand(OpenGameDirectoryExecute);
             OpenModDirectory = new RelayCommand(OpenModDirectoryExecute);
             RunSpacer = new RelayCommand(RunSpacerExecute);
+            DeleteZenWorld = new RelayCommand(DeleteZenWorldExecute);
         }
 
         public GmcSettingsVM GmcSettings { get; }
@@ -51,6 +52,7 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand OpenGameDirectory { get; }
         public RelayCommand OpenModDirectory { get; }
         public RelayCommand RunSpacer { get; }
+        public RelayCommand DeleteZenWorld { get; }
 
         private void RunUpdateProfileExecute(object obj)
         {
@@ -175,6 +177,17 @@ namespace GothicModComposer.UI.ViewModels
             spacerProcess.WaitForExit();
 
             _gmcExecutor.Execute(GmcExecutionProfile.DisableVDF, GmcSettings);
+        }
+
+        private void DeleteZenWorldExecute(object obj)
+        {
+	        var fullWorldPath = obj?.ToString();
+
+            if (fullWorldPath is null)
+                return;
+
+            if (File.Exists(fullWorldPath))
+                File.Delete(fullWorldPath);
         }
 
         private static void ShowGothicExeNotFoundMessage() =>
