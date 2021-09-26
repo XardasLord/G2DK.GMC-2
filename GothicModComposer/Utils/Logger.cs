@@ -75,9 +75,8 @@ namespace GothicModComposer.Utils
             Console.WriteLine(value);
         }
 
-        public static void SaveLogs(string logsFolderPath)
+        public static void SaveLogs()
         {
-            DirectoryHelper.CreateIfDoesNotExist(logsFolderPath);
             Log.CloseAndFlush();
         }
     }

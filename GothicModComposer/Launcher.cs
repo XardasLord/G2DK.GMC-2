@@ -37,7 +37,8 @@ namespace GothicModComposer
                 .MinimumLevel.Debug()
                 .WriteTo.File(
                     $"{gmcManager.GmcFolder.LogsFolderPath}/log_{DateTime.Now:yyyyMMdd_HHmm}.txt",
-                    flushToDiskInterval: TimeSpan.FromSeconds(5)
+                    flushToDiskInterval: TimeSpan.FromSeconds(5),
+                    shared: true
                 )
                 .CreateLogger();
 
@@ -71,7 +72,7 @@ namespace GothicModComposer
             }
             finally
             {
-                Logger.SaveLogs(gmcManager.GmcFolder.LogsFolderPath);
+                Logger.SaveLogs();
             }
 
             if (parameters.KeepOpenAfterFinish)
