@@ -12,6 +12,8 @@ namespace GothicModComposer.UI.Views
     /// </summary>
     public partial class GmcSettings
     {
+		private const string WindowsStartupRegistryPath = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+
         public GmcSettings(GmcSettingsVM gmcSettingsVM)
         {
             InitializeComponent();
@@ -26,11 +28,12 @@ namespace GothicModComposer.UI.Views
 
         private void WindowsStartup_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
+	        var exePath = System.Reflection.Assembly.GetExecutingAssembly().Location.Replace("dll", "exe");
+
             try
             {
-                var registryKey =
-                    Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                registryKey?.SetValue("GMC_2_UI", System.Reflection.Assembly.GetEntryAssembly().Location);
+                var registryKey = Registry.CurrentUser.OpenSubKey(WindowsStartupRegistryPath, true);
+                registryKey?.SetValue("GMC_2_UI", exePath);
             }
             catch (Exception ex)
             {
@@ -42,8 +45,7 @@ namespace GothicModComposer.UI.Views
         {
             try
             {
-                var registryKey =
-                    Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                var registryKey = Registry.CurrentUser.OpenSubKey(WindowsStartupRegistryPath, true);
                 registryKey?.DeleteValue("GMC_2_UI", false);
             }
             catch (Exception ex)
