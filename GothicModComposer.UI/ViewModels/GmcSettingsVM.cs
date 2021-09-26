@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using GothicModComposer.UI.Commands;
+using GothicModComposer.UI.Extensions;
 using GothicModComposer.UI.Helpers;
 using GothicModComposer.UI.Interfaces;
 using GothicModComposer.UI.Models;
@@ -389,7 +390,7 @@ namespace GothicModComposer.UI.ViewModels
 
             Application.Current.Dispatcher.Invoke(() =>
             {
-                Zen3DWorlds = new ObservableCollection<Zen3DWorld>(Zen3DWorlds.OrderBy(x => x.Name));
+                Zen3DWorlds = new ObservableCollection<Zen3DWorld>(Zen3DWorlds.OrderByAlphaNumeric(x => x.Name));
             });
 
             worker?.ReportProgress(100);
