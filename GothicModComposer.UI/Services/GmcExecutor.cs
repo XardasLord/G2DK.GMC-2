@@ -10,6 +10,15 @@ namespace GothicModComposer.UI.Services
 {
     public class GmcExecutor : IGmcExecutor
     {
+        private const string PathToGothic2Exe = "System/Gothic2.exe";
+        private const string PathToGothicVdfsExe = "_Work/Tools/VDFS/GothicVDFS.exe";
+
+        public bool GothicExecutableExists(string gothicRootPath)
+            => File.Exists(Path.Combine(gothicRootPath, PathToGothic2Exe));
+
+        public bool GothicVdfsExecutableExists(string gothicRootPath)
+            => File.Exists(Path.Combine(gothicRootPath, PathToGothicVdfsExe));
+
         public void Execute(GmcExecutionProfile profile, GmcSettingsVM gmcSettingsVM)
         {
             if (IsGmcAlreadyRun())

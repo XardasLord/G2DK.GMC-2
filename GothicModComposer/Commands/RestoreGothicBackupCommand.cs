@@ -54,6 +54,6 @@ namespace GothicModComposer.Commands
             }
         }
 
-        private void RemoveGmcFolder() => DirectoryHelper.DeleteIfExists(_profile.GmcFolder.BasePath);
+        private void RemoveGmcFolder() => DirectoryHelper.DeleteFilesInDirectoryIfExists(_profile.GmcFolder.BasePath);
     }
 }

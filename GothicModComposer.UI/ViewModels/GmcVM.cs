@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using GothicModComposer.UI.Commands;
 using GothicModComposer.UI.Enums;
@@ -32,7 +33,11 @@ namespace GothicModComposer.UI.ViewModels
             OpenSettings = new RelayCommand(OpenSettingsExecute);
             OpenChangeLog = new RelayCommand(OpenChangeLogExecute);
             OpenTrelloProjectBoard = new RelayCommand(OpenTrelloProjectBoardExecute);
+            OpenGameDirectory = new RelayCommand(OpenGameDirectoryExecute);
+            OpenModDirectory = new RelayCommand(OpenModDirectoryExecute);
             RunSpacer = new RelayCommand(RunSpacerExecute);
+            DeleteZenWorld = new RelayCommand(DeleteZenWorldExecute);
+            RenameZenWorld = new RelayCommand(RenameZenWorldExecute);
         }
 
         public GmcSettingsVM GmcSettings { get; }
@@ -45,13 +50,31 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand OpenSettings { get; }
         public RelayCommand OpenChangeLog { get; }
         public RelayCommand OpenTrelloProjectBoard { get; }
+        public RelayCommand OpenGameDirectory { get; }
+        public RelayCommand OpenModDirectory { get; }
         public RelayCommand RunSpacer { get; }
+        public RelayCommand DeleteZenWorld { get; }
+        public RelayCommand RenameZenWorld { get; }
 
         private void RunUpdateProfileExecute(object obj)
-            => _gmcExecutor.Execute(GmcExecutionProfile.Update, GmcSettings);
+        {
+            if (!_gmcExecutor.GothicExecutableExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
+            {
+                ShowGothicExeNotFoundMessage();
+                return;
+            }
+
+            _gmcExecutor.Execute(GmcExecutionProfile.Update, GmcSettings);
+        }
 
         private void RunComposeProfileExecute(object obj)
         {
+            if (!_gmcExecutor.GothicExecutableExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
+            {
+                ShowGothicExeNotFoundMessage();
+                return;
+            }
+
             var messageBoxResult = MessageBox.Show("Are you sure you want to execute 'Compose' profile?",
                 "Execute Confirmation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
@@ -59,7 +82,15 @@ namespace GothicModComposer.UI.ViewModels
         }
 
         private void RunModProfileExecute(object obj)
-            => _gmcExecutor.Execute(GmcExecutionProfile.RunMod, GmcSettings);
+        {
+            if (!_gmcExecutor.GothicExecutableExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
+            {
+                ShowGothicExeNotFoundMessage();
+                return;
+            }
+
+            _gmcExecutor.Execute(GmcExecutionProfile.RunMod, GmcSettings);
+        }
 
         private void RunRestoreGothicProfileExecute(object obj)
         {
@@ -70,7 +101,15 @@ namespace GothicModComposer.UI.ViewModels
         }
 
         private void RunBuildModFileProfileProfileExecute(object obj)
-            => _gmcExecutor.Execute(GmcExecutionProfile.BuildModFile, GmcSettings);
+        {
+            if (!_gmcExecutor.GothicVdfsExecutableExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
+            {
+                ShowGothicVdfsExeNotFoundMessage();
+                return;
+            }
+
+            _gmcExecutor.Execute(GmcExecutionProfile.BuildModFile, GmcSettings);
+        }
 
         private void RunEnableVDFProfileProfileExecute(object obj)
             => _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF, GmcSettings);
@@ -87,6 +126,30 @@ namespace GothicModComposer.UI.ViewModels
             };
 
             Process.Start(processStartInfo);
+        }
+
+        private void OpenGameDirectoryExecute(object obj)
+        {
+            if (Directory.Exists(GmcSettings.GmcConfiguration.Gothic2RootPath))
+            {
+                Process.Start("explorer.exe", GmcSettings.GmcConfiguration.Gothic2RootPath);
+            }
+            else
+            {
+                MessageBox.Show("Invalid Gothic II path.");
+            }
+        }
+
+        private void OpenModDirectoryExecute(object obj)
+        {
+            if (Directory.Exists(GmcSettings.GmcConfiguration.ModificationRootPath))
+            {
+                Process.Start("explorer.exe", GmcSettings.GmcConfiguration.ModificationRootPath);
+            }
+            else
+            {
+                MessageBox.Show("Invalid mod path.");
+            }
         }
 
         private static void OpenTrelloProjectBoardExecute(object obj)
@@ -110,7 +173,51 @@ namespace GothicModComposer.UI.ViewModels
             }
 
             _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF, GmcSettings);
-            _spacerService.RunSpacer(GmcSettings.GmcConfiguration.Gothic2RootPath);
+
+            var spacerProcess = _spacerService.RunSpacer(GmcSettings.GmcConfiguration.Gothic2RootPath);
+
+            spacerProcess.WaitForExit();
+
+            _gmcExecutor.Execute(GmcExecutionProfile.DisableVDF, GmcSettings);
         }
+
+        private void DeleteZenWorldExecute(object obj)
+        {
+            var fullWorldPath = obj?.ToString();
+
+            if (fullWorldPath is null)
+                return;
+
+            if (File.Exists(fullWorldPath))
+                File.Delete(fullWorldPath);
+        }
+
+        private void RenameZenWorldExecute(object obj)
+        {
+            var fullWorldPath = obj?.ToString();
+
+            if (fullWorldPath is null)
+                return;
+
+            var fileName = Path.GetFileNameWithoutExtension(fullWorldPath);
+
+            var inputDialog = new InputDialog("Rename:", fileName);
+            if (inputDialog.ShowDialog() == true)
+            {
+                var fileDirectoryPath = Path.GetDirectoryName(fullWorldPath);
+                var newFileName = $"{inputDialog.Answer}{Path.GetExtension(fullWorldPath)}";
+                var newFileNamePath = Path.Combine(fileDirectoryPath, newFileName);
+                
+                File.Move(fullWorldPath, newFileNamePath);
+            }
+        }
+
+        private static void ShowGothicExeNotFoundMessage() =>
+            MessageBox.Show("Gothic2.exe does not exist in 'System' directory.", "Gothic2.exe does not exist",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
+
+        private static void ShowGothicVdfsExeNotFoundMessage() =>
+            MessageBox.Show("GothicVDFS.exe does not exist in '_Work/Tools/VDFS' directory.", "GothicVDFS.exe does not exist",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
     }
 }

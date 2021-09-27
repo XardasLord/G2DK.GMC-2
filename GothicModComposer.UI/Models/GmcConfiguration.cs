@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.Json;
+using System.Windows;
+using System.Windows.Forms;
 using GothicModComposer.UI.Helpers;
+using Application = System.Windows.Application;
 
 namespace GothicModComposer.UI.Models
 {
@@ -15,6 +18,7 @@ namespace GothicModComposer.UI.Models
         private ObservableCollection<IniOverride> _iniOverridesSystemPack;
         private string _modificationRootPath;
         private bool _closeAfterFinish = true;
+        private bool _startWithWindows = false;
 
         public GmcConfiguration()
         {
@@ -25,21 +29,7 @@ namespace GothicModComposer.UI.Models
             GothicArguments.PropertyChanged += (_, _) => OnPropertyChanged(nameof(GothicArguments));
         }
 
-        public static IEnumerable<Resolution> AvailableResolutions => new List<Resolution>
-        {
-            new() {Width = 640, Height = 480},
-            new() {Width = 800, Height = 600},
-            new() {Width = 1024, Height = 768},
-            new() {Width = 1280, Height = 720},
-            new() {Width = 1280, Height = 1024},
-            new() {Width = 1366, Height = 768},
-            new() {Width = 1600, Height = 900},
-            new() {Width = 1600, Height = 1200},
-            new() {Width = 1920, Height = 1080},
-            new() {Width = 2048, Height = 1152},
-            new() {Width = 2048, Height = 1536},
-            new() {Width = 2560, Height = 1440}
-        };
+        public static IEnumerable<Resolution> AvailableResolutions => GetUserSupportedResolutions();
 
         public string Gothic2RootPath
         {
@@ -61,6 +51,12 @@ namespace GothicModComposer.UI.Models
         {
             get => _closeAfterFinish;
             set => SetProperty(ref _closeAfterFinish, value);
+        }
+
+        public bool StartWithWindows
+        {
+            get => _startWithWindows;
+            set => SetProperty(ref _startWithWindows, value);
         }
         
         public string DefaultWorld
@@ -150,8 +146,39 @@ namespace GothicModComposer.UI.Models
 
         public void ForceGmcDefaultWorldSetNull()
         {
-            _defaultWorld = null;
-            OnPropertyChanged(nameof(DefaultWorld));
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                _defaultWorld = null;
+                OnPropertyChanged(nameof(DefaultWorld));
+            });
+        }
+
+        private static IEnumerable<Resolution> GetUserSupportedResolutions()
+        {
+            var supportedResolutions = new List<Resolution>
+            {
+                new() {Width = 640, Height = 480},
+                new() {Width = 800, Height = 600},
+                new() {Width = 1024, Height = 768},
+                new() {Width = 1280, Height = 720},
+                new() {Width = 1280, Height = 1024},
+                new() {Width = 1366, Height = 768},
+                new() {Width = 1600, Height = 900},
+                new() {Width = 1600, Height = 1200},
+                new() {Width = 1920, Height = 1080},
+                new() {Width = 2048, Height = 1152},
+                new() {Width = 2560, Height = 1440},
+                new() {Width = 3840, Height = 2160}
+            };
+
+            foreach (var supportedResolution in supportedResolutions)
+            {
+                if (supportedResolution.Height <= Screen.PrimaryScreen.Bounds.Height &&
+                    supportedResolution.Width <= Screen.PrimaryScreen.Bounds.Width)
+                {
+                    yield return supportedResolution;
+                }
+            }
         }
     }
 }

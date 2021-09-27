@@ -11,14 +11,14 @@ namespace GothicModComposer.UI.Services
         public bool SpacerExists(string gothicRootPath)
             => File.Exists(Path.Combine(gothicRootPath, PathToSpacer));
 
-        public void RunSpacer(string gothicRootPath)
+        public Process RunSpacer(string gothicRootPath)
         {
             if (!SpacerExists(gothicRootPath))
-                return;
+                return null;
 
             var spacerPath = Path.Combine(gothicRootPath, PathToSpacer);
 
-            Process.Start(spacerPath);
+            return Process.Start(spacerPath);
         }
     }
 }
