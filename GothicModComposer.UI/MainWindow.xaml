@@ -14,14 +14,24 @@
 
         <DataTemplate x:Key="TemplateWorldZen">
             <StackPanel Orientation="Horizontal">
-                <Button Margin="0 0 10 0"
-                        ToolTip="Delete world"
+                <Button Margin="0 0 5 0"
+                        ToolTip="Delete"
                         Command="{Binding RelativeSource=
 					            {RelativeSource FindAncestor, 
 					            AncestorType={x:Type ListView}}, 
 					            Path=DataContext.DeleteZenWorld}"
                         CommandParameter="{Binding FullPath}">
                     <Image Source="Resources/delete.png" Width="16" Height="16" />
+                </Button>
+
+                <Button Margin="0 0 10 0"
+                        ToolTip="Rename"
+                        Command="{Binding RelativeSource=
+					            {RelativeSource FindAncestor, 
+					            AncestorType={x:Type ListView}}, 
+					            Path=DataContext.RenameZenWorld}"
+                        CommandParameter="{Binding FullPath}">
+                    <Image Source="Resources/edit.png" Width="16" Height="16" />
                 </Button>
 
                 <TextBlock Text="{Binding Path}"

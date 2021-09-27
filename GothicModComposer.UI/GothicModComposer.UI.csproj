@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <None Remove="Resources\delete.png" />
+    <None Remove="Resources\edit.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,6 +58,9 @@
 
   <ItemGroup>
     <Resource Include="Resources\delete.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\edit.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

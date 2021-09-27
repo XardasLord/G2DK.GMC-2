@@ -37,6 +37,7 @@ namespace GothicModComposer.UI.ViewModels
             OpenModDirectory = new RelayCommand(OpenModDirectoryExecute);
             RunSpacer = new RelayCommand(RunSpacerExecute);
             DeleteZenWorld = new RelayCommand(DeleteZenWorldExecute);
+            RenameZenWorld = new RelayCommand(RenameZenWorldExecute);
         }
 
         public GmcSettingsVM GmcSettings { get; }
@@ -53,6 +54,7 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand OpenModDirectory { get; }
         public RelayCommand RunSpacer { get; }
         public RelayCommand DeleteZenWorld { get; }
+        public RelayCommand RenameZenWorld { get; }
 
         private void RunUpdateProfileExecute(object obj)
         {
@@ -61,7 +63,7 @@ namespace GothicModComposer.UI.ViewModels
                 ShowGothicExeNotFoundMessage();
                 return;
             }
-            
+
             _gmcExecutor.Execute(GmcExecutionProfile.Update, GmcSettings);
         }
 
@@ -72,7 +74,7 @@ namespace GothicModComposer.UI.ViewModels
                 ShowGothicExeNotFoundMessage();
                 return;
             }
-            
+
             var messageBoxResult = MessageBox.Show("Are you sure you want to execute 'Compose' profile?",
                 "Execute Confirmation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
@@ -86,7 +88,7 @@ namespace GothicModComposer.UI.ViewModels
                 ShowGothicExeNotFoundMessage();
                 return;
             }
-            
+
             _gmcExecutor.Execute(GmcExecutionProfile.RunMod, GmcSettings);
         }
 
@@ -105,7 +107,7 @@ namespace GothicModComposer.UI.ViewModels
                 ShowGothicVdfsExeNotFoundMessage();
                 return;
             }
-            
+
             _gmcExecutor.Execute(GmcExecutionProfile.BuildModFile, GmcSettings);
         }
 
@@ -181,13 +183,33 @@ namespace GothicModComposer.UI.ViewModels
 
         private void DeleteZenWorldExecute(object obj)
         {
-	        var fullWorldPath = obj?.ToString();
+            var fullWorldPath = obj?.ToString();
 
             if (fullWorldPath is null)
                 return;
 
             if (File.Exists(fullWorldPath))
                 File.Delete(fullWorldPath);
+        }
+
+        private void RenameZenWorldExecute(object obj)
+        {
+            var fullWorldPath = obj?.ToString();
+
+            if (fullWorldPath is null)
+                return;
+
+            var fileName = Path.GetFileNameWithoutExtension(fullWorldPath);
+
+            var inputDialog = new InputDialog("Rename:", fileName);
+            if (inputDialog.ShowDialog() == true)
+            {
+                var fileDirectoryPath = Path.GetDirectoryName(fullWorldPath);
+                var newFileName = $"{inputDialog.Answer}{Path.GetExtension(fullWorldPath)}";
+                var newFileNamePath = Path.Combine(fileDirectoryPath, newFileName);
+                
+                File.Move(fullWorldPath, newFileNamePath);
+            }
         }
 
         private static void ShowGothicExeNotFoundMessage() =>
