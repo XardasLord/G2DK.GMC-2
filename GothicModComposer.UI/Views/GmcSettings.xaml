@@ -49,19 +49,19 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="5" Grid.Column="1" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
-                    <Button Width="200" Height="32"
+                    <Button Name="openLogsBtn" Width="200" Height="32"
                             Content="Open Logs directory"
                             Command="{Binding OpenLogsDirectory}" />
                 </StackPanel>
 
                 <StackPanel Grid.Row="6" Grid.Column="1" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
-                    <Button Width="200" Height="32"
+                    <Button Name="clearLogsBtn" Width="200" Height="32"
                             Content="Clear logs directory"
                             Command="{Binding ClearLogsDirectory}" />
                 </StackPanel>
 
                 <StackPanel Grid.Row="7" Grid.Column="1" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
-                    <Button Width="200" Height="32"
+                    <Button Name="modBuildBtn" Width="200" Height="32"
                             Content="Open mod build directory"
                             Command="{Binding OpenModBuildDirectory}" />
                 </StackPanel>
