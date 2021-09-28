@@ -37,6 +37,7 @@
     <None Include="Resources\GMC-logo.ico">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
