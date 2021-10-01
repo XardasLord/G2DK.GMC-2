@@ -53,6 +53,7 @@ namespace GothicModComposer.UI.Services
             process.WaitForExit();
 
             gmcSettingsVM.SubscribeOnWorldDirectoryChanges();
+            gmcSettingsVM.LoadZen3DWorlds();
         }
 
         private static bool IsGmcAlreadyRun() => Process.GetProcessesByName("GMC-2").Length > 0;
