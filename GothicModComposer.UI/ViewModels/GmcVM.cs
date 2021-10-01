@@ -64,7 +64,7 @@ namespace GothicModComposer.UI.ViewModels
                 return;
             }
 
-            _gmcExecutor.Execute(GmcExecutionProfile.Update, GmcSettings);
+            _gmcExecutor.Execute(GmcExecutionProfile.Update);
         }
 
         private void RunComposeProfileExecute(object obj)
@@ -78,7 +78,7 @@ namespace GothicModComposer.UI.ViewModels
             var messageBoxResult = MessageBox.Show("Are you sure you want to execute 'Compose' profile?",
                 "Execute Confirmation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
-                _gmcExecutor.Execute(GmcExecutionProfile.Compose, GmcSettings);
+                _gmcExecutor.Execute(GmcExecutionProfile.Compose);
         }
 
         private void RunModProfileExecute(object obj)
@@ -89,7 +89,7 @@ namespace GothicModComposer.UI.ViewModels
                 return;
             }
 
-            _gmcExecutor.Execute(GmcExecutionProfile.RunMod, GmcSettings);
+            _gmcExecutor.Execute(GmcExecutionProfile.RunMod);
         }
 
         private void RunRestoreGothicProfileExecute(object obj)
@@ -97,7 +97,7 @@ namespace GothicModComposer.UI.ViewModels
             var messageBoxResult = MessageBox.Show("Are you sure to you want to execute 'RestoreGothic' profile?",
                 "Execute Confirmation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
-                _gmcExecutor.Execute(GmcExecutionProfile.RestoreGothic, GmcSettings);
+                _gmcExecutor.Execute(GmcExecutionProfile.RestoreGothic);
         }
 
         private void RunBuildModFileProfileProfileExecute(object obj)
@@ -108,11 +108,11 @@ namespace GothicModComposer.UI.ViewModels
                 return;
             }
 
-            _gmcExecutor.Execute(GmcExecutionProfile.BuildModFile, GmcSettings);
+            _gmcExecutor.Execute(GmcExecutionProfile.BuildModFile);
         }
 
         private void RunEnableVDFProfileProfileExecute(object obj)
-            => _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF, GmcSettings);
+            => _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF);
 
         private void OpenSettingsExecute(object obj)
             => new GmcSettings(GmcSettings).ShowDialog();
@@ -172,13 +172,13 @@ namespace GothicModComposer.UI.ViewModels
                 return;
             }
 
-            _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF, GmcSettings);
+            _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF);
 
             var spacerProcess = _spacerService.RunSpacer(GmcSettings.GmcConfiguration.Gothic2RootPath);
 
             spacerProcess.WaitForExit();
 
-            _gmcExecutor.Execute(GmcExecutionProfile.DisableVDF, GmcSettings);
+            _gmcExecutor.Execute(GmcExecutionProfile.DisableVDF);
         }
 
         private void DeleteZenWorldExecute(object obj)
