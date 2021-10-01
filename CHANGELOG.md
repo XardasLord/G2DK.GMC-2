@@ -3,6 +3,25 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.12.0] (2021-09-27)
+### Fixed
+- VDF files are properly disabled after closing Spacer.
+- ZEN worlds are now properly refreshed after `Compose` is finished.
+
+### Changed
+- Only supported resolutions are displayed.
+- ZEN worlds are now sorted alphanumerical.
+- ZEN worlds are now loaded in an asynchronous way.
+
+### Added
+- Support for starting GMC GUI at Windows startup.
+- Support for `Music` and `Video` assets in G2 modification repository.
+- Support for managing ZEN worlds from the list directly (deleting and renaming).
+- Alert while executing `Build Mod File` profile when `GothicVDFS.exe` does not exist.
+- Alert while executing `Update`/`Compose`/`Run Mod` profiles when `Gothic2.exe` does not exist.
+- Buttons to open Gothic 2 and modification repository directories in windows explorer.
+- Progress bar while loading ZEN Worlds.
+
 ## [1.11.0] (2021-09-23)
 ### Fixed
 - Issue with long time closing GMC console.
@@ -212,6 +231,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.12.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.12.0
 [1.11.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.11.0
 [1.10.2]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.10.2
 [1.10.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.10.1

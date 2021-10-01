@@ -157,7 +157,6 @@ namespace GothicModComposer.UI.Models
         {
             var supportedResolutions = new List<Resolution>
             {
-                new() {Width = 640, Height = 480},
                 new() {Width = 800, Height = 600},
                 new() {Width = 1024, Height = 768},
                 new() {Width = 1280, Height = 720},

@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using GothicModComposer.UI.Commands;
@@ -25,7 +24,7 @@ namespace GothicModComposer.UI.ViewModels
 
         private GmcConfiguration _gmcConfiguration;
         private ObservableCollection<Zen3DWorld> _zen3DWorlds;
-        private int _zen3DWorldsLoadingProgress = 0;
+        private int _zen3DWorldsLoadingProgress;
         private bool _isSystemPackAvailable;
 
         public string GmcSettingsJsonFilePath { get; }
@@ -82,6 +81,8 @@ namespace GothicModComposer.UI.ViewModels
             _fileService = fileService;
             _gmcDirectoryService = gmcDirectoryService;
             _zenWorldsFileWatcherService = zenWorldsFileWatcherService;
+            
+            _zenWorldsFileWatcherService.SetHandlers(ZenWorldFilesChanged);
 
             GmcSettingsJsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "gmc-2-ui.json");
             Zen3DWorlds = new ObservableCollection<Zen3DWorld>();
@@ -113,10 +114,19 @@ namespace GothicModComposer.UI.ViewModels
         }
 
         public void SubscribeOnWorldDirectoryChanges() =>
-            _zenWorldsFileWatcherService.StartWatching(ZenWorldFilesChanged);
+            _zenWorldsFileWatcherService.StartWatching();
 
         public void UnsubscribeOnWorldDirectoryChanges()
-            => _zenWorldsFileWatcherService.StopWatching(ZenWorldFilesChanged);
+            => _zenWorldsFileWatcherService.StopWatching();
+
+        public void LoadZen3DWorlds()
+        {
+            var worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += LoadZen3DWorlds_Worker;
+            worker.ProgressChanged += LoadZen3DWorlds_ProgressChanged;
+            worker.RunWorkerAsync();
+        }
 
         private void IniOverrides_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -310,26 +320,17 @@ namespace GothicModComposer.UI.ViewModels
         {
             var worldsPath = Path.Combine(GmcConfiguration.Gothic2RootPath, "_Work", "Data", "Worlds");
 
-            _zenWorldsFileWatcherService.StopWatching(ZenWorldFilesChanged);
+            _zenWorldsFileWatcherService.StopWatching();
 
             if (Directory.Exists(worldsPath))
             {
                 _zenWorldsFileWatcherService.SetWorldsPath(worldsPath);
-                _zenWorldsFileWatcherService.StartWatching(ZenWorldFilesChanged);
+                _zenWorldsFileWatcherService.StartWatching();
             }
         }
 
         private void ZenWorldFilesChanged(object sender, FileSystemEventArgs e)
             => LoadZen3DWorlds();
-
-        private void LoadZen3DWorlds()
-        {
-            var worker = new BackgroundWorker();
-            worker.WorkerReportsProgress = true;
-            worker.DoWork += LoadZen3DWorlds_Worker;
-            worker.ProgressChanged += LoadZen3DWorlds_ProgressChanged;
-            worker.RunWorkerAsync();
-        }
 
         private void LoadZen3DWorlds_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
