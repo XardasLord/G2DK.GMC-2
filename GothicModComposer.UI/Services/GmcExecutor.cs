@@ -10,16 +10,22 @@ namespace GothicModComposer.UI.Services
 {
     public class GmcExecutor : IGmcExecutor
     {
+        private readonly GmcSettingsVM _gmcSettingsVM;
         private const string PathToGothic2Exe = "System/Gothic2.exe";
         private const string PathToGothicVdfsExe = "_Work/Tools/VDFS/GothicVDFS.exe";
 
+        public GmcExecutor(GmcSettingsVM gmcSettingsVM)
+        {
+            _gmcSettingsVM = gmcSettingsVM;
+        }
+        
         public bool GothicExecutableExists(string gothicRootPath)
             => File.Exists(Path.Combine(gothicRootPath, PathToGothic2Exe));
 
         public bool GothicVdfsExecutableExists(string gothicRootPath)
             => File.Exists(Path.Combine(gothicRootPath, PathToGothicVdfsExe));
 
-        public void Execute(GmcExecutionProfile profile, GmcSettingsVM gmcSettingsVM)
+        public void Execute(GmcExecutionProfile profile)
         {
             if (IsGmcAlreadyRun())
             {
@@ -36,24 +42,24 @@ namespace GothicModComposer.UI.Services
                     FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GMC-2.exe"),
                     ArgumentList =
                     {
-                        $"--gothic2Path={gmcSettingsVM.GmcConfiguration.Gothic2RootPath}",
-                        $"--modPath={gmcSettingsVM.GmcConfiguration.ModificationRootPath}",
+                        $"--gothic2Path={_gmcSettingsVM.GmcConfiguration.Gothic2RootPath}",
+                        $"--modPath={_gmcSettingsVM.GmcConfiguration.ModificationRootPath}",
                         $"--profile={profile}",
-                        $"--configurationFile={gmcSettingsVM.GmcSettingsJsonFilePath}",
-                        gmcSettingsVM.GmcConfiguration.CloseAfterFinish ? "" : "--keepOpenAfterFinish"
+                        $"--configurationFile={_gmcSettingsVM.GmcSettingsJsonFilePath}",
+                        _gmcSettingsVM.GmcConfiguration.CloseAfterFinish ? "" : "--keepOpenAfterFinish"
                     },
                     Verb = "runas", // Force to run the process as Administrator
                     UseShellExecute = false
                 }
             };
 
-            gmcSettingsVM.UnsubscribeOnWorldDirectoryChanges();
+            _gmcSettingsVM.UnsubscribeOnWorldDirectoryChanges();
 
             process.Start();
             process.WaitForExit();
 
-            gmcSettingsVM.SubscribeOnWorldDirectoryChanges();
-            gmcSettingsVM.LoadZen3DWorlds();
+            _gmcSettingsVM.SubscribeOnWorldDirectoryChanges();
+            _gmcSettingsVM.LoadZen3DWorlds();
         }
 
         private static bool IsGmcAlreadyRun() => Process.GetProcessesByName("GMC-2").Length > 0;
