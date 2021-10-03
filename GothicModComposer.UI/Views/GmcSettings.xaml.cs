@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using GothicModComposer.UI.Models;
@@ -24,6 +26,12 @@ namespace GothicModComposer.UI.Views
             collectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(IniOverride.Section)));
 
             OverridesIniTable.ItemsSource = collectionView;
+
+            var logsDirectoryExists = Directory.Exists(gmcSettingsVM.LogsDirectoryPath);
+            var directoryContainsLogs = logsDirectoryExists && new DirectoryInfo(gmcSettingsVM.LogsDirectoryPath).GetFiles().Any();
+            openLogsBtn.IsEnabled = directoryContainsLogs;
+            clearLogsBtn.IsEnabled = directoryContainsLogs;
+            modBuildBtn.IsEnabled = Directory.Exists(Path.Combine(gmcSettingsVM.GmcConfiguration?.Gothic2RootPath ?? string.Empty, ".gmc", "build"));
         }
 
         private void WindowsStartup_Checked(object sender, System.Windows.RoutedEventArgs e)
@@ -35,7 +43,7 @@ namespace GothicModComposer.UI.Views
                 var registryKey = Registry.CurrentUser.OpenSubKey(WindowsStartupRegistryPath, true);
                 registryKey?.SetValue("GMC_2_UI", exePath);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show("Error during adding application to Windows startup.");
             }
@@ -48,7 +56,7 @@ namespace GothicModComposer.UI.Views
                 var registryKey = Registry.CurrentUser.OpenSubKey(WindowsStartupRegistryPath, true);
                 registryKey?.DeleteValue("GMC_2_UI", false);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show("Error during removing application from Windows startup");
             }
