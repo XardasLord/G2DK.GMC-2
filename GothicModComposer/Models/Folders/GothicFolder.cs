@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using GothicModComposer.Models.IniFiles;
 using GothicModComposer.Models.Interfaces;
+using GothicModComposer.Models.ModFiles;
+using GothicModComposer.Presets;
 using GothicModComposer.Utils.IOHelpers;
 
 namespace GothicModComposer.Models.Folders
@@ -26,6 +29,15 @@ namespace GothicModComposer.Models.Folders
         public string GothicSrcFilePath => Path.Combine(WorkDataFolderPath, "Scripts", "Content", "Gothic.src");
         public string CutsceneFolderPath => Path.Combine(WorkDataFolderPath, "Scripts", "Content", "Cutscene");
         public string GothicVdfsToolFilePath => Path.Combine(WorkFolderPath, "Tools", "VDFS", "GothicVDFS.exe");
+
+        public static GothicFolder CreateFromPath(string gothicFolderPath)
+        {
+            var instance = new GothicFolder(gothicFolderPath);
+
+            instance.Verify();
+
+            return instance;
+        }
 
         public string GetGothicIniContent(bool removeComments = true)
         {
@@ -64,13 +76,26 @@ namespace GothicModComposer.Models.Folders
             FileHelper.DeleteIfExists(GmcIniFilePath);
         }
 
-        public static GothicFolder CreateFromPath(string gothicFolderPath)
+        public int GetNumberOfTexturesToCompile()
         {
-            var instance = new GothicFolder(gothicFolderPath);
+            var texturesDirectory = Path.Combine(WorkDataFolderPath, AssetPresetType.Textures.ToString());
+            var compiledTexturesDirectory = Path.Combine(WorkDataFolderPath, AssetPresetType.Textures.ToString(), "_compiled");
 
-            instance.Verify();
+            var textureFiles = new List<ModFileEntry>();
 
-            return instance;
+            DirectoryHelper.GetAllFilesInDirectory(texturesDirectory)
+                .ForEach(file =>
+                {
+                    if (file.Contains("_compiled"))
+                        return;
+
+                    textureFiles.Add(new ModFileEntry(AssetPresetType.Textures, file,
+                        DirectoryHelper.ToRelativePath(file, BasePath)));
+                });
+
+            var compiledTextureFiles = DirectoryHelper.GetAllFilesInDirectory(compiledTexturesDirectory);
+
+            return textureFiles.Count(tex => compiledTextureFiles.All(compiled => Path.GetFileName(compiled) != tex.GetCompiledFileName()));
         }
 
         private void Verify()

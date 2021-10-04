@@ -22,5 +22,7 @@ namespace GothicModComposer.Models.Interfaces
         string GetSystemPackIniContent(bool removeComments = true);
         void SaveGmcIni(List<IniBlock> iniBlocks);
         void DeleteGmcIni();
+
+        int GetNumberOfTexturesToCompile();
     }
 }
