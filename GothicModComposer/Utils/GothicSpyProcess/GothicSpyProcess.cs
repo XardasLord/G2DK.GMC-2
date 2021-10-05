@@ -18,8 +18,7 @@ namespace GothicModComposer.Utils.GothicSpyProcess
             Opacity = 0.0f;
             ShowInTaskbar = false;
         }
-
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
+        
         protected override void WndProc(ref Message m)
         {
             if (m.Msg == WM_COPYDATA)

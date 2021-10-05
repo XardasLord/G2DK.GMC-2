@@ -258,7 +258,6 @@ namespace GothicModComposer.Commands
                         }
                         else
                         {
-                            _profile.GothicArguments.AddArgument_ZReparse();
                             _profile.GothicArguments.RemoveArg(GothicArguments.ReparseVisParameter);
                         }
                     }

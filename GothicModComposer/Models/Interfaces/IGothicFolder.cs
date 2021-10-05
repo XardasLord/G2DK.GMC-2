@@ -10,6 +10,7 @@ namespace GothicModComposer.Models.Interfaces
         string WorkFolderPath { get; }
         string DataFolderPath { get; }
         string WorkDataFolderPath { get; }
+        string CompiledTexturesPath { get; }
         string VideoBikFolderPath { get; }
         string GmcIniFilePath { get; }
         string GothicIniFilePath { get; }
@@ -22,5 +23,7 @@ namespace GothicModComposer.Models.Interfaces
         string GetSystemPackIniContent(bool removeComments = true);
         void SaveGmcIni(List<IniBlock> iniBlocks);
         void DeleteGmcIni();
+
+        int GetNumberOfTexturesToCompile();
     }
 }
