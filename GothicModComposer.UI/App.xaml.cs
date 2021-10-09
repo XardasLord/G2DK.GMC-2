@@ -7,6 +7,7 @@ using GothicModComposer.UI.Services;
 using GothicModComposer.UI.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
 namespace GothicModComposer.UI
 {
@@ -66,7 +67,17 @@ namespace GothicModComposer.UI
             _notifyIcon.Click += NotifyIconOnClick;
             _notifyIcon.ContextMenuStrip = new ContextMenuStrip();
             _gmcVM = _serviceProvider.GetRequiredService<GmcVM>();
-            _notifyIcon.ContextMenuStrip.Items.Add("Run mod", null, (s, _) => _gmcVM.RunModProfile.Execute(null));
+            _notifyIcon.ContextMenuStrip.Items.Add("Run mod", null, (s, _) =>
+            {
+                if (!string.IsNullOrWhiteSpace(_gmcVM.GmcSettings.GmcConfiguration.DefaultWorld))
+                {
+                    _gmcVM.RunModProfile.Execute(null);   
+                }
+                else
+                {
+                    MessageBox.Show("No default world value chosen.");
+                }
+            });
             _notifyIcon.ContextMenuStrip.Items.Add("Update", null, (s, _) => _gmcVM.RunUpdateProfile.Execute(null));
             _notifyIcon.ContextMenuStrip.Items.Add("Compose", null, (s, _) => _gmcVM.RunComposeProfile.Execute(null));
             _notifyIcon.ContextMenuStrip.Items.Add("Build mod file", null,
