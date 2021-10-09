@@ -1,14 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using GothicModComposer.Models.Folders;
-using GothicModComposer.Models.ModFiles;
 using GothicModComposer.Models.Profiles;
-using GothicModComposer.Presets;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.GothicSpyProcess;
-using GothicModComposer.Utils.IOHelpers;
 using GothicModComposer.Utils.ProgressBar;
 using ShellProgressBar;
 
@@ -33,6 +27,7 @@ namespace GothicModComposer.Commands
 
         private readonly IProfile _profile;
         private Process _gothicProcess;
+
         private IndeterminateProgressBar _rootProgressBar;
         private ChildProgressBar _textureCompilationProgressBar;
 
@@ -57,10 +52,7 @@ namespace GothicModComposer.Commands
 
             Logger.Info($"Executing with kill process message: '{_killProcessMessage}'", true);
 
-            _gothicProcess = new Process
-            {
-                StartInfo = GetGothicProcessStartInfo()
-            };
+            _gothicProcess = GetGothicProcess();
 
             _gothicSpyProcessRunner.Run();
             _gothicSpyProcessRunner.Subscribe(Notify);
@@ -71,21 +63,9 @@ namespace GothicModComposer.Commands
                 $"Gothic2.exe process executed with arguments '{_gothicProcess.StartInfo.Arguments}'",
                 ProgressBarOptionsHelper.Get()))
             {
-                if (_profile.GothicArguments.Contains(GothicArguments.ZReparseParameter) || _profile.GothicArguments.Contains(GothicArguments.ZTexConvertParameter))
+                if (IsTextureCompilationRequired())
                 {
-                    var numberOfTexturesToCompile = _profile.GothicFolder.GetNumberOfTexturesToCompile();
-                    var counter = 1;
-
-                    _textureCompilationProgressBar = _rootProgressBar.Spawn(
-                        numberOfTexturesToCompile, "Compiling textures", ProgressBarOptionsHelper.Get());
-
-                    _compiledTexturesFileWatcher = new FileSystemWatcher(_profile.GothicFolder.CompiledTexturesPath);
-                    _compiledTexturesFileWatcher.Created += (_, _) =>
-                    {
-                        _textureCompilationProgressBar?.Tick(
-                            $"Compiled {counter++} of {numberOfTexturesToCompile} textures");
-                    };
-                    _compiledTexturesFileWatcher.EnableRaisingEvents = true;
+                    StartRealTimeProgressOnTextureCompilation();
                 }
 
                 _gothicProcess.Start();
@@ -116,7 +96,7 @@ namespace GothicModComposer.Commands
             Logger.Info("Gothic process was terminated.", true);
         }
 
-        private ProcessStartInfo GetGothicProcessStartInfo()
+        private Process GetGothicProcess()
         {
             string arguments;
 
@@ -126,15 +106,38 @@ namespace GothicModComposer.Commands
             else
                 arguments = _profile.GothicArguments.ToString();
 
-
-            return new ProcessStartInfo
+            return new Process
             {
-                FileName = _profile.GothicFolder.GothicExeFilePath,
-                WorkingDirectory = _profile.GothicFolder.BasePath,
-                Arguments = arguments,
-                Verb = "runas", // Force to run the process as Administrator
-                UseShellExecute = false
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = _profile.GothicFolder.GothicExeFilePath,
+                    WorkingDirectory = _profile.GothicFolder.BasePath,
+                    Arguments = arguments,
+                    Verb = "runas", // Force to run the process as Administrator
+                    UseShellExecute = false
+                }
             };
+        }
+
+        private bool IsTextureCompilationRequired()
+            => _profile.GothicArguments.Contains(GothicArguments.ZReparseParameter) ||
+               _profile.GothicArguments.Contains(GothicArguments.ZTexConvertParameter);
+
+        private void StartRealTimeProgressOnTextureCompilation()
+        {
+            var numberOfTexturesToCompile = _profile.GothicFolder.GetNumberOfTexturesToCompile();
+            var counter = 1;
+
+            _textureCompilationProgressBar = _rootProgressBar?.Spawn(
+                numberOfTexturesToCompile, "Compiling textures", ProgressBarOptionsHelper.Get());
+
+            _compiledTexturesFileWatcher = new FileSystemWatcher(_profile.GothicFolder.CompiledTexturesPath);
+            _compiledTexturesFileWatcher.Created += (_, _) =>
+            {
+                _textureCompilationProgressBar?.Tick(
+                    $"Compiled {counter++} of {numberOfTexturesToCompile} textures");
+            };
+            _compiledTexturesFileWatcher.EnableRaisingEvents = true;
         }
     }
 }
