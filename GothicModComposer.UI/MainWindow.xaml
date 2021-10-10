@@ -21,7 +21,7 @@
 					            AncestorType={x:Type ListView}}, 
 					            Path=DataContext.DeleteZenWorld}"
                         CommandParameter="{Binding FullPath}">
-                    <Image Source="Resources/delete.png" Width="16" Height="16" />
+                    <Image Source="Resources/delete.png" Width="20" Height="20" />
                 </Button>
 
                 <Button Margin="0 0 10 0"
@@ -31,7 +31,7 @@
 					            AncestorType={x:Type ListView}}, 
 					            Path=DataContext.RenameZenWorld}"
                         CommandParameter="{Binding FullPath}">
-                    <Image Source="Resources/edit.png" Width="16" Height="16" />
+                    <Image Source="Resources/edit.png" Width="20" Height="20" />
                 </Button>
 
                 <TextBlock Text="{Binding Path}"
@@ -110,8 +110,6 @@
                       Content="Disable sound" />
             <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsReparseScript}"
                       Content="Reparse scripts" />
-            <Button Command="{Binding OpenGameDirectory}" Margin="5,10,5,5" Content="Open Gothic II directory" />
-            <Button Command="{Binding OpenModDirectory}" Margin="5,5,5,5" Content="Open mod directory" />
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="10,0,0,0">

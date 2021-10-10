@@ -21,6 +21,7 @@
             <Grid Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
@@ -38,38 +39,43 @@
 
                 <Label Grid.Row="0" Grid.Column="0" Content="Gothic II root path:" />
                 <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                    <TextBox Width="400" Text="{Binding GmcConfiguration.Gothic2RootPath}" IsReadOnly="True" />
-                    <Button Width="32" Content="..." Command="{Binding SelectGothic2RootDirectory}" />
+                    <TextBox Height="25" Width="350" Text="{Binding GmcConfiguration.Gothic2RootPath}" IsReadOnly="True" />
+                    <Button Margin="5,0,0,0" Height="25" Width="32" Content="..." Command="{Binding SelectGothic2RootDirectory}" />
                 </StackPanel>
 
                 <Label Grid.Row="1" Grid.Column="0" Content="Modification root path:" />
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                    <TextBox Width="400" Text="{Binding GmcConfiguration.ModificationRootPath}" IsReadOnly="True" />
-                    <Button Width="32" Content="..." Command="{Binding SelectModificationRootDirectory}" />
+                    <TextBox Height="25" Width="350" Text="{Binding GmcConfiguration.ModificationRootPath}" IsReadOnly="True" />
+                    <Button Margin="5,0,0,0" Height="25" Width="32" Content="..." Command="{Binding SelectModificationRootDirectory}" />
                 </StackPanel>
-
-                <StackPanel Grid.Row="5" Grid.Column="1" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
-                    <Button Name="openLogsBtn" Width="200" Height="32"
+                <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
+                    <Button Command="{Binding OpenGameDirectory}"  Content="Open Gothic II directory"  Margin="5,0,0,0" Width="150" Height="25" />
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
+                    <Button Command="{Binding OpenModDirectory}"  Content="Open mod directory" Margin="5,0,0,0" Width="150" Height="25" />
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.Column="2" Margin="0, 15, 0, 0" HorizontalAlignment="Center">
+                    <Button x:Name="openLogsBtn" Width="200" Height="32"
                             Content="Open Logs directory"
-                            Command="{Binding OpenLogsDirectory}" />
+                            Command="{Binding OpenLogsDirectory}"/>
                 </StackPanel>
 
-                <StackPanel Grid.Row="6" Grid.Column="1" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
+                <StackPanel Grid.Row="3" Grid.Column="2" Margin="0, 15, 0, 0" HorizontalAlignment="Center">
                     <Button Name="clearLogsBtn" Width="200" Height="32"
                             Content="Clear logs directory"
-                            Command="{Binding ClearLogsDirectory}" />
+                            Command="{Binding ClearLogsDirectory}"/>
                 </StackPanel>
 
-                <StackPanel Grid.Row="7" Grid.Column="1" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
+                <StackPanel Grid.Row="4" Grid.Column="2" Margin="0, 15, 0, 0" HorizontalAlignment="Center">
                     <Button Name="modBuildBtn" Width="200" Height="32"
                             Content="Open mod build directory"
                             Command="{Binding OpenModBuildDirectory}" />
                 </StackPanel>
-                
-                <StackPanel Grid.Row="8" Grid.Column="0" Margin="0, 15, 0, 0" HorizontalAlignment="Left">
+
+                <StackPanel Grid.Row="2" Grid.Column="0" Margin="0, 5, 0, 0" HorizontalAlignment="Left" Grid.ColumnSpan="2" Width="203">
                     <CheckBox IsChecked="{Binding GmcConfiguration.CloseAfterFinish}"
                               Content="Auto close console after finish" />
-                    <CheckBox Unchecked="WindowsStartup_Unchecked" Checked="WindowsStartup_Checked" IsChecked="{Binding GmcConfiguration.StartWithWindows}"
+                    <CheckBox Margin="0, 5, 0, 0" Unchecked="WindowsStartup_Unchecked" Checked="WindowsStartup_Checked" IsChecked="{Binding GmcConfiguration.StartWithWindows}"
                               Content="Start with Windows" />
                 </StackPanel>
             </Grid>
