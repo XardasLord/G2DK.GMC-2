@@ -33,8 +33,6 @@ namespace GothicModComposer.UI.ViewModels
             OpenSettings = new RelayCommand(OpenSettingsExecute);
             OpenChangeLog = new RelayCommand(OpenChangeLogExecute);
             OpenTrelloProjectBoard = new RelayCommand(OpenTrelloProjectBoardExecute);
-            OpenGameDirectory = new RelayCommand(OpenGameDirectoryExecute);
-            OpenModDirectory = new RelayCommand(OpenModDirectoryExecute);
             RunSpacer = new RelayCommand(RunSpacerExecute);
             DeleteZenWorld = new RelayCommand(DeleteZenWorldExecute);
             RenameZenWorld = new RelayCommand(RenameZenWorldExecute);
@@ -50,8 +48,6 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand OpenSettings { get; }
         public RelayCommand OpenChangeLog { get; }
         public RelayCommand OpenTrelloProjectBoard { get; }
-        public RelayCommand OpenGameDirectory { get; }
-        public RelayCommand OpenModDirectory { get; }
         public RelayCommand RunSpacer { get; }
         public RelayCommand DeleteZenWorld { get; }
         public RelayCommand RenameZenWorld { get; }
@@ -128,30 +124,6 @@ namespace GothicModComposer.UI.ViewModels
             Process.Start(processStartInfo);
         }
 
-        private void OpenGameDirectoryExecute(object obj)
-        {
-            if (Directory.Exists(GmcSettings.GmcConfiguration.Gothic2RootPath))
-            {
-                Process.Start("explorer.exe", GmcSettings.GmcConfiguration.Gothic2RootPath);
-            }
-            else
-            {
-                MessageBox.Show("Invalid Gothic II path.");
-            }
-        }
-
-        private void OpenModDirectoryExecute(object obj)
-        {
-            if (Directory.Exists(GmcSettings.GmcConfiguration.ModificationRootPath))
-            {
-                Process.Start("explorer.exe", GmcSettings.GmcConfiguration.ModificationRootPath);
-            }
-            else
-            {
-                MessageBox.Show("Invalid mod path.");
-            }
-        }
-
         private static void OpenTrelloProjectBoardExecute(object obj)
         {
             var processStartInfo = new ProcessStartInfo
@@ -207,7 +179,7 @@ namespace GothicModComposer.UI.ViewModels
                 var fileDirectoryPath = Path.GetDirectoryName(fullWorldPath);
                 var newFileName = $"{inputDialog.Answer}{Path.GetExtension(fullWorldPath)}";
                 var newFileNamePath = Path.Combine(fileDirectoryPath, newFileName);
-                
+
                 File.Move(fullWorldPath, newFileNamePath);
             }
         }
@@ -217,7 +189,8 @@ namespace GothicModComposer.UI.ViewModels
                 MessageBoxButton.OK, MessageBoxImage.Warning);
 
         private static void ShowGothicVdfsExeNotFoundMessage() =>
-            MessageBox.Show("GothicVDFS.exe does not exist in '_Work/Tools/VDFS' directory.", "GothicVDFS.exe does not exist",
+            MessageBox.Show("GothicVDFS.exe does not exist in '_Work/Tools/VDFS' directory.",
+                "GothicVDFS.exe does not exist",
                 MessageBoxButton.OK, MessageBoxImage.Warning);
     }
 }
