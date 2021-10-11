@@ -39,13 +39,13 @@
 
                 <Label Grid.Row="0" Grid.Column="0" Content="Gothic II root path:" />
                 <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                    <TextBox Height="25" Width="350" Text="{Binding GmcConfiguration.Gothic2RootPath}" IsReadOnly="True" />
+                    <TextBox Name="gothicRoot" Height="25" Width="350" Text="{Binding GmcConfiguration.Gothic2RootPath}" IsReadOnly="True" MouseDoubleClick="gothicRoot_MouseDoubleClick" />
                     <Button Margin="5,0,0,0" Height="25" Width="32" Content="..." Command="{Binding SelectGothic2RootDirectory}" />
                 </StackPanel>
 
                 <Label Grid.Row="1" Grid.Column="0" Content="Modification root path:" />
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                    <TextBox Height="25" Width="350" Text="{Binding GmcConfiguration.ModificationRootPath}" IsReadOnly="True" />
+                    <TextBox Name="gothicModRoot" Height="25" Width="350" Text="{Binding GmcConfiguration.ModificationRootPath}" IsReadOnly="True" MouseDoubleClick="gothicModRoot_MouseDoubleClick" />
                     <Button Margin="5,0,0,0" Height="25" Width="32" Content="..." Command="{Binding SelectModificationRootDirectory}" />
                 </StackPanel>
                 <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">

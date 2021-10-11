@@ -61,5 +61,16 @@ namespace GothicModComposer.UI.Views
                 MessageBox.Show("Error during removing application from Windows startup");
             }
         }
+
+        private void gothicRoot_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Clipboard.SetText(gothicRoot.Text);
+        }
+
+        private void gothicModRoot_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Clipboard.SetText(gothicModRoot.Text); 
+        }
+
     }
 }
