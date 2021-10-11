@@ -14,7 +14,9 @@
 
         <DataTemplate x:Key="TemplateWorldZen">
             <StackPanel Orientation="Horizontal">
-                <Button Margin="0 0 5 0"
+                <TextBlock Text="{Binding Path}"
+                           VerticalAlignment="Center" />
+                <Button Margin="10 0 5 0"
                         ToolTip="Delete"
                         Command="{Binding RelativeSource=
 					            {RelativeSource FindAncestor, 
@@ -23,7 +25,6 @@
                         CommandParameter="{Binding FullPath}">
                     <Image Source="Resources/delete.png" Width="20" Height="20" />
                 </Button>
-
                 <Button Margin="0 0 10 0"
                         ToolTip="Rename"
                         Command="{Binding RelativeSource=
@@ -33,9 +34,6 @@
                         CommandParameter="{Binding FullPath}">
                     <Image Source="Resources/edit.png" Width="20" Height="20" />
                 </Button>
-
-                <TextBlock Text="{Binding Path}"
-                           VerticalAlignment="Center" />
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
