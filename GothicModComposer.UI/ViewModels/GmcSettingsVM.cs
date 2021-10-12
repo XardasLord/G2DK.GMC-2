@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -26,6 +27,7 @@ namespace GothicModComposer.UI.ViewModels
         private ObservableCollection<Zen3DWorld> _zen3DWorlds;
         private int _zen3DWorldsLoadingProgress;
         private bool _isSystemPackAvailable;
+        private bool _isLogDirectoryAvailable;
 
         public string GmcSettingsJsonFilePath { get; }
 
@@ -63,7 +65,13 @@ namespace GothicModComposer.UI.ViewModels
             get => _isSystemPackAvailable;
             set => SetProperty(ref _isSystemPackAvailable, value);
         }
-
+        
+        public bool IsLogDirectoryAvailable
+        {
+            get => _isLogDirectoryAvailable;
+            set => SetProperty(ref _isLogDirectoryAvailable, value);
+        }
+        
         public RelayCommand SelectGothic2RootDirectory { get; }
         public RelayCommand SelectModificationRootDirectory { get; }
         public RelayCommand SaveSettings { get; }
@@ -72,7 +80,9 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand ClearLogsDirectory { get; }
         public RelayCommand OpenModBuildDirectory { get; }
         public RelayCommand RestoreDefaultIniOverrides { get; }
-
+        public RelayCommand OpenGameDirectory { get; }
+        public RelayCommand OpenModDirectory { get; }
+        
         public GmcSettingsVM(
             IFileService fileService,
             IGmcDirectoryService gmcDirectoryService,
@@ -81,7 +91,7 @@ namespace GothicModComposer.UI.ViewModels
             _fileService = fileService;
             _gmcDirectoryService = gmcDirectoryService;
             _zenWorldsFileWatcherService = zenWorldsFileWatcherService;
-            
+
             _zenWorldsFileWatcherService.SetHandlers(ZenWorldFilesChanged);
 
             GmcSettingsJsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "gmc-2-ui.json");
@@ -95,6 +105,8 @@ namespace GothicModComposer.UI.ViewModels
             OpenModBuildDirectory = new RelayCommand(OpenModBuildDirectoryExecute);
             ClearLogsDirectory = new RelayCommand(ClearLogsDirectoryExecute);
             RestoreDefaultIniOverrides = new RelayCommand(RestoreDefaultIniOverridesExecute);
+            OpenGameDirectory = new RelayCommand(OpenGameDirectoryExecute);
+            OpenModDirectory = new RelayCommand(OpenModDirectoryExecute);
 
             if (!File.Exists(GmcSettingsJsonFilePath))
                 CreateDefaultConfigurationFile();
@@ -212,7 +224,10 @@ namespace GothicModComposer.UI.ViewModels
             => _gmcDirectoryService.OpenLogsDirectoryExecute(LogsDirectoryPath);
 
         private void ClearLogsDirectoryExecute(object obj)
-            => _gmcDirectoryService.ClearLogsDirectoryExecute(LogsDirectoryPath);
+        {
+            _gmcDirectoryService.ClearLogsDirectoryExecute(LogsDirectoryPath);
+            Application.Current.Dispatcher.Invoke(() => { IsLogDirectoryAvailable = false; });
+        }
 
         private void OpenModBuildDirectoryExecute(object obj)
             => _gmcDirectoryService.OpenModBuildDirectoryExecute(ModBuildDirectoryPath);
@@ -395,6 +410,30 @@ namespace GothicModComposer.UI.ViewModels
             });
 
             worker?.ReportProgress(100);
+        }
+
+        private void OpenGameDirectoryExecute(object obj)
+        {
+            if (Directory.Exists(GmcConfiguration.Gothic2RootPath))
+            {
+                Process.Start("explorer.exe", GmcConfiguration.Gothic2RootPath);
+            }
+            else
+            {
+                MessageBox.Show("Invalid Gothic II path.");
+            }
+        }
+
+        private void OpenModDirectoryExecute(object obj)
+        {
+            if (Directory.Exists(GmcConfiguration.ModificationRootPath))
+            {
+                Process.Start("explorer.exe", GmcConfiguration.ModificationRootPath);
+            }
+            else
+            {
+                MessageBox.Show("Invalid mod path.");
+            }
         }
     }
 }
