@@ -7,7 +7,7 @@
     x:Class="GothicModComposer.UI.MainWindow"
     WindowStartupLocation="CenterScreen"
     ResizeMode="CanMinimize"
-    Title="GMC UI" Height="450" Width="800">
+    Title="GMC UI" Height="500" Width="800">
 
     <Window.Resources>
         <converters:IsNotNullToBoolConverter x:Key="IsNotNullToBoolConverter" />
@@ -57,8 +57,8 @@
             </Menu>
         </Grid>
 
-        <StackPanel Grid.Row="1" HorizontalAlignment="Left" Margin="580,0,0,0" Width="220">
-            <Label Content="" />
+        <StackPanel Grid.Row="1" HorizontalAlignment="Left" Margin="586,24,0,6" Width="204" Grid.RowSpan="2">
+
             <Button Content="Run mod" Margin="0 15 0 0" Height="28" Command="{Binding RunModProfile}" Width="130"
                     IsEnabled="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Converter={StaticResource IsNotNullToBoolConverter}}" />
             <Button Content="Run Editor/Spacer" Margin="0 15 0 0" Height="28" Command="{Binding RunSpacer}" Width="130" />
@@ -72,37 +72,7 @@
                     Width="130" />
         </StackPanel>
 
-        <StackPanel Grid.Row="1" HorizontalAlignment="Left" Width="339" Margin="10,0,0,10">
-            <Label Content="World ZEN's" FontSize="20" Margin="10,23,0,0" Width="329" />
-            <ListView
-                Width="324"
-                ItemsSource="{Binding GmcSettings.Zen3DWorlds}"
-                SelectedValue="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectedValuePath="Name"
-                Height="253"
-                ItemTemplate="{StaticResource TemplateWorldZen}">
-                <ListView.Resources>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=OneWay}" />
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="FontWeight" Value="Bold" />
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="Foreground" Value="Black" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ListView.Resources>
-            </ListView>
-            <Grid>
-                <ProgressBar Name="Progress" Width="324" Minimum="0" Margin="0,5,0,0" Maximum="100"
-                         Value="{Binding GmcSettings.Zen3DWorldsLoadingProgress}" Height="20" />
-                <TextBlock Text="{Binding ElementName=Progress, Path=Value, StringFormat={}{0:0}%}" 
-                       HorizontalAlignment="Center" VerticalAlignment="Center" />
-            </Grid>
-            </StackPanel>
-
-        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="377,62,225,112">
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="383,40,227,263">
             <Label Content="Gothic arguments (Run mod):" FontWeight="Bold" />
             <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsWindowMode}"
                       Content="Window mode" />
@@ -118,11 +88,55 @@
         <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="10,0,0,0">
             <!-- Footer in the future -->
         </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="380,264,222,36">
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="379,168,223,132">
             <Label Content="Resolution:" FontWeight="Bold" />
             <ComboBox ItemsSource="{Binding GmcSettings.GmcConfiguration.AvailableResolutions}"
                       SelectedItem="{Binding GmcSettings.GmcConfiguration.GothicArguments.Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Width="178" />
         </StackPanel>
+        <TabControl HorizontalAlignment="Left" Height="366" Margin="10,24,0,0" Grid.Row="1" VerticalAlignment="Top" Width="352">
+            <TabItem Header="World ZEN's">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel HorizontalAlignment="Left" Width="339" Margin="5,5,5,5">
+                        <ListView
+                            Width="324"
+                            ItemsSource="{Binding GmcSettings.Zen3DWorlds}"
+                            SelectedValue="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedValuePath="Name"
+                            Height="294"
+                >
+                            <ListView.Resources>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=OneWay}" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="Foreground" Value="Black" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.ItemTemplate>
+                                <StaticResource ResourceKey="TemplateWorldZen"/>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <Grid>
+                            <ProgressBar x:Name="Progress" Width="324" Minimum="0" Margin="0,5,0,0" Maximum="100"
+                                Value="{Binding GmcSettings.Zen3DWorldsLoadingProgress}" Height="20" />
+                            <TextBlock Text="{Binding Value, ElementName=Progress, StringFormat=\{0:0\}%}" 
+                                HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Submods">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+        <Button Content="Test" Name="Test"
+    Margin="631,354,39,28" Grid.Row="1" Click="Test_Click" />
+        <Image Name="ImageT" HorizontalAlignment="Left" Height="53" Margin="383,276,0,0" Grid.Row="1" VerticalAlignment="Top" Width="59"/>
+        <Label Name="TestText" FontWeight="Bold" Margin="379,263,223,46" Grid.Row="1" />
     </Grid>
 </Window>
