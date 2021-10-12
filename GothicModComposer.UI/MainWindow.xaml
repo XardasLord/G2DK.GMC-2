@@ -13,11 +13,15 @@
         <converters:IsNotNullToBoolConverter x:Key="IsNotNullToBoolConverter" />
 
         <DataTemplate x:Key="TemplateWorldZen">
-            <StackPanel Orientation="Horizontal">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <TextBlock Text="{Binding Path}"
-                           VerticalAlignment="Center"/>
-
-                <Button Margin="5 0 5 0"
+                           VerticalAlignment="Center" />
+                <Button Grid.Column="1" Margin="5 0 5 0"
                         ToolTip="Rename"
                         Command="{Binding RelativeSource=
 					            {RelativeSource FindAncestor, 
@@ -26,7 +30,7 @@
                         CommandParameter="{Binding FullPath}">
                     <Image Source="Resources/edit.png" Width="20" Height="20" />
                 </Button>
-                <Button Margin="5 0 5 0"
+                <Button Grid.Column="2" Margin="0 0 5 0"
                         ToolTip="Delete"
                         Command="{Binding RelativeSource=
 					            {RelativeSource FindAncestor, 
@@ -35,7 +39,7 @@
                         CommandParameter="{Binding FullPath}">
                     <Image Source="Resources/delete.png" Width="20" Height="20" />
                 </Button>
-            </StackPanel>
+            </Grid>
         </DataTemplate>
     </Window.Resources>
 
@@ -94,7 +98,8 @@
                       SelectedItem="{Binding GmcSettings.GmcConfiguration.GothicArguments.Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Width="178" />
         </StackPanel>
-        <TabControl HorizontalAlignment="Left" Height="366" Margin="10,24,0,0" Grid.Row="1" VerticalAlignment="Top" Width="352">
+        <TabControl HorizontalAlignment="Left" Height="366" Margin="10,24,0,0" Grid.Row="1" VerticalAlignment="Top"
+                    Width="352">
             <TabItem Header="World ZEN's">
                 <Grid Background="#FFE5E5E5">
                     <StackPanel HorizontalAlignment="Left" Width="339" Margin="5,5,5,5">
@@ -103,8 +108,7 @@
                             ItemsSource="{Binding GmcSettings.Zen3DWorlds}"
                             SelectedValue="{Binding GmcSettings.GmcConfiguration.DefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             SelectedValuePath="Name"
-                            Height="294"
-                >
+                            Height="294">
                             <ListView.Resources>
                                 <Style TargetType="{x:Type ListViewItem}">
                                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=OneWay}" />
@@ -118,25 +122,26 @@
                                 </Style>
                             </ListView.Resources>
                             <ListView.ItemTemplate>
-                                <StaticResource ResourceKey="TemplateWorldZen"/>
+                                <StaticResource ResourceKey="TemplateWorldZen" />
                             </ListView.ItemTemplate>
                         </ListView>
                         <Grid>
                             <ProgressBar x:Name="Progress" Width="324" Minimum="0" Margin="0,5,0,0" Maximum="100"
-                                Value="{Binding GmcSettings.Zen3DWorldsLoadingProgress}" Height="20" />
-                            <TextBlock Text="{Binding Value, ElementName=Progress, StringFormat=\{0:0\}%}" 
-                                HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                         Value="{Binding GmcSettings.Zen3DWorldsLoadingProgress}" Height="20" />
+                            <TextBlock Text="{Binding Value, ElementName=Progress, StringFormat=\{0:0\}%}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Grid>
                     </StackPanel>
                 </Grid>
             </TabItem>
             <TabItem Header="Submods">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5" />
             </TabItem>
         </TabControl>
         <Button Content="Test" Name="Test"
-    Margin="631,354,39,28" Grid.Row="1" Click="Test_Click" />
-        <Image Name="ImageT" HorizontalAlignment="Left" Height="53" Margin="383,276,0,0" Grid.Row="1" VerticalAlignment="Top" Width="59"/>
+                Margin="631,354,39,28" Grid.Row="1" Click="Test_Click" />
+        <Image Name="ImageT" HorizontalAlignment="Left" Height="53" Margin="383,276,0,0" Grid.Row="1"
+               VerticalAlignment="Top" Width="59" />
         <Label Name="TestText" FontWeight="Bold" Margin="379,263,223,46" Grid.Row="1" />
     </Grid>
 </Window>
