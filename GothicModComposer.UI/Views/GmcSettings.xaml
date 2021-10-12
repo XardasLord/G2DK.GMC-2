@@ -211,7 +211,7 @@
                 <!-- </GroupBox> -->
             </Grid>
         </TabItem>
-        <TabItem Header="Build mod">
-        </TabItem>
+        <!-- <TabItem Header="Build mod">
+        </TabItem>-->
     </TabControl>
 </Window>

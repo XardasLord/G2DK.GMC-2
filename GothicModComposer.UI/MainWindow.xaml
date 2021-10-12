@@ -134,14 +134,9 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Submods">
+            <!--<TabItem Header="Submods">
                 <Grid Background="#FFE5E5E5" />
-            </TabItem>
+            </TabItem>-->
         </TabControl>
-        <Button Content="Test" Name="Test"
-                Margin="631,354,39,28" Grid.Row="1" Click="Test_Click" />
-        <Image Name="ImageT" HorizontalAlignment="Left" Height="53" Margin="383,276,0,0" Grid.Row="1"
-               VerticalAlignment="Top" Width="59" />
-        <Label Name="TestText" FontWeight="Bold" Margin="379,263,223,46" Grid.Row="1" />
     </Grid>
 </Window>

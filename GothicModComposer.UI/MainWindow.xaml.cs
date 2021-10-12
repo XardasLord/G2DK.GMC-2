@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using GothicModComposer.UI.Services;
-using GothicModComposer.UI.Helpers;
 
 namespace GothicModComposer.UI
 {
@@ -29,18 +28,6 @@ namespace GothicModComposer.UI
         {
             var fullVersion = Assembly.GetExecutingAssembly().GetName().Version;
             Title = $"GMC UI v{fullVersion?.Major}.{fullVersion?.Minor}.{fullVersion?.Build}";
-        }
-
-        private void Test_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SubmodsHelper submodsHelper = new SubmodsHelper();
-            submodsHelper.Main();
-            
-            TestText.Content+= submodsHelper.submods[0].Title
-            + "\n" + submodsHelper.submods[0].Version 
-            + "\n" + submodsHelper.submods[0].Authors[0]
-            + "\n" + submodsHelper.submods[0].Webpage
-            + "\n" + submodsHelper.submods[0].Description;
         }
     }
 }
