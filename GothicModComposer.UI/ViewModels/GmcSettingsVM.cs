@@ -27,6 +27,7 @@ namespace GothicModComposer.UI.ViewModels
         private ObservableCollection<Zen3DWorld> _zen3DWorlds;
         private int _zen3DWorldsLoadingProgress;
         private bool _isSystemPackAvailable;
+        private bool _isLogDirectoryAvailable;
 
         public string GmcSettingsJsonFilePath { get; }
 
@@ -64,7 +65,13 @@ namespace GothicModComposer.UI.ViewModels
             get => _isSystemPackAvailable;
             set => SetProperty(ref _isSystemPackAvailable, value);
         }
-
+        
+        public bool IsLogDirectoryAvailable
+        {
+            get => _isLogDirectoryAvailable;
+            set => SetProperty(ref _isLogDirectoryAvailable, value);
+        }
+        
         public RelayCommand SelectGothic2RootDirectory { get; }
         public RelayCommand SelectModificationRootDirectory { get; }
         public RelayCommand SaveSettings { get; }
@@ -75,7 +82,7 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand RestoreDefaultIniOverrides { get; }
         public RelayCommand OpenGameDirectory { get; }
         public RelayCommand OpenModDirectory { get; }
-
+        
         public GmcSettingsVM(
             IFileService fileService,
             IGmcDirectoryService gmcDirectoryService,
@@ -217,7 +224,10 @@ namespace GothicModComposer.UI.ViewModels
             => _gmcDirectoryService.OpenLogsDirectoryExecute(LogsDirectoryPath);
 
         private void ClearLogsDirectoryExecute(object obj)
-            => _gmcDirectoryService.ClearLogsDirectoryExecute(LogsDirectoryPath);
+        {
+            _gmcDirectoryService.ClearLogsDirectoryExecute(LogsDirectoryPath);
+            Application.Current.Dispatcher.Invoke(() => { IsLogDirectoryAvailable = false; });
+        }
 
         private void OpenModBuildDirectoryExecute(object obj)
             => _gmcDirectoryService.OpenModBuildDirectoryExecute(ModBuildDirectoryPath);

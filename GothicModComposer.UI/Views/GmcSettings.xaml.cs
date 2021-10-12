@@ -14,7 +14,7 @@ namespace GothicModComposer.UI.Views
     /// </summary>
     public partial class GmcSettings
     {
-		private const string WindowsStartupRegistryPath = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+        private const string WindowsStartupRegistryPath = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
 
         public GmcSettings(GmcSettingsVM gmcSettingsVM)
         {
@@ -24,19 +24,17 @@ namespace GothicModComposer.UI.Views
 
             var collectionView = new ListCollectionView(gmcSettingsVM.GmcConfiguration.IniOverrides);
             collectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(IniOverride.Section)));
-
+            gmcSettingsVM.IsLogDirectoryAvailable = Directory.Exists(gmcSettingsVM.LogsDirectoryPath) &&
+                                                    new DirectoryInfo(gmcSettingsVM.LogsDirectoryPath).GetFiles().Any();
             OverridesIniTable.ItemsSource = collectionView;
-
-            var logsDirectoryExists = Directory.Exists(gmcSettingsVM.LogsDirectoryPath);
-            var directoryContainsLogs = logsDirectoryExists && new DirectoryInfo(gmcSettingsVM.LogsDirectoryPath).GetFiles().Any();
-            openLogsBtn.IsEnabled = directoryContainsLogs;
-            clearLogsBtn.IsEnabled = directoryContainsLogs;
-            modBuildBtn.IsEnabled = Directory.Exists(Path.Combine(gmcSettingsVM.GmcConfiguration?.Gothic2RootPath ?? string.Empty, ".gmc", "build"));
+            modBuildBtn.IsEnabled =
+                Directory.Exists(Path.Combine(gmcSettingsVM.GmcConfiguration?.Gothic2RootPath ?? string.Empty, ".gmc",
+                    "build"));
         }
 
         private void WindowsStartup_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
-	        var exePath = System.Reflection.Assembly.GetExecutingAssembly().Location.Replace("dll", "exe");
+            var exePath = System.Reflection.Assembly.GetExecutingAssembly().Location.Replace("dll", "exe");
 
             try
             {
@@ -69,8 +67,7 @@ namespace GothicModComposer.UI.Views
 
         private void gothicModRoot_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Clipboard.SetText(gothicModRoot.Text); 
+            Clipboard.SetText(gothicModRoot.Text);
         }
-
     }
 }
