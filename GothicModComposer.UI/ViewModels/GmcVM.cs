@@ -173,7 +173,7 @@ namespace GothicModComposer.UI.ViewModels
 
             var fileName = Path.GetFileNameWithoutExtension(fullWorldPath);
 
-            var inputDialog = new InputDialog("Rename:", fileName);
+            var inputDialog = new InputDialog("Rename", "Rename:", fileName);
             if (inputDialog.ShowDialog() == true)
             {
                 var fileDirectoryPath = Path.GetDirectoryName(fullWorldPath);
