@@ -60,6 +60,12 @@ namespace GothicModComposer.UI
             _mainWindow.StateChanged += MainWindowOnStateChanged;
         }
 
+        private void OnExit(object sender, ExitEventArgs e)
+        {
+            _notifyIcon.Visible = false;
+            _notifyIcon.Dispose();
+        }
+        
         private void ConfigureTrayIcon()
         {
             _notifyIcon.Icon = new Icon("Resources/GMC-logo.ico");
@@ -103,12 +109,6 @@ namespace GothicModComposer.UI
                 _mainWindow.WindowState = WindowState.Normal;
                 _mainWindow.Activate();
             }
-        }
-
-        protected override void OnExit(ExitEventArgs e)
-        {
-            _notifyIcon.Dispose();
-            base.OnExit(e);
         }
     }
 }
