@@ -63,11 +63,23 @@ namespace GothicModComposer.UI.Views
         private void gothicRoot_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Clipboard.SetText(gothicRoot.Text);
+            Pop.Visibility = Visibility.Visible;
         }
 
         private void gothicModRoot_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Clipboard.SetText(gothicModRoot.Text);
+            Pop2.Visibility = Visibility.Visible;
+        }
+
+        private void gothicRoot_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Pop.Visibility = Visibility.Hidden;
+        }
+
+        private void gothicModRoot_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Pop2.Visibility = Visibility.Hidden;
         }
     }
 }

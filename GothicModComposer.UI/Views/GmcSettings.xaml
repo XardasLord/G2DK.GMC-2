@@ -1,4 +1,4 @@
-﻿<Window x:Class="GothicModComposer.UI.Views.GmcSettings"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewModels="clr-namespace:GothicModComposer.UI.ViewModels"
@@ -6,8 +6,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:GothicModComposer.UI.Converters"
         xmlns:helpers="clr-namespace:GothicModComposer.UI.Helpers"
+        xmlns:local="clr-namespace:GothicModComposer.UI.Views" x:Class="GothicModComposer.UI.Views.GmcSettings"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=viewModels:GmcSettingsVM}"
+        d:DataContext="{d:DesignInstance Type={x:Type viewModels:GmcSettingsVM}}"
         Title="GMC Settings" Height="450" Width="800">
 
     <Window.Resources>
@@ -39,18 +40,18 @@
 
                 <Label Grid.Row="0" Grid.Column="0" Content="Gothic II root path:" />
                 <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                    <TextBox Name="gothicRoot" Height="25" Width="350"
+                    <TextBox x:Name="gothicRoot" Height="25" Width="350"
                              Text="{Binding GmcConfiguration.Gothic2RootPath}" IsReadOnly="True"
-                             MouseDoubleClick="gothicRoot_MouseDoubleClick" />
+                             MouseDoubleClick="gothicRoot_MouseDoubleClick" MouseLeave="gothicRoot_MouseLeave" />
                     <Button Margin="5,0,0,0" Height="25" Width="32" Content="..."
                             Command="{Binding SelectGothic2RootDirectory}" />
                 </StackPanel>
 
                 <Label Grid.Row="1" Grid.Column="0" Content="Modification root path:" />
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                    <TextBox Name="gothicModRoot" Height="25" Width="350"
+                    <TextBox x:Name="gothicModRoot" Height="25" Width="350"
                              Text="{Binding GmcConfiguration.ModificationRootPath}" IsReadOnly="True"
-                             MouseDoubleClick="gothicModRoot_MouseDoubleClick" />
+                             MouseDoubleClick="gothicModRoot_MouseDoubleClick" MouseLeave="gothicModRoot_MouseLeave" />
                     <Button Margin="5,0,0,0" Height="25" Width="32" Content="..."
                             Command="{Binding SelectModificationRootDirectory}" />
                 </StackPanel>
@@ -67,18 +68,18 @@
                     <Button Width="150" Height="32"
                             Content="Open Logs directory"
                             Command="{Binding OpenLogsDirectory}"
-                            IsEnabled="{Binding Path=IsLogDirectoryAvailable}" />
+                            IsEnabled="{Binding IsLogDirectoryAvailable}" />
                 </StackPanel>
 
                 <StackPanel Grid.Row="4" Grid.Column="2" Margin="5, 10, 0, 0" HorizontalAlignment="Left">
                     <Button Width="150" Height="32"
                             Content="Clear logs directory"
                             Command="{Binding ClearLogsDirectory}"
-                            IsEnabled="{Binding Path=IsLogDirectoryAvailable}" />
+                            IsEnabled="{Binding IsLogDirectoryAvailable}" />
                 </StackPanel>
 
                 <StackPanel Grid.Row="5" Grid.Column="2" Margin="5, 10, 0, 0" HorizontalAlignment="Left">
-                    <Button Name="modBuildBtn" Width="150" Height="32"
+                    <Button x:Name="modBuildBtn" Width="150" Height="32"
                             Content="Open mod build directory"
                             Command="{Binding OpenModBuildDirectory}" />
                 </StackPanel>
@@ -90,6 +91,8 @@
                               IsChecked="{Binding GmcConfiguration.StartWithWindows}"
                               Content="Start with Windows" />
                 </StackPanel>
+                <local:BaloonPopup x:Name="Pop" Grid.Column="1" HorizontalAlignment="Left" Margin="316,-29,0,0" VerticalAlignment="Top" />
+                <local:BaloonPopup x:Name="Pop2" Grid.Column="1" HorizontalAlignment="Left" Margin="316,3,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
             </Grid>
         </TabItem>
 
@@ -111,7 +114,7 @@
                                   Height="250"
                                   Width="750"
                                   HorizontalAlignment="Left"
-                                  Name="OverridesIniTable"
+                                  x:Name="OverridesIniTable"
                                   VerticalAlignment="Top"
                                   CanUserAddRows="False"
                                   CanUserDeleteRows="False"
@@ -143,7 +146,7 @@
                                     Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Foreground="Black" Width="*" Header="Key" IsReadOnly="True">
                                     <DataGridTextColumn.CellStyle>
-                                        <Style TargetType="DataGridCell">
+                                        <Style TargetType="{x:Type DataGridCell}">
                                             <Setter Property="ToolTip" Value="[Placeholder]" />
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
@@ -164,7 +167,7 @@
                                                                         Background="LightYellow">
                                                                 <TextBlock Text="{Binding Name}" />
                                                                 <TextBlock
-                                                                    Text="{Binding ItemCount, StringFormat=Count: {0}}"
+                                                                    Text="{Binding ItemCount, StringFormat=Count: \{0\}}"
                                                                     Margin="30,0,0,0" />
                                                             </StackPanel>
                                                             <ItemsPresenter />
