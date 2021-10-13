@@ -91,7 +91,7 @@
                               IsChecked="{Binding GmcConfiguration.StartWithWindows}"
                               Content="Start with Windows" />
                 </StackPanel>
-                <local:BaloonPopup x:Name="Pop" Grid.Column="1" HorizontalAlignment="Left" Margin="316,-29,0,0" VerticalAlignment="Top" />
+                <local:BaloonPopup x:Name="Pop" Grid.Column="1" HorizontalAlignment="Left" Margin="316,-29,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
                 <local:BaloonPopup x:Name="Pop2" Grid.Column="1" HorizontalAlignment="Left" Margin="316,3,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
             </Grid>
         </TabItem>
