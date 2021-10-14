@@ -14,27 +14,20 @@ namespace GothicModComposer.UI.Services
             _zenWorldsFileWatcher.IncludeSubdirectories = true;
         }
 
+        public void SetHandlers(Action<object, FileSystemEventArgs> notifyCallbackSubscription)
+        {
+            _zenWorldsFileWatcher.Created += notifyCallbackSubscription.Invoke;
+            _zenWorldsFileWatcher.Renamed += notifyCallbackSubscription.Invoke;
+            _zenWorldsFileWatcher.Deleted += notifyCallbackSubscription.Invoke;
+        }
+
         public void SetWorldsPath(string worldsDirectoryPath)
         {
             _zenWorldsFileWatcher.Path = worldsDirectoryPath;
         }
 
-        public void StartWatching(Action<object, FileSystemEventArgs> notifyCallbackSubscription)
-        {
-            _zenWorldsFileWatcher.Created += notifyCallbackSubscription.Invoke;
-            _zenWorldsFileWatcher.Renamed += notifyCallbackSubscription.Invoke;
-            _zenWorldsFileWatcher.Deleted += notifyCallbackSubscription.Invoke;
+        public void StartWatching() => _zenWorldsFileWatcher.EnableRaisingEvents = true;
 
-            _zenWorldsFileWatcher.EnableRaisingEvents = true;
-        }
-
-        public void StopWatching(Action<object, FileSystemEventArgs> notifyCallbackSubscription)
-        {
-            _zenWorldsFileWatcher.Created -= notifyCallbackSubscription.Invoke;
-            _zenWorldsFileWatcher.Renamed -= notifyCallbackSubscription.Invoke;
-            _zenWorldsFileWatcher.Deleted -= notifyCallbackSubscription.Invoke;
-
-            _zenWorldsFileWatcher.EnableRaisingEvents = false;
-        }
+        public void StopWatching() => _zenWorldsFileWatcher.EnableRaisingEvents = false;
     }
 }

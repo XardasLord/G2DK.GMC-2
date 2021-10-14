@@ -7,6 +7,6 @@ namespace GothicModComposer.UI.Interfaces
     {
         bool GothicExecutableExists(string gothicRootPath);
         bool GothicVdfsExecutableExists(string gothicRootPath);
-        void Execute(GmcExecutionProfile profile, GmcSettingsVM gmcSettingsVM);
+        void Execute(GmcExecutionProfile profile);
     }
 }

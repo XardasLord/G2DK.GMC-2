@@ -5,8 +5,9 @@ namespace GothicModComposer.UI.Interfaces
 {
     public interface IZenWorldsFileWatcherService
     {
+        void SetHandlers(Action<object, FileSystemEventArgs> notifyCallbackSubscription);
         void SetWorldsPath(string worldsDirectoryPath);
-        void StartWatching(Action<object, FileSystemEventArgs> notifyCallbackSubscription);
-        void StopWatching(Action<object, FileSystemEventArgs> notifyCallbackSubscription);
+        void StartWatching();
+        void StopWatching();
     }
 }

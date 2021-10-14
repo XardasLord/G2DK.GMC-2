@@ -5,10 +5,11 @@ namespace GothicModComposer.UI.Views
 {
 	public partial class InputDialog
 	{
-		public InputDialog(string question, string defaultAnswer = "")
+		public InputDialog(string title, string question, string defaultAnswer = "")
 		{
 			InitializeComponent();
 
+			Title = title;
 			lblQuestion.Content = question;
 			txtAnswer.Text = defaultAnswer;
 		}

@@ -3,6 +3,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.13.0] (2021-10-14)
+### Fixed
+- Update parses scripts (with `-ZREPARSE` parameter) when there is any change in Scripts folder.
+- After profile execution is completed worlds are now properly refreshed.
+- 'Clear logs directory' is disabled when there is no log files to clear.
+
+### Changed
+- UI improvements for 3D world list and icons.
+- UI buttons alignment improvements in Settings window.
+- Removed 640x480 resolution from the list.
+- Removed old GMC application and related files from the modification repository.
+
+### Added
+- Real-time counter while compiling textures.
+- GMC goes to tray icon on minimalize instead of exiting the app.
+- Ability to copy paths to Gothic 2 Root and modification directories by double mouse click on textboxes.
+
 ## [1.12.0] (2021-09-27)
 ### Fixed
 - VDF files are properly disabled after closing Spacer.
@@ -231,6 +248,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.13.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.13.0
 [1.12.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.12.0
 [1.11.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.11.0
 [1.10.2]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.10.2
