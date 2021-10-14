@@ -120,7 +120,7 @@ namespace GothicModComposer.Commands
         }
 
         private bool IsTextureCompilationRequired()
-            => _profile.GothicArguments.Contains(GothicArguments.ZReparseParameter) ||
+            => _profile.GothicArguments.Contains(GothicArguments.ZConvertAllParameter) ||
                _profile.GothicArguments.Contains(GothicArguments.ZTexConvertParameter);
 
         private void StartRealTimeProgressOnTextureCompilation()
