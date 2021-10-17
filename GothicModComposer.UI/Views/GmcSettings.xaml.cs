@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Threading;
 using GothicModComposer.UI.Models;
 using GothicModComposer.UI.ViewModels;
 using Microsoft.Win32;
@@ -60,26 +61,27 @@ namespace GothicModComposer.UI.Views
             }
         }
 
-        private void gothicRoot_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        public void TimedVisibility(BaloonPopup control,string text)
         {
             Clipboard.SetText(gothicRoot.Text);
-            Pop.Visibility = Visibility.Visible;
+            control.Visibility = Visibility.Visible;
+            DispatcherTimer time = new DispatcherTimer();
+            time.Interval = TimeSpan.FromSeconds(1);
+            time.Start();
+            time.Tick += delegate
+            {
+                control.Visibility = Visibility.Hidden;
+                time.Stop();
+            };
+        }
+        private void Popupex_Opened(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            TimedVisibility(Pop, gothicRoot.Text);
         }
 
-        private void gothicModRoot_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Popupex2_Opened(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Clipboard.SetText(gothicModRoot.Text);
-            Pop2.Visibility = Visibility.Visible;
-        }
-
-        private void gothicRoot_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Pop.Visibility = Visibility.Hidden;
-        }
-
-        private void gothicModRoot_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Pop2.Visibility = Visibility.Hidden;
+            TimedVisibility(Pop2, gothicModRoot.Text);
         }
     }
 }

@@ -42,7 +42,7 @@
                 <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
                     <TextBox x:Name="gothicRoot" Height="25" Width="350"
                              Text="{Binding GmcConfiguration.Gothic2RootPath}" IsReadOnly="True"
-                             MouseDoubleClick="gothicRoot_MouseDoubleClick" MouseLeave="gothicRoot_MouseLeave" />
+                             MouseDoubleClick="Popupex_Opened" />
                     <Button Margin="5,0,0,0" Height="25" Width="32" Content="..."
                             Command="{Binding SelectGothic2RootDirectory}" />
                 </StackPanel>
@@ -50,8 +50,7 @@
                 <Label Grid.Row="1" Grid.Column="0" Content="Modification root path:" />
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
                     <TextBox x:Name="gothicModRoot" Height="25" Width="350"
-                             Text="{Binding GmcConfiguration.ModificationRootPath}" IsReadOnly="True"
-                             MouseDoubleClick="gothicModRoot_MouseDoubleClick" MouseLeave="gothicModRoot_MouseLeave" />
+                             Text="{Binding GmcConfiguration.ModificationRootPath}" IsReadOnly="True" MouseDoubleClick="Popupex2_Opened" />
                     <Button Margin="5,0,0,0" Height="25" Width="32" Content="..."
                             Command="{Binding SelectModificationRootDirectory}" />
                 </StackPanel>
