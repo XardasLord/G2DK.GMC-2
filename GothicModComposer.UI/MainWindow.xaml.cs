@@ -65,27 +65,17 @@ namespace GothicModComposer.UI
                 SubmodsInfoPanel.Visibility = Visibility.Visible;
             }
         }
-
-        private void SubmodsView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (SubmodsView.SelectedItems.Count > 0)
-            {
-                
-                //MessageBox.Show(SubmodsView.SelectedIndex.ToString());
-            }
-        }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string iniFileName = submodsHelper.submods[SubmodsView.SelectedIndex].iniFileName;
             //MessageBox.Show(SubmodsView.SelectedIndex.ToString());
-            MessageBox.Show(submodsHelper.submods[SubmodsView.SelectedIndex].iniFileName);
-            Process notePad = new Process();
+            //MessageBox.Show(submodsHelper.submods[SubmodsView.SelectedIndex].iniFileName);
+            Process gothic = new Process();
 
-            notePad.StartInfo.FileName = Path.Combine(submodsHelper.path,"Gothic2.exe");
-            notePad.StartInfo.Arguments = "-game:"+iniFileName;
+            gothic.StartInfo.FileName = Path.Combine(submodsHelper.path,"Gothic2.exe");
+            gothic.StartInfo.Arguments = "-game:"+iniFileName;
 
-            notePad.Start();
+            gothic.Start();
         }
     }
 }
