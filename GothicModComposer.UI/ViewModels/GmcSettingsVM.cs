@@ -25,6 +25,7 @@ namespace GothicModComposer.UI.ViewModels
 
         private GmcConfiguration _gmcConfiguration;
         private ObservableCollection<Zen3DWorld> _zen3DWorlds;
+        private ObservableCollection<Submod> _submods;
         private int _zen3DWorldsLoadingProgress;
         private bool _isSystemPackAvailable;
         private bool _isLogDirectoryAvailable;
@@ -47,6 +48,12 @@ namespace GothicModComposer.UI.ViewModels
         {
             get => _zen3DWorlds;
             set => SetProperty(ref _zen3DWorlds, value);
+        }
+
+        public ObservableCollection<Submod> Submods
+        {
+            get => _submods;
+            set => SetProperty(ref _submods, value);
         }
 
         public int Zen3DWorldsLoadingProgress
@@ -96,7 +103,7 @@ namespace GothicModComposer.UI.ViewModels
 
             GmcSettingsJsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "gmc-2-ui.json");
             Zen3DWorlds = new ObservableCollection<Zen3DWorld>();
-
+            Submods = new ObservableCollection<Submod>();
             SelectGothic2RootDirectory = new RelayCommand(SelectGothic2RootDirectoryExecute);
             SelectModificationRootDirectory = new RelayCommand(SelectModificationRootDirectoryExecute);
             SaveSettings = new RelayCommand(SaveSettingsExecute);
@@ -123,6 +130,7 @@ namespace GothicModComposer.UI.ViewModels
                 OnGothic2RootPathChanged(GmcConfiguration.Gothic2RootPath);
 
             LoadZen3DWorlds();
+            LoadSubmods();
         }
 
         public void SubscribeOnWorldDirectoryChanges() =>
@@ -138,6 +146,12 @@ namespace GothicModComposer.UI.ViewModels
             worker.DoWork += LoadZen3DWorlds_Worker;
             worker.ProgressChanged += LoadZen3DWorlds_ProgressChanged;
             worker.RunWorkerAsync();
+        }
+        public void LoadSubmods()
+        {
+            SubmodsHelper submodsHelper = new SubmodsHelper();
+            submodsHelper.Main();
+            Submods = submodsHelper.submods;
         }
 
         private void IniOverrides_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

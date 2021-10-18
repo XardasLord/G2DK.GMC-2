@@ -18,80 +18,81 @@
 
     <TabControl Margin="0,0,0,0">
         <TabItem Header="Main">
-
-            <Grid Margin="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
+            <!-- Main container -->
+            <Grid Margin="5,5,5,5">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="30" />
                 </Grid.RowDefinitions>
-
-                <Label Grid.Row="0" Grid.Column="0" Content="Gothic II root path:" />
-                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                    <TextBox x:Name="gothicRoot" Height="25" Width="350"
-                             Text="{Binding GmcConfiguration.Gothic2RootPath}" IsReadOnly="True"
-                             MouseDoubleClick="Popupex_Opened" />
-                    <Button Margin="5,0,0,0" Height="25" Width="32" Content="..."
-                            Command="{Binding SelectGothic2RootDirectory}" />
-                </StackPanel>
-
-                <Label Grid.Row="1" Grid.Column="0" Content="Modification root path:" />
-                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                    <TextBox x:Name="gothicModRoot" Height="25" Width="350"
-                             Text="{Binding GmcConfiguration.ModificationRootPath}" IsReadOnly="True" MouseDoubleClick="Popupex2_Opened" />
-                    <Button Margin="5,0,0,0" Height="25" Width="32" Content="..."
-                            Command="{Binding SelectModificationRootDirectory}" />
-                </StackPanel>
-                <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
-                    <Button Command="{Binding OpenGameDirectory}" Content="Open Gothic II directory" Margin="5,0,0,0"
-                            Width="150" Height="25" />
-                </StackPanel>
-                <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
-                    <Button Command="{Binding OpenModDirectory}" Content="Open mod directory" Margin="5,0,0,0"
-                            Width="150" Height="25" />
-                </StackPanel>
-                <Separator Margin="0,10,0,10" Grid.Row="2" Grid.ColumnSpan="3"/>
-                <StackPanel Grid.Row="3" Grid.Column="2" Margin="5, 10, 0, 0" HorizontalAlignment="Left">
-                    <Button Width="150" Height="32"
-                            Content="Open Logs directory"
-                            Command="{Binding OpenLogsDirectory}"
-                            IsEnabled="{Binding IsLogDirectoryAvailable}" />
-                </StackPanel>
-
-                <StackPanel Grid.Row="4" Grid.Column="2" Margin="5, 10, 0, 0" HorizontalAlignment="Left">
-                    <Button Width="150" Height="32"
-                            Content="Clear logs directory"
-                            Command="{Binding ClearLogsDirectory}"
-                            IsEnabled="{Binding IsLogDirectoryAvailable}" />
-                </StackPanel>
-
-                <StackPanel Grid.Row="5" Grid.Column="2" Margin="5, 10, 0, 0" HorizontalAlignment="Left">
-                    <Button x:Name="modBuildBtn" Width="150" Height="32"
-                            Content="Open mod build directory"
-                            Command="{Binding OpenModBuildDirectory}" />
-                </StackPanel>
-
-                <StackPanel Grid.Row="3" Grid.Column="0" Margin="0, 5, 0, 0" HorizontalAlignment="Left" Grid.ColumnSpan="2" Width="203">
-                    <CheckBox IsChecked="{Binding GmcConfiguration.CloseAfterFinish}"
+                <!-- First row root path -->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="380" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Gothic II root path:" />
+                    <TextBox Grid.Column="1" Name="gothicRoot" Height="25" 
+                                 Text="{Binding GmcConfiguration.Gothic2RootPath}" IsReadOnly="True"
+                                 MouseDoubleClick="Popupex_Opened" />
+                    <Button Grid.Column="2" Margin="5,0,0,0" Height="25" Width="32" Content="..."
+                                Command="{Binding SelectGothic2RootDirectory}" />
+                    <Button Grid.Column="3" Command="{Binding OpenGameDirectory}" Content="Open Gothic II directory" Margin="5,0,0,0"
+                                Width="150" Height="25" />
+                </Grid>
+                <!-- Second row modRoot path -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="380" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Modification root path:" />
+                    <TextBox Grid.Column="1" Name="gothicModRoot" Height="25" 
+                                 Text="{Binding GmcConfiguration.ModificationRootPath}" IsReadOnly="True"
+                                 MouseDoubleClick="Popupex2_Opened"/>
+                    <Button Grid.Column="2" Margin="5,0,0,0" Height="25" Width="32" Content="..."
+                                Command="{Binding SelectModificationRootDirectory}" />
+                    <Button Grid.Column="3" Command="{Binding OpenModDirectory}" Content="Open mod directory" Margin="5,0,0,0"
+                                Width="150" Height="25" />
+                </Grid>
+                <local:BaloonPopup x:Name="Pop" HorizontalAlignment="Left" Width="70" Height="70"  VerticalAlignment="Top" Visibility="Hidden" Margin="478,-26,0,0" Grid.RowSpan="2"/>
+                <local:BaloonPopup x:Name="Pop2" HorizontalAlignment="Left" Width="70" Height="70" VerticalAlignment="Top" Visibility="Hidden" Margin="478,-10,0,0" Grid.RowSpan="2" />
+                <!-- Separation line -->
+                <Separator Margin="0,10,0,10" Grid.Row="2"/>
+                <!-- Main content -->
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="0, 5, 0, 0" HorizontalAlignment="Left">
+                        <CheckBox IsChecked="{Binding GmcConfiguration.CloseAfterFinish}"
                               Content="Auto close console after finish" />
-                    <CheckBox Margin="0, 5, 0, 0" Unchecked="WindowsStartup_Unchecked" Checked="WindowsStartup_Checked"
+                        <CheckBox Margin="0, 5, 0, 0" Unchecked="WindowsStartup_Unchecked" Checked="WindowsStartup_Checked"
                               IsChecked="{Binding GmcConfiguration.StartWithWindows}"
                               Content="Start with Windows" />
-                </StackPanel>
-                <local:BaloonPopup x:Name="Pop" Grid.Column="1" HorizontalAlignment="Left" Margin="316,-29,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
-                <local:BaloonPopup x:Name="Pop2" Grid.Column="1" HorizontalAlignment="Left" Margin="316,3,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Margin="5, 10, 0, 0" >
+                        <Button Margin="0, 5, 0, 0" Width="150" Height="32"
+                            Content="Open Logs directory"
+                            Command="{Binding OpenLogsDirectory}"
+                            IsEnabled="{Binding Path=IsLogDirectoryAvailable}" />
+                        <Button Margin="0, 5, 0, 0" Width="150" Height="32"
+                            Content="Clear logs directory"
+                            Command="{Binding ClearLogsDirectory}"
+                            IsEnabled="{Binding Path=IsLogDirectoryAvailable}" />
+                        <Button Margin="0, 5, 0, 0" Name="modBuildBtn" Width="150" Height="32"
+                            Content="Open mod build directory"
+                            Command="{Binding OpenModBuildDirectory}" />
+                    </StackPanel>
+                </Grid>
             </Grid>
         </TabItem>
 
