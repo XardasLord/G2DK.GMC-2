@@ -21,7 +21,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="{Binding Path}"
                            VerticalAlignment="Center" />
-                <Button Grid.Column="1" Margin="5 0 5 0"
+                <Button Background="{x:Null}" BorderBrush="{x:Null}" Grid.Column="1" Margin="5 0 5 0"
                         ToolTip="Rename"
                         Command="{Binding RelativeSource=
 					            {RelativeSource FindAncestor, 
@@ -30,7 +30,7 @@
                         CommandParameter="{Binding FullPath}">
                     <Image Source="Resources/edit.png" Width="20" Height="20" />
                 </Button>
-                <Button Grid.Column="2" Margin="0 0 5 0"
+                <Button Background="{x:Null}" BorderBrush="{x:Null}" Grid.Column="2" Margin="0 0 5 0"
                         ToolTip="Delete"
                         Command="{Binding RelativeSource=
 					            {RelativeSource FindAncestor, 
@@ -43,10 +43,18 @@
         </DataTemplate>
 
         <DataTemplate x:Key="TemplateSubmods">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="{Binding Icon}" Width="30" Height="30" Margin="5 5 15 5"/>
-                <TextBlock Text="{Binding Title}" VerticalAlignment="Center"/>
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="220" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image Source="{Binding Icon}" Width="30" Height="30" Margin="5 5 15 5" Grid.Column="0"/>
+                <TextBlock Text="{Binding Title}" VerticalAlignment="Center" Grid.Column="1"/>
+                <Button x:Name="playButton" Grid.Column="2" Background="{x:Null}" BorderBrush="{x:Null}" Click="Button_Click">
+                    <Image Source="Resources/play.png" Width="30" Height="30" />
+                </Button>
+            </Grid>
         </DataTemplate>
     </Window.Resources>
 
@@ -198,8 +206,6 @@
                         Width="130" />
                 <Button Content="Enable VDF" Margin="0 15 0 0" Height="28" Command="{Binding RunEnableVDFProfile}"
                         Width="130" />
-                <Button Content="Run submod" Margin="0 15 0 0" Height="28"
-                        Width="130" Click="Button_Click" />
             </StackPanel>
 
 
