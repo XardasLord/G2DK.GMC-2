@@ -10,6 +10,10 @@
     <ApplicationIcon>Resources\GMC-logo.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  
   <ItemGroup>
     <None Remove="Resources\delete.png" />
     <None Remove="Resources\edit.png" />
