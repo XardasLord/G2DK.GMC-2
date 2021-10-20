@@ -3,17 +3,11 @@
 namespace GothicModComposer.Commands.ExecutedCommandActions.Interfaces
 {
 	/// <summary>
-	/// Represents single VDF file command action executed inside ICommand
+	///     Represents single VDF file command action executed inside ICommand
 	/// </summary>
 	public interface ICommandActionVDF : ICommandAction
-	{
-		CommandActionVDFType ActionType { get; }
-		VdfFile File { get; }
-	}
-
-	public enum CommandActionVDFType
-	{
-		VdfEnabled,
-		VdfDisabled
-	}
+    {
+        CommandActionVDFType ActionType { get; }
+        VdfFile File { get; }
+    }
 }

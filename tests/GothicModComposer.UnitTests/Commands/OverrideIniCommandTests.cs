@@ -12,14 +12,15 @@ namespace GothicModComposer.UnitTests.Commands
 {
     public class OverrideIniCommandTests : TestsFixture
     {
-        private readonly Mock<IProfile> _profileMock;
         private readonly Mock<IFileSystemWithLogger> _fileSystemMock;
+        private readonly Mock<IProfile> _profileMock;
 
         public OverrideIniCommandTests()
         {
             _profileMock = ProfileMock;
             _fileSystemMock = FileSystemMock;
         }
+
         private void Act()
             => new OverrideIniCommand(_profileMock.Object, _fileSystemMock.Object).Execute();
 
@@ -40,7 +41,7 @@ namespace GothicModComposer.UnitTests.Commands
         {
             _profileMock.SetupGet(x => x.IniOverrides).Returns(new List<IniOverride>
             {
-                new IniOverride { Key = "Test1", Value = "2" }
+                new() {Key = "Test1", Value = "2"}
             });
             _profileMock.SetupGet(x => x.IniOverridesSystemPack).Returns(new List<IniOverride>());
             _fileSystemMock.Setup(x => x.File.Exists(GothicIniFilePath)).Returns(false);

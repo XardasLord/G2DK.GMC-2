@@ -10,43 +10,40 @@ namespace GothicModComposer.Models.Folders
 {
     public class ModFolder : IModFolder
     {
-		public string BasePath { get; }
-		public string ExtensionsFolderPath => Path.Combine(BasePath, "Extensions");
+        private ModFolder(string modFolderPath) => BasePath = modFolderPath;
 
-		private ModFolder(string modFolderPath)
-		{
-			BasePath = modFolderPath;
-		}
+        public string BasePath { get; }
+        public string ExtensionsFolderPath => Path.Combine(BasePath, "Extensions");
 
-		public static ModFolder CreateFromPath(string modFolderPath)
-		{
-			var instance = new ModFolder(modFolderPath);
+        public List<ModFileEntry> GetAllModFiles()
+        {
+            return AssetPresetFolders.FoldersWithAssets
+                .SelectMany(assetType =>
+                {
+                    var absolutePath = Path.Combine(BasePath, assetType.ToString());
+                    var files = DirectoryHelper.GetAllFilesInDirectory(absolutePath);
 
-			instance.Verify();
+                    var modFiles = new List<ModFileEntry>();
+                    files.ForEach(file => modFiles.Add(new ModFileEntry(assetType, file,
+                        DirectoryHelper.ToRelativePath(file, BasePath))));
 
-			return instance;
-		}
+                    return modFiles;
+                })
+                .ToList();
+        }
 
-		public List<ModFileEntry> GetAllModFiles()
-		{
-			return AssetPresetFolders.FoldersWithAssets
-				.SelectMany(assetType =>
-				{
-					var absolutePath = Path.Combine(BasePath, assetType.ToString());
-					var files = DirectoryHelper.GetAllFilesInDirectory(absolutePath);
+        public static ModFolder CreateFromPath(string modFolderPath)
+        {
+            var instance = new ModFolder(modFolderPath);
 
-					var modFiles = new List<ModFileEntry>();
-					files.ForEach(file => modFiles.Add(new ModFileEntry(assetType, file,
-						DirectoryHelper.ToRelativePath(file, BasePath))));
+            instance.Verify();
 
-					return modFiles;
-				})
-				.ToList();
-		}
+            return instance;
+        }
 
-		private void Verify()
-		{
-			// TODO: Verify if the folder exists and is correct
-		}
-	}
+        private void Verify()
+        {
+            // TODO: Verify if the folder exists and is correct
+        }
+    }
 }

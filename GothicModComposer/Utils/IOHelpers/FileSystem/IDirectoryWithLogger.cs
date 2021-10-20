@@ -19,6 +19,7 @@ namespace GothicModComposer.Utils.IOHelpers.FileSystem
 
         List<string> GetDirectories(string path);
 
-        List<string> GetAllFilesInDirectory(string directoryPath, SearchOption searchOption = SearchOption.AllDirectories);
+        List<string> GetAllFilesInDirectory(string directoryPath,
+            SearchOption searchOption = SearchOption.AllDirectories);
     }
 }

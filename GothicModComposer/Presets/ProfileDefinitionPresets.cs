@@ -7,7 +7,7 @@ namespace GothicModComposer.Presets
 {
     public static class ProfileDefinitionPresets
     {
-	    private const string DefaultWorldName = "TestWorld.ZEN";
+	    private const string DefaultWorldName = "GMC_Default_World.ZEN";
 
 		public static ProfileDefinition GetComposeProfile()
 			=> new()
@@ -15,6 +15,7 @@ namespace GothicModComposer.Presets
 				ProfileType = ProfilePresetType.Compose,
 				IniOverrides = new List<IniOverride>(),
 				GothicArguments = GothicArgumentsPresets.Compose().ToList(),
+				DefaultWorld = DefaultWorldName,
 				CommandsConditions = new CommandsConditions
                 {
 					ExecuteGothicStepRequired =  true,
@@ -79,6 +80,7 @@ namespace GothicModComposer.Presets
 			{
 				ProfileType = ProfilePresetType.Update,
 				GothicArguments = GothicArgumentsPresets.Build().ToList(),
+				DefaultWorld = DefaultWorldName,
 				ExecutionCommands = new List<string>
 				{
 					CommandBuilderHelper.CreateBackupCommand,
@@ -107,6 +109,18 @@ namespace GothicModComposer.Presets
                     CommandBuilderHelper.EnableVdfFilesCommand
                 }
             };
+
+        public static ProfileDefinition GetDisableVDFProfile()
+	        => new()
+	        {
+		        ProfileType = ProfilePresetType.DisableVDF,
+		        GothicArguments = GothicArgumentsPresets.Default().ToList(),
+		        DefaultWorld = DefaultWorldName,
+		        ExecutionCommands = new List<string>
+		        {
+			        CommandBuilderHelper.DisableVdfFilesCommand
+		        }
+	        };
 
 		public static ProfileDefinition GetBuildModFileProfile()
             => new()

@@ -4,10 +4,10 @@ namespace GothicModComposer.Utils.IOHelpers.FileSystem
 {
     public class PathWithLogger : IPathWithLogger
     {
-        public IFileSystemWithLogger FileSystem { get; }
-
         public PathWithLogger(IFileSystemWithLogger fileSystem)
             => FileSystem = fileSystem;
+
+        public IFileSystemWithLogger FileSystem { get; }
 
         public string Combine(params string[] paths) => Path.Combine(paths);
 
@@ -15,7 +15,8 @@ namespace GothicModComposer.Utils.IOHelpers.FileSystem
 
         public string Combine(string path1, string path2, string path3) => Path.Combine(path1, path2, path3);
 
-        public string Combine(string path1, string path2, string path3, string path4) => Path.Combine(path1, path2, path3, path4);
+        public string Combine(string path1, string path2, string path3, string path4) =>
+            Path.Combine(path1, path2, path3, path4);
 
         public string GetDirectoryName(string path) => Path.GetDirectoryName(path);
 

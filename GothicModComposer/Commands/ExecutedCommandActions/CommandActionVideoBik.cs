@@ -6,20 +6,14 @@ namespace GothicModComposer.Commands.ExecutedCommandActions
 {
     public class CommandActionVideoBik : ICommandActionVideoBik
     {
-        public CommandActionVideoBikType ActionType { get; }
-        public VideoBikFile File { get; }
-
         private CommandActionVideoBik(CommandActionVideoBikType actionType, VideoBikFile file)
         {
             ActionType = actionType;
             File = file;
         }
 
-        public static CommandActionVideoBik FileEnabled(VideoBikFile file)
-            => new CommandActionVideoBik(CommandActionVideoBikType.VideoBikEnabled, file);
-
-        public static CommandActionVideoBik FileDisabled(VideoBikFile file)
-            => new CommandActionVideoBik(CommandActionVideoBikType.VideoBikDisabled, file);
+        public CommandActionVideoBikType ActionType { get; }
+        public VideoBikFile File { get; }
 
         public void Undo()
         {
@@ -36,5 +30,11 @@ namespace GothicModComposer.Commands.ExecutedCommandActions
                     break;
             }
         }
+
+        public static CommandActionVideoBik FileEnabled(VideoBikFile file)
+            => new(CommandActionVideoBikType.VideoBikEnabled, file);
+
+        public static CommandActionVideoBik FileDisabled(VideoBikFile file)
+            => new(CommandActionVideoBikType.VideoBikDisabled, file);
     }
 }

@@ -7,6 +7,7 @@
         RunMod,
         Update,
         BuildModFile,
-        EnableVDF
+        EnableVDF,
+        DisableVDF
     }
 }

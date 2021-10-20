@@ -5,10 +5,9 @@ namespace GothicModComposer.UI.Commands
 {
     public class RelayCommand : ICommand
     {
-        public event EventHandler CanExecuteChanged;
+        private readonly Func<object, bool> _canExecute;
 
-        private Action<object> _execute;
-        private Func<object, bool> _canExecute;
+        private readonly Action<object> _execute;
 
         public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
         {
@@ -18,6 +17,8 @@ namespace GothicModComposer.UI.Commands
             _execute = execute;
             _canExecute = canExecute;
         }
+
+        public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter)
             => _canExecute is null || _canExecute(parameter);

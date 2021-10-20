@@ -21,6 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
 using System;
+
 // ReSharper disable InheritdocConsiderUsage
 
 #pragma warning disable 1591
@@ -31,7 +32,7 @@ using System;
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
 
-namespace GothicModComposer.UI.Annotations
+namespace GothicModComposer.UI
 {
   /// <summary>
   /// Indicates that the value of the marked element could be <c>null</c> sometimes,
@@ -454,7 +455,7 @@ namespace GothicModComposer.UI.Annotations
 
   /// <summary>
   /// Can be applied to attributes, type parameters, and parameters of a type assignable from <see cref="System.Type"/> .
-  /// When applied to an attribute, the decorated attribute behaves the same as <see cref="UsedImplicitlyAttribute"/>.
+  /// When applied to an attribute, the decorated attribute behaves the same as <see cref="GothicModComposer.UI.UsedImplicitlyAttribute"/>.
   /// When applied to a type parameter or to a parameter of type <see cref="System.Type"/>,  indicates that the corresponding type
   /// is used implicitly.
   /// </summary>
@@ -483,7 +484,7 @@ namespace GothicModComposer.UI.Annotations
 
   /// <summary>
   /// Specify the details of implicitly used symbol when it is marked
-  /// with <see cref="MeansImplicitUseAttribute"/> or <see cref="UsedImplicitlyAttribute"/>.
+  /// with <see cref="GothicModComposer.UI.MeansImplicitUseAttribute"/> or <see cref="GothicModComposer.UI.UsedImplicitlyAttribute"/>.
   /// </summary>
   [Flags]
   public enum ImplicitUseKindFlags
@@ -504,7 +505,7 @@ namespace GothicModComposer.UI.Annotations
 
   /// <summary>
   /// Specify what is considered to be used implicitly when marked
-  /// with <see cref="MeansImplicitUseAttribute"/> or <see cref="UsedImplicitlyAttribute"/>.
+  /// with <see cref="GothicModComposer.UI.MeansImplicitUseAttribute"/> or <see cref="GothicModComposer.UI.UsedImplicitlyAttribute"/>.
   /// </summary>
   [Flags]
   public enum ImplicitUseTargetFlags
@@ -565,7 +566,7 @@ namespace GothicModComposer.UI.Annotations
   /// <remarks>
   /// Methods decorated with this attribute (in contrast to pure methods) might change state,
   /// but make no sense without using their return value. <br/>
-  /// Similarly to <see cref="PureAttribute"/>, this attribute
+  /// Similarly to <see cref="GothicModComposer.UI.PureAttribute"/>, this attribute
   /// will help detecting usages of the method when the return value in not used.
   /// Additionally, you can optionally specify a custom message, which will be used when showing warnings, e.g.
   /// <code>[MustUseReturnValue("Use the return value to...")]</code>.
@@ -629,7 +630,7 @@ namespace GothicModComposer.UI.Annotations
   /// Template method body can contain valid source code and/or special comments starting with '$'.
   /// Text inside these comments is added as source code when the template is applied. Template parameters
   /// can be used either as additional method parameters or as identifiers wrapped in two '$' signs.
-  /// Use the <see cref="MacroAttribute"/> attribute to specify macros for parameters.
+  /// Use the <see cref="GothicModComposer.UI.MacroAttribute"/> attribute to specify macros for parameters.
   /// </remarks>
   /// <example>
   /// In this example, the 'forEach' method is a source template available over all values
@@ -647,13 +648,13 @@ namespace GothicModComposer.UI.Annotations
   public sealed class SourceTemplateAttribute : Attribute { }
 
   /// <summary>
-  /// Allows specifying a macro for a parameter of a <see cref="SourceTemplateAttribute">source template</see>.
+  /// Allows specifying a macro for a parameter of a <see cref="GothicModComposer.UI.SourceTemplateAttribute">source template</see>.
   /// </summary>
   /// <remarks>
   /// You can apply the attribute on the whole method or on any of its additional parameters. The macro expression
-  /// is defined in the <see cref="MacroAttribute.Expression"/> property. When applied on a method, the target
-  /// template parameter is defined in the <see cref="MacroAttribute.Target"/> property. To apply the macro silently
-  /// for the parameter, set the <see cref="MacroAttribute.Editable"/> property value = -1.
+  /// is defined in the <see cref="Expression"/> property. When applied on a method, the target
+  /// template parameter is defined in the <see cref="Target"/> property. To apply the macro silently
+  /// for the parameter, set the <see cref="Editable"/> property value = -1.
   /// </remarks>
   /// <example>
   /// Applying the attribute on a source template method:
@@ -678,7 +679,7 @@ namespace GothicModComposer.UI.Annotations
   public sealed class MacroAttribute : Attribute
   {
     /// <summary>
-    /// Allows specifying a macro that will be executed for a <see cref="SourceTemplateAttribute">source template</see>
+    /// Allows specifying a macro that will be executed for a <see cref="GothicModComposer.UI.SourceTemplateAttribute">source template</see>
     /// parameter when the template is expanded.
     /// </summary>
     [CanBeNull] public string Expression { get; set; }
@@ -694,8 +695,8 @@ namespace GothicModComposer.UI.Annotations
     public int Editable { get; set; }
 
     /// <summary>
-    /// Identifies the target parameter of a <see cref="SourceTemplateAttribute">source template</see> if the
-    /// <see cref="MacroAttribute"/> is applied on a template method.
+    /// Identifies the target parameter of a <see cref="GothicModComposer.UI.SourceTemplateAttribute">source template</see> if the
+    /// <see cref="GothicModComposer.UI.MacroAttribute"/> is applied on a template method.
     /// </summary>
     [CanBeNull] public string Target { get; set; }
   }
@@ -983,7 +984,7 @@ namespace GothicModComposer.UI.Annotations
   }
 
   /// <summary>
-  /// Provides a value for the <see cref="CollectionAccessAttribute"/> to define
+  /// Provides a value for the <see cref="GothicModComposer.UI.CollectionAccessAttribute"/> to define
   /// how the collection method invocation affects the contents of the collection.
   /// </summary>
   [Flags]
@@ -1002,14 +1003,14 @@ namespace GothicModComposer.UI.Annotations
   /// <summary>
   /// Indicates that the marked method is assertion method, i.e. it halts the control flow if
   /// one of the conditions is satisfied. To set the condition, mark one of the parameters with
-  /// <see cref="AssertionConditionAttribute"/> attribute.
+  /// <see cref="GothicModComposer.UI.AssertionConditionAttribute"/> attribute.
   /// </summary>
   [AttributeUsage(AttributeTargets.Method)]
   public sealed class AssertionMethodAttribute : Attribute { }
 
   /// <summary>
   /// Indicates the condition parameter of the assertion method. The method itself should be
-  /// marked by <see cref="AssertionMethodAttribute"/> attribute. The mandatory argument of
+  /// marked by <see cref="GothicModComposer.UI.AssertionMethodAttribute"/> attribute. The mandatory argument of
   /// the attribute is the assertion type.
   /// </summary>
   [AttributeUsage(AttributeTargets.Parameter)]
@@ -1104,7 +1105,7 @@ namespace GothicModComposer.UI.Annotations
   /// </summary>
   /// <remarks>
   /// Property should have the tree ancestor of the <c>ItemsControl</c> type or
-  /// marked with the <see cref="XamlItemsControlAttribute"/> attribute.
+  /// marked with the <see cref="GothicModComposer.UI.XamlItemsControlAttribute"/> attribute.
   /// </remarks>
   [AttributeUsage(AttributeTargets.Property)]
   public sealed class XamlItemBindingOfItemsControlAttribute : Attribute { }
@@ -1116,7 +1117,7 @@ namespace GothicModComposer.UI.Annotations
   /// </summary>
   /// <remarks>
   /// Property should have the tree ancestor of the <c>ItemsControl</c> type or
-  /// marked with the <see cref="XamlItemsControlAttribute"/> attribute.
+  /// marked with the <see cref="GothicModComposer.UI.XamlItemsControlAttribute"/> attribute.
   /// </remarks>
   [AttributeUsage(AttributeTargets.Property)]
   public sealed class XamlItemStyleOfItemsControlAttribute : Attribute { }

@@ -1,43 +1,34 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
 namespace GothicModComposer.Utils.GothicSpyProcess
 {
-	public class GothicSpyProcess : Form
-	{
-		private const string TargetProcessName = "[zspy]";
-		private const int WM_COPYDATA = 0x4A;
+    public class GothicSpyProcess : Form
+    {
+        public delegate void ZSpyMessageNotify(string message);
 
-		public delegate void ZSpyMessageNotify(string message);
-		public ZSpyMessageNotify notifyEvent = null;
+        private const string TargetProcessName = "[zspy]";
+        private const int WM_COPYDATA = 0x4A;
+        public ZSpyMessageNotify notifyEvent = null;
 
-		public GothicSpyProcess()
-		{
-			Text = TargetProcessName;
-			Opacity = 0.0f;
-			ShowInTaskbar = false;
-		}
+        public GothicSpyProcess()
+        {
+            Text = TargetProcessName;
+            Opacity = 0.0f;
+            ShowInTaskbar = false;
+        }
+        
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == WM_COPYDATA)
+            {
+                var data = (CopyData) m.GetLParam(typeof(CopyData));
+                var msg = Marshal.PtrToStringAnsi(data.LpData);
+                notifyEvent?.Invoke(msg);
+            }
 
-		[PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-		protected override void WndProc(ref Message m)
-		{
-			if (m.Msg == WM_COPYDATA)
-			{
-				var data = (CopyData)m.GetLParam(typeof(CopyData));
-				var msg = Marshal.PtrToStringAnsi(data.LpData);
-				notifyEvent?.Invoke(msg);
-			}
-
-			base.WndProc(ref m);
-		}
-	}
-
-	public struct CopyData
-	{
-		public IntPtr DwData;
-		public int CbData;
-		public IntPtr LpData;
-	}
+            base.WndProc(ref m);
+        }
+    }
 }

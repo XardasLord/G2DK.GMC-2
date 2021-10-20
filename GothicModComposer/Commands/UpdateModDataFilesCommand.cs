@@ -13,227 +13,232 @@ using ShellProgressBar;
 
 namespace GothicModComposer.Commands
 {
-	public class UpdateModDataFilesCommand : ICommand
-	{
-		public string CommandName => "Update mod data files";
+    public class UpdateModDataFilesCommand : ICommand
+    {
+        private static readonly Stack<ICommandActionIO> ExecutedActions = new();
+        private readonly Dictionary<ModFileEntry, ModFileEntryOperation> _modFileActions = new();
 
-		private readonly IProfile _profile;
-		private static readonly Stack<ICommandActionIO> ExecutedActions = new();
-		private readonly Dictionary<ModFileEntry, ModFileEntryOperation> _modFileActions = new();
+        private readonly IProfile _profile;
 
-		public UpdateModDataFilesCommand(IProfile profile) 
-			=> _profile = profile;
+        public UpdateModDataFilesCommand(IProfile profile)
+            => _profile = profile;
 
-		public void Execute()
-		{
-			Logger.Info($"Start copying all mod files to {_profile.GothicFolder.WorkDataFolderPath}", true);
+        public string CommandName => "Update mod data files";
 
-			var filesFromTrackerFileHelper = _profile.GmcFolder.ModFilesFromTrackedFile;
-			var modFiles = _profile.ModFolder.GetAllModFiles();
+        public void Execute()
+        {
+            Logger.Info($"Start copying all mod files to {_profile.GothicFolder.WorkDataFolderPath}", true);
+
+            var filesFromTrackerFileHelper = _profile.GmcFolder.ModFilesFromTrackedFile;
+            var modFiles = _profile.ModFolder.GetAllModFiles();
             var warnMessages = new List<string>();
-			
+
             BackupTrackerFileHelper();
-            
-			// TODO: Refactor
-			using (var parentProgressBar = new ProgressBar(4, "Updating mod files", ProgressBarOptionsHelper.Get()))
-			{
-				modFiles.ForEach(modFile =>
-				{
-					var modAsset = filesFromTrackerFileHelper.Find(x => x.RelativePath.Equals(modFile.RelativePath));
 
-					var operation = modAsset?.GetEntryOperationForFile(modFile.FilePath) ?? ModFileEntryOperation.Create;
+            // TODO: Refactor
+            using (var parentProgressBar = new ProgressBar(4, "Updating mod files", ProgressBarOptionsHelper.Get()))
+            {
+                modFiles.ForEach(modFile =>
+                {
+                    var modAsset = filesFromTrackerFileHelper.Find(x => x.RelativePath.Equals(modFile.RelativePath));
 
-					if (operation == ModFileEntryOperation.None)
-						return;
+                    var operation = modAsset?.GetEntryOperationForFile(modFile.FilePath) ??
+                                    ModFileEntryOperation.Create;
 
-					_modFileActions.Add(modFile, operation);
-				});
+                    if (operation == ModFileEntryOperation.None)
+                        return;
 
-				parentProgressBar.Tick();
+                    _modFileActions.Add(modFile, operation);
+                });
 
-				// --------------------------
+                parentProgressBar.Tick();
 
-				var counter = 1;
-				var modFilesToCreate = _modFileActions
+                // --------------------------
+
+                var counter = 1;
+                var modFilesToCreate = _modFileActions
                     .Where(x => x.Value == ModFileEntryOperation.Create)
                     .Select(x => x.Key)
                     .ToList();
 
-				using var childProgressBarForCreate = parentProgressBar.Spawn(modFilesToCreate.Count, "Creating new mod files", ProgressBarOptionsHelper.Get());
+                using var childProgressBarForCreate = parentProgressBar.Spawn(modFilesToCreate.Count,
+                    "Creating new mod files", ProgressBarOptionsHelper.Get());
 
-				foreach (var modFileEntry in modFilesToCreate)
-				{
-					_profile.GmcFolder.AddNewModFileEntryToTrackerFile(modFileEntry);
-					CopyAssetToCompilationFolder(modFileEntry);
-					ApplyBuildConfigParameters(modFileEntry);
+                foreach (var modFileEntry in modFilesToCreate)
+                {
+                    _profile.GmcFolder.AddNewModFileEntryToTrackerFile(modFileEntry);
+                    CopyAssetToCompilationFolder(modFileEntry);
+                    ApplyBuildConfigParameters(modFileEntry);
 
-					childProgressBarForCreate.Tick($"Created {counter++} of {modFilesToCreate.Count} new files");
-				}
+                    childProgressBarForCreate.Tick($"Created {counter++} of {modFilesToCreate.Count} new files");
+                }
 
-				parentProgressBar.Tick();
+                parentProgressBar.Tick();
 
-				// --------------------------
+                // --------------------------
 
-				counter = 1;
-				var modFilesToUpdate = _modFileActions
+                counter = 1;
+                var modFilesToUpdate = _modFileActions
                     .Where(x => x.Value == ModFileEntryOperation.Update)
                     .Select(x => x.Key)
                     .ToList();
 
-				using var childProgressBarForUpdate = parentProgressBar.Spawn(modFilesToUpdate.Count, "Updating existing mod files", ProgressBarOptionsHelper.Get());
+                using var childProgressBarForUpdate = parentProgressBar.Spawn(modFilesToUpdate.Count,
+                    "Updating existing mod files", ProgressBarOptionsHelper.Get());
 
-				foreach (var modFileEntry in modFilesToUpdate)
-				{
-					_profile.GmcFolder.UpdateModFileEntryInTrackerFile(modFileEntry);
-					CopyAssetToCompilationFolder(modFileEntry);
-					DeleteCompiledAssetIfExists(modFileEntry);
-					ApplyBuildConfigParameters(modFileEntry);
+                foreach (var modFileEntry in modFilesToUpdate)
+                {
+                    _profile.GmcFolder.UpdateModFileEntryInTrackerFile(modFileEntry);
+                    CopyAssetToCompilationFolder(modFileEntry);
+                    DeleteCompiledAssetIfExists(modFileEntry);
+                    ApplyBuildConfigParameters(modFileEntry);
 
-					childProgressBarForUpdate.Tick($"Updated {counter++} of {modFilesToUpdate.Count} existing files");
-				}
+                    childProgressBarForUpdate.Tick($"Updated {counter++} of {modFilesToUpdate.Count} existing files");
+                }
 
-				parentProgressBar.Tick();
+                parentProgressBar.Tick();
 
-				// --------------------------
-				
-				var modFilesToDelete = filesFromTrackerFileHelper
+                // --------------------------
+
+                var modFilesToDelete = filesFromTrackerFileHelper
                     .Where(x => !x.ExistsInModFiles())
                     .ToList();
 
-                using var childProgressBarForDeletion = parentProgressBar.Spawn(modFilesToDelete.Count, "Deleting not existing mod files", ProgressBarOptionsHelper.Get());
+                using var childProgressBarForDeletion = parentProgressBar.Spawn(modFilesToDelete.Count,
+                    "Deleting not existing mod files", ProgressBarOptionsHelper.Get());
 
-				foreach (var modFileEntry in modFilesToDelete)
+                foreach (var modFileEntry in modFilesToDelete)
                 {
                     if (DeleteAssetFromGothicWorkDataFolder(modFileEntry, warnMessages))
                         _profile.GmcFolder.RemoveModFileEntryFromTrackerFile(modFileEntry);
 
-					childProgressBarForDeletion.Tick($"Deleted {counter++} of {modFilesToDelete.Count} not existing files in repository");
-				}
+                    childProgressBarForDeletion.Tick(
+                        $"Deleted {counter++} of {modFilesToDelete.Count} not existing files in repository");
+                }
 
                 parentProgressBar.Tick();
-
-			}
+            }
 
             warnMessages.ForEach(Logger.Warn);
-			Logger.Info($"Copied all mod files to {_profile.GothicFolder.WorkDataFolderPath}", true);
+            Logger.Info($"Copied all mod files to {_profile.GothicFolder.WorkDataFolderPath}", true);
 
-			_profile.GmcFolder.SaveTrackerFile();
+            _profile.GmcFolder.SaveTrackerFile();
 
-			Logger.Info($"Created mod tracker file in {_profile.GmcFolder.ModFilesTrackerFilePath}",true);
-			ExecutedActions.Push(CommandActionIO.FileCreated(_profile.GmcFolder.ModFilesTrackerFilePath));
-		}
+            Logger.Info($"Created mod tracker file in {_profile.GmcFolder.ModFilesTrackerFilePath}", true);
+            ExecutedActions.Push(CommandActionIO.FileCreated(_profile.GmcFolder.ModFilesTrackerFilePath));
+        }
+
+        public void Undo() => ExecutedActions.Undo();
 
         private void BackupTrackerFileHelper()
         {
             if (!FileHelper.Exists(_profile.GmcFolder.ModFilesTrackerFilePath))
-				return;
-			
+                return;
+
             var tmpCommandActionBackupPath =
-                Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(_profile.GmcFolder.ModFilesTrackerFilePath));
+                Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name),
+                    Path.GetFileName(_profile.GmcFolder.ModFilesTrackerFilePath));
 
             FileHelper.CopyWithOverwrite(_profile.GmcFolder.ModFilesTrackerFilePath, tmpCommandActionBackupPath);
 
-			// Fake info, but needed in case of backup
-            ExecutedActions.Push(CommandActionIO.FileDeleted(_profile.GmcFolder.ModFilesTrackerFilePath, tmpCommandActionBackupPath));
-		}
+            // Fake info, but needed in case of backup
+            ExecutedActions.Push(CommandActionIO.FileDeleted(_profile.GmcFolder.ModFilesTrackerFilePath,
+                tmpCommandActionBackupPath));
+        }
 
-        public void Undo() => ExecutedActions.Undo();
-
-		private void CopyAssetToCompilationFolder(ModFileEntry modFileEntry)
-		{
-			var gothicWorkDataFile = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, modFileEntry.RelativePath);
-
-			if (FileHelper.Exists(gothicWorkDataFile))
-			{
-				var tmpCommandActionBackupPath =
-					Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), Path.GetFileName(gothicWorkDataFile));
-
-				FileHelper.CopyWithOverwrite(gothicWorkDataFile, tmpCommandActionBackupPath);
-				FileHelper.CopyWithOverwrite(modFileEntry.FilePath, gothicWorkDataFile);
-
-				ExecutedActions.Push(CommandActionIO.FileCopiedWithOverwrite(gothicWorkDataFile, tmpCommandActionBackupPath));
-			}
-			else
-			{
-				FileHelper.Copy(modFileEntry.FilePath, gothicWorkDataFile);
-
-				ExecutedActions.Push(CommandActionIO.FileCopied(modFileEntry.FilePath, gothicWorkDataFile));
-			}
-		}
-
-        private bool DeleteAssetFromGothicWorkDataFolder(ModFileEntry modFileEntry, List<string> warnMessage)
+        private void CopyAssetToCompilationFolder(ModFileEntry modFileEntry)
         {
-            var gothicWorkDataFile = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, modFileEntry.RelativePath);
-            
-            if (modFileEntry.AssetType != AssetPresetType.Textures && modFileEntry.AssetType != AssetPresetType.Meshes)
+            var gothicWorkDataFile =
+                DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, modFileEntry.RelativePath);
+
+            if (FileHelper.Exists(gothicWorkDataFile))
             {
-	            if (FileHelper.Exists(gothicWorkDataFile))
-	            {
-		            var tmpCommandActionBackupPath =
-			            Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), modFileEntry.RelativePath);
+                var tmpCommandActionBackupPath =
+                    Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name),
+                        Path.GetFileName(gothicWorkDataFile));
 
-		            FileHelper.CopyWithOverwrite(gothicWorkDataFile, tmpCommandActionBackupPath);
-		            FileHelper.DeleteIfExists(gothicWorkDataFile);
+                FileHelper.CopyWithOverwrite(gothicWorkDataFile, tmpCommandActionBackupPath);
+                FileHelper.CopyWithOverwrite(modFileEntry.FilePath, gothicWorkDataFile);
 
-		            ExecutedActions.Push(CommandActionIO.FileDeleted(gothicWorkDataFile, tmpCommandActionBackupPath));
-
-		            DeleteCompiledAssetIfExists(modFileEntry);
-
-		            return true;
-	            }
-	            else
-	            {
-		            warnMessage.Add($"File {gothicWorkDataFile} should exists but it doesn't. File could be removed manually.");
-		            return false;
-	            }
+                ExecutedActions.Push(
+                    CommandActionIO.FileCopiedWithOverwrite(gothicWorkDataFile, tmpCommandActionBackupPath));
             }
             else
             {
-	            // Is Textures or Meshes so all non compiled files are deleted, so we need to look at the files in _compiled folder
-	            // and we do it in method below, don't need to create any backup here of the base file, cause it basically doesn't exist.
-	            DeleteCompiledAssetIfExists(modFileEntry);
-	            return true;
-            }
+                FileHelper.Copy(modFileEntry.FilePath, gothicWorkDataFile);
 
-            
+                ExecutedActions.Push(CommandActionIO.FileCopied(modFileEntry.FilePath, gothicWorkDataFile));
+            }
         }
 
-		private void DeleteCompiledAssetIfExists(ModFileEntry modFile)
-		{
-			var assetFolderPath = Path.Combine(_profile.GothicFolder.WorkDataFolderPath, modFile.AssetType.ToString());
+        private bool DeleteAssetFromGothicWorkDataFolder(ModFileEntry modFileEntry, List<string> warnMessage)
+        {
+            var gothicWorkDataFile =
+                DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, modFileEntry.RelativePath);
 
-			var compiledFileName = modFile.GetCompiledFileName();
-
-			if (compiledFileName is null)
-				return;
-
-			var pathToCompiledFile = Path.Combine(assetFolderPath, "_compiled", compiledFileName);
-
-			if (!FileHelper.Exists(pathToCompiledFile))
-				return;
-
-			var tmpCommandActionBackupPath = Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), "_compiled", compiledFileName);
-
-			FileHelper.CopyWithOverwrite(pathToCompiledFile, tmpCommandActionBackupPath);
-			FileHelper.DeleteIfExists(pathToCompiledFile);
-
-			ExecutedActions.Push(CommandActionIO.FileDeleted(pathToCompiledFile, tmpCommandActionBackupPath));
-		}
-
-		private void ApplyBuildConfigParameters(ModFileEntry modFileEntry)
-		{
-            if (_profile.CommandsConditions.UpdateDialoguesStepRequired == false && modFileEntry.DoesNeedDialoguesUpdate())
+            if (modFileEntry.AssetType != AssetPresetType.Textures && modFileEntry.AssetType != AssetPresetType.Meshes)
             {
-                _profile.CommandsConditions.UpdateDialoguesStepRequired = true;
-			}
+                if (FileHelper.Exists(gothicWorkDataFile))
+                {
+                    var tmpCommandActionBackupPath =
+                        Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name),
+                            modFileEntry.RelativePath);
 
-			if (_profile.CommandsConditions.ExecuteGothicStepRequired == false && modFileEntry.DoesNeedGothicCompilation())
-            {
-                _profile.CommandsConditions.ExecuteGothicStepRequired = true;
+                    FileHelper.CopyWithOverwrite(gothicWorkDataFile, tmpCommandActionBackupPath);
+                    FileHelper.DeleteIfExists(gothicWorkDataFile);
+
+                    ExecutedActions.Push(CommandActionIO.FileDeleted(gothicWorkDataFile, tmpCommandActionBackupPath));
+
+                    DeleteCompiledAssetIfExists(modFileEntry);
+
+                    return true;
+                }
+
+                warnMessage.Add(
+                    $"File {gothicWorkDataFile} should exists but it doesn't. File could be removed manually.");
+                return false;
             }
 
-			if (_profile.CommandsConditions.ExecuteGothicStepRequired)
-			    AddGothicArgument(modFileEntry);
+            // Is Textures or Meshes so all non compiled files are deleted, so we need to look at the files in _compiled folder
+            // and we do it in method below, don't need to create any backup here of the base file, cause it basically doesn't exist.
+            DeleteCompiledAssetIfExists(modFileEntry);
+            return true;
+        }
+
+        private void DeleteCompiledAssetIfExists(ModFileEntry modFile)
+        {
+            var assetFolderPath = Path.Combine(_profile.GothicFolder.WorkDataFolderPath, modFile.AssetType.ToString());
+
+            var compiledFileName = modFile.GetCompiledFileName();
+
+            if (compiledFileName is null)
+                return;
+
+            var pathToCompiledFile = Path.Combine(assetFolderPath, "_compiled", compiledFileName);
+
+            if (!FileHelper.Exists(pathToCompiledFile))
+                return;
+
+            var tmpCommandActionBackupPath =
+                Path.Combine(_profile.GmcFolder.GetTemporaryCommandActionBackupPath(GetType().Name), "_compiled",
+                    compiledFileName);
+
+            FileHelper.CopyWithOverwrite(pathToCompiledFile, tmpCommandActionBackupPath);
+            FileHelper.DeleteIfExists(pathToCompiledFile);
+
+            ExecutedActions.Push(CommandActionIO.FileDeleted(pathToCompiledFile, tmpCommandActionBackupPath));
+        }
+
+        private void ApplyBuildConfigParameters(ModFileEntry modFileEntry)
+        {
+            if (_profile.CommandsConditions.UpdateDialoguesStepRequired == false &&
+                modFileEntry.DoesNeedDialoguesUpdate()) _profile.CommandsConditions.UpdateDialoguesStepRequired = true;
+
+            if (_profile.CommandsConditions.ExecuteGothicStepRequired == false &&
+                modFileEntry.DoesNeedGothicCompilation()) _profile.CommandsConditions.ExecuteGothicStepRequired = true;
+
+            if (_profile.CommandsConditions.ExecuteGothicStepRequired)
+                AddGothicArgument(modFileEntry);
         }
 
         private void AddGothicArgument(ModFileEntry modFileEntry)
@@ -245,18 +250,22 @@ namespace GothicModComposer.Commands
                     _profile.GothicArguments.AddArgument_ZConvertAll();
                     break;
                 case AssetPresetType.Scripts:
-	                if (modFileEntry.FilePath.Contains(@"System\VisualFX"))
-					{
-						if (!_profile.GothicArguments.Contains(GothicArguments.ZReparseParameter))
-						{
-							_profile.GothicArguments.AddArgument_ReparseVis();
-						}
-						else
-						{
-							_profile.GothicArguments.AddArgument_ZReparse();
-							_profile.GothicArguments.RemoveArg(GothicArguments.ReparseVisParameter);
-						}
-					}
+                    if (modFileEntry.FilePath.Contains(@"System\VisualFX"))
+                    {
+                        if (!_profile.GothicArguments.Contains(GothicArguments.ZReparseParameter))
+                        {
+                            _profile.GothicArguments.AddArgument_ReparseVis();
+                        }
+                        else
+                        {
+                            _profile.GothicArguments.RemoveArg(GothicArguments.ReparseVisParameter);
+                        }
+                    }
+                    else
+                    {
+                        _profile.GothicArguments.AddArgument_ZReparse();
+                        _profile.GothicArguments.RemoveArg(GothicArguments.ReparseVisParameter);
+                    }
 
                     break;
                 case AssetPresetType.Textures:

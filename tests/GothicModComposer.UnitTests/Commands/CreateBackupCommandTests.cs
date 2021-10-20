@@ -12,8 +12,8 @@ namespace GothicModComposer.UnitTests.Commands
 {
     public class CreateBackupCommandTests : TestsFixture
     {
-        private readonly Mock<IProfile> _profileMock;
         private readonly Mock<IFileSystemWithLogger> _fileSystemMock;
+        private readonly Mock<IProfile> _profileMock;
 
         public CreateBackupCommandTests()
         {
@@ -21,7 +21,7 @@ namespace GothicModComposer.UnitTests.Commands
             _fileSystemMock = FileSystemMock;
         }
 
-        private void Act() 
+        private void Act()
             => new CreateBackupCommand(_profileMock.Object, _fileSystemMock.Object).Execute();
 
         [Fact]
@@ -43,8 +43,10 @@ namespace GothicModComposer.UnitTests.Commands
             const string assetDestinationDirectoryPath = "DestinationPath";
 
             _profileMock.SetupGet(x => x.GmcFolder.DoesBackupFolderExist).Returns(false);
-            _fileSystemMock.Setup(x => x.Path.Combine(GothicWorkDataFolderPath, It.IsAny<string>())).Returns(assetSourceDirectoryPath);
-            _fileSystemMock.Setup(x => x.Path.Combine(GmcBackupWorkDataFolderPath, It.IsAny<string>())).Returns(assetDestinationDirectoryPath);
+            _fileSystemMock.Setup(x => x.Path.Combine(GothicWorkDataFolderPath, It.IsAny<string>()))
+                .Returns(assetSourceDirectoryPath);
+            _fileSystemMock.Setup(x => x.Path.Combine(GmcBackupWorkDataFolderPath, It.IsAny<string>()))
+                .Returns(assetDestinationDirectoryPath);
             _fileSystemMock.Setup(x => x.Directory.Exists(assetSourceDirectoryPath)).Returns(false);
             _fileSystemMock.Setup(x => x.Directory.Exists(ModExtensionsFolderPath)).Returns(false);
 
@@ -60,13 +62,16 @@ namespace GothicModComposer.UnitTests.Commands
             const string assetDestinationDirectoryPath = "DestinationPath";
 
             _profileMock.SetupGet(x => x.GmcFolder.DoesBackupFolderExist).Returns(false);
-            _fileSystemMock.Setup(x => x.Path.Combine(GothicWorkDataFolderPath, It.IsAny<string>())).Returns(assetSourceDirectoryPath);
-            _fileSystemMock.Setup(x => x.Path.Combine(GmcBackupWorkDataFolderPath, It.IsAny<string>())).Returns(assetDestinationDirectoryPath);
+            _fileSystemMock.Setup(x => x.Path.Combine(GothicWorkDataFolderPath, It.IsAny<string>()))
+                .Returns(assetSourceDirectoryPath);
+            _fileSystemMock.Setup(x => x.Path.Combine(GmcBackupWorkDataFolderPath, It.IsAny<string>()))
+                .Returns(assetDestinationDirectoryPath);
             _fileSystemMock.Setup(x => x.Directory.Exists(assetSourceDirectoryPath)).Returns(false);
 
             Act();
 
-            _fileSystemMock.Verify(x => x.Directory.Move(assetSourceDirectoryPath, assetDestinationDirectoryPath), Times.Never);
+            _fileSystemMock.Verify(x => x.Directory.Move(assetSourceDirectoryPath, assetDestinationDirectoryPath),
+                Times.Never);
         }
 
         [Fact]
@@ -76,16 +81,19 @@ namespace GothicModComposer.UnitTests.Commands
             const string assetDestinationDirectoryPath = "DestinationPath";
 
             _profileMock.SetupGet(x => x.GmcFolder.DoesBackupFolderExist).Returns(false);
-            _fileSystemMock.Setup(x => x.Path.Combine(GothicWorkDataFolderPath, It.IsAny<string>())).Returns(assetSourceDirectoryPath);
-            _fileSystemMock.Setup(x => x.Path.Combine(GmcBackupWorkDataFolderPath, It.IsAny<string>())).Returns(assetDestinationDirectoryPath);
+            _fileSystemMock.Setup(x => x.Path.Combine(GothicWorkDataFolderPath, It.IsAny<string>()))
+                .Returns(assetSourceDirectoryPath);
+            _fileSystemMock.Setup(x => x.Path.Combine(GmcBackupWorkDataFolderPath, It.IsAny<string>()))
+                .Returns(assetDestinationDirectoryPath);
             _fileSystemMock.Setup(x => x.Directory.Exists(assetSourceDirectoryPath)).Returns(true);
 
             Act();
-            
+
             var numberOfAssets = Enum.GetNames(typeof(AssetPresetType)).Length;
-            _fileSystemMock.Verify(x => x.Directory.Move(assetSourceDirectoryPath, assetDestinationDirectoryPath), Times.Exactly(numberOfAssets));
+            _fileSystemMock.Verify(x => x.Directory.Move(assetSourceDirectoryPath, assetDestinationDirectoryPath),
+                Times.Exactly(numberOfAssets));
         }
-        
+
 
         [Fact]
         public void Execute_WhenModExtensionDirectoryNotExist_ShouldNotMoveToBackup()
@@ -94,14 +102,18 @@ namespace GothicModComposer.UnitTests.Commands
             const string assetDestinationDirectoryPath = "DestinationPath";
 
             _profileMock.SetupGet(x => x.GmcFolder.DoesBackupFolderExist).Returns(false);
-            _fileSystemMock.Setup(x => x.Path.Combine(GothicWorkDataFolderPath, It.IsAny<string>())).Returns(assetSourceDirectoryPath);
-            _fileSystemMock.Setup(x => x.Path.Combine(GmcBackupWorkDataFolderPath, It.IsAny<string>())).Returns(assetDestinationDirectoryPath);
+            _fileSystemMock.Setup(x => x.Path.Combine(GothicWorkDataFolderPath, It.IsAny<string>()))
+                .Returns(assetSourceDirectoryPath);
+            _fileSystemMock.Setup(x => x.Path.Combine(GmcBackupWorkDataFolderPath, It.IsAny<string>()))
+                .Returns(assetDestinationDirectoryPath);
             _fileSystemMock.Setup(x => x.Directory.Exists(assetSourceDirectoryPath)).Returns(false);
             _fileSystemMock.Setup(x => x.Directory.Exists(ModExtensionsFolderPath)).Returns(false);
 
             Act();
 
-            _fileSystemMock.Verify(x => x.Directory.GetAllFilesInDirectory(ModExtensionsFolderPath, SearchOption.AllDirectories), Times.Never);
+            _fileSystemMock.Verify(
+                x => x.Directory.GetAllFilesInDirectory(ModExtensionsFolderPath, SearchOption.AllDirectories),
+                Times.Never);
             _fileSystemMock.Verify(x => x.Directory.CreateIfNotExist(It.IsAny<string>()), Times.Never);
             _fileSystemMock.Verify(x => x.File.Copy(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
@@ -114,14 +126,16 @@ namespace GothicModComposer.UnitTests.Commands
             const string assetDestinationDirectoryPath = "DestinationPath";
 
             _profileMock.SetupGet(x => x.GmcFolder.DoesBackupFolderExist).Returns(false);
-            _fileSystemMock.Setup(x => x.Path.Combine(GothicWorkDataFolderPath, It.IsAny<string>())).Returns(assetSourceDirectoryPath);
-            _fileSystemMock.Setup(x => x.Path.Combine(GmcBackupWorkDataFolderPath, It.IsAny<string>())).Returns(assetDestinationDirectoryPath);
+            _fileSystemMock.Setup(x => x.Path.Combine(GothicWorkDataFolderPath, It.IsAny<string>()))
+                .Returns(assetSourceDirectoryPath);
+            _fileSystemMock.Setup(x => x.Path.Combine(GmcBackupWorkDataFolderPath, It.IsAny<string>()))
+                .Returns(assetDestinationDirectoryPath);
             _fileSystemMock.Setup(x => x.Directory.Exists(assetSourceDirectoryPath)).Returns(false);
 
             _fileSystemMock.Setup(x => x.Directory.Exists(ModExtensionsFolderPath)).Returns(true);
             _fileSystemMock
                 .Setup(x => x.Directory.GetAllFilesInDirectory(ModExtensionsFolderPath, SearchOption.AllDirectories))
-                .Returns(new List<string> { "File1", "File2" });
+                .Returns(new List<string> {"File1", "File2"});
             _fileSystemMock
                 .Setup(x => x.Path.GetRelativePath(ModExtensionsFolderPath, It.IsAny<string>()))
                 .Returns("RelativePath");
@@ -143,7 +157,9 @@ namespace GothicModComposer.UnitTests.Commands
 
             Act();
 
-            _fileSystemMock.Verify(x => x.Directory.GetAllFilesInDirectory(ModExtensionsFolderPath, SearchOption.AllDirectories), Times.Once);
+            _fileSystemMock.Verify(
+                x => x.Directory.GetAllFilesInDirectory(ModExtensionsFolderPath, SearchOption.AllDirectories),
+                Times.Once);
             _fileSystemMock.Verify(x => x.Directory.CreateIfNotExist(It.IsAny<string>()), Times.Exactly(2));
             _fileSystemMock.Verify(x => x.File.Copy(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(2));
         }
