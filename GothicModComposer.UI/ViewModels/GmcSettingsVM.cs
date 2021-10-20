@@ -149,9 +149,9 @@ namespace GothicModComposer.UI.ViewModels
         }
         public void LoadSubmods()
         {
-            SubmodsHelper submodsHelper = new SubmodsHelper();
-            submodsHelper.Main();
-            Submods = submodsHelper.submods;
+            SubmodsLoaderService submodsLoaderService = new SubmodsLoaderService();
+            submodsLoaderService.FindSubmodDatafiles();
+            Submods = submodsLoaderService.submods;
         }
 
         private void IniOverrides_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

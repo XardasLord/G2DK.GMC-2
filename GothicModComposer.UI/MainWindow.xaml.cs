@@ -5,6 +5,7 @@ using GothicModComposer.UI.Services;
 using GothicModComposer.UI.Helpers;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 
 namespace GothicModComposer.UI
 {
@@ -13,14 +14,14 @@ namespace GothicModComposer.UI
     /// </summary>
     public partial class MainWindow
     {
-        SubmodsHelper submodsHelper = new SubmodsHelper();
+        SubmodsLoaderService submodsLoaderService = new SubmodsLoaderService();
         public MainWindow()
         {
             InitializeComponent();
 
             SetTitle();
 
-            submodsHelper.Main();
+            submodsLoaderService.FindSubmodDatafiles();
 
             var win32Service = new ExternalWin32Service();
 
@@ -37,42 +38,46 @@ namespace GothicModComposer.UI
             Title = $"GMC UI v{fullVersion?.Major}.{fullVersion?.Minor}.{fullVersion?.Build}";
         }
 
-        public void SubmodsInitiation()
+        public void SubmodsInfoInitiation()
         {
+            StringBuilder sb = new StringBuilder(100);
+
             string version = "Wersja: ";
-            SubmodInfo1.Text = submodsHelper.submods[0].Title;
-            SubmodInfo2.Text = version + submodsHelper.submods[0].Version;
+            SubmodInfo1.Text = submodsLoaderService.submods[1].Title;
+            SubmodInfo2.Text = sb.Append(version).Append(submodsLoaderService.submods[1].Version).ToString();
+            sb.Clear();
             SubmodInfo3.Text = "";
-            for (int i = 0; i < submodsHelper.submods[0].Authors.Length; i++)
+            for (int i = 0; i < submodsLoaderService.submods[1].Authors.Length; i++)
             {
-                if(i < submodsHelper.submods[0].Authors.Length-1 && submodsHelper.submods[0].Authors.Length>1)
-                    SubmodInfo3.Text += submodsHelper.submods[0].Authors[i]+", ";
-                else 
-                    SubmodInfo3.Text += submodsHelper.submods[0].Authors[i];
+                if (i < submodsLoaderService.submods[1].Authors.Length - 1 && submodsLoaderService.submods[1].Authors.Length > 1)
+                {
+                    SubmodInfo3.Text += sb.Append(submodsLoaderService.submods[1].Authors[i]).Append(", ");
+                    sb.Clear();
+                }
+                else
+                    SubmodInfo3.Text += submodsLoaderService.submods[1].Authors[i];
             }
             
-            SubmodInfo4.Text = submodsHelper.submods[0].Webpage;
-            SubmodInfo5.Text += submodsHelper.submods[0].Description;
+            SubmodInfo4.Text = submodsLoaderService.submods[1].Webpage;
+            SubmodInfo5.Text = submodsLoaderService.submods[1].Description;
         }
 
-        private void TabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void tcWorldsAndSubmods_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             if (Worlds.IsSelected)
                 SubmodsInfoPanel.Visibility = Visibility.Hidden;
             if (Submods.IsSelected)
             {
-                SubmodsInitiation();
+                SubmodsInfoInitiation();
                 SubmodsInfoPanel.Visibility = Visibility.Visible;
             }
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void RunSubmod_Click(object sender, RoutedEventArgs e)
         {
-            string iniFileName = submodsHelper.submods[SubmodsView.SelectedIndex].iniFileName;
-            //MessageBox.Show(SubmodsView.SelectedIndex.ToString());
-            //MessageBox.Show(submodsHelper.submods[SubmodsView.SelectedIndex].iniFileName);
+            string iniFileName = submodsLoaderService.submods[SubmodsView.SelectedIndex].iniFileName;
             Process gothic = new Process();
 
-            gothic.StartInfo.FileName = Path.Combine(submodsHelper.path,"Gothic2.exe");
+            gothic.StartInfo.FileName = Path.Combine(submodsLoaderService.path,"Gothic2.exe");
             gothic.StartInfo.Arguments = "-game:"+iniFileName;
 
             gothic.Start();

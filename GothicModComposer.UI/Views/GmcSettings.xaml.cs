@@ -61,7 +61,7 @@ namespace GothicModComposer.UI.Views
             }
         }
 
-        public void TimedVisibility(BaloonPopup control,string text)
+        private void TimedVisibility(BaloonPopup control,string text)
         {
             Clipboard.SetText(gothicRoot.Text);
             control.Visibility = Visibility.Visible;

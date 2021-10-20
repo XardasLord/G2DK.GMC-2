@@ -7,14 +7,13 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using GothicModComposer.UI.Models;
 using System.Collections.ObjectModel;
-
 namespace GothicModComposer.UI.Helpers
 {
-    class SubmodsHelper
+    class SubmodsLoaderService
     {
-        public ObservableCollection<Submod> submods = new ObservableCollection<Submod>();      
+        public ObservableCollection<Submod> submods = new ObservableCollection<Submod>();
         public string path = @"C:\GothicForTests\System";
-        public void Main()
+        public void FindSubmodDatafiles()
         {
             if (Directory.Exists(path))
             {
@@ -22,17 +21,17 @@ namespace GothicModComposer.UI.Helpers
             }
             else
             {
-                Debug.WriteLine("{0} is not a valid directory.", path);
+                MessageBox.Show("{0} is not a valid directory.", path);
             }
         }
-        public void ProcessDirectory(string targetDirectory)
+        private void ProcessDirectory(string targetDirectory)
         {
             var fileEntries = Directory.GetFiles(targetDirectory, "*.ini");
 
             foreach (string fileName in fileEntries)
                 ProcessFile(fileName);
         }
-        public void ReadObjectData(List<string> modObject,string path2)
+        private void CreateSubmodsListFromObjectsData(List<string> modObject,string path2)
         {
             System.Windows.Forms.RichTextBox rtBox = new System.Windows.Forms.RichTextBox();
             Submod submod = new Submod();
@@ -55,7 +54,7 @@ namespace GothicModComposer.UI.Helpers
             submods.Add(submod);
         }
 
-        public void ProcessFile(string path)
+        private void ProcessFile(string path)
         {
             bool trigger = false;
             bool starter = false;
@@ -84,7 +83,7 @@ namespace GothicModComposer.UI.Helpers
                 }
             }
             if (starter) {
-                ReadObjectData(modObject,path);
+                CreateSubmodsListFromObjectsData(modObject,path);
             }
             
         }

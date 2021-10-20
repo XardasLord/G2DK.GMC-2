@@ -51,7 +51,7 @@
                 </Grid.ColumnDefinitions>
                 <Image Source="{Binding Icon}" Width="30" Height="30" Margin="5 5 15 5" Grid.Column="0"/>
                 <TextBlock Text="{Binding Title}" VerticalAlignment="Center" Grid.Column="1"/>
-                <Button x:Name="playButton" Grid.Column="2" Background="{x:Null}" BorderBrush="{x:Null}" Click="Button_Click">
+                <Button x:Name="playButton" Grid.Column="2" Background="{x:Null}" BorderBrush="{x:Null}" Click="RunSubmod_Click">
                     <Image Source="Resources/play.png" Width="30" Height="30" />
                 </Button>
             </Grid>
@@ -89,7 +89,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <!-- Listview (0 - Worlds, 1 - Submods)  -->
-            <TabControl HorizontalAlignment="Center" Margin="10,10,10,10" Grid.Column="0" Grid.Row="1" SelectionChanged="TabControl_SelectionChanged">
+            <TabControl Name="tcWorldsAndSubmods" HorizontalAlignment="Center" Margin="10,10,10,10" Grid.Column="0" Grid.Row="1" SelectionChanged="tcWorldsAndSubmods_SelectionChanged">
                 <TabItem Name="Worlds" Header="Worlds">
                     <StackPanel  Margin="5,5,5,5">
                         <ListView

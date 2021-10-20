@@ -81,7 +81,7 @@
                     </StackPanel>
                     <StackPanel Grid.Column="2" Margin="5, 10, 0, 0" >
                         <Button Margin="0, 5, 0, 0" Width="150" Height="32"
-                            Content="Open Logs directory"
+                            Content="Open logs directory"
                             Command="{Binding OpenLogsDirectory}"
                             IsEnabled="{Binding Path=IsLogDirectoryAvailable}" />
                         <Button Margin="0, 5, 0, 0" Width="150" Height="32"
