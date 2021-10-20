@@ -17,6 +17,7 @@
   <ItemGroup>
     <None Remove="Resources\delete.png" />
     <None Remove="Resources\edit.png" />
+    <None Remove="Resources\play.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,6 +67,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\edit.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\play.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
