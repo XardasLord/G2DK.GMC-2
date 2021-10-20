@@ -96,7 +96,6 @@ namespace GothicModComposer.UI.ViewModels
 
             GmcSettingsJsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "gmc-2-ui.json");
             Zen3DWorlds = new ObservableCollection<Zen3DWorld>();
-
             SelectGothic2RootDirectory = new RelayCommand(SelectGothic2RootDirectoryExecute);
             SelectModificationRootDirectory = new RelayCommand(SelectModificationRootDirectoryExecute);
             SaveSettings = new RelayCommand(SaveSettingsExecute);

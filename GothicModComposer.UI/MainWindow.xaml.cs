@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Windows;
 using System.Reflection;
 using GothicModComposer.UI.Services;
+using GothicModComposer.UI.Helpers;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
 
 namespace GothicModComposer.UI
 {
@@ -8,7 +13,7 @@ namespace GothicModComposer.UI
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow
-    {
+    {       
         public MainWindow()
         {
             InitializeComponent();
