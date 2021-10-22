@@ -18,7 +18,7 @@ namespace GothicModComposer.Commands
     public class UpdateModDataFilesCommand : ICommand
     {
         private static readonly ConcurrentStack<ICommandActionIO> ExecutedActions = new();
-        private readonly Dictionary<ModFileEntry, ModFileEntryOperation> _modFileActions = new();
+        private readonly ConcurrentDictionary<ModFileEntry, ModFileEntryOperation> _modFileActions = new();
         private static object _lock = new();
         private readonly IProfile _profile;
 
@@ -50,7 +50,7 @@ namespace GothicModComposer.Commands
                     if (operation == ModFileEntryOperation.None)
                         return;
 
-                    _modFileActions.Add(modFile, operation);
+                    _modFileActions.TryAdd(modFile, operation);
                 });
 
                 parentProgressBar.Tick();
