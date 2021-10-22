@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Folders;
@@ -13,8 +15,8 @@ namespace GothicModComposer.Commands
 {
     public class ClearWorkDataCommand : ICommand
     {
-        private static readonly Stack<ICommandActionIO> ExecutedActions = new();
-
+        private static readonly ConcurrentStack<ICommandActionIO> ExecutedActions = new();
+        private static object _lock = new object();
         private readonly IProfile _profile;
 
         public ClearWorkDataCommand(IProfile profile)
@@ -27,10 +29,9 @@ namespace GothicModComposer.Commands
             using (var progress = new ProgressBar(AssetPresetFolders.FoldersWithAssets.Count,
                 "Clearing _Work/Data folder", ProgressBarOptionsHelper.Get()))
             {
-                AssetPresetFolders.FoldersWithAssets.ForEach(assetType =>
+                Parallel.ForEach(AssetPresetFolders.FoldersWithAssets, assetType =>
                 {
                     var assetFolderPath = Path.Combine(_profile.GothicFolder.WorkDataFolderPath, assetType.ToString());
-
                     var assetFolder = new AssetFolder(assetFolderPath, assetType);
                     if (assetFolder.Exists())
                     {
@@ -52,7 +53,10 @@ namespace GothicModComposer.Commands
                         ExecutedActions.Push(CommandActionIO.DirectoryCreated(assetFolder.CompiledFolderPath));
                     }
 
-                    progress.Tick();
+                    lock (_lock)
+                    {
+                        progress.Tick();
+                    }
                 });
             }
 

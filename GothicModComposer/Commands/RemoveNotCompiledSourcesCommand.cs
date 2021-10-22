@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Folders;
@@ -14,7 +16,10 @@ namespace GothicModComposer.Commands
 {
     public class RemoveNotCompiledSourcesCommand : ICommand
     {
-        private static readonly Stack<ICommandActionIO> ExecutedActions = new();
+        private static readonly ConcurrentStack<ICommandActionIO> ExecutedActions = new();
+        private static object _lock = new();
+        private static object _lockChild1 = new();
+        private static object _lockChild2 = new();
 
         private readonly List<AssetPresetType> _assertsToRemoveFilesFrom = new()
         {
@@ -35,7 +40,7 @@ namespace GothicModComposer.Commands
             _parentProgressBar = new ProgressBar(2, "Removing not compiled base files from _Work/Data",
                 ProgressBarOptionsHelper.Get());
 
-            AssetPresetFolders.FoldersWithAssets.ForEach(assetType =>
+            Parallel.ForEach(AssetPresetFolders.FoldersWithAssets, assetType =>
             {
                 if (!_assertsToRemoveFilesFrom.Exists(x => x == assetType))
                     return;
@@ -44,10 +49,12 @@ namespace GothicModComposer.Commands
                 var assetFolder = new AssetFolder(assetFolderPath, assetType);
 
                 DeleteSubFolders(assetFolder);
-
-                _parentProgressBar.Tick();
-
                 DeleteFiles(assetFolder);
+
+                lock (_lock)
+                {
+                    _parentProgressBar.Tick();
+                }
             });
 
             _parentProgressBar.Dispose();
@@ -66,18 +73,20 @@ namespace GothicModComposer.Commands
                 "Creating backup and delete not compiled files", ProgressBarOptionsHelper.Get());
 
             var counter = 1;
-            foreach (var assetFile in filesInAssetFolder)
+            Parallel.ForEach(filesInAssetFolder, assetFile =>
             {
                 var tmpCommandActionBackupPath = GetTmpBackupPathForFile(assetFile);
 
                 FileHelper.CopyWithOverwrite(assetFile, tmpCommandActionBackupPath);
-
                 FileHelper.DeleteIfExists(assetFile);
                 ExecutedActions.Push(CommandActionIO.FileDeleted(assetFile, tmpCommandActionBackupPath));
 
-                childProgressBar.Tick(
-                    $"Created backup and deleted {counter++} of {filesInAssetFolder.Count} files inside '{assetFolder.AssetFolderName}' asset folder");
-            }
+                lock (_lockChild1)
+                {
+                    childProgressBar.Tick(
+                        $"Created backup and deleted {counter++} of {filesInAssetFolder.Count} files inside '{assetFolder.AssetFolderName}' asset folder");
+                }
+            });
         }
 
         private void DeleteSubFolders(AssetFolder assetFolder)
@@ -91,7 +100,7 @@ namespace GothicModComposer.Commands
                 "Creating backup and delete subfolders", ProgressBarOptionsHelper.Get());
 
             var counter = 1;
-            foreach (var subDirectoryPath in subDirectories)
+            Parallel.ForEach(subDirectories, subDirectoryPath =>
             {
                 var tmpCommandActionBackupPath = GetTmpBackupPathForDirectory(subDirectoryPath);
 
@@ -103,9 +112,12 @@ namespace GothicModComposer.Commands
                 DirectoryHelper.DeleteIfExists(subDirectoryPath);
                 ExecutedActions.Push(CommandActionIO.DirectoryDeleted(subDirectoryPath, tmpCommandActionBackupPath));
 
-                childProgressBar.Tick(
-                    $"Created backup and deleted {counter++} of {subDirectories.Count()} subfolders inside '{assetFolder.AssetFolderName}' asset folder");
-            }
+                lock (_lockChild2)
+                {
+                    childProgressBar.Tick(
+                        $"Created backup and deleted {counter++} of {subDirectories.Count()} subfolders inside '{assetFolder.AssetFolderName}' asset folder");
+                }
+            });
         }
 
         private string GetTmpBackupPathForDirectory(string subDirectoryPath)

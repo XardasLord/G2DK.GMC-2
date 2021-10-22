@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Profiles;
@@ -13,8 +15,8 @@ namespace GothicModComposer.Commands
 {
     public class CopyEssentialAssetFilesFromBackupCommand : ICommand
     {
-        private static readonly Stack<ICommandActionIO> ExecutedActions = new();
-
+        private static readonly ConcurrentStack<ICommandActionIO> ExecutedActions = new();
+        private static object _lock = new object();
         private readonly IProfile _profile;
 
         public CopyEssentialAssetFilesFromBackupCommand(IProfile profile) => _profile = profile;
@@ -35,12 +37,10 @@ namespace GothicModComposer.Commands
             {
                 var counter = 1;
 
-                essentialFiles.ForEach(essentialFilePath =>
+                Parallel.ForEach(essentialFiles, essentialFilePath =>
                 {
-                    var relativePath = DirectoryHelper.ToRelativePath(essentialFilePath,
-                        _profile.GmcFolder.BackupWorkDataFolderPath);
-                    var destinationPath =
-                        DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, relativePath);
+                    var relativePath = DirectoryHelper.ToRelativePath(essentialFilePath,_profile.GmcFolder.BackupWorkDataFolderPath);
+                    var destinationPath = DirectoryHelper.MergeRelativePath(_profile.GothicFolder.WorkDataFolderPath, relativePath);
 
                     if (FileHelper.Exists(destinationPath))
                     {
@@ -61,7 +61,10 @@ namespace GothicModComposer.Commands
                         ExecutedActions.Push(CommandActionIO.FileCopied(essentialFilePath, destinationPath));
                     }
 
-                    progress.Tick($"Copied {counter++} of {essentialFiles.Count} files");
+                    lock (_lock)
+                    {
+                        progress.Tick($"Copied {counter++} of {essentialFiles.Count} files");
+                    }
                 });
             }
 
@@ -72,8 +75,7 @@ namespace GothicModComposer.Commands
 
         private bool IsEssentialFile(string filePath)
         {
-            var relativeFilePath =
-                DirectoryHelper.ToRelativePath(filePath, _profile.GmcFolder.BackupWorkDataFolderPath);
+            var relativeFilePath = DirectoryHelper.ToRelativePath(filePath, _profile.GmcFolder.BackupWorkDataFolderPath);
             return _profile.GmcFolder.EssentialDirectoriesFiles.Any(folder => relativeFilePath.StartsWith(folder));
         }
     }

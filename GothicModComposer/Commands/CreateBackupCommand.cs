@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Profiles;
@@ -12,9 +14,9 @@ namespace GothicModComposer.Commands
 {
     public class CreateBackupCommand : ICommand
     {
-        private static readonly Stack<ICommandActionIO> ExecutedActions = new();
+        private static readonly ConcurrentStack<ICommandActionIO> ExecutedActions = new();
         private readonly IFileSystemWithLogger _fileSystem;
-
+        private static object _lock = new object();
         private readonly IProfile _profile;
 
         public CreateBackupCommand(IProfile profile, IFileSystemWithLogger fileSystem)
@@ -44,30 +46,27 @@ namespace GothicModComposer.Commands
             _profile.GmcFolder.CreateBackupWorkDataFolder();
             ExecutedActions.Push(CommandActionIO.DirectoryCreated(_profile.GmcFolder.BasePath));
 
-            using (var progress = new ProgressBar(AssetPresetFolders.FoldersWithAssets.Count, "Creating Gothic backup",
-                ProgressBarOptionsHelper.Get()))
+            using var progress = new ProgressBar(AssetPresetFolders.FoldersWithAssets.Count, "Creating Gothic backup", ProgressBarOptionsHelper.Get());
+            var counter = 1;
+            Parallel.ForEach(AssetPresetFolders.FoldersWithAssets, assetFolder =>
             {
-                var counter = 1;
-
-                AssetPresetFolders.FoldersWithAssets.ForEach(assetFolder =>
+                lock (_lock)
                 {
                     progress.Tick($"Copied {counter++} of {AssetPresetFolders.FoldersWithAssets.Count} folders");
+                }
 
-                    var sourcePath = _fileSystem.Path.Combine(_profile.GothicFolder.WorkDataFolderPath,
-                        assetFolder.ToString());
-                    var destinationPath = _fileSystem.Path.Combine(_profile.GmcFolder.BackupWorkDataFolderPath,
-                        assetFolder.ToString());
+                var sourcePath = _fileSystem.Path.Combine(_profile.GothicFolder.WorkDataFolderPath,
+                    assetFolder.ToString());
+                var destinationPath = _fileSystem.Path.Combine(_profile.GmcFolder.BackupWorkDataFolderPath,
+                    assetFolder.ToString());
 
-                    if (!_fileSystem.Directory.Exists(sourcePath))
-                        return;
+                if (!_fileSystem.Directory.Exists(sourcePath))
+                    return;
 
-                    _fileSystem.Directory.Move(sourcePath, destinationPath);
+                _fileSystem.Directory.Move(sourcePath, destinationPath);
 
-                    ExecutedActions.Push(CommandActionIO.DirectoryMoved(sourcePath, destinationPath));
-                });
-            }
-
-            ;
+                ExecutedActions.Push(CommandActionIO.DirectoryMoved(sourcePath, destinationPath));
+            });
         }
 
         private void BackupFilesOverridenByExtensions()
@@ -75,9 +74,8 @@ namespace GothicModComposer.Commands
             if (!_fileSystem.Directory.Exists(_profile.ModFolder.ExtensionsFolderPath))
                 return;
 
-            _fileSystem.Directory
-                .GetAllFilesInDirectory(_profile.ModFolder.ExtensionsFolderPath)
-                .ForEach(BackupFileFromExtensionFolder);
+            var allFilesInDirectory = _fileSystem.Directory.GetAllFilesInDirectory(_profile.ModFolder.ExtensionsFolderPath);
+            Parallel.ForEach(allFilesInDirectory, BackupFileFromExtensionFolder);
         }
 
         private void BackupFileFromExtensionFolder(string filePath)

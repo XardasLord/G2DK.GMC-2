@@ -19,7 +19,7 @@ namespace GothicModComposer.Commands
     {
         private const string OuCslFileName = "OU.CSL";
         private static readonly Stack<ICommandActionIO> ExecutedActions = new();
-
+        private static object _lock = new();
         private readonly IProfile _profile;
 
         public UpdateDialoguesCommand(IProfile profile)
@@ -88,7 +88,10 @@ namespace GothicModComposer.Commands
                     dialogues.AddRange(GetMatchingDialoguesFromFile(script,
                         $"{GothicRegexHelper.MultiLineComment}|{GothicRegexHelper.AiOutputPattern}"));
 
-                    progress.Tick($"Updated {counter++} of {scriptPaths.Count} dialogues");
+                    lock (_lock)
+                    {
+                        progress.Tick($"Updated {counter++} of {scriptPaths.Count} dialogues");
+                    }
                 });
             }
 

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models;
@@ -10,8 +12,8 @@ namespace GothicModComposer.Commands
 {
     public class DisableVideoBikFilesCommand : ICommand
     {
-        private static readonly Stack<ICommandActionVideoBik> ExecutedActions = new();
-
+        private static readonly ConcurrentStack<ICommandActionVideoBik> ExecutedActions = new();
+        private static object _lock = new();
         private readonly IProfile _profile;
 
         public DisableVideoBikFilesCommand(IProfile profile)
@@ -21,16 +23,16 @@ namespace GothicModComposer.Commands
 
         public void Execute()
         {
-            DirectoryHelper
+            var files = DirectoryHelper
                 .GetAllFilesInDirectory(_profile.GothicFolder.VideoBikFolderPath, SearchOption.TopDirectoryOnly)
                 .ConvertAll(file => new VideoBikFile(file))
-                .FindAll(videoFile => videoFile.IsEnabled && videoFile.IsValidVideoBikFile && videoFile.IsLogoVideo)
-                .ForEach(videoFile =>
-                {
-                    videoFile.Disable();
+                .FindAll(videoFile => videoFile.IsEnabled && videoFile.IsValidVideoBikFile && videoFile.IsLogoVideo);
 
-                    ExecutedActions.Push(CommandActionVideoBik.FileDisabled(videoFile));
-                });
+            Parallel.ForEach(files, videoFile =>
+            {
+                videoFile.Disable();
+                ExecutedActions.Push(CommandActionVideoBik.FileDisabled(videoFile));
+            });
         }
 
         public void Undo() => ExecutedActions.Undo();

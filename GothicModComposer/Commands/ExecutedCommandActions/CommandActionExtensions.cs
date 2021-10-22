@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Utils;
@@ -50,6 +51,58 @@ namespace GothicModComposer.Commands.ExecutedCommandActions
             {
                 var executedAction = executedActions.Pop();
                 executedAction?.Undo();
+            }
+        }
+        
+        public static void Undo(this ConcurrentStack<ICommandActionIO> executedActions)
+        {
+            if (!executedActions.Any())
+            {
+                Logger.Info("There is nothing to undo, because no actions were executed.",
+                    true); // TODO: Introduce something like NoAction()
+                return;
+            }
+
+            while (executedActions.Count > 0)
+            {
+                if (executedActions.TryPop(out var executedAction))
+                {
+                    executedAction?.Undo();    
+                }
+            }
+        }
+
+        public static void Undo(this ConcurrentStack<ICommandActionVDF> executedActions)
+        {
+            if (!executedActions.Any())
+            {
+                Logger.Info("There is nothing to undo, because no actions were executed.", true);
+                return;
+            }
+
+            while (executedActions.Count > 0)
+            {
+                if (executedActions.TryPop(out var executedAction))
+                {
+                    executedAction?.Undo();    
+                }
+            }
+        }
+
+        public static void Undo(this ConcurrentStack<ICommandActionVideoBik> executedActions)
+        {
+            if (!executedActions.Any())
+            {
+                Logger.Info("There is nothing to undo, because no actions were executed.", true);
+                return;
+            }
+
+            while (executedActions.Count > 0)
+            {
+                if (executedActions.TryPop(out var executedAction))
+                {
+                    executedAction?.Undo();    
+                }
             }
         }
     }

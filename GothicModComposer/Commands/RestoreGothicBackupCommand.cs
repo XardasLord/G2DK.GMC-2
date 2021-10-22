@@ -1,4 +1,5 @@
-﻿using GothicModComposer.Models.Profiles;
+﻿using System.Threading.Tasks;
+using GothicModComposer.Models.Profiles;
 using GothicModComposer.Utils;
 using GothicModComposer.Utils.IOHelpers;
 using GothicModComposer.Utils.ProgressBar;
@@ -9,6 +10,7 @@ namespace GothicModComposer.Commands
     public class RestoreGothicBackupCommand : ICommand
     {
         private readonly IProfile _profile;
+        private static object _lock = new();
 
         public RestoreGothicBackupCommand(IProfile profile)
             => _profile = profile;
@@ -35,23 +37,23 @@ namespace GothicModComposer.Commands
 
             var backupFiles = DirectoryHelper.GetAllFilesInDirectory(_profile.GmcFolder.BackupFolderPath);
 
-            using (var progress = new ProgressBar(backupFiles.Count, "Restoring files from backup",
-                ProgressBarOptionsHelper.Get()))
+            using var progress = new ProgressBar(backupFiles.Count, "Restoring files from backup", ProgressBarOptionsHelper.Get());
+            var counter = 1;
+
+            Parallel.ForEach(backupFiles, backupFilePath =>
             {
-                var counter = 1;
+                var relativePath =
+                    DirectoryHelper.ToRelativePath(backupFilePath, _profile.GmcFolder.BackupFolderPath);
+                var gothicFilePath =
+                    DirectoryHelper.MergeRelativePath(_profile.GothicFolder.BasePath, relativePath);
 
-                backupFiles.ForEach(backupFilePath =>
+                FileHelper.MoveWithOverwrite(backupFilePath, gothicFilePath);
+
+                lock (_lock)
                 {
-                    var relativePath =
-                        DirectoryHelper.ToRelativePath(backupFilePath, _profile.GmcFolder.BackupFolderPath);
-                    var gothicFilePath =
-                        DirectoryHelper.MergeRelativePath(_profile.GothicFolder.BasePath, relativePath);
-
-                    FileHelper.MoveWithOverwrite(backupFilePath, gothicFilePath);
-
                     progress.Tick($"Restored {counter++} of {backupFiles.Count} files");
-                });
-            }
+                }
+            });
         }
 
         private void RemoveGmcFolder() => DirectoryHelper.DeleteFilesInDirectoryIfExists(_profile.GmcFolder.BasePath);

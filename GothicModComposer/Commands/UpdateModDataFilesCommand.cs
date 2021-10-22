@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.ModFiles;
@@ -15,9 +17,9 @@ namespace GothicModComposer.Commands
 {
     public class UpdateModDataFilesCommand : ICommand
     {
-        private static readonly Stack<ICommandActionIO> ExecutedActions = new();
+        private static readonly ConcurrentStack<ICommandActionIO> ExecutedActions = new();
         private readonly Dictionary<ModFileEntry, ModFileEntryOperation> _modFileActions = new();
-
+        private static object _lock = new();
         private readonly IProfile _profile;
 
         public UpdateModDataFilesCommand(IProfile profile)
@@ -38,7 +40,7 @@ namespace GothicModComposer.Commands
             // TODO: Refactor
             using (var parentProgressBar = new ProgressBar(4, "Updating mod files", ProgressBarOptionsHelper.Get()))
             {
-                modFiles.ForEach(modFile =>
+                Parallel.ForEach(modFiles, modFile =>
                 {
                     var modAsset = filesFromTrackerFileHelper.Find(x => x.RelativePath.Equals(modFile.RelativePath));
 
@@ -64,14 +66,17 @@ namespace GothicModComposer.Commands
                 using var childProgressBarForCreate = parentProgressBar.Spawn(modFilesToCreate.Count,
                     "Creating new mod files", ProgressBarOptionsHelper.Get());
 
-                foreach (var modFileEntry in modFilesToCreate)
+                Parallel.ForEach(modFilesToCreate, modFileEntry =>
                 {
                     _profile.GmcFolder.AddNewModFileEntryToTrackerFile(modFileEntry);
                     CopyAssetToCompilationFolder(modFileEntry);
                     ApplyBuildConfigParameters(modFileEntry);
 
-                    childProgressBarForCreate.Tick($"Created {counter++} of {modFilesToCreate.Count} new files");
-                }
+                    lock (_lock)
+                    {
+                        childProgressBarForCreate.Tick($"Created {counter++} of {modFilesToCreate.Count} new files");
+                    }
+                });
 
                 parentProgressBar.Tick();
 
@@ -86,15 +91,18 @@ namespace GothicModComposer.Commands
                 using var childProgressBarForUpdate = parentProgressBar.Spawn(modFilesToUpdate.Count,
                     "Updating existing mod files", ProgressBarOptionsHelper.Get());
 
-                foreach (var modFileEntry in modFilesToUpdate)
+                Parallel.ForEach(modFilesToUpdate, modFileEntry =>
                 {
                     _profile.GmcFolder.UpdateModFileEntryInTrackerFile(modFileEntry);
                     CopyAssetToCompilationFolder(modFileEntry);
                     DeleteCompiledAssetIfExists(modFileEntry);
                     ApplyBuildConfigParameters(modFileEntry);
 
-                    childProgressBarForUpdate.Tick($"Updated {counter++} of {modFilesToUpdate.Count} existing files");
-                }
+                    lock (_lock)
+                    {
+                        childProgressBarForUpdate.Tick($"Updated {counter++} of {modFilesToUpdate.Count} existing files");
+                    }
+                });
 
                 parentProgressBar.Tick();
 
@@ -107,14 +115,17 @@ namespace GothicModComposer.Commands
                 using var childProgressBarForDeletion = parentProgressBar.Spawn(modFilesToDelete.Count,
                     "Deleting not existing mod files", ProgressBarOptionsHelper.Get());
 
-                foreach (var modFileEntry in modFilesToDelete)
+                Parallel.ForEach(modFilesToDelete, modFileEntry =>
                 {
                     if (DeleteAssetFromGothicWorkDataFolder(modFileEntry, warnMessages))
                         _profile.GmcFolder.RemoveModFileEntryFromTrackerFile(modFileEntry);
 
-                    childProgressBarForDeletion.Tick(
-                        $"Deleted {counter++} of {modFilesToDelete.Count} not existing files in repository");
-                }
+                    lock (_lock)
+                    {
+                        childProgressBarForDeletion.Tick(
+                            $"Deleted {counter++} of {modFilesToDelete.Count} not existing files in repository");
+                    }
+                });
 
                 parentProgressBar.Tick();
             }

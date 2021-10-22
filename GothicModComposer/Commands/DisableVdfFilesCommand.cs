@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using GothicModComposer.Commands.ExecutedCommandActions;
 using GothicModComposer.Commands.ExecutedCommandActions.Interfaces;
 using GothicModComposer.Models.Profiles;
@@ -10,7 +12,7 @@ namespace GothicModComposer.Commands
 {
     public class DisableVdfFilesCommand : ICommand
     {
-        private static readonly Stack<ICommandActionVDF> ExecutedActions = new();
+        private static readonly ConcurrentStack<ICommandActionVDF> ExecutedActions = new();
 
         private readonly IProfile _profile;
 
@@ -21,15 +23,15 @@ namespace GothicModComposer.Commands
 
         public void Execute()
         {
-            DirectoryHelper.GetAllFilesInDirectory(_profile.GothicFolder.DataFolderPath, SearchOption.TopDirectoryOnly)
+            var files = DirectoryHelper.GetAllFilesInDirectory(_profile.GothicFolder.DataFolderPath, SearchOption.TopDirectoryOnly)
                 .ConvertAll(file => new VdfFile(file))
-                .FindAll(vdf => vdf.IsEnabled && vdf.IsBaseVdf)
-                .ForEach(vdf =>
-                {
-                    vdf.Disable();
+                .FindAll(vdf => vdf.IsEnabled && vdf.IsBaseVdf);
 
-                    ExecutedActions.Push(CommandActionVDF.FileDisabled(vdf));
-                });
+            Parallel.ForEach(files, vdf =>
+            {
+                vdf.Disable();
+                ExecutedActions.Push(CommandActionVDF.FileDisabled(vdf));
+            });
         }
 
         public void Undo() => ExecutedActions.Undo();
