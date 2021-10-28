@@ -169,8 +169,14 @@
                               Content="Disable music" />
                     <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsSoundDisabled}"
                               Content="Disable sound" />
-                    <CheckBox IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsReparseScript}"
+                    <CheckBox Name="IsReparseScriptCheckbox" IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsReparseScript}"
                               Content="Reparse scripts" />
+                    <CheckBox Name="IsConvertTexturesCheckbox" IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsConvertTextures}"
+                              Content="Convert textures" />
+                    <CheckBox Name="IsConvertDataCheckbox" IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsConvertData}"
+                              Content="Convert data" />
+                    <CheckBox Name="IsConvertAllCheckbox" IsChecked="{Binding GmcSettings.GmcConfiguration.GothicArguments.IsConvertAll}"
+                              Content="Convert all" Checked="IsConvertAllCheckbox_OnChecked" Unchecked="IsConvertAllCheckbox_OnUnchecked" />
                 </StackPanel>
 
                 <!-- StackPanel for Sumbmods info data -->

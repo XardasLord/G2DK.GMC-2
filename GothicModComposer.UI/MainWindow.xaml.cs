@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Windows;
 using System.Reflection;
+using System.Windows;
 using GothicModComposer.UI.Services;
-using GothicModComposer.UI.Helpers;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
 
 namespace GothicModComposer.UI
 {
@@ -33,6 +29,20 @@ namespace GothicModComposer.UI
         {
             var fullVersion = Assembly.GetExecutingAssembly().GetName().Version;
             Title = $"GMC UI v{fullVersion?.Major}.{fullVersion?.Minor}.{fullVersion?.Build}";
+        }
+
+        private void IsConvertAllCheckbox_OnChecked(object sender, RoutedEventArgs e)
+        {
+            IsConvertTexturesCheckbox.IsEnabled = false;
+            IsConvertDataCheckbox.IsEnabled = false;
+            IsReparseScriptCheckbox.IsEnabled = false;
+        }
+
+        private void IsConvertAllCheckbox_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            IsConvertTexturesCheckbox.IsEnabled = true;
+            IsConvertDataCheckbox.IsEnabled = true;
+            IsReparseScriptCheckbox.IsEnabled = true;
         }
     }
 }

@@ -7,6 +7,9 @@ namespace GothicModComposer.UI.Models
         private bool _isDevMode;
         private bool _isMusicDisabled;
         private bool _isReparseScripts;
+        private bool _isConvertTextures;
+        private bool _isConvertData;
+        private bool _isConvertAll;
         private bool _isSoundDisabled;
         private bool _isWindowMode;
         private Resolution _resolution;
@@ -38,7 +41,50 @@ namespace GothicModComposer.UI.Models
         public bool IsReparseScript
         {
             get => _isReparseScripts;
-            set => SetProperty(ref _isReparseScripts, value);
+            set
+            {
+                if (value && IsConvertAll)
+                    return;
+                
+                SetProperty(ref _isReparseScripts, value);
+            }
+        }
+
+        public bool IsConvertTextures
+        {
+            get => _isConvertTextures;
+            set
+            {
+                if (value && IsConvertAll)
+                    return;
+                
+                SetProperty(ref _isConvertTextures, value);
+            }
+        }
+
+        public bool IsConvertData
+        {
+            get => _isConvertData;
+            set
+            {
+                if (value && IsConvertAll)
+                    return;
+                
+                SetProperty(ref _isConvertData, value);
+            }
+        }
+
+        public bool IsConvertAll
+        {
+            get => _isConvertAll;
+            set
+            {
+                SetProperty(ref _isConvertAll, value);
+
+                IsReparseScript = false;
+                IsConvertTextures = false;
+                IsConvertData = false;
+            }
         }
 
         public Resolution Resolution

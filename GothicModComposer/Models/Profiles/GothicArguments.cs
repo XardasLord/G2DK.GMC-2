@@ -12,9 +12,12 @@ namespace GothicModComposer.Models.Profiles
         public const string ZReparseParameter = "ZREPARSE";
         public const string ReparseVisParameter = "REPARSEVIS";
         public const string ZTexConvertParameter = "ZTEXCONVERT";
+        public const string ZConvertDataParameter = "ZAUTOCONVERTDATA";
         public const string ZWindowModeParameter = "ZWINDOW";
         public const string DevModeParameter = "DEVMODE";
-
+        public const string NoMusicParameter = "ZNOMUSIC";
+        public const string NoSoundParameter = "ZNOSOUND";
+        
         private readonly Dictionary<string, string> _gothicArguments;
 
         private GothicArguments() => _gothicArguments = new Dictionary<string, string>();
@@ -58,17 +61,32 @@ namespace GothicModComposer.Models.Profiles
             if (profileGothicArgumentsForceConfig.IsMusicDisabled)
                 AddArgument_ZNoMusic();
             else
-                RemoveArg("ZNOMUSIC");
+                RemoveArg(NoMusicParameter);
 
             if (profileGothicArgumentsForceConfig.IsSoundDisabled)
                 AddArgument_ZNoSound();
             else
-                RemoveArg("ZNOSOUND");
+                RemoveArg( NoSoundParameter);
 
             if (profileGothicArgumentsForceConfig.IsReparseScript)
                 AddArgument_ZReparse();
             else
-                RemoveArg("ZREPARSE");
+                RemoveArg(ZReparseParameter);
+
+            if (profileGothicArgumentsForceConfig.IsConvertTextures)
+                AddArgument_ZTexConvert();
+            else
+                RemoveArg(ZTexConvertParameter);
+
+            if (profileGothicArgumentsForceConfig.IsConvertData)
+                AddArgument_ZAutoConvertData();
+            else
+                RemoveArg(ZConvertDataParameter);
+
+            if (profileGothicArgumentsForceConfig.IsConvertAll)
+                AddArgument_ZConvertAll();
+            else
+                RemoveArg(ZConvertAllParameter);
 
             if (profileGothicArgumentsForceConfig.Resolution is null)
                 AddArgument_ZRes();
