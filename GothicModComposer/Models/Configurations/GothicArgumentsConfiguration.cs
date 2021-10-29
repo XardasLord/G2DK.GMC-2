@@ -9,6 +9,9 @@ namespace GothicModComposer.Models.Configurations
         public bool IsMusicDisabled { get; set; }
         public bool IsSoundDisabled { get; set; }
         public bool IsReparseScript { get; set; }
+        public bool IsConvertTextures { get; set; }
+        public bool IsConvertData { get; set; }
+        public bool IsConvertAll { get; set; }
         public Resolution Resolution { get; set; }
     }
 }

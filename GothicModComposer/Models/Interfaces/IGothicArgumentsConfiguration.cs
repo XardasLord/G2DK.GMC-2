@@ -9,6 +9,9 @@ namespace GothicModComposer.Models.Interfaces
         bool IsMusicDisabled { get; set; }
         bool IsSoundDisabled { get; set; }
         bool IsReparseScript { get; set; }
+        bool IsConvertTextures { get; set; }
+        bool IsConvertData { get; set; }
+        bool IsConvertAll { get; set; }
         Resolution Resolution { get; set; }
     }
 }
