@@ -3,19 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GothicModComposer", "GothicModComposer\GothicModComposer.csproj", "{352B68E6-1653-4633-8316-57524EA74AEF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GothicModComposer.UI", "GothicModComposer.UI\GothicModComposer.UI.csproj", "{8A4F25F5-DB40-497A-B7CF-044874748BCC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EAC91A04-5854-4818-9C15-3B86F7F50D7D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{3AE3D570-DB18-45A4-8A92-8A28DA656360}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GMC", "GMC", "{C86AED1A-C889-4912-B550-7A0D0426CAFC}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GMC UI", "GMC UI", "{6CC657BD-D995-4B06-B729-2283EC930DBF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GothicModComposer.UnitTests", "tests\GothicModComposer.UnitTests\GothicModComposer.UnitTests.csproj", "{B40FD3BF-AC93-4B76-AFBC-5158AC910EA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GothicModComposer.Core", "src\GothicModComposer.Core\GothicModComposer.Core.csproj", "{37AADE4B-B780-4A79-ADD0-EF25453DE510}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GothicModComposer.UI", "src\GothicModComposer.UI\GothicModComposer.UI.csproj", "{DA3A58DD-A11E-4D82-93CC-616A0B2AA758}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,28 +19,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{352B68E6-1653-4633-8316-57524EA74AEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{352B68E6-1653-4633-8316-57524EA74AEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{352B68E6-1653-4633-8316-57524EA74AEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{352B68E6-1653-4633-8316-57524EA74AEF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8A4F25F5-DB40-497A-B7CF-044874748BCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8A4F25F5-DB40-497A-B7CF-044874748BCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8A4F25F5-DB40-497A-B7CF-044874748BCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8A4F25F5-DB40-497A-B7CF-044874748BCC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B40FD3BF-AC93-4B76-AFBC-5158AC910EA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B40FD3BF-AC93-4B76-AFBC-5158AC910EA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B40FD3BF-AC93-4B76-AFBC-5158AC910EA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B40FD3BF-AC93-4B76-AFBC-5158AC910EA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37AADE4B-B780-4A79-ADD0-EF25453DE510}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37AADE4B-B780-4A79-ADD0-EF25453DE510}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37AADE4B-B780-4A79-ADD0-EF25453DE510}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37AADE4B-B780-4A79-ADD0-EF25453DE510}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA3A58DD-A11E-4D82-93CC-616A0B2AA758}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA3A58DD-A11E-4D82-93CC-616A0B2AA758}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA3A58DD-A11E-4D82-93CC-616A0B2AA758}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA3A58DD-A11E-4D82-93CC-616A0B2AA758}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{352B68E6-1653-4633-8316-57524EA74AEF} = {C86AED1A-C889-4912-B550-7A0D0426CAFC}
-		{8A4F25F5-DB40-497A-B7CF-044874748BCC} = {6CC657BD-D995-4B06-B729-2283EC930DBF}
-		{C86AED1A-C889-4912-B550-7A0D0426CAFC} = {EAC91A04-5854-4818-9C15-3B86F7F50D7D}
-		{6CC657BD-D995-4B06-B729-2283EC930DBF} = {EAC91A04-5854-4818-9C15-3B86F7F50D7D}
 		{B40FD3BF-AC93-4B76-AFBC-5158AC910EA9} = {3AE3D570-DB18-45A4-8A92-8A28DA656360}
+		{37AADE4B-B780-4A79-ADD0-EF25453DE510} = {EAC91A04-5854-4818-9C15-3B86F7F50D7D}
+		{DA3A58DD-A11E-4D82-93CC-616A0B2AA758} = {EAC91A04-5854-4818-9C15-3B86F7F50D7D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70BE9BB3-F370-4478-A706-0F712B73E2E3}

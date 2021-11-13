@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using GothicModComposer.Commands;
-using GothicModComposer.Models.Configurations;
-using GothicModComposer.Models.Profiles;
-using GothicModComposer.Utils.IOHelpers.FileSystem;
+using GothicModComposer.Core.Commands;
+using GothicModComposer.Core.Models.Configurations;
+using GothicModComposer.Core.Models.Profiles;
+using GothicModComposer.Core.Utils.IOHelpers.FileSystem;
 using Moq;
 using Xunit;
 
@@ -41,7 +41,7 @@ namespace GothicModComposer.UnitTests.Commands
         {
             _profileMock.SetupGet(x => x.IniOverrides).Returns(new List<IniOverride>
             {
-                new() {Key = "Test1", Value = "2"}
+                new() { Key = "Test1", Value = "2" }
             });
             _profileMock.SetupGet(x => x.IniOverridesSystemPack).Returns(new List<IniOverride>());
             _fileSystemMock.Setup(x => x.File.Exists(GothicIniFilePath)).Returns(false);

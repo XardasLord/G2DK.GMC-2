@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using GothicModComposer.Commands;
-using GothicModComposer.Models.Profiles;
-using GothicModComposer.Presets;
-using GothicModComposer.Utils.IOHelpers.FileSystem;
+using GothicModComposer.Core.Commands;
+using GothicModComposer.Core.Models.Profiles;
+using GothicModComposer.Core.Presets;
+using GothicModComposer.Core.Utils.IOHelpers.FileSystem;
 using Moq;
 using Xunit;
 
@@ -135,7 +135,7 @@ namespace GothicModComposer.UnitTests.Commands
             _fileSystemMock.Setup(x => x.Directory.Exists(ModExtensionsFolderPath)).Returns(true);
             _fileSystemMock
                 .Setup(x => x.Directory.GetAllFilesInDirectory(ModExtensionsFolderPath, SearchOption.AllDirectories))
-                .Returns(new List<string> {"File1", "File2"});
+                .Returns(new List<string> { "File1", "File2" });
             _fileSystemMock
                 .Setup(x => x.Path.GetRelativePath(ModExtensionsFolderPath, It.IsAny<string>()))
                 .Returns("RelativePath");

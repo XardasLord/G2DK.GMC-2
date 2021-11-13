@@ -1,6 +1,6 @@
 ﻿using System;
-using GothicModComposer.Models.Profiles;
-using GothicModComposer.Utils.IOHelpers.FileSystem;
+using GothicModComposer.Core.Models.Profiles;
+using GothicModComposer.Core.Utils.IOHelpers.FileSystem;
 using Moq;
 
 namespace GothicModComposer.UnitTests.Commands
