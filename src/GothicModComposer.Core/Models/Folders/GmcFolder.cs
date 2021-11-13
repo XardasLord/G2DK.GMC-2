@@ -9,6 +9,7 @@ using GothicModComposer.Core.Models.Interfaces;
 using GothicModComposer.Core.Models.ModFiles;
 using GothicModComposer.Core.Presets;
 using GothicModComposer.Core.Utils.IOHelpers;
+using Microsoft.VisualBasic.FileIO;
 
 namespace GothicModComposer.Core.Models.Folders
 {

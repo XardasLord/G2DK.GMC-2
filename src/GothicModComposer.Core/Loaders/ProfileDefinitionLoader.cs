@@ -30,6 +30,7 @@ namespace GothicModComposer.Core.Loaders
 
             var profile = new Profile
             {
+                ProfileType = profileType,
                 GothicFolder = gothicFolder,
                 GmcFolder = gmcFolder,
                 ModFolder = modFolder,

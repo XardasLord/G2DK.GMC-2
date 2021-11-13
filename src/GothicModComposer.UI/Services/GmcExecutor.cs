@@ -1,7 +1,8 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using GothicModComposer.Core.Builders;
+using GothicModComposer.Core.Presets;
 using GothicModComposer.UI.Enums;
 using GothicModComposer.UI.Interfaces;
 using GothicModComposer.UI.ViewModels;
@@ -35,31 +36,36 @@ namespace GothicModComposer.UI.Services
                 return;
             }
             
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GMC-2.exe"),
-                    ArgumentList =
-                    {
-                        $"--gothic2Path={_gmcSettingsVM.GmcConfiguration.Gothic2RootPath}",
-                        $"--modPath={_gmcSettingsVM.GmcConfiguration.ModificationRootPath}",
-                        $"--profile={profile}",
-                        $"--configurationFile={_gmcSettingsVM.GmcSettingsJsonFilePath}",
-                        _gmcSettingsVM.GmcConfiguration.CloseAfterFinish ? "" : "--keepOpenAfterFinish"
-                    },
-                    Verb = "runas", // Force to run the process as Administrator
-                    UseShellExecute = false
-                }
-            };
+            // var process = new Process
+            // {
+            //     StartInfo = new ProcessStartInfo
+            //     {
+            //         FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GMC-2.exe"),
+            //         ArgumentList =
+            //         {
+            //             $"--gothic2Path={_gmcSettingsVM.GmcConfiguration.Gothic2RootPath}",
+            //             $"--modPath={_gmcSettingsVM.GmcConfiguration.ModificationRootPath}",
+            //             $"--profile={profile}",
+            //             $"--configurationFile={_gmcSettingsVM.GmcSettingsJsonFilePath}",
+            //             _gmcSettingsVM.GmcConfiguration.CloseAfterFinish ? "" : "--keepOpenAfterFinish"
+            //         },
+            //         Verb = "runas", // Force to run the process as Administrator
+            //         UseShellExecute = false
+            //     }
+            // };
 
             if (ProfileCanTouchWorldFiles())
             {
                 _gmcSettingsVM.UnsubscribeOnWorldDirectoryChanges();
             }
+            
+            var gmcManager = GmcCoreManagerBuilder.PrepareGmcExecutor((ProfilePresetType)profile, _gmcSettingsVM.GmcConfiguration.ModificationRootPath,
+                _gmcSettingsVM.GmcConfiguration.Gothic2RootPath, _gmcSettingsVM.GmcSettingsJsonFilePath);
+            
+            gmcManager.Run();
 
-            process.Start();
-            process.WaitForExit();
+            // process.Start();
+            // process.WaitForExit();
 
             if (ProfileCanTouchWorldFiles())
             {

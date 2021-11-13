@@ -5,9 +5,9 @@ using GothicModComposer.Core.Presets;
 
 namespace GothicModComposer.Core.Builders
 {
-    public static class GmcManagerBuilder
+    public static class GmcCoreManagerBuilder
     {
-        public static GmcManager PrepareGmcExecutor(
+        public static GmcCoreManager PrepareGmcExecutor(
             ProfilePresetType profileType, string absolutePathToProject, string absolutePathToGothic2Root,
             string configurationFile)
         {
@@ -20,7 +20,7 @@ namespace GothicModComposer.Core.Builders
             var profileResponse =
                 ProfileDefinitionLoader.Load(profileType, gothicFolder, gmcFolder, modFolder, userGmcConfig);
 
-            return GmcManager.Create(profileResponse);
+            return GmcCoreManager.Create(profileResponse);
         }
     }
 }
