@@ -15,16 +15,16 @@ namespace GothicModComposer.Core
 
         private readonly ProfileLoaderResponse _profileLoaderResponse;
 
+        private readonly IGmcFolder _gmcFolder;
+
         private GmcCoreManager(ProfileLoaderResponse profileLoaderResponse)
         {
             _profileLoaderResponse = profileLoaderResponse;
-            GmcFolder = profileLoaderResponse.Profile.GmcFolder;
+            _gmcFolder = profileLoaderResponse.Profile.GmcFolder;
         }
 
-        public IGmcFolder GmcFolder { get; }
-
         public static GmcCoreManager Create(ProfileLoaderResponse profileLoaderResponse) =>
-            new GmcCoreManager(profileLoaderResponse);
+            new(profileLoaderResponse);
 
         public void Run()
         {
@@ -65,7 +65,7 @@ namespace GothicModComposer.Core
             }
         }
 
-        public void Undo()
+        private void Undo()
         {
             while (_executedCommands.Count > 0)
             {
