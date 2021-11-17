@@ -35,24 +35,6 @@ namespace GothicModComposer.UI.Services
                     "GMC is running", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            
-            // var process = new Process
-            // {
-            //     StartInfo = new ProcessStartInfo
-            //     {
-            //         FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GMC-2.exe"),
-            //         ArgumentList =
-            //         {
-            //             $"--gothic2Path={_gmcSettingsVM.GmcConfiguration.Gothic2RootPath}",
-            //             $"--modPath={_gmcSettingsVM.GmcConfiguration.ModificationRootPath}",
-            //             $"--profile={profile}",
-            //             $"--configurationFile={_gmcSettingsVM.GmcSettingsJsonFilePath}",
-            //             _gmcSettingsVM.GmcConfiguration.CloseAfterFinish ? "" : "--keepOpenAfterFinish"
-            //         },
-            //         Verb = "runas", // Force to run the process as Administrator
-            //         UseShellExecute = false
-            //     }
-            // };
 
             if (ProfileCanTouchWorldFiles())
             {
@@ -62,10 +44,8 @@ namespace GothicModComposer.UI.Services
             var gmcManager = GmcCoreManagerBuilder.PrepareGmcExecutor((ProfilePresetType)profile, _gmcSettingsVM.GmcConfiguration.ModificationRootPath,
                 _gmcSettingsVM.GmcConfiguration.Gothic2RootPath, _gmcSettingsVM.GmcSettingsJsonFilePath);
             
+            // TODO: This can be made async
             gmcManager.Run();
-
-            // process.Start();
-            // process.WaitForExit();
 
             if (ProfileCanTouchWorldFiles())
             {
