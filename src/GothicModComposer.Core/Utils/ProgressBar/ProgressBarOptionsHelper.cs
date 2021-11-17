@@ -1,4 +1,5 @@
 ﻿using System;
+using ShellProgressBar;
 
 namespace GothicModComposer.Core.Utils.ProgressBar
 {

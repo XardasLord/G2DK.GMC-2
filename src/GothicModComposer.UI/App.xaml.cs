@@ -84,6 +84,7 @@ namespace GothicModComposer.UI
                     MessageBox.Show("No default world value chosen.");
                 }
             });
+
             _notifyIcon.ContextMenuStrip.Items.Add("Update", null, (s, _) => _gmcVM.RunUpdateProfile.Execute(null));
             _notifyIcon.ContextMenuStrip.Items.Add("Compose", null, (s, _) => _gmcVM.RunComposeProfile.Execute(null));
             _notifyIcon.ContextMenuStrip.Items.Add("Build mod file", null,

@@ -7,6 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Serilog" Version="2.10.0" />
+      <PackageReference Include="ShellProgressBar" Version="5.1.0" />
       <PackageReference Include="System.IO.Abstractions" Version="13.2.47" />
     </ItemGroup>
 

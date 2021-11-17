@@ -2,7 +2,7 @@
 
 namespace GothicModComposer.Core.Utils.GothicSpyProcess
 {
-    public class GothicSpyProcess : Form
+    public class GothicSpyProcess
     {
         public delegate void ZSpyMessageNotify(string message);
 

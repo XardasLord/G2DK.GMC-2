@@ -17,6 +17,8 @@ namespace GothicModComposer.Core
 
         private readonly IGmcFolder _gmcFolder;
 
+        public IGmcFolder GmcFolder => _gmcFolder;
+
         private GmcCoreManager(ProfileLoaderResponse profileLoaderResponse)
         {
             _profileLoaderResponse = profileLoaderResponse;
@@ -30,7 +32,7 @@ namespace GothicModComposer.Core
         {
             var fullVersion = Assembly.GetExecutingAssembly().GetName().Version;
             var stopWatch = new Stopwatch();
-            
+
             try
             {
                 stopWatch.Start();

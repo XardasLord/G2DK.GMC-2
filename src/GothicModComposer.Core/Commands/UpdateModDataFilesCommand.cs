@@ -9,6 +9,7 @@ using GothicModComposer.Core.Presets;
 using GothicModComposer.Core.Utils;
 using GothicModComposer.Core.Utils.IOHelpers;
 using GothicModComposer.Core.Utils.ProgressBar;
+using ShellProgressBar;
 
 namespace GothicModComposer.Core.Commands
 {

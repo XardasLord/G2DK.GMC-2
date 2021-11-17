@@ -4,6 +4,7 @@ using GothicModComposer.Core.Models.Profiles;
 using GothicModComposer.Core.Utils;
 using GothicModComposer.Core.Utils.GothicSpyProcess;
 using GothicModComposer.Core.Utils.ProgressBar;
+using ShellProgressBar;
 
 namespace GothicModComposer.Core.Commands
 {

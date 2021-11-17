@@ -1,4 +1,5 @@
 ﻿using System;
+using Serilog;
 
 namespace GothicModComposer.Core.Utils
 {
@@ -10,29 +11,24 @@ namespace GothicModComposer.Core.Utils
         public static void Info(string message, bool display = false)
         {
             var value = $"[INFO] {message}";
-            Log.Information(message);
+            Log.Debug(message);
 
             if (display)
             {
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(value);
+                Log.Information(value);
             }
         }
 
         public static void Warn(string message)
         {
             var value = $"[WARN] {message}";
-            Log.Warning(message);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(value);
+            Log.Warning(value);
         }
 
         public static void Error(string message)
         {
             var value = $"[ERROR] {message}";
-            Log.Error(message);
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(value);
+            Log.Error(value);
         }
 
         public static void zLog(string message)
@@ -45,32 +41,24 @@ namespace GothicModComposer.Core.Utils
         {
             var value = $"{CommandSeparator}[COMMAND] {message.ToUpper()}";
             Log.Information(value);
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(value);
         }
 
         public static void FinishCommand(string message)
         {
             var value = $"[COMMAND] {message}{CommandSeparator}";
             Log.Information(value);
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(value);
         }
 
         public static void StartCommandUndo(string message)
         {
             var value = $"{CommandSeparator}[UNDO COMMAND] {message.ToUpper()}";
             Log.Information(value);
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine(value);
         }
 
         public static void FinishCommandUndo(string message)
         {
             var value = $"[UNDO COMMAND] {message}{CommandSeparator}";
             Log.Information(value);
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine(value);
         }
 
         public static void SaveLogs()
