@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using GothicModComposer.Core.Builders;
 using GothicModComposer.Core.Presets;
@@ -26,13 +27,11 @@ namespace GothicModComposer.UI.Services
         public bool GothicVdfsExecutableExists(string gothicRootPath)
             => File.Exists(Path.Combine(gothicRootPath, PathToGothicVdfsExe));
 
-        public void Execute(GmcExecutionProfile profile)
+        public async Task ExecuteAsync(GmcExecutionProfile profile)
         {
             if (IsGmcAlreadyRun())
             {
-                MessageBox.Show(
-                    "GMC is already running. Close the existing GMC-2.exe process if you want to execute a new one.",
-                    "GMC is running", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("GMC is already running.", "GMC is running", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -44,8 +43,7 @@ namespace GothicModComposer.UI.Services
             var gmcManager = GmcCoreManagerBuilder.PrepareGmcExecutor((ProfilePresetType)profile, _gmcSettingsVM.GmcConfiguration.ModificationRootPath,
                 _gmcSettingsVM.GmcConfiguration.Gothic2RootPath, _gmcSettingsVM.GmcSettingsJsonFilePath);
             
-            // TODO: This can be made async
-            gmcManager.Run();
+            gmcManager.RunAsync();
 
             if (ProfileCanTouchWorldFiles())
             {
@@ -53,10 +51,7 @@ namespace GothicModComposer.UI.Services
                 _gmcSettingsVM.LoadZen3DWorlds();
             }
 
-            bool ProfileCanTouchWorldFiles()
-            {
-                return profile is GmcExecutionProfile.Compose or GmcExecutionProfile.Update or GmcExecutionProfile.RestoreGothic;
-            }
+            bool ProfileCanTouchWorldFiles() => profile is GmcExecutionProfile.Compose or GmcExecutionProfile.Update or GmcExecutionProfile.RestoreGothic;
         }
 
         private static bool IsGmcAlreadyRun() => Process.GetProcessesByName("GMC-2").Length > 0;

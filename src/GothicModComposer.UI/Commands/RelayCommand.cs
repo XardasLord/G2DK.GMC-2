@@ -1,20 +1,18 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace GothicModComposer.UI.Commands
 {
-    public class RelayCommand : ICommand
+    public class RelayCommand : IAsyncCommand
     {
         private readonly Func<object, bool> _canExecute;
+        private readonly Func<object, Task> _execute;
+        private bool _isExecuting;
 
-        private readonly Action<object> _execute;
-
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+        public RelayCommand(Func<object, Task> execute, Func<object, bool> canExecute = null)
         {
-            if (execute is null)
-                throw new ArgumentNullException(nameof(execute), "Command to execute is null");
-
-            _execute = execute;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute), "Command to execute is null");
             _canExecute = canExecute;
         }
 
@@ -24,9 +22,27 @@ namespace GothicModComposer.UI.Commands
             => _canExecute is null || _canExecute(parameter);
 
         public void Execute(object parameter)
-            => _execute(parameter);
+            => ExecuteAsync(parameter).ConfigureAwait(true);
 
         public void RaiseCanExecuteChanged()
             => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+
+        public async Task ExecuteAsync(object parameter)
+        {
+            if (CanExecute(parameter))
+            {
+                try
+                {
+                    _isExecuting = true;
+                    await _execute(parameter);
+                }
+                finally
+                {
+                    _isExecuting = false;
+                }
+            }
+
+            RaiseCanExecuteChanged();
+        }
     }
 }

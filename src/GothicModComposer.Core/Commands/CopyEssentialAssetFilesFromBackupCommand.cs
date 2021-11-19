@@ -21,7 +21,7 @@ namespace GothicModComposer.Core.Commands
 
         public string CommandName => "Copy essential asset files from backup (Preset, Music, Video, Scripts/_compiled)";
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
             var workDataBackupFiles =
                 DirectoryHelper.GetAllFilesInDirectory(_profile.GmcFolder.BackupWorkDataFolderPath);

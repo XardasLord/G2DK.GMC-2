@@ -22,7 +22,7 @@ namespace GothicModComposer.Core.Commands
 
         public string CommandName => "Clear Gothic '_Work/Data' folder";
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
             using (var progress = new ProgressBar(AssetPresetFolders.FoldersWithAssets.Count,
                 "Clearing _Work/Data folder", ProgressBarOptionsHelper.Get()))

@@ -4,7 +4,7 @@
     {
         string CommandName { get; }
 
-        void Execute();
+        Task ExecuteAsync();
         void Undo();
     }
 }

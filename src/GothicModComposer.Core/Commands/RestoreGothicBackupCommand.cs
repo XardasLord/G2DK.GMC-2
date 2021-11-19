@@ -15,7 +15,7 @@ namespace GothicModComposer.Core.Commands
 
         public string CommandName => "Restore original Gothic backup files";
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
             if (!_profile.GmcFolder.DoesBackupFolderExist)
             {

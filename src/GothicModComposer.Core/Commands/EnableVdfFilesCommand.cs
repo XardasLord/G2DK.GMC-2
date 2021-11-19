@@ -19,7 +19,7 @@ namespace GothicModComposer.Core.Commands
 
         public string CommandName => "Enable VDF files";
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
             DirectoryHelper.GetAllFilesInDirectory(_profile.GothicFolder.DataFolderPath, SearchOption.TopDirectoryOnly)
                 .ConvertAll(file => new VdfFile(file))

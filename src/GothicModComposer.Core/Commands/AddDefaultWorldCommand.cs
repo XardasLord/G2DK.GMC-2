@@ -12,7 +12,7 @@ namespace GothicModComposer.Core.Commands
 
         public string CommandName => "Add default world";
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
             if (string.IsNullOrWhiteSpace(_profile.DefaultWorld))
             {

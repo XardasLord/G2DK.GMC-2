@@ -30,7 +30,7 @@ namespace GothicModComposer.Core.Commands
 
         public string CommandName => "Remove not compiled sources inside Textures/Meshes assets";
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
             _parentProgressBar = new ProgressBar(2, "Removing not compiled base files from _Work/Data",
                 ProgressBarOptionsHelper.Get());

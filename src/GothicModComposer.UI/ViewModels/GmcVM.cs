@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using GothicModComposer.UI.Commands;
 using GothicModComposer.UI.Enums;
@@ -52,7 +53,7 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand DeleteZenWorld { get; }
         public RelayCommand RenameZenWorld { get; }
 
-        private void RunUpdateProfileExecute(object obj)
+        private async Task RunUpdateProfileExecute(object obj)
         {
             if (!_gmcExecutor.GothicExecutableExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
             {
@@ -60,10 +61,10 @@ namespace GothicModComposer.UI.ViewModels
                 return;
             }
 
-            _gmcExecutor.Execute(GmcExecutionProfile.Update);
+            await _gmcExecutor.ExecuteAsync(GmcExecutionProfile.Update);
         }
 
-        private void RunComposeProfileExecute(object obj)
+        private async Task RunComposeProfileExecute(object obj)
         {
             if (!_gmcExecutor.GothicExecutableExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
             {
@@ -74,10 +75,10 @@ namespace GothicModComposer.UI.ViewModels
             var messageBoxResult = MessageBox.Show("Are you sure you want to execute 'Compose' profile?",
                 "Execute Confirmation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
-                _gmcExecutor.Execute(GmcExecutionProfile.Compose);
+                await _gmcExecutor.ExecuteAsync(GmcExecutionProfile.Compose);
         }
 
-        private void RunModProfileExecute(object obj)
+        private async Task RunModProfileExecute(object obj)
         {
             if (!_gmcExecutor.GothicExecutableExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
             {
@@ -85,18 +86,18 @@ namespace GothicModComposer.UI.ViewModels
                 return;
             }
 
-            _gmcExecutor.Execute(GmcExecutionProfile.RunMod);
+            await _gmcExecutor.ExecuteAsync(GmcExecutionProfile.RunMod);
         }
 
-        private void RunRestoreGothicProfileExecute(object obj)
+        private async Task RunRestoreGothicProfileExecute(object obj)
         {
             var messageBoxResult = MessageBox.Show("Are you sure to you want to execute 'RestoreGothic' profile?",
                 "Execute Confirmation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
-                _gmcExecutor.Execute(GmcExecutionProfile.RestoreGothic);
+                await _gmcExecutor.ExecuteAsync(GmcExecutionProfile.RestoreGothic);
         }
 
-        private void RunBuildModFileProfileProfileExecute(object obj)
+        private async Task RunBuildModFileProfileProfileExecute(object obj)
         {
             if (!_gmcExecutor.GothicVdfsExecutableExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
             {
@@ -104,16 +105,16 @@ namespace GothicModComposer.UI.ViewModels
                 return;
             }
 
-            _gmcExecutor.Execute(GmcExecutionProfile.BuildModFile);
+            await _gmcExecutor.ExecuteAsync(GmcExecutionProfile.BuildModFile);
         }
 
-        private void RunEnableVDFProfileProfileExecute(object obj)
-            => _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF);
+        private async Task RunEnableVDFProfileProfileExecute(object obj)
+            => await _gmcExecutor.ExecuteAsync(GmcExecutionProfile.EnableVDF);
 
-        private void OpenSettingsExecute(object obj)
+        private async Task OpenSettingsExecute(object obj)
             => new GmcSettings(GmcSettings).ShowDialog();
 
-        private static void OpenChangeLogExecute(object obj)
+        private static async Task OpenChangeLogExecute(object obj)
         {
             var processStartInfo = new ProcessStartInfo
             {
@@ -124,7 +125,7 @@ namespace GothicModComposer.UI.ViewModels
             Process.Start(processStartInfo);
         }
 
-        private static void OpenTrelloProjectBoardExecute(object obj)
+        private static async Task OpenTrelloProjectBoardExecute(object obj)
         {
             var processStartInfo = new ProcessStartInfo
             {
@@ -135,7 +136,7 @@ namespace GothicModComposer.UI.ViewModels
             Process.Start(processStartInfo);
         }
 
-        private void RunSpacerExecute(object obj)
+        private async Task RunSpacerExecute(object obj)
         {
             if (!_spacerService.SpacerExists(GmcSettings.GmcConfiguration.Gothic2RootPath))
             {
@@ -144,16 +145,16 @@ namespace GothicModComposer.UI.ViewModels
                 return;
             }
 
-            _gmcExecutor.Execute(GmcExecutionProfile.EnableVDF);
+            await _gmcExecutor.ExecuteAsync(GmcExecutionProfile.EnableVDF);
 
             var spacerProcess = _spacerService.RunSpacer(GmcSettings.GmcConfiguration.Gothic2RootPath);
 
             spacerProcess.WaitForExit();
 
-            _gmcExecutor.Execute(GmcExecutionProfile.DisableVDF);
+            await _gmcExecutor.ExecuteAsync(GmcExecutionProfile.DisableVDF);
         }
 
-        private void DeleteZenWorldExecute(object obj)
+        private async Task DeleteZenWorldExecute(object obj)
         {
             var fullWorldPath = obj?.ToString();
 
@@ -164,7 +165,7 @@ namespace GothicModComposer.UI.ViewModels
                 File.Delete(fullWorldPath);
         }
 
-        private void RenameZenWorldExecute(object obj)
+        private async Task RenameZenWorldExecute(object obj)
         {
             var fullWorldPath = obj?.ToString();
 

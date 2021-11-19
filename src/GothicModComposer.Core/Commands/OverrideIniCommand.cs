@@ -28,7 +28,7 @@ namespace GothicModComposer.Core.Commands
 
         public string CommandName => "Override .ini file";
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
             if (!_profile.IniOverrides.Any())
                 Logger.Info("There is no .ini attributes to override.", true);

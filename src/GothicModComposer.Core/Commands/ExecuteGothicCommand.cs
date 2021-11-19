@@ -22,7 +22,7 @@ namespace GothicModComposer.Core.Commands
         public const string LoadingGothicSrcOrGothicDat =
             "Info:  4 N:     GAME: Loading file Content\\Gothic.src or .dat .... <oGame.cpp,#739>";
 
-        private readonly GothicSpyProcessRunner _gothicSpyProcessRunner;
+        //private readonly GothicSpyProcessRunner _gothicSpyProcessRunner;
         private readonly string _killProcessMessage;
 
         private readonly IProfile _profile;
@@ -39,12 +39,12 @@ namespace GothicModComposer.Core.Commands
         {
             _profile = profile;
             _killProcessMessage = killProcessMessage;
-            _gothicSpyProcessRunner = new GothicSpyProcessRunner();
+            //_gothicSpyProcessRunner = new GothicSpyProcessRunner();
         }
 
         public string CommandName => "Execute Gothic2.exe";
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
             if (!_profile.CommandsConditions.ExecuteGothicStepRequired)
             {
@@ -56,8 +56,8 @@ namespace GothicModComposer.Core.Commands
 
             _gothicProcess = GetGothicProcess();
 
-            _gothicSpyProcessRunner.Run();
-            _gothicSpyProcessRunner.Subscribe(Notify);
+            // _gothicSpyProcessRunner.Run();
+            // _gothicSpyProcessRunner.Subscribe(Notify);
 
             Logger.Info($"{_gothicProcess.StartInfo.FileName} {_gothicProcess.StartInfo.Arguments}", true);
 
@@ -83,7 +83,7 @@ namespace GothicModComposer.Core.Commands
                 _compiledMeshesFileWatcher?.Dispose();
             }
 
-            _gothicSpyProcessRunner.Abort();
+           // _gothicSpyProcessRunner.Abort();
         }
 
         public void Undo() => Logger.Warn("Undo for this command is not implemented yet.");

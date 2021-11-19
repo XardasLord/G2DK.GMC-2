@@ -7,7 +7,7 @@
     x:Class="GothicModComposer.UI.MainWindow"
     WindowStartupLocation="CenterScreen"
     ResizeMode="CanMinimize"
-    Title="GMC UI" Height="500" Width="800">
+    Title="GMC UI" Height="670" Width="800">
 
     <Window.Resources>
         <converters:IsNotNullToBoolConverter x:Key="IsNotNullToBoolConverter" />
@@ -62,7 +62,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="390" />
+            <RowDefinition Height="200" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
         <!-- Main menu topbar-->
@@ -215,16 +216,22 @@
                 <Button Content="Enable VDF" Margin="0 15 0 0" Height="28" Command="{Binding RunEnableVDFProfile}"
                         Width="130" />
             </StackPanel>
-
-
+            
         </Grid>
         
-        <StackPanel>
-            <RichTextBox IsReadOnly="True" Name="logsContainer"></RichTextBox>
+        <StackPanel Margin="10,0,10,0" Grid.Row="2">
+            <RichTextBox 
+                Background="Black" 
+                Foreground="LightGray"
+                FontFamily="Cascadia Mono, Consolas, Courier New, monospace"
+                VerticalScrollBarVisibility="Auto"
+                IsReadOnly="True" 
+                Height="180" 
+                x:Name="LogsContainer" />
         </StackPanel>
         
         <!-- Footer in the future -->
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="10,0,0,0">
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="10,0,0,0">
 
         </StackPanel>
     </Grid>

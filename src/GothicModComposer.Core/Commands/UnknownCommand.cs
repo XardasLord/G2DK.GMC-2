@@ -4,7 +4,7 @@
     {
         public string CommandName => "Unknown";
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
         }
 

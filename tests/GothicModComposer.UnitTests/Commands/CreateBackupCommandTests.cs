@@ -22,7 +22,7 @@ namespace GothicModComposer.UnitTests.Commands
         }
 
         private void Act()
-            => new CreateBackupCommand(_profileMock.Object, _fileSystemMock.Object).Execute();
+            => new CreateBackupCommand(_profileMock.Object, _fileSystemMock.Object).ExecuteAsync();
 
         [Fact]
         public void Execute_WhenBackupFolderExists_ShouldReturn()

@@ -12,7 +12,7 @@ namespace GothicModComposer.Core.Commands
 
         public string CommandName => "Clear GMC temporary files";
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
             _profile.GmcFolder.DeleteTemporaryFiles();
             _profile.GothicFolder.DeleteGmcIni();

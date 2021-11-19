@@ -156,7 +156,7 @@ namespace GothicModComposer.UI.ViewModels
             SaveSettings.Execute(null);
         }
 
-        private void SelectGothic2RootDirectoryExecute(object obj)
+        private async Task SelectGothic2RootDirectoryExecute(object obj)
         {
             var openFolderDialog = new VistaFolderBrowserDialog
             {
@@ -178,7 +178,7 @@ namespace GothicModComposer.UI.ViewModels
             LoadZen3DWorlds();
         }
 
-        private void SelectModificationRootDirectoryExecute(object obj)
+        private async Task SelectModificationRootDirectoryExecute(object obj)
         {
             var openFolderDialog = new VistaFolderBrowserDialog
             {
@@ -195,7 +195,7 @@ namespace GothicModComposer.UI.ViewModels
             OnPropertyChanged(nameof(GmcConfiguration));
         }
 
-        private void SaveSettingsExecute(object obj)
+        private async Task SaveSettingsExecute(object obj)
         {
             var configurationJson = JsonSerializer.Serialize(GmcConfiguration, new JsonSerializerOptions
             {
@@ -208,7 +208,7 @@ namespace GothicModComposer.UI.ViewModels
             });
         }
 
-        private void RestoreDefaultConfigurationExecute(object obj)
+        private async Task RestoreDefaultConfigurationExecute(object obj)
         {
             if (File.Exists(GmcSettingsJsonFilePath))
             {
@@ -219,26 +219,26 @@ namespace GothicModComposer.UI.ViewModels
             LoadConfiguration();
         }
 
-        private void OpenLogsDirectoryExecute(object obj)
+        private async Task OpenLogsDirectoryExecute(object obj)
             => _gmcDirectoryService.OpenLogsDirectoryExecute(LogsDirectoryPath);
 
-        private void ClearLogsDirectoryExecute(object obj)
+        private async Task ClearLogsDirectoryExecute(object obj)
         {
             _gmcDirectoryService.ClearLogsDirectoryExecute(LogsDirectoryPath);
             Application.Current.Dispatcher.Invoke(() => { IsLogDirectoryAvailable = false; });
         }
 
-        private void OpenModBuildDirectoryExecute(object obj)
+        private async Task OpenModBuildDirectoryExecute(object obj)
             => _gmcDirectoryService.OpenModBuildDirectoryExecute(ModBuildDirectoryPath);
 
-        private void RestoreDefaultIniOverridesExecute(object obj)
+        private async Task RestoreDefaultIniOverridesExecute(object obj)
         {
             GmcConfiguration.IniOverrides.Clear();
 
             AddMissingDefaultIniOverrides();
         }
 
-        private void CreateDefaultConfigurationFile()
+        private async Task CreateDefaultConfigurationFile()
         {
             var configurationFile = GmcConfiguration.CreateDefault();
 
@@ -247,7 +247,7 @@ namespace GothicModComposer.UI.ViewModels
             File.WriteAllText(GmcSettingsJsonFilePath, configurationJson);
         }
 
-        private void LoadConfiguration()
+        private async Task LoadConfiguration()
         {
             var configurationJson = File.ReadAllText(GmcSettingsJsonFilePath);
 
@@ -287,7 +287,7 @@ namespace GothicModComposer.UI.ViewModels
                 File.Exists(Path.Combine(GmcConfiguration.Gothic2RootPath, "System", "SystemPack.ini"));
         }
 
-        private void AddMissingDefaultIniOverrides()
+        private async Task AddMissingDefaultIniOverrides()
         {
             var defaultIniOverrideAdded = false;
 
@@ -411,7 +411,7 @@ namespace GothicModComposer.UI.ViewModels
             worker?.ReportProgress(100);
         }
 
-        private void OpenGameDirectoryExecute(object obj)
+        private async Task OpenGameDirectoryExecute(object obj)
         {
             if (Directory.Exists(GmcConfiguration.Gothic2RootPath))
             {
@@ -423,7 +423,7 @@ namespace GothicModComposer.UI.ViewModels
             }
         }
 
-        private void OpenModDirectoryExecute(object obj)
+        private async Task OpenModDirectoryExecute(object obj)
         {
             if (Directory.Exists(GmcConfiguration.ModificationRootPath))
             {

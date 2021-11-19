@@ -25,7 +25,7 @@ namespace GothicModComposer.Core.Commands
 
         public string CommandName => "Update mod data files";
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
             Logger.Info($"Start copying all mod files to {_profile.GothicFolder.WorkDataFolderPath}", true);
 

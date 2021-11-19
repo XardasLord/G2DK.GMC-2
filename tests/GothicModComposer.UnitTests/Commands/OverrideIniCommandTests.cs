@@ -22,7 +22,7 @@ namespace GothicModComposer.UnitTests.Commands
         }
 
         private void Act()
-            => new OverrideIniCommand(_profileMock.Object, _fileSystemMock.Object).Execute();
+            => new OverrideIniCommand(_profileMock.Object, _fileSystemMock.Object).ExecuteAsync();
 
         [Fact]
         public void Execute_WhenIniOverridesAreNotDefined_ShouldReturn()

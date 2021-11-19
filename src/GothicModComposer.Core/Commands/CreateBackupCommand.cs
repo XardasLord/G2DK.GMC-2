@@ -25,7 +25,7 @@ namespace GothicModComposer.Core.Commands
 
         public string CommandName => "Create original Gothic backup";
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
             if (_profile.GmcFolder.DoesBackupFolderExist)
             {

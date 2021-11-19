@@ -27,7 +27,7 @@ namespace GothicModComposer.Core.Commands
 
         public string CommandName => "Update dialogues";
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
             if (!_profile.CommandsConditions.UpdateDialoguesStepRequired)
             {

@@ -1,4 +1,5 @@
-﻿using GothicModComposer.UI.Enums;
+﻿using System.Threading.Tasks;
+using GothicModComposer.UI.Enums;
 using GothicModComposer.UI.ViewModels;
 
 namespace GothicModComposer.UI.Interfaces
@@ -7,6 +8,6 @@ namespace GothicModComposer.UI.Interfaces
     {
         bool GothicExecutableExists(string gothicRootPath);
         bool GothicVdfsExecutableExists(string gothicRootPath);
-        void Execute(GmcExecutionProfile profile);
+        Task ExecuteAsync(GmcExecutionProfile profile);
     }
 }

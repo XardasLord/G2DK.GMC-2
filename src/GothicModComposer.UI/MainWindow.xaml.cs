@@ -5,7 +5,6 @@ using GothicModComposer.UI.Services;
 using GothicModComposer.UI.ViewModels;
 using Serilog;
 using Serilog.Events;
-using Serilog.Sinks.RichTextBox.Themes;
 
 namespace GothicModComposer.UI
 {
@@ -19,12 +18,7 @@ namespace GothicModComposer.UI
             InitializeComponent();
 
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.RichTextBox(
-                    logsContainer,
-                    theme: RichTextBoxConsoleTheme.Grayscale,
-                    restrictedToMinimumLevel: LogEventLevel.Information
-                )
+                .WriteTo.RichTextBox(LogsContainer)
                 .WriteTo.File(
                     $"{gmcSettingsVM.LogsDirectoryPath}/log_{DateTime.Now:yyyyMMdd_HHmm}.txt",
                     flushToDiskInterval: TimeSpan.FromSeconds(5),

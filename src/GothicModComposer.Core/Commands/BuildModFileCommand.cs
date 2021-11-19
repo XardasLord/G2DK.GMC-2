@@ -19,7 +19,7 @@ namespace GothicModComposer.Core.Commands
 
         public string CommandName => "Build .MOD file";
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
             CreateVdfsConfigFile();
             ExecuteGothicVdfsProcess();

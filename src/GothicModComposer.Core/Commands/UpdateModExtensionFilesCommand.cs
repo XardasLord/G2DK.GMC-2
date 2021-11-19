@@ -20,7 +20,7 @@ namespace GothicModComposer.Core.Commands
 		public UpdateModExtensionFilesCommand(IProfile profile)
 			=> _profile = profile;
 
-		public void Execute()
+		public async Task ExecuteAsync()
 		{
 			Logger.Info("Start copying all mod extension files.", true);
 

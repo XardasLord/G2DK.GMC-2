@@ -19,7 +19,7 @@ namespace GothicModComposer.Core.Commands
 
         public string CommandName => "Disable Logo Video BIK files";
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
             DirectoryHelper
                 .GetAllFilesInDirectory(_profile.GothicFolder.VideoBikFolderPath, SearchOption.TopDirectoryOnly)
