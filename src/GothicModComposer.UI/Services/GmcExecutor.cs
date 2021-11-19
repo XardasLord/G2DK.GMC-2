@@ -43,7 +43,7 @@ namespace GothicModComposer.UI.Services
             var gmcManager = GmcCoreManagerBuilder.PrepareGmcExecutor((ProfilePresetType)profile, _gmcSettingsVM.GmcConfiguration.ModificationRootPath,
                 _gmcSettingsVM.GmcConfiguration.Gothic2RootPath, _gmcSettingsVM.GmcSettingsJsonFilePath);
             
-            gmcManager.RunAsync();
+            await gmcManager.RunAsync();
 
             if (ProfileCanTouchWorldFiles())
             {
