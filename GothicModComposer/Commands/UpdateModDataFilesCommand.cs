@@ -269,6 +269,9 @@ namespace GothicModComposer.Commands
 
                     break;
                 case AssetPresetType.Textures:
+                    if (_profile.GothicArguments.Contains(GothicArguments.ZConvertAllParameter))
+                        return;
+                    
                     _profile.GothicArguments.AddArgument_ZTexConvert();
                     break;
             }
