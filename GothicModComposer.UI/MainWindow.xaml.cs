@@ -29,6 +29,10 @@ namespace GothicModComposer.UI
         {
             var fullVersion = Assembly.GetExecutingAssembly().GetName().Version;
             Title = $"GMC UI v{fullVersion?.Major}.{fullVersion?.Minor}.{fullVersion?.Build}";
+            
+#if DEBUG
+            Title = $"{Title} [DEV]";
+#endif
         }
 
         private void IsConvertAllCheckbox_OnChecked(object sender, RoutedEventArgs e)
