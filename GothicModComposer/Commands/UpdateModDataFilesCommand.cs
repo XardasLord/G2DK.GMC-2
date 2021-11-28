@@ -243,9 +243,6 @@ namespace GothicModComposer.Commands
 
         private void AddGothicArgument(ModFileEntry modFileEntry)
         {
-            if (_profile.GothicArguments.Contains(GothicArguments.ZConvertAllParameter))
-                return;
-            
             switch (modFileEntry.AssetType)
             {
                 case AssetPresetType.Anims:
