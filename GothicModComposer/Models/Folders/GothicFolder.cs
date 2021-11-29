@@ -87,7 +87,7 @@ namespace GothicModComposer.Models.Folders
             DirectoryHelper.GetAllFilesInDirectory(texturesDirectory)
                 .ForEach(file =>
                 {
-                    if (file.Contains("_compiled"))
+                    if (file.ToLower().Contains("_compiled"))
                         return;
 
                     textureFiles.Add(new ModFileEntry(AssetPresetType.Textures, file,
@@ -108,7 +108,9 @@ namespace GothicModComposer.Models.Folders
             DirectoryHelper.GetAllFilesInDirectory(meshesDirectory)
                 .ForEach(file =>
                 {
-                    if (file.Contains("_compiled") || file.Contains("Level\\") || file.Contains("Level/"))
+                    if (file.ToLower().Contains("_compiled") || 
+                        file.ToLower().Contains("level\\") ||
+                        file.ToLower().Contains("level/"))
                         return;
 
                     meshesFiles.Add(new ModFileEntry(AssetPresetType.Meshes, file,
