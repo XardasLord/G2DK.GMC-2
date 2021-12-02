@@ -63,8 +63,10 @@ namespace GothicModComposer.Presets
                 .AddArgument_ZWindow()
                 .AddArgument_ZLog()
                 .AddArgument_ZRes()
+                .AddArgument_NoMenu()
                 .AddArgument_ZReparse()
-                .AddArgument_NoMenu();
+                .AddArgument_ZConvertAll()
+                .AddArgument_ZTexConvert();
 
         /// <summary>
         ///     Returns gothic arguments configuration with attributes:

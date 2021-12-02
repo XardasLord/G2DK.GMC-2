@@ -250,7 +250,7 @@ namespace GothicModComposer.Commands
                     _profile.GothicArguments.AddArgument_ZConvertAll();
                     break;
                 case AssetPresetType.Scripts:
-                    if (modFileEntry.FilePath.Contains(@"System\VisualFX"))
+                    if (modFileEntry.FilePath.ToLower().Contains(@"System\VisualFX".ToLower()))
                     {
                         if (!_profile.GothicArguments.Contains(GothicArguments.ZReparseParameter))
                         {

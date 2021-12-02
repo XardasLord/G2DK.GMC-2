@@ -22,6 +22,7 @@ namespace GothicModComposer.Models.Folders
         public string DataFolderPath => Path.Combine(BasePath, "Data");
         public string WorkDataFolderPath => Path.Combine(WorkFolderPath, "Data");
         public string CompiledTexturesPath => Path.Combine(WorkDataFolderPath, AssetPresetType.Textures.ToString(), "_compiled");
+        public string CompiledMeshesPath => Path.Combine(WorkDataFolderPath, AssetPresetType.Meshes.ToString(), "_compiled");
         public string VideoBikFolderPath => Path.Combine(WorkDataFolderPath, "Video");
         public string GmcIniFilePath => Path.Combine(SystemFolderPath, "GMC.ini");
         public string GothicIniFilePath => Path.Combine(SystemFolderPath, "Gothic.ini");
@@ -80,23 +81,45 @@ namespace GothicModComposer.Models.Folders
         public int GetNumberOfTexturesToCompile()
         {
             var texturesDirectory = Path.Combine(WorkDataFolderPath, AssetPresetType.Textures.ToString());
-            var compiledTexturesDirectory = Path.Combine(WorkDataFolderPath, AssetPresetType.Textures.ToString(), "_compiled");
 
             var textureFiles = new List<ModFileEntry>();
 
             DirectoryHelper.GetAllFilesInDirectory(texturesDirectory)
                 .ForEach(file =>
                 {
-                    if (file.Contains("_compiled"))
+                    if (file.ToLower().Contains("_compiled"))
                         return;
 
                     textureFiles.Add(new ModFileEntry(AssetPresetType.Textures, file,
                         DirectoryHelper.ToRelativePath(file, BasePath)));
                 });
 
-            var compiledTextureFiles = DirectoryHelper.GetAllFilesInDirectory(compiledTexturesDirectory);
+            var compiledTextureFiles = DirectoryHelper.GetAllFilesInDirectory(CompiledTexturesPath);
 
             return textureFiles.Count(tex => compiledTextureFiles.All(compiled => Path.GetFileName(compiled) != tex.GetCompiledFileName()));
+        }
+
+        public int GetNumberOfMeshesToCompile()
+        {
+            var meshesDirectory = Path.Combine(WorkDataFolderPath, AssetPresetType.Meshes.ToString());
+
+            var meshesFiles = new List<ModFileEntry>();
+
+            DirectoryHelper.GetAllFilesInDirectory(meshesDirectory)
+                .ForEach(file =>
+                {
+                    if (file.ToLower().Contains("_compiled") || 
+                        file.ToLower().Contains("level\\") ||
+                        file.ToLower().Contains("level/"))
+                        return;
+
+                    meshesFiles.Add(new ModFileEntry(AssetPresetType.Meshes, file,
+                        DirectoryHelper.ToRelativePath(file, BasePath)));
+                });
+
+            var compiledMeshesFiles = DirectoryHelper.GetAllFilesInDirectory(CompiledMeshesPath);
+
+            return meshesFiles.Count(mesh => compiledMeshesFiles.All(compiled => Path.GetFileName(compiled) != mesh.GetCompiledFileName()));
         }
 
         private void Verify()

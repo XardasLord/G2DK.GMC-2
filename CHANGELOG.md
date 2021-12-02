@@ -3,6 +3,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.14.0] (2021-12-02)
+### Fixed
+- ZEN duplication on the list in some specific cases.
+
+### Changed
+- Migration to .NET 6.
+- Comparing directory names within assets directories are now case insensitive.
+
+### Added
+- In GUI there are new parameters for RunMod available:
+  - Convert textures (`-ztexconvert`)
+  - Convert data (`-zautoconvertdata`)
+  - Convert all (`zconvertall`)
+- Real-time counter while compiling meshes.
+- GUI now requires Admin priviliges to run.
+- Balloon tooltip after double click on G2 path or mod path in settings.
+
 ## [1.13.1] (2021-10-14)
 ### Fixed
 - Real-time counter while compiling textures (with `ZCONVERTALL` parameter).
@@ -252,6 +269,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First official release of new GMC-2 tool.
 
+[1.14.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.14.0
 [1.13.1]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.13.1
 [1.13.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.13.0
 [1.12.0]: https://gitlab.com/dzieje-khorinis/gmc-2/-/releases/1.12.0

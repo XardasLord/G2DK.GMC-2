@@ -86,6 +86,10 @@ namespace GothicModComposer
             var fullVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
             Console.Title = $"GMC v{fullVersion?.Major}.{fullVersion?.Minor}.{fullVersion?.Build}";
+            
+#if DEBUG
+            Console.Title = $"{Console.Title} [DEV]";
+#endif
         }
 
         private static void MaximizeWindow()

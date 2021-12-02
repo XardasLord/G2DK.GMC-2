@@ -49,9 +49,9 @@ namespace GothicModComposer.Models.ModFiles
                                                    && AssetType != AssetPresetType.Music
                                                    && AssetType != AssetPresetType.Video
                                                    && AssetType != AssetPresetType.Worlds
-                                                   && !FilePath.Contains(@"Meshes\Level");
+                                                   && !FilePath.ToLower().Contains(@"Meshes\Level".ToLower());
 
         public bool DoesNeedDialoguesUpdate() => AssetType == AssetPresetType.Scripts
-                                                 && FilePath.Contains(@"Content\Story\Dialoge");
+                                                 && FilePath.ToLower().Contains(@"Content\Story\Dialoge".ToLower());
     }
 }

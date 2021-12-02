@@ -30,8 +30,10 @@ namespace GothicModComposer.Commands
 
         private IndeterminateProgressBar _rootProgressBar;
         private ChildProgressBar _textureCompilationProgressBar;
+        private ChildProgressBar _meshesCompilationProgressBar;
 
         private FileSystemWatcher _compiledTexturesFileWatcher;
+        private FileSystemWatcher _compiledMeshesFileWatcher;
 
         public ExecuteGothicCommand(IProfile profile, string killProcessMessage = null)
         {
@@ -64,16 +66,21 @@ namespace GothicModComposer.Commands
                 ProgressBarOptionsHelper.Get()))
             {
                 if (IsTextureCompilationRequired())
-                {
                     StartRealTimeProgressOnTextureCompilation();
-                }
+
+                if (IsMeshesCompilationRequired())
+                    StartRealTimeProgressOnMeshesCompilation();
 
                 _gothicProcess.Start();
                 _gothicProcess.WaitForExit();
 
                 _rootProgressBar.Finished();
+
                 _textureCompilationProgressBar?.Dispose();
+                _meshesCompilationProgressBar?.Dispose();
+
                 _compiledTexturesFileWatcher?.Dispose();
+                _compiledMeshesFileWatcher?.Dispose();
             }
 
             _gothicSpyProcessRunner.Abort();
@@ -123,6 +130,9 @@ namespace GothicModComposer.Commands
             => _profile.GothicArguments.Contains(GothicArguments.ZConvertAllParameter) ||
                _profile.GothicArguments.Contains(GothicArguments.ZTexConvertParameter);
 
+        private bool IsMeshesCompilationRequired() 
+            => _profile.GothicArguments.Contains(GothicArguments.ZConvertAllParameter);
+
         private void StartRealTimeProgressOnTextureCompilation()
         {
             var numberOfTexturesToCompile = _profile.GothicFolder.GetNumberOfTexturesToCompile();
@@ -137,7 +147,25 @@ namespace GothicModComposer.Commands
                 _textureCompilationProgressBar?.Tick(
                     $"Compiled {counter++} of {numberOfTexturesToCompile} textures");
             };
+
             _compiledTexturesFileWatcher.EnableRaisingEvents = true;
+        }
+
+        private void StartRealTimeProgressOnMeshesCompilation()
+        {
+            var numberOfMeshesToCompile = _profile.GothicFolder.GetNumberOfMeshesToCompile();
+            var counter = 1;
+
+            _meshesCompilationProgressBar = _rootProgressBar?.Spawn(
+                numberOfMeshesToCompile, "Compiling meshes", ProgressBarOptionsHelper.Get());
+
+            _compiledMeshesFileWatcher = new FileSystemWatcher(_profile.GothicFolder.CompiledMeshesPath);
+            _compiledMeshesFileWatcher.Created += (_, _) =>
+            {
+                _meshesCompilationProgressBar?.Tick($"Compiled {counter++} of {numberOfMeshesToCompile} meshes");
+            };
+
+            _compiledMeshesFileWatcher.EnableRaisingEvents = true;
         }
     }
 }

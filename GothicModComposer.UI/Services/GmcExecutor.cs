@@ -53,13 +53,24 @@ namespace GothicModComposer.UI.Services
                 }
             };
 
-            _gmcSettingsVM.UnsubscribeOnWorldDirectoryChanges();
+            if (ProfileCanTouchWorldFiles())
+            {
+                _gmcSettingsVM.UnsubscribeOnWorldDirectoryChanges();
+            }
 
             process.Start();
             process.WaitForExit();
 
-            _gmcSettingsVM.SubscribeOnWorldDirectoryChanges();
-            _gmcSettingsVM.LoadZen3DWorlds();
+            if (ProfileCanTouchWorldFiles())
+            {
+                _gmcSettingsVM.SubscribeOnWorldDirectoryChanges();
+                _gmcSettingsVM.LoadZen3DWorlds();
+            }
+
+            bool ProfileCanTouchWorldFiles()
+            {
+                return profile is GmcExecutionProfile.Compose or GmcExecutionProfile.Update or GmcExecutionProfile.RestoreGothic;
+            }
         }
 
         private static bool IsGmcAlreadyRun() => Process.GetProcessesByName("GMC-2").Length > 0;

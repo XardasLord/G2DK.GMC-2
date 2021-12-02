@@ -84,8 +84,8 @@ namespace GothicModComposer.Commands
         {
             var subDirectories = assetFolder
                 .SubDirectories
-                .Where(subDirectoryPath => !Path.GetFileName(subDirectoryPath).Equals("_compiled"))
-                .Where(subDirectoryPath => !Path.GetFileName(subDirectoryPath).Equals("Level"));
+                .Where(subDirectoryPath => !Path.GetFileName(subDirectoryPath).ToLower().Equals("_compiled"))
+                .Where(subDirectoryPath => !Path.GetFileName(subDirectoryPath).ToLower().Equals("level"));
 
             using var childProgressBar = _parentProgressBar.Spawn(subDirectories.Count(),
                 "Creating backup and delete subfolders", ProgressBarOptionsHelper.Get());
