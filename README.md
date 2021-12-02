@@ -4,7 +4,9 @@ Gothic Mod Composer (GMC-2) is a tool that helps to prepare Gothic II Dzieje Kho
 The project board is available [here in Trello]
 
 ## Prerequisite
-- You need to have installed [.NET Desktop Runtime 5.0 x64](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-5.0.10-windows-x64-installer) on your computer.
+- You need to have installed both x64 and x86 versions of .NET Desktop Runtime 6.0 on your computer:
+  - [.NET Desktop Runtime 6.0 x64](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-6.0.0-windows-x64-installer)
+  - [.NET Desktop Runtime 6.0 x86](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-6.0.0-windows-x86-installer)
 
 ## How to run?
 
