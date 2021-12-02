@@ -5,21 +5,16 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>GMC-2 UI</AssemblyName>
-    <Version>1.13.1</Version>
+    <Version>1.14.0</Version>
     <PackageIcon>GMC-logo.ico</PackageIcon>
     <ApplicationIcon>Resources\GMC-logo.ico</ApplicationIcon>
     <LangVersion>latest</LangVersion>
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <None Remove="Resources\delete.png" />
-    <None Remove="Resources\edit.png" />
-    <None Remove="Resources\play.png" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
