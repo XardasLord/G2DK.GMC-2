@@ -10,7 +10,7 @@
       //"commandLineArgs": "--modPath=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --gothic2Path=\"F:\\Gry\\Gothic II Dzieje Khorinis\" --profile=EnableVDF",
 
       // New way of executing GMC - configuration file.
-      "commandLineArgs": "--modPath=\"F:\\Gry\\Gothic II Dzieje Khorinis\\TheHistoryOfKhorinis\" --gothic2Path=\"F:\\Gry\\Gothic II Dzieje Khorinis\" --configurationFile=\"C:\\localRepository\\Gothic 2 Dzieje Khorinis\\GMC-2\\GothicModComposer.UI\\bin\\Debug\\net5.0-windows\\gmc-2-ui.json\" --profile=Update"
+      "commandLineArgs": "--modPath=\"C:\\localRepositories\\TheHistoryOfKhorinis\" --gothic2Path=\"C:\\Program Files (x86)\\GOG Galaxy\\Games\\Gothic 2 Gold - GMC with DK\" --configurationFile=\"C:\\localRepositories\\GMC-2\\GothicModComposer.UI\\bin\\Debug\\net6.0-windows\\gmc-2-ui.json\" --profile=Update"
     }
   }
 }
