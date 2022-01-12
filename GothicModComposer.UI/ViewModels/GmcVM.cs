@@ -13,6 +13,7 @@ namespace GothicModComposer.UI.ViewModels
     {
         private readonly IGmcExecutor _gmcExecutor;
         private readonly ISpacerService _spacerService;
+        private WindowState _currentWindowState;
 
         public GmcVM(IGmcExecutor gmcExecutor, ISpacerService spacerService, GmcSettingsVM gmcSettingsVM)
         {
@@ -36,6 +37,12 @@ namespace GothicModComposer.UI.ViewModels
             RunSpacer = new RelayCommand(RunSpacerExecute);
             DeleteZenWorld = new RelayCommand(DeleteZenWorldExecute);
             RenameZenWorld = new RelayCommand(RenameZenWorldExecute);
+        }
+
+        public WindowState CurrentWindowState
+        {
+            get => _currentWindowState;
+            set => SetProperty(ref _currentWindowState, value);
         }
 
         public GmcSettingsVM GmcSettings { get; }
@@ -85,7 +92,11 @@ namespace GothicModComposer.UI.ViewModels
                 return;
             }
 
+            CurrentWindowState = WindowState.Minimized;
+            
             _gmcExecutor.Execute(GmcExecutionProfile.RunMod);
+            
+            CurrentWindowState = WindowState.Normal;
         }
 
         private void RunRestoreGothicProfileExecute(object obj)
