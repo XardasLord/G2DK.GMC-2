@@ -67,7 +67,11 @@ namespace GothicModComposer.UI.ViewModels
                 return;
             }
 
+            CurrentWindowState = WindowState.Minimized;
+            
             _gmcExecutor.Execute(GmcExecutionProfile.Update);
+            
+            CurrentWindowState = WindowState.Normal;
         }
 
         private void RunComposeProfileExecute(object obj)
@@ -79,9 +83,16 @@ namespace GothicModComposer.UI.ViewModels
             }
 
             var messageBoxResult = MessageBox.Show("Are you sure you want to execute 'Compose' profile?",
-                "Execute Confirmation", MessageBoxButton.YesNo);
+                "Execute Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            
             if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                CurrentWindowState = WindowState.Minimized;
+            
                 _gmcExecutor.Execute(GmcExecutionProfile.Compose);
+            
+                CurrentWindowState = WindowState.Normal;
+            }
         }
 
         private void RunModProfileExecute(object obj)
@@ -102,9 +113,16 @@ namespace GothicModComposer.UI.ViewModels
         private void RunRestoreGothicProfileExecute(object obj)
         {
             var messageBoxResult = MessageBox.Show("Are you sure to you want to execute 'RestoreGothic' profile?",
-                "Execute Confirmation", MessageBoxButton.YesNo);
+                "Execute Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            
             if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                CurrentWindowState = WindowState.Minimized;
+            
                 _gmcExecutor.Execute(GmcExecutionProfile.RestoreGothic);
+            
+                CurrentWindowState = WindowState.Normal;
+            }
         }
 
         private void RunBuildModFileProfileProfileExecute(object obj)
@@ -115,7 +133,11 @@ namespace GothicModComposer.UI.ViewModels
                 return;
             }
 
+            CurrentWindowState = WindowState.Minimized;
+            
             _gmcExecutor.Execute(GmcExecutionProfile.BuildModFile);
+            
+            CurrentWindowState = WindowState.Normal;
         }
 
         private void RunEnableVDFProfileProfileExecute(object obj)
