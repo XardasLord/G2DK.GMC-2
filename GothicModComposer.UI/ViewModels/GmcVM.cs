@@ -13,6 +13,7 @@ namespace GothicModComposer.UI.ViewModels
     {
         private readonly IGmcExecutor _gmcExecutor;
         private readonly ISpacerService _spacerService;
+        private WindowState _currentWindowState;
 
         public GmcVM(IGmcExecutor gmcExecutor, ISpacerService spacerService, GmcSettingsVM gmcSettingsVM)
         {
@@ -38,6 +39,12 @@ namespace GothicModComposer.UI.ViewModels
             RenameZenWorld = new RelayCommand(RenameZenWorldExecute);
         }
 
+        public WindowState CurrentWindowState
+        {
+            get => _currentWindowState;
+            set => SetProperty(ref _currentWindowState, value);
+        }
+
         public GmcSettingsVM GmcSettings { get; }
         public RelayCommand RunUpdateProfile { get; }
         public RelayCommand RunComposeProfile { get; }
@@ -60,7 +67,11 @@ namespace GothicModComposer.UI.ViewModels
                 return;
             }
 
+            CurrentWindowState = WindowState.Minimized;
+            
             _gmcExecutor.Execute(GmcExecutionProfile.Update);
+            
+            CurrentWindowState = WindowState.Normal;
         }
 
         private void RunComposeProfileExecute(object obj)
@@ -72,9 +83,16 @@ namespace GothicModComposer.UI.ViewModels
             }
 
             var messageBoxResult = MessageBox.Show("Are you sure you want to execute 'Compose' profile?",
-                "Execute Confirmation", MessageBoxButton.YesNo);
+                "Execute Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            
             if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                CurrentWindowState = WindowState.Minimized;
+            
                 _gmcExecutor.Execute(GmcExecutionProfile.Compose);
+            
+                CurrentWindowState = WindowState.Normal;
+            }
         }
 
         private void RunModProfileExecute(object obj)
@@ -85,15 +103,26 @@ namespace GothicModComposer.UI.ViewModels
                 return;
             }
 
+            CurrentWindowState = WindowState.Minimized;
+            
             _gmcExecutor.Execute(GmcExecutionProfile.RunMod);
+            
+            CurrentWindowState = WindowState.Normal;
         }
 
         private void RunRestoreGothicProfileExecute(object obj)
         {
             var messageBoxResult = MessageBox.Show("Are you sure to you want to execute 'RestoreGothic' profile?",
-                "Execute Confirmation", MessageBoxButton.YesNo);
+                "Execute Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            
             if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                CurrentWindowState = WindowState.Minimized;
+            
                 _gmcExecutor.Execute(GmcExecutionProfile.RestoreGothic);
+            
+                CurrentWindowState = WindowState.Normal;
+            }
         }
 
         private void RunBuildModFileProfileProfileExecute(object obj)
@@ -104,7 +133,11 @@ namespace GothicModComposer.UI.ViewModels
                 return;
             }
 
+            CurrentWindowState = WindowState.Minimized;
+            
             _gmcExecutor.Execute(GmcExecutionProfile.BuildModFile);
+            
+            CurrentWindowState = WindowState.Normal;
         }
 
         private void RunEnableVDFProfileProfileExecute(object obj)
