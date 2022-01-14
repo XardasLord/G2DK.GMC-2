@@ -29,6 +29,8 @@ namespace GothicModComposer.UI.ViewModels
         private bool _isSystemPackAvailable;
         private bool _isLogDirectoryAvailable;
 
+        private BackgroundWorker _backgroundWorldsLoaderWorker;
+
         public string GmcSettingsJsonFilePath { get; }
 
         public string LogsDirectoryPath =>
@@ -92,6 +94,13 @@ namespace GothicModComposer.UI.ViewModels
             _gmcDirectoryService = gmcDirectoryService;
             _zenWorldsFileWatcherService = zenWorldsFileWatcherService;
 
+            _backgroundWorldsLoaderWorker = new BackgroundWorker
+            {
+                WorkerReportsProgress = true
+            };
+            _backgroundWorldsLoaderWorker.DoWork += LoadZen3DWorlds_Worker;
+            _backgroundWorldsLoaderWorker.ProgressChanged += LoadZen3DWorlds_ProgressChanged;
+
             _zenWorldsFileWatcherService.SetHandlers(ZenWorldFilesChanged);
 
             GmcSettingsJsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "gmc-2-ui.json");
@@ -132,11 +141,10 @@ namespace GothicModComposer.UI.ViewModels
 
         public void LoadZen3DWorlds()
         {
-            var worker = new BackgroundWorker();
-            worker.WorkerReportsProgress = true;
-            worker.DoWork += LoadZen3DWorlds_Worker;
-            worker.ProgressChanged += LoadZen3DWorlds_ProgressChanged;
-            worker.RunWorkerAsync();
+            if (_backgroundWorldsLoaderWorker.IsBusy)
+                return;
+            
+            _backgroundWorldsLoaderWorker.RunWorkerAsync();
         }
 
         private void IniOverrides_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
