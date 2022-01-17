@@ -139,8 +139,11 @@ namespace GothicModComposer.UI.ViewModels
         public void UnsubscribeOnWorldDirectoryChanges()
             => _zenWorldsFileWatcherService.StopWatching();
 
-        public void LoadZen3DWorlds()
+        public void LoadZen3DWorlds(bool forceManualRefresh = false)
         {
+            if (!_gmcConfiguration.EnableZenAutoRefresh && !forceManualRefresh)
+                return;
+            
             if (_backgroundWorldsLoaderWorker.IsBusy)
                 return;
             
@@ -361,29 +364,28 @@ namespace GothicModComposer.UI.ViewModels
 
         private void LoadZen3DWorlds_Worker(object sender, DoWorkEventArgs e)
         {
-            var worker = sender as BackgroundWorker;
-            worker?.ReportProgress(0);
+            _backgroundWorldsLoaderWorker?.ReportProgress(0);
 
             Application.Current.Dispatcher.Invoke(() => { Zen3DWorlds.Clear(); });
 
             if (GmcConfiguration.Gothic2RootPath is null)
                 return;
 
-            worker?.ReportProgress(10);
+            _backgroundWorldsLoaderWorker?.ReportProgress(10);
 
             var worldsPath = Path.Combine(GmcConfiguration.Gothic2RootPath, "_Work", "Data", "Worlds");
 
             if (!Directory.Exists(worldsPath))
             {
-                worker?.ReportProgress(0);
+                _backgroundWorldsLoaderWorker?.ReportProgress(0);
                 return;
             }
 
-            worker?.ReportProgress(20);
+            _backgroundWorldsLoaderWorker?.ReportProgress(20);
 
             var worldFiles = Directory.EnumerateFiles(worldsPath, "*.ZEN", SearchOption.AllDirectories);
 
-            worker?.ReportProgress(30);
+            _backgroundWorldsLoaderWorker?.ReportProgress(30);
 
             Parallel.ForEach(worldFiles, zenFilePath =>
             {
@@ -397,7 +399,7 @@ namespace GothicModComposer.UI.ViewModels
                 });
             });
 
-            worker?.ReportProgress(50);
+            _backgroundWorldsLoaderWorker?.ReportProgress(50);
 
             Parallel.ForEach(Zen3DWorlds, zen3DWorld =>
             {
@@ -406,7 +408,7 @@ namespace GothicModComposer.UI.ViewModels
                     zen3DWorld.SetAsSelected();
             });
 
-            worker?.ReportProgress(80);
+            _backgroundWorldsLoaderWorker?.ReportProgress(80);
 
             if (Zen3DWorlds.All(x => !x.IsSelected))
                 GmcConfiguration.ForceGmcDefaultWorldSetNull();
@@ -416,7 +418,7 @@ namespace GothicModComposer.UI.ViewModels
                 Zen3DWorlds = new ObservableCollection<Zen3DWorld>(Zen3DWorlds.OrderByAlphaNumeric(x => x.Name));
             });
 
-            worker?.ReportProgress(100);
+            _backgroundWorldsLoaderWorker?.ReportProgress(100);
         }
 
         private void OpenGameDirectoryExecute(object obj)

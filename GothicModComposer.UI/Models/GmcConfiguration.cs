@@ -18,7 +18,8 @@ namespace GothicModComposer.UI.Models
         private ObservableCollection<IniOverride> _iniOverridesSystemPack;
         private string _modificationRootPath;
         private bool _closeAfterFinish = true;
-        private bool _startWithWindows = false;
+        private bool _startWithWindows;
+        private bool _enableZenAutoRefresh = true;
 
         public GmcConfiguration()
         {
@@ -58,6 +59,12 @@ namespace GothicModComposer.UI.Models
             get => _startWithWindows;
             set => SetProperty(ref _startWithWindows, value);
         }
+
+        public bool EnableZenAutoRefresh
+        {
+            get => _enableZenAutoRefresh;
+            set => SetProperty(ref _enableZenAutoRefresh, value);
+        }
         
         public string DefaultWorld
         {
@@ -95,6 +102,7 @@ namespace GothicModComposer.UI.Models
     ""Gothic2RootPath"": """",
     ""ModificationRootPath"": """",
 	""DefaultWorld"": null,
+    ""EnableZenAutoRefresh"": true,
     ""GothicArguments"": {
         ""IsWindowMode"": false,
         ""IsDevMode"": true,
