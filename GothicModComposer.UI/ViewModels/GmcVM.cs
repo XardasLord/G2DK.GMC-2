@@ -37,6 +37,7 @@ namespace GothicModComposer.UI.ViewModels
             RunSpacer = new RelayCommand(RunSpacerExecute);
             DeleteZenWorld = new RelayCommand(DeleteZenWorldExecute);
             RenameZenWorld = new RelayCommand(RenameZenWorldExecute);
+            ManualZenWorldListRefresh = new RelayCommand(ManualZenWorldListRefreshExecute);
         }
 
         public WindowState CurrentWindowState
@@ -58,6 +59,7 @@ namespace GothicModComposer.UI.ViewModels
         public RelayCommand RunSpacer { get; }
         public RelayCommand DeleteZenWorld { get; }
         public RelayCommand RenameZenWorld { get; }
+        public RelayCommand ManualZenWorldListRefresh { get; }
 
         private void RunUpdateProfileExecute(object obj)
         {
@@ -215,6 +217,11 @@ namespace GothicModComposer.UI.ViewModels
 
                 File.Move(fullWorldPath, newFileNamePath);
             }
+        }
+
+        private void ManualZenWorldListRefreshExecute(object obj)
+        {
+            GmcSettings.LoadZen3DWorlds(true);
         }
 
         private static void ShowGothicExeNotFoundMessage() =>
