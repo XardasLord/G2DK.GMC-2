@@ -10,7 +10,6 @@
     d:DataContext="{d:DesignInstance viewModels:GmcVM}"
     WindowStartupLocation="CenterScreen"
     ResizeMode="CanMinimize"
-    WindowState="{Binding CurrentWindowState, Mode=TwoWay}"
     Title="GMC UI" Height="550" Width="800">
 
     <Window.Resources>

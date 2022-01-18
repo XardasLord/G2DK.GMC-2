@@ -95,8 +95,8 @@ namespace GothicModComposer.UI
 
         private void MainWindowOnStateChanged(object sender, EventArgs e)
         {
-            // if (_mainWindow.WindowState == WindowState.Minimized)
-            //     _mainWindow.Hide();
+            if (_mainWindow.WindowState == WindowState.Minimized)
+                _mainWindow.Hide();
         }
 
         private void NotifyIconOnClick(object sender, EventArgs e)

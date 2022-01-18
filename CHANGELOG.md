@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.15.1] (2022-01-18)
+### Changed
+- Improved hiding mechanism (now GUI hides to tray icon instead of task bar).
+
 ## [1.15.0] (2022-01-18)
 ### Fixed
 - ZEN duplication on the list in some specific cases.
