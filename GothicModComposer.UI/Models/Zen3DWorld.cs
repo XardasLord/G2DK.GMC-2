@@ -9,11 +9,13 @@
             FullPath = fullPath;
             Path = fullPath.Remove(0, indexofWorldSubPath + 7);
             Name = name;
+            PathWithoutExtension = Path.Replace(Name, System.IO.Path.GetFileNameWithoutExtension(Name));
         }
 
         public string FullPath { get; }
         public string Path { get; }
         public string Name { get; }
+        public string PathWithoutExtension { get; }
 
         public bool IsSelected { get; set; }
 

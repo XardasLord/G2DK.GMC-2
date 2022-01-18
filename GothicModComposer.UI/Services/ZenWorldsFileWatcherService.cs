@@ -26,8 +26,13 @@ namespace GothicModComposer.UI.Services
             _zenWorldsFileWatcher.Path = worldsDirectoryPath;
         }
 
-        public void StartWatching() => _zenWorldsFileWatcher.EnableRaisingEvents = true;
+        public void StartWatching()
+        {
+            if (Directory.Exists(_zenWorldsFileWatcher.Path))
+                _zenWorldsFileWatcher.EnableRaisingEvents = true;
+        }
 
-        public void StopWatching() => _zenWorldsFileWatcher.EnableRaisingEvents = false;
+        public void StopWatching() 
+            => _zenWorldsFileWatcher.EnableRaisingEvents = false;
     }
 }

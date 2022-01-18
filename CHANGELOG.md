@@ -3,6 +3,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [1.15.0] (2022-01-18)
+### Fixed
+- ZEN duplication on the list in some specific cases.
+
+### Added
+- Option to enable/disable auto ZEN list refresh mechanism.
+- Option to force manual ZEN list refresh.
+- Auto GUI hiding during profiles execution.
+
+### Changed
+- Removed `.ZEN` extension from worlds list in GUI.
+
 ## [1.14.0] (2021-12-02)
 ### Fixed
 - ZEN duplication on the list in some specific cases.

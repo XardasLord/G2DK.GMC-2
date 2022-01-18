@@ -6,7 +6,6 @@ using GothicModComposer.UI.Interfaces;
 using GothicModComposer.UI.Services;
 using GothicModComposer.UI.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
-using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 
 namespace GothicModComposer.UI
@@ -96,8 +95,8 @@ namespace GothicModComposer.UI
 
         private void MainWindowOnStateChanged(object sender, EventArgs e)
         {
-            if (_mainWindow.WindowState == WindowState.Minimized)
-                _mainWindow.Hide();
+            // if (_mainWindow.WindowState == WindowState.Minimized)
+            //     _mainWindow.Hide();
         }
 
         private void NotifyIconOnClick(object sender, EventArgs e)
