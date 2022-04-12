@@ -39,7 +39,7 @@ namespace GothicModComposer.Commands
 					{
 						if (FileHelper.GetFileTimestamp(extensionDestinationPath) == FileHelper.GetFileTimestamp(extensionFilePathToCopy))
 						{
-							progress.Tick();
+							progress.Tick($"Copied {counter++} of {extensionFiles.Count} files");
 							return;
 						}
 						
