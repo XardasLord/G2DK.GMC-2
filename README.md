@@ -9,18 +9,8 @@ The project board is available [here in Trello]
 
 ## How to run?
 
-### GMC UI (recommended)
+### GMC UI
 GUI is avaialable since GMC 1.1.0 version. GUI is constantly improving with new features and UX changes. It's a recommended way to use GMC.
-
-### Running via .bat files (depreciated)
-Previously GMC could be run via `.bat` files, each one representing different profile to execute.
-After building solution the GMC.exe executable file will be available. To run GMC.exe you have to provide several parameters:
-- `profile` - a profile to execute. Available profiles are described in next section of this README file.
-- `modPath` - an absolute path to the Gothic II Dzieje Khorinis repository.
-- `gothic2Path` - an absolute path to the Gothic II root directory.
-
-Example command to run GMC-2.exe:
-```GMC.exe --modPath="F:\Gry\Gothic II Dzieje Khorinis\TheHistoryOfKhorinis" --gothic2Path="F:\Gry\Gothic II Dzieje Khorinis" --profile=Compose```
 
 ## GMC-2 profiles
 GMC-2 has several profile modes that can be run with. Below you can find the description of each profile.
