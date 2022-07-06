@@ -56,7 +56,8 @@ namespace GothicModComposer.UI
 
             ConfigureTrayIcon();
 
-            _mainWindow.StateChanged += MainWindowOnStateChanged;
+            // Temporary disabled functionality, will be fixed within - https://trello.com/c/SNpWUXBZ/152-rozdzieli%C4%87-minimalizowanie-i-zasobnik
+            // _mainWindow.StateChanged += MainWindowOnStateChanged;
         }
 
         private void OnExit(object sender, ExitEventArgs e)
