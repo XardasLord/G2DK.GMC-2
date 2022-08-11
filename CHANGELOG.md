@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [1.16.0] (2022-07-06)
 ### Changed
-- Disable app hiding mechanism. This will be fixed withing - https://trello.com/c/SNpWUXBZ/152-rozdzieli%C4%87-minimalizowanie-i-zasobnik
+- Disable app hiding mechanism. This will be fixed within - https://trello.com/c/SNpWUXBZ/152-rozdzieli%C4%87-minimalizowanie-i-zasobnik
 
 ### Fixed
 - Couting elements in `Update mod extension files` step
